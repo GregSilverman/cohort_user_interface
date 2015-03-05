@@ -16,6 +16,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         'Ext.ux.ajax.SimManager'
     ],
 
+
     xtype: 'app-main',
 
     controller: 'main',
@@ -40,11 +41,22 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         html: '<ul><li>Add tree menu here.</li></ul>',
         width: 250,
         split: true,
-        tbar: [{
-            text: 'MS'
+        tbar: [/*{
+            renderTo: 'itemselector',
+            text: 'MS',
+            items: [{
+
+                handler: function() {
+                    var panel = Ext.getCmp('Ajax');
+                },
+                xtype: 'itemselector',
+                store: [[123,'One Hundred Twenty Three'],
+                    ['1', 'One'], ['2', 'Two'], ['3', 'Three'], ['4', 'Four'], ['5', 'Five'],
+                    ['6', 'Six'], ['7', 'Seven'], ['8', 'Eight'], ['9', 'Nine']],
+            }]
 
             },
-
+*/
             {
             text: 'GetData',
             handler: function() {
@@ -165,4 +177,48 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             html: '<h2>Ajax test.</h2>'
         }]
     }]
+});
+
+Ext.onReady(function () {
+
+    var store = Ext.create('Ext.data.Store', {
+        fields: [
+            {
+                name: 'string_value',
+                type: 'string'
+            }
+        ],
+        proxy: {
+            type: 'ajax',
+            url: 'http://127.0.0.1:5000/api/factor',
+            reader: {
+                type: 'json',
+                rootProperty: '0'
+            }
+        }
+    });
+
+   /* store.load(function () {
+        Ext.widget('itemselector', {
+            width: 300,
+            height: 300,
+            displayField: 'title',
+            valueField: 'string_value',
+            renderTo: Ext.getBody(),
+            store: store
+        }).center();
+    });*/
+    var is = Ext.widget('itemselector', {
+        width: 300,
+        height: 300,
+        valueField: 'string_value',
+        displayField: 'title',
+        renderTo: Ext.getBody(),
+        store: store
+    }).center();
+
+    store.load(function () {
+        is.bindStore(store);
+    });
+
 });
