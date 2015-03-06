@@ -137,6 +137,9 @@
         {
             "path": "bootstrap.css",
             "bootstrap": true
+        },
+        {
+            "path": "ext/src/ux/css/ItemSelector.css"
         }
     ],
 

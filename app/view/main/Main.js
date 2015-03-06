@@ -193,7 +193,7 @@ Ext.onReady(function () {
             url: 'http://127.0.0.1:5000/api/factor',
             reader: {
                 type: 'json',
-                rootProperty: '0'
+                rootProperty: 'clinical_data'
             }
         }
     });
@@ -212,7 +212,7 @@ Ext.onReady(function () {
         width: 300,
         height: 300,
         valueField: 'string_value',
-        displayField: 'title',
+        displayField: 'string_value',
         renderTo: Ext.getBody(),
         store: store
     }).center();
