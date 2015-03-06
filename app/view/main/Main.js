@@ -33,7 +33,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         id: 'Test',
         styleHtmlContent: true,
 
-
         bind: {
             title: '{name}'
         },
@@ -168,7 +167,32 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         }]
     },{
         region: 'center',
-        //xtype: 'tabpanel',
+        /*tbar : {
+            xtype: 'toolbar',
+            flex: 1,
+            dock: 'top',
+            items: [
+                'Filter:',
+                {
+                    xtype: 'textfield',
+                    fieldStyle: 'text-align: left;',
+                    enableKeyEvents: true,
+                    listeners: {
+                        scope: this,
+                        change : function(field, newValue, oldValue, options) {
+                            var toStore = this.toField.boundList.getStore();
+                            toStore.clearFilter();
+                            if (String(newValue).trim() != "")
+                            {
+                                toStore.filterBy(function(rec, id){
+                                    return this.filterFunc(rec, newValue);
+                                }, this);
+                            }
+                        }
+                    }
+                }
+            ]
+        },*/
         xtype: 'panel',
         id: 'Ajax',
         styleHtmlContent: true,
@@ -179,46 +203,3 @@ Ext.define('cardioCatalogQT.view.main.Main', {
     }]
 });
 
-Ext.onReady(function () {
-
-    var store = Ext.create('Ext.data.Store', {
-        fields: [
-            {
-                name: 'string_value',
-                type: 'string'
-            }
-        ],
-        proxy: {
-            type: 'ajax',
-            url: 'http://127.0.0.1:5000/api/factor',
-            reader: {
-                type: 'json',
-                rootProperty: 'clinical_data'
-            }
-        }
-    });
-
-   /* store.load(function () {
-        Ext.widget('itemselector', {
-            width: 300,
-            height: 300,
-            displayField: 'title',
-            valueField: 'string_value',
-            renderTo: Ext.getBody(),
-            store: store
-        }).center();
-    });*/
-    var is = Ext.widget('itemselector', {
-        width: 300,
-        height: 300,
-        valueField: 'string_value',
-        displayField: 'string_value',
-        renderTo: Ext.getBody(),
-        store: store
-    }).center();
-
-    store.load(function () {
-        is.bindStore(store);
-    });
-
-});
