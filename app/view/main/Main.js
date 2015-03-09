@@ -193,7 +193,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             console.log('n: ' + n);
                         }
 
-
                         // define template
                         tpl = new Ext.XTemplate(
                             '<tpl for=".">',
@@ -221,7 +220,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         );
 
                         // render template with store data to panel using HTML and remove mask from parent object
-                        //panel.html =
                         panel.setHtml('n: ' + n + ' '
                             + tpl.apply(store)); //TODO: add criteria on which query was executed
                         panel.unmask();
@@ -242,7 +240,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             height: 80,
             width: 280
         },{
-            id: 'ja',
             title: 'UI Sandbox',
             html: '<h2>Ajax test.</h2>'
         }]
