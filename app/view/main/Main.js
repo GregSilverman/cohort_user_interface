@@ -42,8 +42,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         split: true,
         tbar: [
             {
-            text: 'Test',
+            text: 'TestMS',
             handler: function() {
+                var panel = Ext.getCmp('Ajax');
+                if (panel){
+                    panel.setHtml('');
+                }
+
                 var ms = Ext.widget('form', {
                     xtype: 'multi-selector',
                     width: 400,
@@ -62,8 +67,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                             text: 'Submit request to API',
 
+                            // get submitted array
                             handler: function() {
-                                console.log('in the test! ');
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                }
 
                                 var submitted = Ext.getCmp('test');
 
@@ -72,8 +80,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     dx.push(item.data.string_value);
                                 }); // each()
 
-                                Ext.Msg.alert('Submitted Values', 'The following diagnoses will be sent to the server:  <br />' + dx);
-                                console.log(dx);
+                                Ext.Msg.alert('Submitted Values',
+                                    'The following diagnoses will be sent to the server:  <br />' + dx);
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(dx);
+                                }
 
                             }
 
@@ -89,7 +101,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             deferEmptyText: false,
                             emptyText: 'No Dx selected'
                         },
-
+                        // TODO: fix ability to remove selected items when box is unchecked
                         search: {
                             field: 'string_value',
                             store: 'Diagnoses'
@@ -100,8 +112,14 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             }
             },
             {
-            text: 'GetData',
+            text: 'GetAjax',
             handler: function() {
+
+                var test = Ext.getCmp('test');
+                if (test){
+                    test.destroy();
+                }
+
                 var panel = Ext.getCmp('Ajax'),
                     url = 'http://127.0.0.1:5000/api/getQ/',
                     payload = 'lab:TEST_CODE;eq;13457-7;lab:RESULT_VALUE_NUM;ge;160;',
@@ -132,7 +150,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     url: url,
                     success: function(response) {
                         json = Ext.decode(response.responseText);
-                        console.log('json' + json);
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('json' + json);
+                        }
 
                         if(json !== null &&  typeof (json) !==  'undefined'){
 
@@ -144,16 +164,18 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                         sid: tuple[0].sid,
                                         source: tuple[0].source
                                     });
-
-                                    console.log(tuple[0].source
+                                    if (cardioCatalogQT.config.mode === 'test') {
+                                        console.log(tuple[0].source
                                         + 'N ' + tuple[0].N
                                         + 'attribute ' + tuple[0].attribute
                                         + 'sid ' + tuple[0].sid
                                         + 'value ' + tuple[0].value);
+                                    }
                                 });
                             });
-
-                            console.log(records);
+                            if (cardioCatalogQT.config.mode === 'test') {
+                                console.log(records);
+                            }
 
                             //update store with data
                             store.add(records);
@@ -167,8 +189,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         // Get n: total number of rows returned
 
                         var n = store.getCount();
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('n: ' + n);
+                        }
 
-                        console.log('n: ' + n);
 
                         // define template
                         tpl = new Ext.XTemplate(
@@ -197,12 +221,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         );
 
                         // render template with store data to panel using HTML and remove mask from parent object
-                        panel.setHtml(tpl.apply(store));
-                        //panel.setHtml(n);
+                        //panel.html =
+                        panel.setHtml('n: ' + n + ' '
+                            + tpl.apply(store)); //TODO: add criteria on which query was executed
                         panel.unmask();
 
-                        //panel.setHtml(response.responseText);
-                        //panel.unmask();
                     }
                 });
             }
@@ -214,7 +237,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         id: 'Ajax',
         styleHtmlContent: true,
         items:[{
-            title: 'Tab 1',
+            xtype: 'image',
+            src: 'resources/images/cv.png',
+            height: 80,
+            width: 280
+        },{
+            id: 'ja',
+            title: 'UI Sandbox',
             html: '<h2>Ajax test.</h2>'
         }]
     }]
