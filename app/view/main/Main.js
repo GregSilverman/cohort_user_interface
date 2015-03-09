@@ -40,12 +40,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         html: '<ul><li>Add tree menu here.</li></ul>',
         width: 250,
         split: true,
-        tbar: [
-            {
+        tbar: [{
             text: 'TestMS',
             handler: function() {
                 var panel = Ext.getCmp('Ajax');
-                if (panel){
+                if (panel){ // destroy element if it exists
                     panel.setHtml('');
                 }
 
@@ -86,9 +85,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 if (cardioCatalogQT.config.mode === 'test') {
                                     console.log(dx);
                                 }
-
                             }
-
                         }],
                         xtype: 'multiselector',
                         title: 'Selected Dx',
@@ -109,17 +106,14 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         }
                     }]
                 }).center();
-            }
-            },
-            {
+            }},{
             text: 'GetAjax',
             handler: function() {
 
                 var test = Ext.getCmp('test');
-                if (test){
+                if (test){  // destroy element if it exists
                     test.destroy();
                 }
-
                 var panel = Ext.getCmp('Ajax'),
                     url = 'http://127.0.0.1:5000/api/getQ/',
                     payload = 'lab:TEST_CODE;eq;13457-7;lab:RESULT_VALUE_NUM;ge;160;',
@@ -144,7 +138,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     message: 'Loading...'
                 });
 
-                url += payload;
+                url += payload; // append payload to URL
 
                 Ext.Ajax.request({
                     url: url,
@@ -187,7 +181,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         panel.setData(store);
 
                         // Get n: total number of rows returned
-
                         var n = store.getCount();
                         if (cardioCatalogQT.config.mode === 'test') {
                             console.log('n: ' + n);
@@ -227,7 +220,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }
                 });
             }
-
         }]
     },{
         region: 'center',
