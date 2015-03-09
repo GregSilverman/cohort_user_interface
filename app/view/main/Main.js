@@ -40,22 +40,65 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         html: '<ul><li>Add tree menu here.</li></ul>',
         width: 250,
         split: true,
-        tbar: [/*{
-            renderTo: 'itemselector',
-            text: 'MS',
-            items: [{
+        tbar: [
+            {
+            text: 'Test',
+            handler: function() {
+                var ms = Ext.widget('form', {
+                    xtype: 'multi-selector',
+                    width: 400,
+                    height: 300,
+                    requires: [
+                        'Ext.view.MultiSelector'
+                    ],
+                    layout: 'fit',
 
-                handler: function() {
-                    var panel = Ext.getCmp('Ajax');
-                },
-                xtype: 'itemselector',
-                store: [[123,'One Hundred Twenty Three'],
-                    ['1', 'One'], ['2', 'Two'], ['3', 'Three'], ['4', 'Four'], ['5', 'Five'],
-                    ['6', 'Six'], ['7', 'Seven'], ['8', 'Eight'], ['9', 'Nine']],
-            }]
+                    renderTo: Ext.getBody(),
+                    items: [{
+                        bbar: [{
+                            xtype: 'button',
+                            itemId: 'button',
+                            html: 'Toolbar here',
 
+                            text: 'Submit request to API',
+
+                            handler: function() {
+                                console.log('in the test! ');
+
+                                var submitted = Ext.getCmp('test');
+
+                                var dx = [];
+                                Ext.Array.each(submitted.store.data.items, function (item) {
+                                    dx.push(item.data.string_value);
+                                }); // each()
+
+                                Ext.Msg.alert('Submitted Values', 'The following diagnoses will be sent to the server:  <br />' + dx);
+                                console.log(dx);
+
+                            }
+
+                        }],
+                        xtype: 'multiselector',
+                        title: 'Selected Dx',
+
+                        id: 'test',
+                        name:'test',
+                        fieldName: 'string_value',
+
+                        viewConfig: {
+                            deferEmptyText: false,
+                            emptyText: 'No Dx selected'
+                        },
+
+                        search: {
+                            field: 'string_value',
+                            store: 'Diagnoses'
+
+                        }
+                    }]
+                }).center();
+            }
             },
-*/
             {
             text: 'GetData',
             handler: function() {
@@ -167,32 +210,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         }]
     },{
         region: 'center',
-        /*tbar : {
-            xtype: 'toolbar',
-            flex: 1,
-            dock: 'top',
-            items: [
-                'Filter:',
-                {
-                    xtype: 'textfield',
-                    fieldStyle: 'text-align: left;',
-                    enableKeyEvents: true,
-                    listeners: {
-                        scope: this,
-                        change : function(field, newValue, oldValue, options) {
-                            var toStore = this.toField.boundList.getStore();
-                            toStore.clearFilter();
-                            if (String(newValue).trim() != "")
-                            {
-                                toStore.filterBy(function(rec, id){
-                                    return this.filterFunc(rec, newValue);
-                                }, this);
-                            }
-                        }
-                    }
-                }
-            ]
-        },*/
         xtype: 'panel',
         id: 'Ajax',
         styleHtmlContent: true,
