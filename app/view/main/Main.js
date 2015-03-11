@@ -101,8 +101,36 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         // TODO: fix ability to remove selected items when box is unchecked
                         search: {
                             field: 'string_value',
-                            store: 'Diagnoses'
+                            store: 'Diagnoses',
 
+                            search: function (text) {
+                                var me = this,
+                                    filter = me.searchFilter,
+                                    filters = me.getSearchStore().getFilters();
+
+                                if (text) {
+                                    filters.beginUpdate();
+
+                                    if (filter) {
+                                        filter.setValue(text);
+                                    } else {
+                                        me.searchFilter = filter = new Ext.util.Filter({
+                                            id: 'search',
+                                            property: me.field,
+                                            value: text,
+
+                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                            anyMatch: true
+                                        });
+                                    }
+
+                                    filters.add(filter);
+
+                                    filters.endUpdate();
+                                } else if (filter) {
+                                    filters.remove(filter);
+                                }
+                            }
                         }
                     }]
                 }).center();
