@@ -10,7 +10,10 @@ Ext.define('cardioCatalogQT.Application', {
 
     stores: [
         // TODO: add global / shared stores here
-        'Diagnoses'
+        'Diagnoses',
+        'LabTests',
+        'Medications',
+        'Procedures'
     ],
     requires: [
         'Ext.app.*',

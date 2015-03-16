@@ -41,14 +41,14 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         width: 250,
         split: true,
         tbar: [{
-            text: 'TestMS',
+            text: 'Dx',
             handler: function() {
                 var panel = Ext.getCmp('Ajax');
                 if (panel){ // destroy element if it exists
                     panel.setHtml('');
                 }
 
-                var ms = Ext.widget('form', {
+                Ext.widget('form', { // TODO: var dx = -> for better form control
                     xtype: 'multi-selector',
                     width: 400,
                     height: 300,
@@ -72,7 +72,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     console.log('In submitted values handler: ');
                                 }
 
-                                var submitted = Ext.getCmp('test');
+                                var submitted = Ext.getCmp('diagnosis');
 
                                 var dx = [];
                                 Ext.Array.each(submitted.store.data.items, function (item) {
@@ -90,8 +90,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         xtype: 'multiselector',
                         title: 'Selected Dx',
 
-                        id: 'test',
-                        name:'test',
+                        id: 'diagnosis',
+                        name:'diagnosis',
                         fieldName: 'string_value',
 
                         viewConfig: {
@@ -135,10 +135,304 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }]
                 }).center();
             }},{
-            text: 'GetAjax',
+            text: 'Lx',
+            handler: function() {
+                var panel = Ext.getCmp('Ajax');
+                if (panel){ // destroy element if it exists
+                    panel.setHtml('');
+                }
+
+                Ext.widget('form', {
+                    xtype: 'multi-selector',
+                    width: 400,
+                    height: 300,
+                    requires: [
+                        'Ext.view.MultiSelector'
+                    ],
+                    layout: 'fit',
+
+                    renderTo: Ext.getBody(),
+                    items: [{
+                        bbar: [{
+                            xtype: 'button',
+                            itemId: 'button',
+                            html: 'Toolbar here',
+
+                            text: 'Submit request to API',
+
+                            // get submitted array
+                            handler: function() {
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                }
+
+                                var submitted = Ext.getCmp('lab');
+
+                                var lx = [];
+                                Ext.Array.each(submitted.store.data.items, function (item) {
+                                    lx.push(item.data.string_value);
+                                }); // each()
+
+                                Ext.Msg.alert('Submitted Values',
+                                    'The following labTests will be sent to the server:  <br />' + lx);
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(dx);
+                                }
+                            }
+                        }],
+                        xtype: 'multiselector',
+                        title: 'Selected Lx',
+
+                        id: 'lab',
+                        name:'lab',
+                        fieldName: 'string_value',
+
+                        viewConfig: {
+                            deferEmptyText: false,
+                            emptyText: 'No Lx selected'
+                        },
+                        // TODO: fix ability to remove selected items when box is unchecked
+                        search: {
+                            field: 'string_value',
+                            store: 'LabTests',
+
+                            search: function (text) {
+                                var me = this,
+                                    filter = me.searchFilter,
+                                    filters = me.getSearchStore().getFilters();
+
+                                if (text) {
+                                    filters.beginUpdate();
+
+                                    if (filter) {
+                                        filter.setValue(text);
+                                    } else {
+                                        me.searchFilter = filter = new Ext.util.Filter({
+                                            id: 'search',
+                                            property: me.field,
+                                            value: text,
+
+                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                            anyMatch: true
+                                        });
+                                    }
+
+                                    filters.add(filter);
+
+                                    filters.endUpdate();
+                                } else if (filter) {
+                                    filters.remove(filter);
+                                }
+                            }
+                        }
+                    }]
+                }).center();
+            }},{
+            text: 'Rx',
+            handler: function() {
+                var panel = Ext.getCmp('Ajax');
+                if (panel){ // destroy element if it exists
+                    panel.setHtml('');
+                }
+
+                Ext.widget('form', {
+                    xtype: 'multi-selector',
+                    width: 400,
+                    height: 300,
+                    requires: [
+                        'Ext.view.MultiSelector'
+                    ],
+                    layout: 'fit',
+
+                    renderTo: Ext.getBody(),
+                    items: [{
+                        bbar: [{
+                            xtype: 'button',
+                            itemId: 'button',
+                            html: 'Toolbar here',
+
+                            text: 'Submit request to API',
+
+                            // get submitted array
+                            handler: function() {
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                }
+
+                                var submitted = Ext.getCmp('medication');
+
+                                var rx = [];
+                                Ext.Array.each(submitted.store.data.items, function (item) {
+                                    rx.push(item.data.string_value);
+                                }); // each()
+
+                                Ext.Msg.alert('Submitted Values',
+                                    'The following medications will be sent to the server:  <br />' + rx);
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(dx);
+                                }
+                            }
+                        }],
+                        xtype: 'multiselector',
+                        title: 'Selected Rx',
+
+                        id: 'medication',
+                        name:'medication',
+                        fieldName: 'string_value',
+
+                        viewConfig: {
+                            deferEmptyText: false,
+                            emptyText: 'No Rx selected'
+                        },
+                        // TODO: fix ability to remove selected items when box is unchecked
+                        search: {
+                            field: 'string_value',
+                            store: 'Medications',
+
+                            search: function (text) {
+                                var me = this,
+                                    filter = me.searchFilter,
+                                    filters = me.getSearchStore().getFilters();
+
+                                if (text) {
+                                    filters.beginUpdate();
+
+                                    if (filter) {
+                                        filter.setValue(text);
+                                    } else {
+                                        me.searchFilter = filter = new Ext.util.Filter({
+                                            id: 'search',
+                                            property: me.field,
+                                            value: text,
+
+                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                            anyMatch: true
+                                        });
+                                    }
+
+                                    filters.add(filter);
+
+                                    filters.endUpdate();
+                                } else if (filter) {
+                                    filters.remove(filter);
+                                }
+                            }
+                        }
+                    }]
+                }).center();
+            }},{
+            text: 'Px',
+            handler: function() {
+                var panel = Ext.getCmp('Ajax');
+                if (panel){ // destroy element if it exists
+                    panel.setHtml('');
+                }
+
+                Ext.widget('form', {
+                    xtype: 'multi-selector',
+                    width: 400,
+                    height: 300,
+                    requires: [
+                        'Ext.view.MultiSelector'
+                    ],
+                    layout: 'fit',
+
+                    renderTo: Ext.getBody(),
+                    items: [{
+                        bbar: [{
+                            xtype: 'button',
+                            itemId: 'button',
+                            html: 'Toolbar here',
+
+                            text: 'Submit request to API',
+
+                            // get submitted array
+                            handler: function() {
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                }
+
+                                var submitted = Ext.getCmp('procedure');
+
+                                var px = [];
+                                Ext.Array.each(submitted.store.data.items, function (item) {
+                                    px.push(item.data.string_value);
+                                }); // each()
+
+                                Ext.Msg.alert('Submitted Values',
+                                    'The following procedures will be sent to the server:  <br />' + px);
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(dx);
+                                }
+                            }
+                        }],
+                        xtype: 'multiselector',
+                        title: 'Selected Px',
+
+                        id: 'procedure',
+                        name:'procedure',
+                        fieldName: 'string_value',
+
+                        viewConfig: {
+                            deferEmptyText: false,
+                            emptyText: 'No Px selected'
+                        },
+                        // TODO: fix ability to remove selected items when box is unchecked
+                        search: {
+                            field: 'string_value',
+                            store: 'Procedures',
+
+                            search: function (text) {
+                                var me = this,
+                                    filter = me.searchFilter,
+                                    filters = me.getSearchStore().getFilters();
+
+                                if (text) {
+                                    filters.beginUpdate();
+
+                                    if (filter) {
+                                        filter.setValue(text);
+                                    } else {
+                                        me.searchFilter = filter = new Ext.util.Filter({
+                                            id: 'search',
+                                            property: me.field,
+                                            value: text,
+
+                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                            anyMatch: true
+                                        });
+                                    }
+
+                                    filters.add(filter);
+
+                                    filters.endUpdate();
+                                } else if (filter) {
+                                    filters.remove(filter);
+                                }
+                            }
+                        }
+                    }]
+                }).center();
+            }},{
+            text: 'SubmitQuery',
             handler: function() {
 
-                var test = Ext.getCmp('test');
+                var test = Ext.getCmp('diagnosis');
+                if (test){  // destroy element if it exists
+                    test.destroy();
+                }
+                test = Ext.getCmp('lab');
+                if (test){  // destroy element if it exists
+                    test.destroy();
+                }
+                test = Ext.getCmp('medication');
+                if (test){  // destroy element if it exists
+                    test.destroy();
+                }
+                test = Ext.getCmp('procedure');
                 if (test){  // destroy element if it exists
                     test.destroy();
                 }
