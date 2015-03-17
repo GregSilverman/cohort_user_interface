@@ -1,6 +1,6 @@
 Ext.define('cardioCatalogQT.store.Procedures', {
     extend: 'Ext.data.Store',
-    alias: 'store.Diagnoses',
+    alias: 'store.Procedures',
     // add package.framework=ext to .sencha/app/sencha.cfg
     config:{
         model: 'cardioCatalogQT.model.Procedure',
@@ -9,7 +9,7 @@ Ext.define('cardioCatalogQT.store.Procedures', {
 
         proxy: {
             type: 'rest',
-            url: 'http://127.0.0.1:5000/api/factor',
+            url: 'http://127.0.0.1/api/factor/',
             reader: {
                 type: 'json',
                 rootProperty: 'clinical_data'

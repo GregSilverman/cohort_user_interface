@@ -41,23 +41,26 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         width: 250,
         split: true,
         tbar: [{
-            text: 'Dx',
+            text: 'Select: Dx or Lab',
             handler: function() {
-                var panel = Ext.getCmp('Ajax');
+                var panel = Ext.getCmp('Ajax'),
+                    payload = Ext.create('cardioCatalogQT.store.Payload');
                 if (panel){ // destroy element if it exists
                     panel.setHtml('');
                 }
 
-                Ext.widget('form', { // TODO: var dx = -> for better form control
+
+                Ext.widget('form', {
                     xtype: 'multi-selector',
-                    width: 200,
-                    height: 100,
+                    width: 300,
+                    height: 400,
                     requires: [
                         'Ext.view.MultiSelector'
                     ],
-                    layout: 'fit',
                     renderTo: Ext.getBody(),
+                    padding: -5,
                     items: [{
+                        anchor: '50%',
                         bbar: [{
                             xtype: 'button',
                             itemId: 'button',
@@ -71,11 +74,20 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     console.log('In submitted values handler: ');
                                 }
 
-                                var submitted = Ext.getCmp('diagnosis');
+                                var submitted = Ext.getCmp('diagnosis'),
+                                    dx = [];
 
-                                var dx = [];
                                 Ext.Array.each(submitted.store.data.items, function (item) {
                                     dx.push(item.data.string_value);
+
+                                    // write to store
+                                    // TODO: ensure record does not already exist
+                                    payload.add({
+                                        key: item.data.string_value,
+                                        comparator: 'eq',
+                                        value: 'dx_code'
+                                    })
+                                    payload.sync();
                                 }); // each()
 
                                 Ext.Msg.alert('Submitted Values',
@@ -131,26 +143,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
                             }
                         }
-                    }]
-                }).center();
-            }},{
-            text: 'Lx',
-            handler: function() {
-                var panel = Ext.getCmp('Ajax');
-                if (panel){ // destroy element if it exists
-                    panel.setHtml('');
-                }
-
-                Ext.widget('form', {
-                    xtype: 'multi-selector',
-                    width: 200,
-                    height: 100,
-                    requires: [
-                        'Ext.view.MultiSelector'
-                    ],
-                    layout: 'fit',
-                    renderTo: Ext.getBody(),
-                    items: [{
+                    },{
+                        anchor: '50%',
                         bbar: [{
                             xtype: 'button',
                             itemId: 'button',
@@ -175,12 +169,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     'The following labTests will be sent to the server:  <br />' + lx);
 
                                 if (cardioCatalogQT.config.mode === 'test') {
-                                    console.log(dx);
+                                    console.log(lx);
                                 }
                             }
                         }],
                         xtype: 'multiselector',
-                        title: 'Selected Lx',
+                        title: 'Selected Lab',
 
                         id: 'lab',
                         name:'lab',
@@ -188,198 +182,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                         viewConfig: {
                             deferEmptyText: false,
-                            emptyText: 'No Lx selected'
+                            emptyText: 'No Lab selected'
                         },
                         // TODO: fix ability to remove selected items when box is unchecked
                         search: {
                             field: 'string_value',
                             store: 'LabTests',
-
-                            search: function (text) {
-                                var me = this,
-                                    filter = me.searchFilter,
-                                    filters = me.getSearchStore().getFilters();
-
-                                if (text) {
-                                    filters.beginUpdate();
-
-                                    if (filter) {
-                                        filter.setValue(text);
-                                    } else {
-                                        me.searchFilter = filter = new Ext.util.Filter({
-                                            id: 'search',
-                                            property: me.field,
-                                            value: text,
-
-                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
-                                            anyMatch: true
-                                        });
-                                    }
-
-                                    filters.add(filter);
-
-                                    filters.endUpdate();
-                                } else if (filter) {
-                                    filters.remove(filter);
-                                }
-                            }
-                        }
-                    }]
-                }).center();
-            }},{
-            text: 'Rx',
-            handler: function() {
-                var panel = Ext.getCmp('Ajax');
-                if (panel){ // destroy element if it exists
-                    panel.setHtml('');
-                }
-
-                Ext.widget('form', {
-                    xtype: 'multi-selector',
-                    width: 200,
-                    height: 100,
-                    requires: [
-                        'Ext.view.MultiSelector'
-                    ],
-                    layout: 'fit',
-                    renderTo: Ext.getBody(),
-                    items: [{
-                        bbar: [{
-                            xtype: 'button',
-                            itemId: 'button',
-                            html: 'Toolbar here',
-
-                            text: 'Submit request to API',
-
-                            // get submitted array
-                            handler: function() {
-                                if (cardioCatalogQT.config.mode === 'test') {
-                                    console.log('In submitted values handler: ');
-                                }
-
-                                var submitted = Ext.getCmp('medication');
-
-                                var rx = [];
-                                Ext.Array.each(submitted.store.data.items, function (item) {
-                                    rx.push(item.data.string_value);
-                                }); // each()
-
-                                Ext.Msg.alert('Submitted Values',
-                                    'The following medications will be sent to the server:  <br />' + rx);
-
-                                if (cardioCatalogQT.config.mode === 'test') {
-                                    console.log(dx);
-                                }
-                            }
-                        }],
-                        xtype: 'multiselector',
-                        title: 'Selected Rx',
-
-                        id: 'medication',
-                        name:'medication',
-                        fieldName: 'string_value',
-
-                        viewConfig: {
-                            deferEmptyText: false,
-                            emptyText: 'No Rx selected'
-                        },
-                        // TODO: fix ability to remove selected items when box is unchecked
-                        search: {
-                            field: 'string_value',
-                            store: 'Medications',
-
-                            search: function (text) {
-                                var me = this,
-                                    filter = me.searchFilter,
-                                    filters = me.getSearchStore().getFilters();
-
-                                if (text) {
-                                    filters.beginUpdate();
-
-                                    if (filter) {
-                                        filter.setValue(text);
-                                    } else {
-                                        me.searchFilter = filter = new Ext.util.Filter({
-                                            id: 'search',
-                                            property: me.field,
-                                            value: text,
-
-                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
-                                            anyMatch: true
-                                        });
-                                    }
-
-                                    filters.add(filter);
-
-                                    filters.endUpdate();
-                                } else if (filter) {
-                                    filters.remove(filter);
-                                }
-                            }
-                        }
-                    }]
-                }).center()
-            }},{
-            text: 'Px',
-            handler: function() {
-                var panel = Ext.getCmp('Ajax');
-                if (panel){ // destroy element if it exists
-                    panel.setHtml('');
-                }
-
-                Ext.widget('form', {
-                    xtype: 'multi-selector',
-                    width: 200,
-                    height: 100,
-                    requires: [
-                        'Ext.view.MultiSelector'
-                    ],
-                    layout: 'fit',
-                    renderTo: Ext.getBody(),
-                    items: [{
-                        bbar: [{
-                            xtype: 'button',
-                            itemId: 'button',
-                            html: 'Toolbar here',
-
-                            text: 'Submit request to API',
-
-                            // get submitted array
-                            handler: function() {
-                                if (cardioCatalogQT.config.mode === 'test') {
-                                    console.log('In submitted values handler: ');
-                                }
-
-                                var submitted = Ext.getCmp('procedure');
-
-                                var px = [];
-                                Ext.Array.each(submitted.store.data.items, function (item) {
-                                    px.push(item.data.string_value);
-                                }); // each()
-
-                                Ext.Msg.alert('Submitted Values',
-                                    'The following procedures will be sent to the server:  <br />' + px);
-
-                                if (cardioCatalogQT.config.mode === 'test') {
-                                    console.log(dx);
-                                }
-                            }
-                        }],
-                        xtype: 'multiselector',
-                        title: 'Selected Px',
-
-                        id: 'procedure',
-                        name:'procedure',
-                        fieldName: 'string_value',
-
-                        viewConfig: {
-                            deferEmptyText: false,
-                            emptyText: 'No Px selected'
-                        },
-                        // TODO: fix ability to remove selected items when box is unchecked
-                        search: {
-                            field: 'string_value',
-                            store: 'Procedures',
 
                             search: function (text) {
                                 var me = this,
@@ -419,6 +227,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 var test;
 
                 test = Ext.getCmp('diagnosis');
+                if (test){  // destroy element if it exists
+                    test.destroy();
+                }
+                test = Ext.getCmp('diagnosis1');
                 if (test){  // destroy element if it exists
                     test.destroy();
                 }
@@ -554,7 +366,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },{
             title: 'UI Sandbox',
             html: '<h2>Ajax test.</h2>'
-        },]
+        }]
     }]
 });
 

@@ -10,10 +10,10 @@ Ext.define('cardioCatalogQT.store.Diagnoses', {
 
         proxy: {
             type: 'rest',
-            url: 'http://127.0.0.1:5000/api/factor/DX_CODE_DESC',
+            url: 'http://127.0.0.1/api/factor/',
             reader: {
                 type: 'json',
-                rootProperty: '0'
+                rootProperty: 'clinical_data'
             }
         }
     }
