@@ -50,13 +50,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                 Ext.widget('form', { // TODO: var dx = -> for better form control
                     xtype: 'multi-selector',
-                    width: 400,
-                    height: 300,
+                    width: 200,
+                    height: 100,
                     requires: [
                         'Ext.view.MultiSelector'
                     ],
                     layout: 'fit',
-
                     renderTo: Ext.getBody(),
                     items: [{
                         bbar: [{
@@ -144,13 +143,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                 Ext.widget('form', {
                     xtype: 'multi-selector',
-                    width: 400,
-                    height: 300,
+                    width: 200,
+                    height: 100,
                     requires: [
                         'Ext.view.MultiSelector'
                     ],
                     layout: 'fit',
-
                     renderTo: Ext.getBody(),
                     items: [{
                         bbar: [{
@@ -238,13 +236,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                 Ext.widget('form', {
                     xtype: 'multi-selector',
-                    width: 400,
-                    height: 300,
+                    width: 200,
+                    height: 100,
                     requires: [
                         'Ext.view.MultiSelector'
                     ],
                     layout: 'fit',
-
                     renderTo: Ext.getBody(),
                     items: [{
                         bbar: [{
@@ -321,7 +318,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             }
                         }
                     }]
-                }).center();
+                }).center()
             }},{
             text: 'Px',
             handler: function() {
@@ -332,13 +329,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                 Ext.widget('form', {
                     xtype: 'multi-selector',
-                    width: 400,
-                    height: 300,
+                    width: 200,
+                    height: 100,
                     requires: [
                         'Ext.view.MultiSelector'
                     ],
                     layout: 'fit',
-
                     renderTo: Ext.getBody(),
                     items: [{
                         bbar: [{
@@ -420,7 +416,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             text: 'SubmitQuery',
             handler: function() {
 
-                var test = Ext.getCmp('diagnosis');
+                var test;
+
+                test = Ext.getCmp('diagnosis');
                 if (test){  // destroy element if it exists
                     test.destroy();
                 }
@@ -556,7 +554,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },{
             title: 'UI Sandbox',
             html: '<h2>Ajax test.</h2>'
-        }]
+        },]
     }]
 });
 
