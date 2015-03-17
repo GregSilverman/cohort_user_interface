@@ -49,7 +49,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     panel.setHtml('');
                 }
 
-
                 Ext.widget('form', {
                     xtype: 'multi-selector',
                     width: 300,
@@ -76,11 +75,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                                 var submitted = Ext.getCmp('diagnosis'),
                                     dx = [];
+                                console.log(submitted)
 
                                 Ext.Array.each(submitted.store.data.items, function (item) {
                                     dx.push(item.data.string_value);
 
-                                    // write to store
+                                    console.log(item)
+                                    // write selected to store
                                     // TODO: ensure record does not already exist
                                     payload.add({
                                         key: item.data.string_value,
@@ -221,6 +222,103 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }]
                 }).center();
             }},{
+            text: 'Vitals Test',
+            handler: function() {
+                var panel = Ext.getCmp('Ajax'),
+                    payload = Ext.create('cardioCatalogQT.store.Payload');;
+
+
+                if (panel){ // destroy element if it exists
+                    panel.setHtml('');
+                }
+
+                Ext.widget('form', {
+                    xtype: 'form-fieldtypes',
+                    width: 400,
+                    bodyPadding: 10,
+                    layout: 'form',
+
+                    renderTo: Ext.getBody(),
+                    items: [{
+                        bbar: [{
+                            xtype: 'button',
+                            itemId: 'button',
+                            html: 'Toolbar here',
+
+                            text: 'Submit request to API',
+
+                            // get submitted array
+                            handler: function(btn) {
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                }
+
+                                var submitted = btn.up('form');
+
+                                //var submitted = form.findField('vitalComparator').getSubmitValue();
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('show object');
+                                    console.log(submitted.items)
+                                }
+
+
+                                //values = submitted.getValues();
+
+                                var vx = [];
+                                Ext.Array.each(submitted.items.items[0],function (item) {
+                                    vx.push(item.items.items.lastValue)
+
+                                    payload.add({
+                                        key: 'vitals' ,
+                                        comparator: item.items.items[1].lastValue,
+                                        value: item.items.items[0].lastValue,
+                                    })
+                                }); // each()
+
+                                Ext.Msg.alert('Submitted Values',
+                                    'The following labTests will be sent to the server:  <br />' + vx);
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(vx);
+                                }
+
+                                payload.sync();
+                            }
+                        }],
+
+                        id: 'vitals',
+                        name:'vitals',
+
+                        items: [{
+                            xtype: 'textfield',
+                            name: 'vitalValue',
+                            fieldLabel: 'Value',
+                            value: 'Vital value'
+                        },
+                        {
+                            xtype: 'combo',
+                            name: 'vitalComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'vitalComparator',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : '=', value: 'eq'},
+                                    {name : '<', value: 'gt'},
+                                    {name : '>', value: 'lt'}
+                                ]
+                            }
+                        }]
+                    }]
+                }).center();
+            }},{
             text: 'SubmitQuery',
             handler: function() {
 
@@ -230,19 +328,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 if (test){  // destroy element if it exists
                     test.destroy();
                 }
-                test = Ext.getCmp('diagnosis1');
-                if (test){  // destroy element if it exists
-                    test.destroy();
-                }
-                test = Ext.getCmp('lab');
-                if (test){  // destroy element if it exists
-                    test.destroy();
-                }
-                test = Ext.getCmp('medication');
-                if (test){  // destroy element if it exists
-                    test.destroy();
-                }
-                test = Ext.getCmp('procedure');
+                test = Ext.getCmp('vitals');
                 if (test){  // destroy element if it exists
                     test.destroy();
                 }
