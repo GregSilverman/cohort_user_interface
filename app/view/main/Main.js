@@ -328,6 +328,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 if (test){  // destroy element if it exists
                     test.destroy();
                 }
+                test = Ext.getCmp('lab');
+                if (test){  // destroy element if it exists
+                    test.destroy();
+                }
                 test = Ext.getCmp('vitals');
                 if (test){  // destroy element if it exists
                     test.destroy();
