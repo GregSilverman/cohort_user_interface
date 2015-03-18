@@ -41,7 +41,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         width: 250,
         split: true,
         tbar: [{
-            text: 'Select: Dx or Lab',
+            text: 'Select criteria',
             handler: function() {
                 var panel = Ext.getCmp('Ajax'),
                     payload = Ext.create('cardioCatalogQT.store.Payload');
@@ -65,7 +65,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             itemId: 'button',
                             html: 'Toolbar here',
 
-                            text: 'Submit request to API',
+                            text: 'Submit to API',
+                           // margin: '40 30 20 10',
 
                             // get submitted array
                             handler: function() {
@@ -151,7 +152,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             itemId: 'button',
                             html: 'Toolbar here',
 
-                            text: 'Submit request to API',
+                            text: 'Submit to API',
+                            //margin: '40 30 20 10',
 
                             // get submitted array
                             handler: function() {
@@ -219,10 +221,162 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
                             }
                         }
-                    }]
+                    },{
+                        bbar: [{
+                            xtype: 'button',
+                            itemId: 'button',
+                            html: 'Toolbar here',
+
+                            text: 'Submit request to API',
+
+                            // get submitted array
+                            handler: function(btn) {
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                }
+
+                                //var submitted = btn.up('form');
+
+                                var submitted = Ext.getCmp('vitals');
+
+                                //var submitted = form.findField('vitalComparator').getSubmitValue();
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('show object');
+                                    console.log(submitted.items)
+                                }
+
+                                //values = submitted.getValues();
+                                var vx = [];
+                                Ext.Array.each(submitted,function (item) {
+                                    vx.push(item.items.items[0].lastValue); // age
+                                    vx.push(item.items.items[1].lastValue); // comparator
+
+                                    payload.add({
+                                        key: 'vitals' ,
+                                        comparator: item.items.items[1].lastValue,
+                                        value: item.items.items[0].lastValue,
+                                    })
+                                }); // each()
+
+                                Ext.Msg.alert('Submitted Values',
+                                    'The following Vitals will be sent to the server:  <br />' + vx);
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(vx);
+                                }
+
+                                payload.sync();
+                            }
+                        }],
+
+                        id: 'vitals',
+                        name:'vitals',
+
+                        items: [{
+                            xtype: 'numberfield',
+                            name: 'vitalValue',
+                            fieldLabel: 'Age',
+                            value: ''
+                        },
+                        {
+                            xtype: 'combo',
+                            name: 'vitalComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'Comparator',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : '=', value: 'eq'},
+                                    {name : '<', value: 'lt'},
+                                    {name : '<=', value: 'le'},
+                                    {name : '>', value: 'gt'},
+                                    {name : '>=', value: 'ge'}
+                                ]
+                            }
+                        }]
+                    },{
+
+                        bbar: [{
+                            xtype: 'button',
+                            itemId: 'button',
+                            html: 'Toolbar here',
+
+                            text: 'Submit request to API',
+                           // margin: '40 30 20 10',
+
+                            // get submitted array
+                            handler: function(btn) {
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                }
+
+                                var submitted = Ext.getCmp('sex');
+
+                                //var submitted = form.findField('vitalComparator').getSubmitValue();
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('show object');
+                                    console.log(submitted.items)
+                                }
+
+
+                                //values = submitted.getValues();
+
+                                var sx = [];
+                                Ext.Array.each(submitted,function (item) {
+                                    sx.push(item.items.items[0].lastValue)
+
+                                    payload.add({
+                                        key: 'sex' ,
+                                        comparator:'eq' ,
+                                        value: item.items.items[0].lastValue,
+                                    })
+                                }); // each()
+
+                                Ext.Msg.alert('Submitted Values',
+                                    'The following Sex will be sent to the server:  <br />' + sx);
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(sx);
+                                }
+
+                                payload.sync();
+                            }
+                        }],
+
+                        id: 'sex',
+                        name:'sex',
+
+                        items: [{
+                            xtype: 'combo',
+                            name: 'vitalComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'Sex',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : 'female', value: 'f'},
+                                    {name : 'male', value: 'm'}
+                                ]
+                            }
+                        }]
+                    },{xtype: 'tbspacer', height: 500}]
                 }).center();
-            }},{
-            text: 'Vitals Test',
+            }}/*,{ //!!
+            //text: 'Vitals Test',
             handler: function() {
                 var panel = Ext.getCmp('Ajax'),
                     payload = Ext.create('cardioCatalogQT.store.Payload');;
@@ -239,8 +393,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     layout: 'form',
 
                     renderTo: Ext.getBody(),
-                    items: [{
-                        anchor: '10%',
+                    items: [{xtype: 'tbspacer', height: 500},
+                        {
                         bbar: [{
                             xtype: 'button',
                             itemId: 'button',
@@ -319,12 +473,14 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             }
                         }]
                     },{
+
                         bbar: [{
                             xtype: 'button',
                             itemId: 'button',
                             html: 'Toolbar here',
 
                             text: 'Submit request to API',
+                           // margin: '40 30 20 10',
 
                             // get submitted array
                             handler: function(btn) {
@@ -390,7 +546,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         }]
                     }]
                 }).center();
-            }},{
+            }}*/,{
             text: 'SubmitQuery',
             handler: function() {
 
