@@ -5,15 +5,19 @@ Ext.define('cardioCatalogQT.store.Payload', {
     config:{
         idProperty: 'id',
         fields: [
+            {name: 'type', type: 'string'},
             {name: 'key', type: 'string'},
             {name: 'comparator', type: 'string'},
             {name: 'value', type: 'string'}
         ] ,
+
+        //model: 'cardioCatalogQT.model.Load',
         storeId: 'Payload',
         autoLoad: true,
 
         proxy: {
-            type: 'localstorage'
+            type: 'localstorage',
+            id: 'payload'
         }
     }
 });

@@ -66,30 +66,50 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             html: 'Toolbar here',
 
                             text: 'Submit to API',
-                           // margin: '40 30 20 10',
 
                             // get submitted array
                             handler: function() {
-                                if (cardioCatalogQT.config.mode === 'test') {
-                                    console.log('In submitted values handler: ');
-                                }
+
 
                                 var submitted = Ext.getCmp('diagnosis'),
                                     dx = [];
-                                console.log(submitted)
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                    console.log(submitted);
+                                }
 
                                 Ext.Array.each(submitted.store.data.items, function (item) {
-                                    dx.push(item.data.string_value);
+                                    dx.push(item.data.code,item.data.description);
 
                                     console.log(item)
                                     // write selected to store
                                     // TODO: ensure record does not already exist
+
                                     payload.add({
-                                        key: item.data.string_value,
+                                        type: 'dx',
+                                        key: item.data.code,
                                         comparator: 'eq',
-                                        value: 'dx_code'
-                                    })
+                                        value: item.data.description
+                                    });
+
                                     payload.sync();
+
+                                    if (cardioCatalogQT.config.mode === 'test') {
+                                        console.log(payload);
+                                    }
+
+                                    /*var pload = Ext.create('cardioCatalogQT.model.Load', {
+                                        type: 'dx',
+                                        key: item.data.code,
+                                        comparator: 'eq',
+                                        value: item.data.description
+                                    });
+
+                                    pload.save();*/
+
+                                    //console.log(pload)
+
                                 }); // each()
 
                                 Ext.Msg.alert('Submitted Values',
@@ -105,7 +125,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                         id: 'diagnosis',
                         name:'diagnosis',
-                        fieldName: 'string_value',
+                        fieldName: 'description',
+                        valueField:'code',
 
                         viewConfig: {
                             deferEmptyText: false,
@@ -113,7 +134,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         },
                         // TODO: fix ability to remove selected items when box is unchecked
                         search: {
-                            field: 'string_value',
+                            field: 'description',
                             store: 'Diagnoses',
 
                             search: function (text) {
@@ -253,9 +274,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     vx.push(item.items.items[1].lastValue); // comparator
 
                                     payload.add({
-                                        key: 'vitals' ,
+                                        type: 'vitals',
+                                        key: 'age' ,
                                         comparator: item.items.items[1].lastValue,
-                                        value: item.items.items[0].lastValue,
+                                        value: item.items.items[0].lastValue
                                     })
                                 }); // each()
 
@@ -334,9 +356,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     sx.push(item.items.items[0].lastValue)
 
                                     payload.add({
+                                        type: 'vitals',
                                         key: 'sex' ,
                                         comparator:'eq' ,
-                                        value: item.items.items[0].lastValue,
+                                        value: item.items.items[0].lastValue
                                     })
                                 }); // each()
 
@@ -674,7 +697,22 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }
                 });
             }
-        }]
+        },
+            {
+
+                text: 'CreateURL',
+                handler: function() {
+                    var payloadStore = Ext.getStore('Payload');
+
+                    //index = payloadStore.findRecord('type', 'dx');
+
+                    console.log(payloadStore);
+
+                }
+
+
+
+            }]
     },{
         region: 'center',
         xtype: 'panel',
