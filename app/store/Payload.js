@@ -16,7 +16,7 @@ Ext.define('cardioCatalogQT.store.Payload', {
         autoLoad: true,
 
         proxy: {
-            type: 'localstorage',
+            type: 'sessionstorage',
             id: 'payload'
         }
     }
