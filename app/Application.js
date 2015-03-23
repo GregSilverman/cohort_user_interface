@@ -25,24 +25,27 @@ Ext.define('cardioCatalogQT.Application', {
         'cardioCatalogQT.*',
         'Ext.form.Panel',
         'Ext.ux.form.MultiSelect',
-        'Ext.ux.form.ItemSelector'
+        'Ext.ux.form.ItemSelector',
+        'cardioCatalogQT.service.UtilityService'
     ],
 
     launch: function () {
 
         Ext.Loader.setConfig({enabled: true});
-        Ext.Loader.setPath('Ext.ux', 'Library/JAvaScript/ext-js-5.1.0/examples/ux');
+        Ext.Loader.setPath('Ext.ux', 'Library/JavaScript/ext-js-5.1.0/examples/ux');
 
         cardioCatalogQT.config = {
 
-            protocol: 'http://',
-            host: '127.0.0.1:5000',
             mode: 'test', // switch to control use of staging or production server
+            protocol: 'http://',
+            host: '127.0.0.1:5000/',
             apiClinical: '/api/clinical/',
             apiPhi: '/api/phi/',
             apiAggregate: '/api/aggregate/',
             apiLogin: '/api/token',
-            apiResource: '/api/resource'
+            apiResource: '/api/resource',
+            apiFactor: '/api/factor',
+            apiGetQ: 'api/getQ/'
 
         }
 

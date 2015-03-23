@@ -10,7 +10,9 @@ Ext.define('cardioCatalogQT.store.Diagnoses', {
 
         proxy: {
             type: 'rest',
-            url: 'http://127.0.0.1:5000/api/factor/diagnoses',
+            url: //cardioCatalogQT.service.UtilityService.urlFactor('diagnoses'),
+            'http://127.0.0.1/api/factor/diagnoses',
+
             reader: {
                 type: 'json',
                 rootProperty: 'diagnoses'
