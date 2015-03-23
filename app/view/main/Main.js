@@ -269,7 +269,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                                 //var submitted = btn.up('form');
 
-                                var submitted = Ext.getCmp('labs');
+                                var submitted = Ext.getCmp('lab');
 
                                 if (cardioCatalogQT.config.mode === 'test') {
                                     console.log('show object');
@@ -277,10 +277,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
 
                                 //values = submitted.getValues();
-                                var systolic = [];
+                                var lab = [];
                                 Ext.Array.each(submitted,function (item) {
-                                    systolic.push(item.items.items[0].lastValue); // systolic
-                                    systolic.push(item.items.items[1].lastValue); // comparator
+                                    lab.push(item.items.items[0].lastValue); // type
+                                    lab.push(item.items.items[1].lastValue); // comparator
 
                                     payload.add({
                                         type: 'lab',
@@ -291,10 +291,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }); // each()
 
                                 Ext.Msg.alert('Submitted Values',
-                                    'The following Vitals will be sent to the server:  <br />' + systolic);
+                                    'The following Labs will be sent to the server:  <br />' + lab);
 
                                 if (cardioCatalogQT.config.mode === 'test') {
-                                    console.log(systolic);
+                                    console.log(lab);
                                 }
 
                                 payload.sync();
