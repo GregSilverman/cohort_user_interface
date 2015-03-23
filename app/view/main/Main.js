@@ -39,8 +39,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         html: '<ul><li>Add tree menu here.</li></ul>',
         width: 250,
         split: true,
-        tbar: [{ // Dx
+        tbar: [{
             text: 'Select criteria',
+
             handler: function() {
                 var panel = Ext.getCmp('Ajax'),
                     payload = Ext.create('cardioCatalogQT.store.Payload');
@@ -51,15 +52,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 Ext.widget('form', {
                     xtype: 'multi-selector',
                     width: 300,
-                    height: 400,
+                    height: 600,
                     requires: [
                         'Ext.view.MultiSelector'
                     ],
                     renderTo: Ext.getBody(),
-                    padding: -5,
                     items: [{
-                        anchor: '50%',
-                        bbar: [{
+                        bbar: [{ // Dx
                             xtype: 'button',
                             itemId: 'button',
                             html: 'Toolbar here',
@@ -68,7 +67,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                             // get submitted array
                             handler: function() {
-
 
                                 var submitted = Ext.getCmp('diagnosis'),
                                     dx = [];
@@ -158,6 +156,104 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             }
                         }
                     },{
+                        bbar: [{ // Rx
+                            xtype: 'button',
+                            itemId: 'button',
+                            html: 'Toolbar here',
+
+                            text: 'Submit to API',
+
+                            // get submitted array
+                            handler: function() {
+
+                                var submitted = Ext.getCmp('medication'),
+                                    rx = [];
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                    console.log(submitted);
+                                }
+
+                                Ext.Array.each(submitted.store.data.items, function (item) {
+                                    dx.push(item.data.code,item.data.description);
+
+                                    if (cardioCatalogQT.config.mode === 'test') {
+                                        console.log(item)
+                                    }
+
+                                    // write selected to store
+                                    // TODO: ensure record does not already exist
+
+                                    payload.add({
+                                        type: 'rx',
+                                        key: 'rx_code',
+                                        comparator: 'eq',
+                                        value: item.data.code
+                                    });
+
+                                    payload.sync();
+
+                                    if (cardioCatalogQT.config.mode === 'test') {
+                                        console.log(payload);
+                                    }
+
+                                }); // each()
+
+                                Ext.Msg.alert('Submitted Values',
+                                    'The following diagnoses will be sent to the server:  <br />' + rx);
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(rx);
+                                }
+                            }
+                        }],
+                        xtype: 'multiselector',
+                        title: 'Selected Rx',
+
+                        id: 'medication',
+                        name:'medication',
+                        fieldName: 'description',
+                        valueField:'code',
+
+                        viewConfig: {
+                            deferEmptyText: false,
+                            emptyText: 'No Rx selected'
+                        },
+                        // TODO: fix ability to remove selected items when box is unchecked
+                        search: {
+                            field: 'description',
+                            store: 'Diagnoses',
+
+                            search: function (text) {
+                                var me = this,
+                                    filter = me.searchFilter,
+                                    filters = me.getSearchStore().getFilters();
+
+                                if (text) {
+                                    filters.beginUpdate();
+
+                                    if (filter) {
+                                        filter.setValue(text);
+                                    } else {
+                                        me.searchFilter = filter = new Ext.util.Filter({
+                                            id: 'search',
+                                            property: me.field,
+                                            value: text,
+
+                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                            anyMatch: true
+                                        });
+                                    }
+
+                                    filters.add(filter);
+
+                                    filters.endUpdate();
+                                } else if (filter) {
+                                    filters.remove(filter);
+                                }
+                            }
+                        }
+                    },{
                         bbar: [{ //Labs
                             xtype: 'button',
                             itemId: 'button',
@@ -205,8 +301,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             }
                         }],
 
-                        id: 'labs',
-                        name:'labs',
+                        id: 'lab',
+                        name:'lab',
 
                         items: [{
                             xtype: 'numberfield',
@@ -228,7 +324,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         },
                         {
                             xtype: 'combo',
-                            name: 'SystolicComparator',
+                            name: 'LabComparator',
                             queryMode: 'local',
                             editable: false,
                             value: 'eq',
@@ -329,7 +425,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 ]
                             }
                         }]
-                    },{
+                    },{ //Sex
 
                         bbar: [{
                             xtype: 'button',
@@ -337,7 +433,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             html: 'Toolbar here',
 
                             text: 'Submit request to API',
-                           // margin: '40 30 20 10',
 
                             // get submitted array
                             handler: function(btn) {
@@ -402,7 +497,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 ]
                             }
                         }]
-                    },{xtype: 'tbspacer', height: 500}]
+                    }]
                 }).center();
             }},{
             text: 'SubmitQuery',
@@ -416,6 +511,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     element.destroy();
                 }
                 element = Ext.getCmp('lab');
+                if (element){  // destroy element if it exists
+                    element.destroy();
+                }
+                element = Ext.getCmp('medication');
                 if (element){  // destroy element if it exists
                     element.destroy();
                 }
