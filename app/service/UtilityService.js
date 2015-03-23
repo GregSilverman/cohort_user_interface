@@ -145,8 +145,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         queries.sync();
 
-        // get the last inserted url
-        console.log(queries.last())
+        if (cardioCatalogQT.config.mode === 'test') {
+            // get the last inserted url
+            console.log(queries.last())
+        }
 
         return url;
     },

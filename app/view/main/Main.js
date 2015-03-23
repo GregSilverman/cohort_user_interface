@@ -81,7 +81,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 Ext.Array.each(submitted.store.data.items, function (item) {
                                     dx.push(item.data.code,item.data.description);
 
-                                    console.log(item)
+                                    if (cardioCatalogQT.config.mode === 'test') {
+                                        console.log(item)
+                                    }
+
                                     // write selected to store
                                     // TODO: ensure record does not already exist
 
