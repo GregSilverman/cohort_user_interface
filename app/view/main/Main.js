@@ -63,7 +63,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             itemId: 'button',
                             html: 'Toolbar here',
 
-                            text: 'Submit to API',
+                            text: 'Submit criteria',
 
                             // get submitted array
                             handler: function() {
@@ -156,12 +156,110 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             }
                         }
                     },{
+                        bbar: [{ // Px
+                            xtype: 'button',
+                            itemId: 'button',
+                            html: 'Toolbar here',
+
+                            text: 'Submit criteria',
+
+                            // get submitted array
+                            handler: function() {
+
+                                var submitted = Ext.getCmp('procedure'),
+                                    px = [];
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('In submitted values handler: ');
+                                    console.log(submitted);
+                                }
+
+                                Ext.Array.each(submitted.store.data.items, function (item) {
+                                    px.push(item.data.code,item.data.description);
+
+                                    if (cardioCatalogQT.config.mode === 'test') {
+                                        console.log(item)
+                                    }
+
+                                    // write selected to store
+                                    // TODO: ensure record does not already exist
+
+                                    payload.add({
+                                        type: 'px',
+                                        key: 'proc_code',
+                                        comparator: 'eq',
+                                        value: item.data.code
+                                    });
+
+                                    payload.sync();
+
+                                    if (cardioCatalogQT.config.mode === 'test') {
+                                        console.log(payload);
+                                    }
+
+                                }); // each()
+
+                                Ext.Msg.alert('Submitted Values',
+                                    'The following procedures will be sent to the server:  <br />' + px);
+
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(px);
+                                }
+                            }
+                        }],
+                        xtype: 'multiselector',
+                        title: 'Selected Px',
+
+                        id: 'procedure',
+                        name:'procedure',
+                        fieldName: 'description',
+                        valueField:'code',
+
+                        viewConfig: {
+                            deferEmptyText: false,
+                            emptyText: 'No Px selected'
+                        },
+                        // TODO: fix ability to remove selected items when box is unchecked
+                        search: {
+                            field: 'description',
+                            store: 'Diagnoses',
+
+                            search: function (text) {
+                                var me = this,
+                                    filter = me.searchFilter,
+                                    filters = me.getSearchStore().getFilters();
+
+                                if (text) {
+                                    filters.beginUpdate();
+
+                                    if (filter) {
+                                        filter.setValue(text);
+                                    } else {
+                                        me.searchFilter = filter = new Ext.util.Filter({
+                                            id: 'search',
+                                            property: me.field,
+                                            value: text,
+
+                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                            anyMatch: true
+                                        });
+                                    }
+
+                                    filters.add(filter);
+
+                                    filters.endUpdate();
+                                } else if (filter) {
+                                    filters.remove(filter);
+                                }
+                            }
+                        }
+                    },{
                         bbar: [{ // Rx
                             xtype: 'button',
                             itemId: 'button',
                             html: 'Toolbar here',
 
-                            text: 'Submit to API',
+                            text: 'Submit criteria',
 
                             // get submitted array
                             handler: function() {
@@ -175,7 +273,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
 
                                 Ext.Array.each(submitted.store.data.items, function (item) {
-                                    dx.push(item.data.code,item.data.description);
+                                    rx.push(item.data.code,item.data.description);
 
                                     if (cardioCatalogQT.config.mode === 'test') {
                                         console.log(item)
@@ -200,7 +298,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }); // each()
 
                                 Ext.Msg.alert('Submitted Values',
-                                    'The following diagnoses will be sent to the server:  <br />' + rx);
+                                    'The following medications will be sent to the server:  <br />' + rx);
 
                                 if (cardioCatalogQT.config.mode === 'test') {
                                     console.log(rx);
@@ -259,7 +357,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             itemId: 'button',
                             html: 'Toolbar here',
 
-                            text: 'Submit request to API',
+                            text: 'Submit criteria',
 
                             // get submitted array
                             handler: function(btn) {
@@ -284,9 +382,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                                     payload.add({
                                         type: 'lab',
-                                        key:item.items.items[1].lastValue,
-                                        comparator: item.items.items[2].lastValue,
-                                        value: item.items.items[0].lastValue
+                                        key:item.items.items[0].lastValue,
+                                        value: item.items.items[1].lastValue,
+                                        comparator: item.items.items[2].lastValue
                                     })
                                 }); // each()
 
@@ -294,6 +392,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     'The following Labs will be sent to the server:  <br />' + lab);
 
                                 if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('labs:');
                                     console.log(lab);
                                 }
 
@@ -305,22 +404,22 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         name:'lab',
 
                         items: [{
+                                xtype: 'combo',
+                                name: 'SystolicComparator',
+                                queryMode: 'local',
+                                editable: false,
+                                triggerAction: 'all',
+                                forceSelection: true,
+                                fieldLabel: 'Lab',
+                                displayField: 'description',
+                                valueField: 'code',
+                                store: 'Diagnoses' // use for testing
+                            },
+                            {
                             xtype: 'numberfield',
                             name: 'vitalValue',
                             fieldLabel: 'Value',
                             value: ''
-                        },
-                        {
-                            xtype: 'combo',
-                            name: 'SystolicComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'Lab',
-                            displayField: 'description',
-                            valueField: 'code',
-                            store: 'Diagnoses' // use for testing
                         },
                         {
                             xtype: 'combo',
@@ -352,7 +451,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             itemId: 'button',
                             html: 'Toolbar here',
 
-                            text: 'Submit request to API',
+                            text: 'Submit criteria',
 
                             // get submitted array
                             handler: function(btn) {
@@ -432,7 +531,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             itemId: 'button',
                             html: 'Toolbar here',
 
-                            text: 'Submit request to API',
+                            text: 'Submit criteria',
 
                             // get submitted array
                             handler: function(btn) {
@@ -448,7 +547,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     console.log('show object');
                                     console.log(submitted.items)
                                 }
-
 
                                 //values = submitted.getValues();
 
@@ -515,6 +613,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     element.destroy();
                 }
                 element = Ext.getCmp('medication');
+                if (element){  // destroy element if it exists
+                    element.destroy();
+                }
+                element = Ext.getCmp('procedure');
                 if (element){  // destroy element if it exists
                     element.destroy();
                 }

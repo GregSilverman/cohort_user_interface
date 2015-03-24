@@ -33,7 +33,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         payload.each(function(rec) {
 
-
             parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type); // get parent value
 
             if (payload.findExact('type','dx') != -1) {
@@ -80,7 +79,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             }
 
             // assemble URL
-            //TEST URL:
+            //TEST payload:
             // lab:test_code;eq;13457-7;lab:result_value_num;ge;160;
             // vital:blood_pressure;eq;blood_pressure;vital:blood_pressure_systolic;ge;160
 
@@ -90,8 +89,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 parent +
                 delimiter;
 
-                if (payload.data.items[i].data.key == 'blood_pressure_systolic' ||
-                    payload.data.items[i].data.key == 'lab'){
+                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                    payload.data.items[i].data.type === 'lab'){
                     url += 'eq';
                 }
                 else {
@@ -158,10 +157,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         var map = new Ext.util.HashMap();
             map.add('blood_pressure_systolic', 'blood_pressure');
-            map.add('sex', 'patient_sid');
+            map.add('sex', 'sex');
             map.add('dx', 'dx_code');
             map.add('lab', 'test_code');
-            map.add('px', 'code');
+            map.add('px', 'proc_code');
             map.add('rx', 'code');
 
         if (cardioCatalogQT.config.mode === 'test') {
