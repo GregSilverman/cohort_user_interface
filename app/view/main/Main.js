@@ -629,8 +629,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     element.destroy();
                 }
                 var panel = Ext.getCmp('Ajax'),
-                    url = 'http://127.0.0.1:5000/api/getQ/',
-                    payload = 'lab:TEST_CODE;eq;13457-7;lab:RESULT_VALUE_NUM;ge;160;',
+                    //url = 'http://127.0.0.1:5000/api/getQ/',
+                    //payload = 'lab:TEST_CODE;eq;13457-7;lab:RESULT_VALUE_NUM;ge;160;',
+                    url = cardioCatalogQT.service.UtilityService.url_request(),
                     json = [],
                     records = [],
                     store = Ext.create('Ext.data.Store',{
@@ -645,14 +646,14 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         paging: false
                     });
 
-                    payload  += 'vital:BLOOD_PRESSURE;eq;BLOOD_PRESSURE;vital:BLOOD_PRESSURE_SYSTOLIC;ge;160';
+                    //payload  += 'vital:BLOOD_PRESSURE;eq;BLOOD_PRESSURE;vital:BLOOD_PRESSURE_SYSTOLIC;ge;160';
 
                 panel.setMasked({
                     xtype: 'loadmask',
                     message: 'Loading...'
                 });
 
-                url += payload; // append payload to URL
+                //url += payload; // append payload to URL
 
                 Ext.Ajax.request({
                     url: url,

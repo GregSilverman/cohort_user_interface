@@ -38,16 +38,16 @@ Ext.define('cardioCatalogQT.Application', {
 
             mode: 'test', // switch to control use of staging or production server
             protocol: 'http://',
-            host: '127.0.0.1:5000/',
+            host: '127.0.0.1:5000',
             apiClinical: '/api/clinical/',
             apiPhi: '/api/phi/',
             apiAggregate: '/api/aggregate/',
             apiLogin: '/api/token',
             apiResource: '/api/resource',
             apiFactor: '/api/factor',
-            apiGetQ: 'api/getQ/'
+            apiGetQ: '/getQ/'
 
-        }
+        },
 
         // TODO - Launch the application
 

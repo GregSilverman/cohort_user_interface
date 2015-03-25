@@ -146,10 +146,27 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         if (cardioCatalogQT.config.mode === 'test') {
             // get the last inserted url
-            console.log(queries.last())
+            console.log('last query model:');
+            console.log(queries.last());
+            console.log(queries.last().data.url);
+
         }
 
         return url;
+    },
+
+    // TODO: ensure payload exists, is clean and does not produce spurious results
+    url_request: function(){
+        var queries = Ext.getStore('Queries');//,
+            url = queries.last().data.url;
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('submitted query:')
+            console.log(queries.last().data.url);
+        }
+
+        return url;
+
     },
 
     // get parent element
