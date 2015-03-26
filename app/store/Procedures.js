@@ -9,7 +9,7 @@ Ext.define('cardioCatalogQT.store.Procedures', {
 
         proxy: {
             type: 'rest',
-            url: 'http://127.0.0.1/api/factor/',
+            url: 'http://imagelibrary.ahc.umn.edu/api/factor/procedures',
             reader: {
                 type: 'json',
                 rootProperty: 'clinical_data'

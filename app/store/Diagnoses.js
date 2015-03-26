@@ -11,7 +11,7 @@ Ext.define('cardioCatalogQT.store.Diagnoses', {
         proxy: {
             type: 'rest',
             url: //cardioCatalogQT.service.UtilityService.urlFactor('diagnoses'),
-            'http://127.0.0.1:5000/factor/diagnoses',
+            'http://imagelibrary.ahc.umn.edu/api/factor/diagnoses',
 
             reader: {
                 type: 'json',

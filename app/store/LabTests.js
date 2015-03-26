@@ -9,7 +9,7 @@ Ext.define('cardioCatalogQT.store.LabTests', {
 
         proxy: {
             type: 'rest',
-            url: 'http://127.0.0.1:5000/api/factor/',
+            url: 'http://imagelibrary.ahc.umn.edu/api/factor/labs',
             reader: {
                 type: 'json',
                 rootProperty: 'clinical_data'
