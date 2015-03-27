@@ -35,12 +35,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         bind: {
             title: '{name}'
         },
+
         region: 'west',
         html: '<ul><li>Add tree menu here.</li></ul>',
         width: 250,
         split: true,
         tbar: [{
-            text: 'Select criteria',
+            text: 'SelectCriteria',
 
             handler: function() {
                 var panel = Ext.getCmp('Ajax'),
@@ -48,6 +49,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 if (panel){ // destroy element if it exists
                     panel.setHtml('');
                 }
+
+                // initialize data store
+                cardioCatalogQT.service.UtilityService.clear_all();
 
                 Ext.widget('form', {
                     xtype: 'multi-selector',
@@ -413,11 +417,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 fieldLabel: 'Lab',
                                 displayField: 'description',
                                 valueField: 'code',
-                                store: 'Diagnoses' // use for testing
+                                store: 'Labs' // use for testing
                             },
                             {
                             xtype: 'numberfield',
-                            name: 'vitalValue',
+                            name: 'labValue',
                             fieldLabel: 'Value',
                             value: ''
                         },
@@ -598,6 +602,26 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }]
                 }).center();
             }},{
+
+                text: 'CreateURL',
+                handler: function() {
+                    var payload = Ext.getStore('Payload');
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('payload');
+                        console.log(payload);
+                    }
+
+                    var url = cardioCatalogQT.service.UtilityService.url(payload);
+                    // parse diagnoses
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('call to make url: ' + url);
+                    }
+
+                }
+
+            },{
             text: 'SubmitQuery',
             handler: function() {
 
@@ -628,6 +652,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 if (element){  // destroy element if it exists
                     element.destroy();
                 }
+
                 var panel = Ext.getCmp('Ajax'),
                     //url = 'http://127.0.0.1:5000/api/getQ/',
                     //payload = 'lab:TEST_CODE;eq;13457-7;lab:RESULT_VALUE_NUM;ge;160;',
@@ -652,8 +677,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     xtype: 'loadmask',
                     message: 'Loading...'
                 });
-
-                //url += payload; // append payload to URL
 
                 Ext.Ajax.request({
                     cors: true,
@@ -696,34 +719,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             store.add(records);
                         }
 
-
-
                         // render template
                         cardioCatalogQT.service.UtilityService.template(panel, store);
                     }
                 });
-            }},
-            {
-
-                text: 'CreateURL',
-                handler: function() {
-                    var payload = Ext.getStore('Payload');
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('payload');
-                        console.log(payload);
-                    }
-
-                    var url = cardioCatalogQT.service.UtilityService.url(payload);
-                    // parse diagnoses
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('call to make url: ' + url);
-                    }
-
-                }
-
-            }]
+            }}
+        ]
     },{
         region: 'center',
         xtype: 'panel',

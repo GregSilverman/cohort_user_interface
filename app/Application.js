@@ -11,7 +11,7 @@ Ext.define('cardioCatalogQT.Application', {
     stores: [
         // TODO: add global / shared stores here
         'Diagnoses',
-        'LabTests',
+        'Labs',
         'Medications',
         'Procedures',
         'Payload',
@@ -45,7 +45,7 @@ Ext.define('cardioCatalogQT.Application', {
             apiLogin: '/api/token',
             apiResource: '/api/resource',
             apiFactor: '/api/factor',
-            apiGetQ: '/getQ/'
+            apiGetQ: '/api/getQ/'
 
         },
 

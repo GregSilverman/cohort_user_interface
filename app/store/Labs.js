@@ -1,9 +1,9 @@
-Ext.define('cardioCatalogQT.store.LabTests', {
+Ext.define('cardioCatalogQT.store.Labs', {
     extend: 'Ext.data.Store',
     alias: 'store.LabTests',
     // add package.framework=ext to .sencha/app/sencha.cfg
     config:{
-        model: 'cardioCatalogQT.model.LabTest',
+        model: 'cardioCatalogQT.model.Lab',
         storeId: 'LabTests',
         autoLoad: true,
 
@@ -12,7 +12,7 @@ Ext.define('cardioCatalogQT.store.LabTests', {
             url: 'http://imagelibrary.ahc.umn.edu/api/factor/labs',
             reader: {
                 type: 'json',
-                rootProperty: 'clinical_data'
+                rootProperty: 'labs'
             }
         }
     }
