@@ -320,7 +320,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         // TODO: fix ability to remove selected items when box is unchecked
                         search: {
                             field: 'description',
-                            store: 'Diagnoses',
+                            store: 'Medications',
 
                             search: function (text) {
                                 var me = this,
@@ -656,7 +656,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 //url += payload; // append payload to URL
 
                 Ext.Ajax.request({
+                    cors: true,
                     url: url,
+                    useDefaultXhrHeader: false,
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    disableCaching: false,
                     success: function(response) {
                         json = Ext.decode(response.responseText);
                         if (cardioCatalogQT.config.mode === 'test') {
