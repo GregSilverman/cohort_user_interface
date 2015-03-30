@@ -6,7 +6,8 @@ Ext.define('cardioCatalogQT.store.Queries', {
         idProperty: 'id',
         fields: [
             {name: 'url', type: 'string'},
-            {name: 'user', type: 'string'}
+            {name: 'user', type: 'string'},
+            {name: 'criteria', type: 'string'}
         ],
 
         storeId: 'Queries',

@@ -21,7 +21,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             delimiter = ';',
             n = payload.getCount(),
             i = 0,
-            parent;
+            parent,
+            query_criteria = '';
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('Service test:' + payload);
@@ -97,6 +98,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     url += rec.data.comparator
                 }
 
+
             url += delimiter;
 
                 if (payload.data.items[i].data.key === 'blood_pressure_systolic'){
@@ -135,11 +137,23 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 url += delimiter;
             }
 
+            // save for display
+            query_criteria += rec.data.type + ' '
+                            + rec.data.comparator + ' '
+                            + rec.data.value + '  '
+                            + rec.data.description + ' '
+                            + '<br>';
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('query: ' + query_criteria);
+            }
+
         });
 
         queries.add({
             url: url,
-            user: 'gms'
+            user: 'gms',
+            criteria: query_criteria
         });
 
         queries.sync();
@@ -157,11 +171,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     // TODO: ensure payload exists, is clean and does not produce spurious results
     url_request: function(){
-        var queries = Ext.getStore('Queries');//,
+        var queries = Ext.getStore('Queries'),//,
             url = queries.last().data.url;
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('submitted query:')
+            console.log('submitted query:');
             console.log(queries.last().data.url);
         }
 
@@ -192,7 +206,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     template: function(panel, store) {
         var tpl,
-            n = store.getCount();
+            n = store.getCount(),
+            queries = Ext.getStore('Queries'),
+            criteria = queries.last().data.criteria;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('n: ' + n);
@@ -226,8 +242,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         );
         // render template with store data to panel using HTML and remove mask from parent object
 
-        panel.setHtml('n: ' + n + ' '
-            + tpl.apply(store)); //TODO: add criteria on which query was executed
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('submitted criteria:');
+            console.log(criteria);
+        }
+
+        panel.setHtml('N ' + n + ' patients '
+                            + '<br>'
+                            + 'Met the given criteria:' + criteria
+                            + '<br>'
+                            + tpl.apply(store)); //TODO: add criteria on which query was executed
         panel.unmask();
 
     },
