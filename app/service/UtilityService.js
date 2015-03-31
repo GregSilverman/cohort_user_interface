@@ -241,6 +241,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('Cleared!');
         }
-    }
+    },
 
 });
