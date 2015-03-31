@@ -55,7 +55,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                 Ext.widget('form', {
                     xtype: 'multi-selector',
-                    width: 300,
+                    width: 400,
                     height: 600,
                     requires: [
                         'Ext.view.MultiSelector'
@@ -404,6 +404,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
 
                                 payload.sync();
+
                             }
                         }],
 
@@ -412,14 +413,17 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                         items: [{
                                 xtype: 'combo',
-                                name: 'SystolicComparator',
+                                width: 400,
+                                name: 'LabComparator',
                                 queryMode: 'local',
                                 editable: false,
                                 triggerAction: 'all',
                                 forceSelection: true,
+                                loading: true,
                                 fieldLabel: 'Lab',
                                 displayField: 'description',
                                 valueField: 'code',
+                                value: '13457-7',
                                 store: 'Labs' // use for testing
                             },
                             {
