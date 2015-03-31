@@ -94,7 +94,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                         type: 'dx',
                                         key: 'dx_code',
                                         comparator: 'eq',
-                                        value: item.data.code
+                                        value: item.data.code,
+                                        description: item.data.description
                                     });
 
                                     payload.sync();
@@ -192,7 +193,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                         type: 'px',
                                         key: 'proc_code',
                                         comparator: 'eq',
-                                        value: item.data.code
+                                        value: item.data.code,
+                                        description: item.data.description
                                     });
 
                                     payload.sync();
@@ -290,7 +292,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                         type: 'rx',
                                         key: 'rx_code',
                                         comparator: 'eq',
-                                        value: item.data.code
+                                        value: item.data.code,
+                                        description: item.data.description
                                     });
 
                                     payload.sync();
