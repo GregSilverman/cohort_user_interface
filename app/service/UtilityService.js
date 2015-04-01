@@ -84,7 +84,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             // lab:test_code;eq;13457-7;lab:result_value_num;ge;160;
             // vital:blood_pressure;eq;blood_pressure;vital:blood_pressure_systolic;ge;160
 
-
             url += rec.data.type +
                 seperator  +
                 parent +
@@ -97,7 +96,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 else {
                     url += rec.data.comparator
                 }
-
 
             url += delimiter;
 
@@ -119,10 +117,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     url += payload.data.items[i].data.key;
                 }
                 else if (payload.data.items[i].data.type === 'lab') {
-                    url += 'result_value_num'
+                    url += 'result_value_num';
                 }
                 else {
-                    url += parent
+                    url += parent;
                 }
 
             url += delimiter +
@@ -140,7 +138,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             // save for display
             query_criteria += rec.data.type + ' '
                             + rec.data.comparator + ' '
-                            + rec.data.value + '  '
+                            + rec.data.value + ' '
                             + rec.data.description + ' '
                             + '<br>';
 
@@ -148,7 +146,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('query: ' + query_criteria);
             }
 
-        });
+       });
 
         queries.add({
             url: url,
@@ -247,9 +245,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(criteria);
         }
 
-        panel.setHtml('N ' + n + ' patients '
+        panel.setHtml(n + ' patients met the given criteria:'
                             + '<br>'
-                            + 'Met the given criteria:' + criteria
+                            + criteria
                             + '<br>'
                             + tpl.apply(store)); //TODO: add criteria on which query was executed
         panel.unmask();
