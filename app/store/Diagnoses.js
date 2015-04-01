@@ -16,4 +16,4 @@ Ext.define('cardioCatalogQT.store.Diagnoses', {
             }
         }
     }
-});:w
+});
