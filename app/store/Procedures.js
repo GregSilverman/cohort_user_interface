@@ -10,7 +10,7 @@ Ext.define('cardioCatalogQT.store.Procedures', {
             url: 'http://imagelibrary.ahc.umn.edu/api/factor/procedures',
             reader: {
                 type: 'json',
-                rootProperty: 'procedures'
+                rootProperty: 'menu'
             }
         }
     }

@@ -11,7 +11,7 @@ Ext.define('cardioCatalogQT.store.Medications', {
             url: 'http://imagelibrary.ahc.umn.edu/api/factor/medications',
             reader: {
                 type: 'json',
-                rootProperty: 'medications'
+                rootProperty: 'menu'
             }
         }
     }

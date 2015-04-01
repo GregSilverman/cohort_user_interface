@@ -12,8 +12,8 @@ Ext.define('cardioCatalogQT.store.Diagnoses', {
             url: 'http://imagelibrary.ahc.umn.edu/api/factor/diagnoses',
             reader: {
                 type: 'json',
-                rootProperty: 'diagnoses'
+                rootProperty: 'menu'
             }
         }
     }
-});
+});:w
