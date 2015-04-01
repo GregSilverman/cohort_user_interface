@@ -22,7 +22,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             n = payload.getCount(),
             i = 0,
             parent,
-            query_criteria = '';
+            query_criteria = '',
+            labs = Ext.getStore('Labs'),
+            description;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('Service test:' + payload);
@@ -31,6 +33,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         url += cardioCatalogQT.config.host;
         url += cardioCatalogQT.config.apiGetQ;
+
+
 
         payload.each(function(rec) {
 
@@ -70,7 +74,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             if (payload.findExact('type','lab') != -1) {
 
                 lab.push(rec);
+
+
                 if (cardioCatalogQT.config.mode === 'test') {
+
                     console.log(rec);
                     console.log('found payload: lab!');
                     console.log(rec.data.key);
@@ -104,6 +111,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
                 else if (payload.data.items[i].data.type === 'lab') {
                    url += rec.data.key
+
+                    // get description for labs from store
+                    description = labs.findRecord('code',rec.data.key);
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('description:');
+                        console.log(description.data.description);
+                    }
                 }
                 else {
                     url += rec.data.value
@@ -136,11 +151,19 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             }
 
             // save for display
-            query_criteria += rec.data.type + ' '
+            query_criteria += rec.data.type.toUpperCase() + ' '
                             + rec.data.comparator + ' '
-                            + rec.data.value + ' '
-                            + rec.data.description + ' '
-                            + '<br>';
+                            + rec.data.value + ' ';
+
+            // cannot grab description from xtype = 'combo'
+            if (rec.data.type === 'lab') {
+                query_criteria += description.data.description.toUpperCase() + ' ';
+            }
+            else {
+                query_criteria += rec.data.description.toUpperCase() + ' ';
+            }
+
+            query_criteria += '<br>';
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('query: ' + query_criteria);

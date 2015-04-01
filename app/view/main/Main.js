@@ -424,7 +424,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 displayField: 'description',
                                 valueField: 'code',
                                 value: '13457-7',
-                                store: 'Labs' // use for testing
+                                store: 'Labs'
                             },
                             {
                             xtype: 'numberfield',
