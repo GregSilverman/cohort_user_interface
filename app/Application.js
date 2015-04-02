@@ -9,8 +9,9 @@ Ext.define('cardioCatalogQT.Application', {
     name: 'cardioCatalogQT',
 
     stores: [
+        // TODO: add global / shared stores here
         'Diagnoses',
-        'Labs',
+        'Labests',
         'Medications',
         'Procedures',
         'Payload',
@@ -25,7 +26,8 @@ Ext.define('cardioCatalogQT.Application', {
         'Ext.form.Panel',
         'Ext.ux.form.MultiSelect',
         'Ext.ux.form.ItemSelector',
-        'cardioCatalogQT.service.UtilityService'
+        'cardioCatalogQT.service.UtilityService',
+        'cardioCatalogQT.service.Base64'
     ],
 
     launch: function () {

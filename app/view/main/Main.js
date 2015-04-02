@@ -46,6 +46,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             handler: function() {
                 var panel = Ext.getCmp('Ajax'),
                     payload = Ext.create('cardioCatalogQT.store.Payload');
+
                 if (panel){ // destroy element if it exists
                     panel.setHtml('');
                 }
@@ -632,7 +633,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             text: 'SubmitQuery',
             handler: function() {
 
-                var element;
+                var element,
+                    auth = sessionStorage.sessionToken + ':unknown',
+                    hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth);
 
                 // clear form elements
                 element = Ext.getCmp('diagnosis');
@@ -684,6 +687,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     xtype: 'loadmask',
                     message: 'Loading...'
                 });
+
+                // send auth header before Ajax request to disable auth form
+                Ext.Ajax.on('beforerequest', (function(klass, request) {
+                    return request.headers.Authorization = hash;
+                }), this);
+
 
                 Ext.Ajax.request({
                     cors: true,
