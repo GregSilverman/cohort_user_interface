@@ -37,15 +37,14 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },
 
         region: 'west',
-        html: '<ul><li>Add tree menu here.</li></ul>',
-        width: 250,
+        width: 200,
         split: true,
-        tbar: [{
-            text: 'SelectCriteria',
+        // vertical toolbar
+        lbar: [{
+            text: 'Select Criteria (Boolean AND)',
 
             handler: function() {
-                var panel = Ext.getCmp('Ajax'),
-                    payload = Ext.create('cardioCatalogQT.store.Payload');
+                var panel = Ext.getCmp('Ajax');
 
                 if (panel){ // destroy element if it exists
                     panel.setHtml('');
@@ -65,12 +64,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     items: [{ //Dx
                         xtype: 'multiselector',
                         title: 'Selected Dx',
-
                         id: 'diagnosis',
                         name:'diagnosis',
                         fieldName: 'description',
                         valueField:'code',
-
                         viewConfig: {
                             deferEmptyText: false,
                             emptyText: 'No Dx selected'
@@ -112,7 +109,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     },{ // Px
                         xtype: 'multiselector',
                         title: 'Selected Px',
-
                         id: 'procedure',
                         name:'procedure',
                         fieldName: 'description',
@@ -159,12 +155,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     },{ // Rx
                         xtype: 'multiselector',
                         title: 'Selected Rx',
-
                         id: 'medication',
                         name:'medication',
                         fieldName: 'description',
                         valueField:'code',
-
                         viewConfig: {
                             deferEmptyText: false,
                             emptyText: 'No Rx selected'
@@ -209,7 +203,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     },{ // Lab
                         id: 'lab',
                         name:'lab',
-
                         items: [{
                                 xtype: 'combo',
                                 width: 400,
@@ -261,7 +254,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     },{ // Systolic
                         id: 'systolic',
                         name:'systolic',
-
                         items: [{
                             xtype: 'combo',
                             name: 'SystolicComparator',
@@ -295,7 +287,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     },{ //Sex
                         id: 'sex',
                         name:'sex',
-
                         items: [{
                             xtype: 'combo',
                             name: 'vitalComparator',
@@ -304,7 +295,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             value: 'eq',
                             triggerAction: 'all',
                             forceSelection: true,
-                            fieldLabel: 'Select Sex',
+                            fieldLabel: 'Select sex',
                             displayField: 'name',
                             valueField: 'value',
                             store: {
@@ -318,12 +309,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }]
                 }).center();
             }},{
-
                 xtype: 'button',
                 itemId: 'button',
                 html: 'Toolbar here',
-
-                text: 'Submit criteria',
+                text: 'Submit Criteria',
 
                 // get write elements for query to Proxy store
                 handler: function() {
@@ -486,9 +475,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             console.log(item)
                         }
 
-                        // write selected to store
                         // TODO: ensure record does not already exist
-
                         payload.add({
                             type: 'px',
                             key: 'proc_code',
@@ -556,11 +543,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('call to make url: ' + url);
                     }
-
                 }
 
             },{
-            text: 'SubmitQuery',
+            text: 'Execute Query',
             handler: function() {
 
                 var element,
@@ -608,8 +594,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         data: records,
                         paging: false
                     });
-
-                    //payload  += 'vital:BLOOD_PRESSURE;eq;BLOOD_PRESSURE;vital:BLOOD_PRESSURE_SYSTOLIC;ge;160';
 
                 panel.setMasked({
                     xtype: 'loadmask',
@@ -680,7 +664,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             width: 280
         },{
             title: 'UI Sandbox',
-            html: '<h2>Ajax test.</h2>'
         }]
     }]
 });
