@@ -39,7 +39,7 @@ Ext.define('cardioCatalogQT.Application', {
 
             mode: 'test', // switch to control use of staging or production server
             protocol: 'http://',
-            host: 'imagelibrary.ahc.umn.edu',
+            host: '127.0.0.1',
             apiClinical: '/api/clinical/',
             apiPhi: '/api/phi/',
             apiAggregate: '/api/aggregate/',

@@ -15,6 +15,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
             dx =[],
             systolic = [],
+            diastolic = [],
             lab = [],
             url =  cardioCatalogQT.config.protocol,
             seperator = ':',
@@ -59,6 +60,18 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log(rec);
             }
 
+            if (payload.findExact('type','blood_pressure_diastolic') != -1) {
+
+                diastolic.push(rec);
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log(rec);
+                    console.log('found payload: diastolic!');
+                    console.log(rec.data.key);
+                    console.log(parent);
+
+                }
+            }
+
             if (payload.findExact('type','blood_pressure_systolic') != -1) {
 
                 systolic.push(rec);
@@ -97,6 +110,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 delimiter;
 
                 if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                    payload.data.items[i].data.key === 'blood_pressure_diastolic' ||
                     payload.data.items[i].data.type === 'lab'){
                     url += 'eq';
                 }
@@ -106,7 +120,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             url += delimiter;
 
-                if (payload.data.items[i].data.key === 'blood_pressure_systolic'){
+                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                    payload.data.items[i].data.key === 'blood_pressure_diastolic'){
                    url += 'blood_pressure'
                 }
                 else if (payload.data.items[i].data.type === 'lab') {
@@ -128,7 +143,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 rec.data.type +
                 seperator;
 
-                if (payload.data.items[i].data.key === 'blood_pressure_systolic'){
+                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                    payload.data.items[i].data.key === 'blood_pressure_diastolic'){
                     url += payload.data.items[i].data.key;
                 }
                 else if (payload.data.items[i].data.type === 'lab') {
@@ -209,6 +225,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         var map = new Ext.util.HashMap();
             map.add('blood_pressure_systolic', 'blood_pressure');
+            map.add('blood_pressure_diastolic', 'blood_pressure');
             map.add('sex', 'sex');
             map.add('dx', 'dx_code');
             map.add('lab', 'test_code');
@@ -289,11 +306,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     },
 
     // get and store token
-    onAuth: function(button) {
+    http_auth: function() {
 
-        url = EvaluateIt.utils.UtilityService.url('login');
+        var url = cardioCatalogQT.config.protocol;
 
-        if (EvaluateIt.config.mode === 'test') {
+        url += cardioCatalogQT.config.host;
+        url += cardioCatalogQT.config.apiLogin;
+
+        if (cardioCatalogQT.config.mode === 'test') {
             console.log(url);
             console.log('url: ' + url);
         }
@@ -306,7 +326,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             disableCaching: false,
             success: function (response) {
 
-                var loginResponse = Ext.JSON.decode(response.responseText);
+                var loginResponse = Ext.JSON.decode(response.responseText),
+                    sessionToken;
 
                 if (cardioCatalogQT.config.mode === 'test') {
                     console.log(loginResponse.token);
@@ -325,7 +346,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     }
                 } else {
                     if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('sessionToken...' + sessionToken);
+                        console.log('bad http response');
                         console.log(loginResponse.message);
                     }
                 }

@@ -41,6 +41,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         split: true,
         // vertical toolbar
         lbar: [{
+            text: 'Login',
+
+            handler: function(){
+               cardioCatalogQT.service.UtilityService.http_auth();
+            }
+        },{
             text: 'Select Criteria (Boolean AND)',
 
             handler: function() {
@@ -49,6 +55,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 if (panel){ // destroy element if it exists
                     panel.setHtml('');
                 }
+                // force authentication
+                cardioCatalogQT.service.UtilityService.http_auth();
 
                 // initialize data store
                 cardioCatalogQT.service.UtilityService.clear_all();
@@ -199,8 +207,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         }
                     },{
                         xtype: 'tbspacer',
-                        height: 25
-                    },{ // Lab
+                        height: 15
+                    },{
+                        text:'LABS ->',
+                        xtype: 'label'
+                    },{ // LABS
                         id: 'lab',
                         name:'lab',
                         items: [{
@@ -212,7 +223,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 triggerAction: 'all',
                                 forceSelection: true,
                                 loading: true,
-                                fieldLabel: 'Select lab type of',
+                                fieldLabel: 'Select lab type',
                                 displayField: 'description',
                                 valueField: 'code',
                                 value: '13457-7',
@@ -226,7 +237,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 value: 'eq',
                                 triggerAction: 'all',
                                 forceSelection: true,
-                                fieldLabel: 'That is',
+                                fieldLabel: 'that is',
                                 displayField: 'name',
                                 valueField: 'value',
                                 store: {
@@ -243,14 +254,15 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             {
                                 xtype: 'numberfield',
                                 name: 'labValue',
-                                fieldLabel: 'Value of',
+                                fieldLabel: 'value of',
                                 value: ''
-                            }
-                        ]
-
+                            }]
                     },{
                         xtype: 'tbspacer',
-                        height: 25
+                        height: 15
+                    },{
+                        text:'VITALS ->',
+                        xtype: 'label'
                     },{ // Systolic
                         id: 'systolic',
                         name:'systolic',
@@ -262,7 +274,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             value: 'eq',
                             triggerAction: 'all',
                             forceSelection: true,
-                            fieldLabel: 'Select systolic bp that is:',
+                            fieldLabel: 'Select systolic bp that is',
                             displayField: 'name',
                             valueField: 'value',
                             store: {
@@ -278,13 +290,46 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         },{
                             xtype: 'numberfield',
                             name: 'vitalValue',
-                            fieldLabel: 'Value of:',
+                            fieldLabel: 'value of',
+                            value: ''
+                        }]
+                    },{ // Diastolic
+                        id: 'diastolic',
+                        name:'diastolic',
+                        items: [{
+                            xtype: 'combo',
+                            name: 'SystolicComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'Select diastolic bp that is',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : '=', value: 'eq'},
+                                    {name : '<', value: 'lt'},
+                                    {name : '<=', value: 'le'},
+                                    {name : '>', value: 'gt'},
+                                    {name : '>=', value: 'ge'}
+                                ]
+                            }
+                        },{
+                            xtype: 'numberfield',
+                            name: 'vitalValue',
+                            fieldLabel: 'value of',
                             value: ''
                         }]
                     },{
                         xtype: 'tbspacer',
-                        height: 25
-                    },{ //Sex
+                        height: 15
+                    },{
+                        text:'DEMOGRAPHICS ->',
+                        xtype: 'label'
+                    },{ // Sex
                         id: 'sex',
                         name:'sex',
                         items: [{
@@ -383,6 +428,40 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     payload.sync();
 
                     // end test systolic
+
+                    // begin test diastolic
+
+                    var submitted = Ext.getCmp('diastolic');
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('show object diastolic');
+                        console.log(submitted.items);
+                    }
+
+                    var diastolic = [];
+                    Ext.Array.each(submitted,function (item) {
+                        diastolic.push(item.items.items[0].lastValue); // diastolic
+                        diastolic.push(item.items.items[1].lastValue); // comparator
+
+                        // insert only if exists
+                        if (item.items.items[1].lastValue) {
+
+                            payload.add({
+                                type: 'blood_pressure_diastolic',
+                                key: 'blood_pressure_diastolic',
+                                comparator: item.items.items[0].lastValue,
+                                value: item.items.items[1].lastValue
+                            })
+                        }
+                    }); // each()
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(diastolic);
+                    }
+
+                    payload.sync();
+
+                    // end test diastolic
 
                     // begin test lab
 
