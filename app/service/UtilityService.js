@@ -10,7 +10,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     },
 
     url: function(payload){
-        // value set via {cardioCatalogQT.config} in Application.js
 
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
             dx =[],
@@ -34,8 +33,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         url += cardioCatalogQT.config.host;
         url += cardioCatalogQT.config.apiGetQ;
-
-
 
         payload.each(function(rec) {
 
@@ -227,6 +224,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             map.add('blood_pressure_systolic', 'blood_pressure');
             map.add('blood_pressure_diastolic', 'blood_pressure');
             map.add('sex', 'sex');
+            map.add('age','age');
             map.add('dx', 'dx_code');
             map.add('lab', 'test_code');
             map.add('px', 'proc_code');
@@ -317,8 +315,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(url);
             console.log('url: ' + url);
         }
-        Ext.Ajax.request({
 
+        Ext.Ajax.request({
             cors: true,
             type: 'GET',
             useDefaultXhrHeader: false,

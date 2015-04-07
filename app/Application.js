@@ -9,7 +9,6 @@ Ext.define('cardioCatalogQT.Application', {
     name: 'cardioCatalogQT',
 
     stores: [
-        // TODO: add global / shared stores here
         'Diagnoses',
         'Labs',
         'Medications',
@@ -39,7 +38,7 @@ Ext.define('cardioCatalogQT.Application', {
 
             mode: 'test', // switch to control use of staging or production server
             protocol: 'http://',
-            host: '127.0.0.1',
+            host: 'imagelibrary.ahc.umn.edu',
             apiClinical: '/api/clinical/',
             apiPhi: '/api/phi/',
             apiAggregate: '/api/aggregate/',
@@ -48,7 +47,7 @@ Ext.define('cardioCatalogQT.Application', {
             apiFactor: '/api/factor',
             apiGetQ: '/api/getQ/'
 
-        },
+        };
 
         // TODO - Launch the application
 

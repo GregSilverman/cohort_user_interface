@@ -56,7 +56,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     panel.setHtml('');
                 }
                 // force authentication
-                cardioCatalogQT.service.UtilityService.http_auth();
+                //cardioCatalogQT.service.UtilityService.http_auth();
 
                 // initialize data store
                 cardioCatalogQT.service.UtilityService.clear_all();
@@ -69,7 +69,192 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         'Ext.view.MultiSelector'
                     ],
                     renderTo: Ext.getBody(),
-                    items: [{ //Dx
+                    items: [{
+                        xtype: 'tbspacer',
+                        height: 15
+                    },{
+                        text:'DEMOGRAPHICS ->',
+                        xtype: 'label',
+                        name: 'd_label',
+                        id: 'd_label'
+                    },{ // Sex
+                        id: 'sex',
+                        name:'sex',
+                        items: [{
+                            xtype: 'combo',
+                            name: 'vitalComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'Select sex',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : 'female', value: 'f'},
+                                    {name : 'male', value: 'm'}
+                                ]
+                            }
+                        }]
+                    },{ // Age
+                        id: 'age',
+                        name:'age',
+                        items: [{
+                            xtype: 'combo',
+                            name: 'AgeComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'Select age that is',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : '=', value: 'eq'},
+                                    {name : '<', value: 'lt'},
+                                    {name : '<=', value: 'le'},
+                                    {name : '>', value: 'gt'},
+                                    {name : '>=', value: 'ge'}
+                                ]
+                            }
+                        },{
+                            xtype: 'numberfield',
+                            name: 'ageValue',
+                            fieldLabel: 'value of',
+                            value: ''
+                        }]
+                    },{
+                        xtype: 'tbspacer',
+                        height: 15
+                    },{
+                        text:'VITALS ->',
+                        xtype: 'label',
+                        name: 'v_label',
+                        id: 'v_label'
+                    },{ // Systolic
+                        id: 'systolic',
+                        name:'systolic',
+                        items: [{
+                            xtype: 'combo',
+                            name: 'SystolicComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'Select systolic bp that is',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : '=', value: 'eq'},
+                                    {name : '<', value: 'lt'},
+                                    {name : '<=', value: 'le'},
+                                    {name : '>', value: 'gt'},
+                                    {name : '>=', value: 'ge'}
+                                ]
+                            }
+                        },{
+                            xtype: 'numberfield',
+                            name: 'vitalValue',
+                            fieldLabel: 'value of',
+                            value: ''
+                        }]
+                    },{ // Diastolic
+                        id: 'diastolic',
+                        name:'diastolic',
+                        items: [{
+                            xtype: 'combo',
+                            name: 'SystolicComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'Select diastolic bp that is',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : '=', value: 'eq'},
+                                    {name : '<', value: 'lt'},
+                                    {name : '<=', value: 'le'},
+                                    {name : '>', value: 'gt'},
+                                    {name : '>=', value: 'ge'}
+                                ]
+                            }
+                        },{
+                            xtype: 'numberfield',
+                            name: 'vitalValue',
+                            fieldLabel: 'value of',
+                            value: ''
+                        }]
+                    },{
+                        xtype: 'tbspacer',
+                        height: 15
+                    },{
+                        text:'LABS ->',
+                        xtype: 'label',
+                        name: 'l_label',
+                        id: 'l_label'
+                    },{ // LABS
+                        id: 'lab',
+                        name:'lab',
+                        items: [{
+                            xtype: 'combo',
+                            width: 400,
+                            name: 'LabCode',
+                            queryMode: 'local',
+                            editable: false,
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            loading: true,
+                            fieldLabel: 'Select lab type',
+                            displayField: 'description',
+                            valueField: 'code',
+                            value: '13457-7',
+                            store: 'Labs'
+                        },
+                        {
+                            xtype: 'combo',
+                            name: 'LabComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'that is',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : '=', value: 'eq'},
+                                    {name : '<', value: 'lt'},
+                                    {name : '<=', value: 'le'},
+                                    {name : '>', value: 'gt'},
+                                    {name : '>=', value: 'ge'}
+                                ]
+                            }
+                        },
+                        {
+                            xtype: 'numberfield',
+                            name: 'labValue',
+                            fieldLabel: 'value of',
+                            value: ''
+                        }]
+                    },{
+                        xtype: 'tbspacer',
+                        height: 15
+                    },{ //Dx
                         xtype: 'multiselector',
                         title: 'Selected Dx',
                         id: 'diagnosis',
@@ -160,198 +345,52 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
                             }
                         }
-                    },{ // Rx
-                        xtype: 'multiselector',
-                        title: 'Selected Rx',
-                        id: 'medication',
-                        name:'medication',
-                        fieldName: 'description',
-                        valueField:'code',
-                        viewConfig: {
-                            deferEmptyText: false,
-                            emptyText: 'No Rx selected'
-                        },
-                        // TODO: fix ability to remove selected items when box is unchecked
-                        search: {
-                            field: 'description',
-                            store: 'Medications',
+                        },{ // Rx
+                            xtype: 'multiselector',
+                            title: 'Selected Rx',
+                            id: 'medication',
+                            name:'medication',
+                            fieldName: 'description',
+                            valueField:'code',
+                            viewConfig: {
+                                deferEmptyText: false,
+                                emptyText: 'No Rx selected'
+                            },
+                            // TODO: fix ability to remove selected items when box is unchecked
+                            search: {
+                                field: 'description',
+                                store: 'Medications',
 
-                            search: function (text) {
-                                var me = this,
-                                    filter = me.searchFilter,
-                                    filters = me.getSearchStore().getFilters();
+                                search: function (text) {
+                                    var me = this,
+                                        filter = me.searchFilter,
+                                        filters = me.getSearchStore().getFilters();
 
-                                if (text) {
-                                    filters.beginUpdate();
+                                    if (text) {
+                                        filters.beginUpdate();
 
-                                    if (filter) {
-                                        filter.setValue(text);
-                                    } else {
-                                        me.searchFilter = filter = new Ext.util.Filter({
-                                            id: 'search',
-                                            property: me.field,
-                                            value: text,
+                                        if (filter) {
+                                            filter.setValue(text);
+                                        } else {
+                                            me.searchFilter = filter = new Ext.util.Filter({
+                                                id: 'search',
+                                                property: me.field,
+                                                value: text,
 
-                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
-                                            anyMatch: true
-                                        });
+                                                // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                                anyMatch: true
+                                            });
+                                        }
+
+                                        filters.add(filter);
+
+                                        filters.endUpdate();
+                                    } else if (filter) {
+                                        filters.remove(filter);
                                     }
-
-                                    filters.add(filter);
-
-                                    filters.endUpdate();
-                                } else if (filter) {
-                                    filters.remove(filter);
                                 }
                             }
-                        }
-                    },{
-                        xtype: 'tbspacer',
-                        height: 15
-                    },{
-                        text:'LABS ->',
-                        xtype: 'label'
-                    },{ // LABS
-                        id: 'lab',
-                        name:'lab',
-                        items: [{
-                                xtype: 'combo',
-                                width: 400,
-                                name: 'LabCode',
-                                queryMode: 'local',
-                                editable: false,
-                                triggerAction: 'all',
-                                forceSelection: true,
-                                loading: true,
-                                fieldLabel: 'Select lab type',
-                                displayField: 'description',
-                                valueField: 'code',
-                                value: '13457-7',
-                                store: 'Labs'
-                            },
-                            {
-                                xtype: 'combo',
-                                name: 'LabComparator',
-                                queryMode: 'local',
-                                editable: false,
-                                value: 'eq',
-                                triggerAction: 'all',
-                                forceSelection: true,
-                                fieldLabel: 'that is',
-                                displayField: 'name',
-                                valueField: 'value',
-                                store: {
-                                     fields: ['name', 'value'],
-                                     data: [
-                                         {name : '=', value: 'eq'},
-                                         {name : '<', value: 'lt'},
-                                         {name : '<=', value: 'le'},
-                                         {name : '>', value: 'gt'},
-                                         {name : '>=', value: 'ge'}
-                                    ]
-                                }
-                            },
-                            {
-                                xtype: 'numberfield',
-                                name: 'labValue',
-                                fieldLabel: 'value of',
-                                value: ''
-                            }]
-                    },{
-                        xtype: 'tbspacer',
-                        height: 15
-                    },{
-                        text:'VITALS ->',
-                        xtype: 'label'
-                    },{ // Systolic
-                        id: 'systolic',
-                        name:'systolic',
-                        items: [{
-                            xtype: 'combo',
-                            name: 'SystolicComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            value: 'eq',
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'Select systolic bp that is',
-                            displayField: 'name',
-                            valueField: 'value',
-                            store: {
-                                fields: ['name', 'value'],
-                                data: [
-                                    {name : '=', value: 'eq'},
-                                    {name : '<', value: 'lt'},
-                                    {name : '<=', value: 'le'},
-                                    {name : '>', value: 'gt'},
-                                    {name : '>=', value: 'ge'}
-                                ]
-                            }
-                        },{
-                            xtype: 'numberfield',
-                            name: 'vitalValue',
-                            fieldLabel: 'value of',
-                            value: ''
                         }]
-                    },{ // Diastolic
-                        id: 'diastolic',
-                        name:'diastolic',
-                        items: [{
-                            xtype: 'combo',
-                            name: 'SystolicComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            value: 'eq',
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'Select diastolic bp that is',
-                            displayField: 'name',
-                            valueField: 'value',
-                            store: {
-                                fields: ['name', 'value'],
-                                data: [
-                                    {name : '=', value: 'eq'},
-                                    {name : '<', value: 'lt'},
-                                    {name : '<=', value: 'le'},
-                                    {name : '>', value: 'gt'},
-                                    {name : '>=', value: 'ge'}
-                                ]
-                            }
-                        },{
-                            xtype: 'numberfield',
-                            name: 'vitalValue',
-                            fieldLabel: 'value of',
-                            value: ''
-                        }]
-                    },{
-                        xtype: 'tbspacer',
-                        height: 15
-                    },{
-                        text:'DEMOGRAPHICS ->',
-                        xtype: 'label'
-                    },{ // Sex
-                        id: 'sex',
-                        name:'sex',
-                        items: [{
-                            xtype: 'combo',
-                            name: 'vitalComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            value: 'eq',
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'Select sex',
-                            displayField: 'name',
-                            valueField: 'value',
-                            store: {
-                                fields: ['name', 'value'],
-                                data: [
-                                    {name : 'female', value: 'f'},
-                                    {name : 'male', value: 'm'}
-                                ]
-                            }
-                        }]
-                    }]
                 }).center();
             }},{
                 xtype: 'button',
@@ -361,18 +400,26 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                 // get write elements for query to Proxy store
                 handler: function() {
-                    var payload = Ext.getStore('Payload');
+                    var payload = Ext.getStore('Payload'),
+                        submitted,
+                        sx = [],
+                        age = [],
+                        systolic = [],
+                        diastolic = [],
+                        lab = [],
+                        dx = [],
+                        rx = [],
+                        px = [];
 
                     // begin test sex:
 
-                    var submitted = Ext.getCmp('sex');
+                    submitted = Ext.getCmp('sex');
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show object sex: ');
                         console.log(submitted.items)
                     }
 
-                    var sx = [];
                     Ext.Array.each(submitted,function (item) {
                         sx.push(item.items.items[0].lastValue)
 
@@ -395,16 +442,48 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                     //end test sex
 
+                    // begin test age
+
+                    submitted = Ext.getCmp('age');
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('show object age');
+                        console.log(submitted.items);
+                    }
+
+                    Ext.Array.each(submitted,function (item) {
+                        age.push(item.items.items[0].lastValue); // age
+                        age.push(item.items.items[1].lastValue); // comparator
+
+                        // insert only if exists
+                        if (item.items.items[1].lastValue) {
+
+                            payload.add({
+                                type: 'age',
+                                key: 'age',
+                                comparator: item.items.items[0].lastValue,
+                                value: item.items.items[1].lastValue
+                            })
+                        }
+                    }); // each()
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(systolic);
+                    }
+
+                    payload.sync();
+
+                    // end test age
+
                     // begin test systolic
 
-                    var submitted = Ext.getCmp('systolic');
+                    submitted = Ext.getCmp('systolic');
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show object systolic');
                         console.log(submitted.items);
                     }
 
-                    var systolic = [];
                     Ext.Array.each(submitted,function (item) {
                         systolic.push(item.items.items[0].lastValue); // systolic
                         systolic.push(item.items.items[1].lastValue); // comparator
@@ -431,14 +510,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                     // begin test diastolic
 
-                    var submitted = Ext.getCmp('diastolic');
+                    submitted = Ext.getCmp('diastolic');
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show object diastolic');
                         console.log(submitted.items);
                     }
 
-                    var diastolic = [];
                     Ext.Array.each(submitted,function (item) {
                         diastolic.push(item.items.items[0].lastValue); // diastolic
                         diastolic.push(item.items.items[1].lastValue); // comparator
@@ -465,43 +543,43 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                     // begin test lab
 
-                    var submitted = Ext.getCmp('lab');
+                    submitted = Ext.getCmp('lab');
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show object labs');
                         console.log(submitted.items)
                     }
 
-                    var lab = [];
-                        Ext.Array.each(submitted, function (item) {
-                            lab.push(item.items.items[0].lastValue); // type
-                            lab.push(item.items.items[1].lastValue); // comparator
+
+                    Ext.Array.each(submitted, function (item) {
+                        lab.push(item.items.items[0].lastValue); // type
+                        lab.push(item.items.items[1].lastValue); // comparator
 
 
-                            // only insert if exists
-                            if (item.items.items[2].lastValue) {
-                                payload.add({
-                                    type: 'lab',
-                                    key: item.items.items[0].lastValue,
-                                    value: item.items.items[2].lastValue,
-                                    comparator: item.items.items[1].lastValue
-                                })
-                            }
-                        }); // each()
-
-                        if (cardioCatalogQT.config.mode === 'test') {
-                            console.log('labs:');
-                            console.log(lab);
+                        // only insert if exists
+                        if (item.items.items[2].lastValue) {
+                            payload.add({
+                                type: 'lab',
+                                key: item.items.items[0].lastValue,
+                                value: item.items.items[2].lastValue,
+                                comparator: item.items.items[1].lastValue
+                            })
                         }
+                    }); // each()
 
-                        payload.sync();
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('labs:');
+                        console.log(lab);
+                    }
+
+                    payload.sync();
 
                     // end test lab
 
                     // begin test Rx
 
-                    var submitted = Ext.getCmp('medication'),
-                        rx = [];
+                    submitted = Ext.getCmp('medication');
+
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show submitted Rx: ');
@@ -539,8 +617,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                     // begin test Px
 
-                    var submitted = Ext.getCmp('procedure'),
-                        px = [];
+                    submitted = Ext.getCmp('procedure');
+
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show submitted Px:');
@@ -577,8 +655,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                     // begin test Dx
 
-                    var submitted = Ext.getCmp('diagnosis'),
-                        dx = [];
+                    submitted = Ext.getCmp('diagnosis');
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show submitted Dx:');
@@ -637,6 +714,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 if (element){  // destroy element if it exists
                     element.destroy();
                 }
+                element = Ext.getCmp('age');
+                if (element){  // destroy element if it exists
+                    element.destroy();
+                }
                 element = Ext.getCmp('lab');
                 if (element){  // destroy element if it exists
                     element.destroy();
@@ -653,7 +734,23 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 if (element){  // destroy element if it exists
                     element.destroy();
                 }
+                element = Ext.getCmp('diastolic');
+                if (element){  // destroy element if it exists
+                    element.destroy();
+                }
                 element = Ext.getCmp('sex');
+                if (element){  // destroy element if it exists
+                    element.destroy();
+                }
+                element = Ext.getCmp('d_label');
+                if (element){  // destroy element if it exists
+                    element.destroy();
+                }
+                element = Ext.getCmp('l_label');
+                if (element){  // destroy element if it exists
+                    element.destroy();
+                }
+                element = Ext.getCmp('v_label');
                 if (element){  // destroy element if it exists
                     element.destroy();
                 }
@@ -681,7 +778,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                 // send auth header before Ajax request to disable auth form
                 Ext.Ajax.on('beforerequest', (function(klass, request) {
-                    return request.headers.Authorization = hash;
+                    if (request.failure) { // already have auth token: do nothing
+                        return null;
+                    }
+                    else { // send auth token
+                        return request.headers.Authorization = hash;
+                    }
                 }), this);
 
                 Ext.Ajax.request({
@@ -742,7 +844,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             height: 80,
             width: 280
         },{
-            title: 'UI Sandbox',
+            title: 'UI Sandbox'
         }]
     }]
 });
