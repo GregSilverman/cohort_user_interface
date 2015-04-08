@@ -265,7 +265,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     },{
                         xtype: 'tbspacer',
                         height: 15
-                    },{ //Dx
+                    },/*{ //Dx
                         xtype: 'multiselector',
                         title: 'Selected Dx',
                         id: 'diagnosis',
@@ -309,7 +309,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
                             }
                         }
-                    },{ // Px
+                    },*//*{ // Px
                         xtype: 'multiselector',
                         title: 'Selected Px',
                         id: 'procedure',
@@ -354,7 +354,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
                             }
                         }
-                        },{ // Rx
+                        },*//*{ // Rx
                             xtype: 'multiselector',
                             title: 'Selected Rx',
                             id: 'medication',
@@ -398,7 +398,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     }
                                 }
                             }
-                        }]
+                        }*/]
                 }).center();
             }},{
                 xtype: 'button',
@@ -586,7 +586,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                     // begin test Rx
 
-                    submitted = Ext.getCmp('medication');
+               /*     submitted = Ext.getCmp('medication');
 
 
                     if (cardioCatalogQT.config.mode === 'test') {
@@ -694,7 +694,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         }
 
                     }); // each()
-                    // end test Dx
+                    // end test Dx*/
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('payload for URL creation');
