@@ -64,19 +64,23 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 Ext.widget('form', {
                     xtype: 'multi-selector',
                     width: 400,
-                    height: 600,
+                    height: 900,
                     requires: [
                         'Ext.view.MultiSelector'
                     ],
                     renderTo: Ext.getBody(),
                     items: [{
                         xtype: 'tbspacer',
-                        height: 15
-                    },{
-                        text:'DEMOGRAPHICS ->',
-                        xtype: 'label',
+                        height: 5
+                    },{ // control display of component
+                        text: 'DEMOGRAPHICS TEST',
+                        xtype: 'button',
                         name: 'd_label',
-                        id: 'd_label'
+                        id: 'd_label',
+                        handler: function(){
+                            Ext.getCmp('sex').getEl().toggle();
+                            Ext.getCmp('age').getEl().toggle();
+                        }
                     },{ // Sex
                         id: 'sex',
                         name:'sex',
@@ -132,11 +136,15 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     },{
                         xtype: 'tbspacer',
                         height: 15
-                    },{
-                        text:'VITALS ->',
-                        xtype: 'label',
+                    },{ // control display of component
+                        text: 'VITALS TEST',
+                        xtype: 'button',
                         name: 'v_label',
-                        id: 'v_label'
+                        id: 'v_label',
+                        handler: function(){
+                            Ext.getCmp('systolic').getEl().toggle();
+                            Ext.getCmp('diastolic').getEl().toggle();
+                        }
                     },{ // Systolic
                         id: 'systolic',
                         name:'systolic',
@@ -200,11 +208,14 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     },{
                         xtype: 'tbspacer',
                         height: 15
-                    },{
-                        text:'LABS ->',
-                        xtype: 'label',
+                    },{ // control display of component
+                        text: 'LABS TEST',
+                        xtype: 'button',
                         name: 'l_label',
-                        id: 'l_label'
+                        id: 'l_label',
+                        handler: function(){
+                            Ext.getCmp('lab').getEl().toggle();
+                        }
                     },{ // LABS
                         id: 'lab',
                         name:'lab',
@@ -397,6 +408,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                 // get write elements for query to Proxy store
                 handler: function() {
+
                     var payload = Ext.getStore('Payload'),
                         submitted,
                         sx = [],
@@ -830,13 +842,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         ]
     },{
         region: 'center',
-        xtype: 'panel',
+        xtype: 'form',
         id: 'Ajax',
         styleHtmlContent: true,
         items:[{
             xtype: 'image',
             src: 'resources/images/cv.png',
-            height: 80,
+            height: 0,
             width: 280
         },{
             title: 'UI Sandbox'

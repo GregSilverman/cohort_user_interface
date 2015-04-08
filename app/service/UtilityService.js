@@ -355,6 +355,18 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             }
         });
 
+    },
+
+    initialize_cmp: function() {
+
+
+        Ext.getCmp('sex').getEl().hide();
+        Ext.getCmp('age').getEl().hide();
+
+        Ext.getCmp('diastolic').getEl().hide();
+        Ext.getCmp('systolic').getEl().hide();
+
+        Ext.getCmp('lab').getEl().hide();
     }
 
 });
