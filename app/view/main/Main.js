@@ -37,7 +37,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },
 
         region: 'west',
-        width: 200,
+        width: 125,
         split: true,
         // vertical toolbar
         lbar: [{
@@ -47,7 +47,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                cardioCatalogQT.service.UtilityService.http_auth();
             }
         },{
-            text: 'Select Criteria (Boolean AND)',
+            text: 'Select Criteria',
 
             handler: function() {
                 var panel = Ext.getCmp('Ajax');
@@ -285,7 +285,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                             id: 'search',
                                             property: me.field,
                                             value: text,
-
                                             // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
                                             anyMatch: true
                                         });
@@ -331,7 +330,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                             id: 'search',
                                             property: me.field,
                                             value: text,
-
                                             // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
                                             anyMatch: true
                                         });
@@ -376,7 +374,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                                 id: 'search',
                                                 property: me.field,
                                                 value: text,
-
                                                 // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
                                                 anyMatch: true
                                             });
@@ -550,7 +547,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         console.log(submitted.items)
                     }
 
-
                     Ext.Array.each(submitted, function (item) {
                         lab.push(item.items.items[0].lastValue); // type
                         lab.push(item.items.items[1].lastValue); // comparator
@@ -618,7 +614,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     // begin test Px
 
                     submitted = Ext.getCmp('procedure');
-
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show submitted Px:');
