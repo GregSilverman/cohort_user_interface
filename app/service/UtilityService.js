@@ -357,18 +357,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    initialize_cmp: function() {
-
-
-        Ext.getCmp('sex').getEl().hide();
-        Ext.getCmp('age').getEl().hide();
-
-        Ext.getCmp('diastolic').getEl().hide();
-        Ext.getCmp('systolic').getEl().hide();
-
-        Ext.getCmp('lab').getEl().hide();
-    },
-
     destroy_cmp: function() {
 
 
@@ -383,7 +371,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         }
         element = Ext.getCmp('sex');
         if (element) {  // destroy element if it exists
-            element.hide();
+            element.destroy();
         }
         element = Ext.getCmp('d_label');
         if (element) {  // destroy element if it exists
@@ -423,12 +411,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     hide_cmp: function(param) {
 
-
         // clear form elements
         var element;
-
-        if (param === 'select') {
-
 
             element = Ext.getCmp('systolic');
             if (element) {  // destroy element if it exists
@@ -463,21 +447,33 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             if (element) {  // destroy element if it exists
                 element.hide();
             }
-        }
-        if(param === 'multiselect') {
 
+        list = ['diagnosis','procedure','medication'];
+        if (list.indexOf( param ) !== -1 ) {
             element = Ext.getCmp('medication');
             if (element) {  // destroy element if it exists
-                element.hide();
+                element.getEl().toggle();
             }
             element = Ext.getCmp('diagnosis');
             if (element) {  // destroy element if it exists
-                element.hide();
+                element.getEl().toggle();
             }
             element = Ext.getCmp('procedure');
             if (element) {  // destroy element if it exists
-                element.hide();
+                element.getEl().toggle();
             }
+        }
+    },
+
+    control_toggle: function(param){
+
+        var element;
+
+        cardioCatalogQT.service.UtilityService.hide_cmp('procedure');
+
+        element = Ext.getCmp(param);
+        if (element) {
+            element.getEl().toggle();
         }
     }
 
