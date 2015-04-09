@@ -37,7 +37,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },
 
         region: 'west',
-        width: 125,
+        width: 145,
         split: true,
         // vertical toolbar
         lbar: [{
@@ -51,6 +51,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
             handler: function() {
                 var panel = Ext.getCmp('Ajax');
+
+                cardioCatalogQT.service.UtilityService.hide_cmp('multiselect');
 
                 if (panel){ // destroy element if it exists
                     panel.setHtml('');
@@ -71,7 +73,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     renderTo: Ext.getBody(),
                     items: [{
                         xtype: 'tbspacer',
-                        height: 5
+                        height: 100
                     },{ // control display of component
                         text: 'DEMOGRAPHICS TEST',
                         xtype: 'button',
@@ -265,7 +267,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     },{
                         xtype: 'tbspacer',
                         height: 15
-                    },/*{ //Dx
+                    },
+
+
+                       /* { //Dx
                         xtype: 'multiselector',
                         title: 'Selected Dx',
                         id: 'diagnosis',
@@ -309,7 +314,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
                             }
                         }
-                    },*//*{ // Px
+                    },{ // Px
                         xtype: 'multiselector',
                         title: 'Selected Px',
                         id: 'procedure',
@@ -354,7 +359,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 }
                             }
                         }
-                        },*//*{ // Rx
+                        },{ // Rx
                             xtype: 'multiselector',
                             title: 'Selected Rx',
                             id: 'medication',
@@ -400,7 +405,173 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             }
                         }*/]
                 }).center();
-            }},{
+            }},
+            {
+                text: 'MultiSelect Criteria',
+
+                handler: function() {
+                    var panel = Ext.getCmp('Ajax');
+
+                    cardioCatalogQT.service.UtilityService.hide_cmp('select');
+
+                    if (panel){ // destroy element if it exists
+                        panel.setHtml('');
+                    }
+                    // force authentication
+                    //cardioCatalogQT.service.UtilityService.http_auth();
+
+                    // initialize data store
+                    cardioCatalogQT.service.UtilityService.clear_all();
+
+                    Ext.widget('form', {
+                        xtype: 'multi-selector',
+                        width: 400,
+                        height: 900,
+                        requires: [
+                            'Ext.view.MultiSelector'
+                        ],
+                        renderTo: Ext.getBody(),
+                        items: [{
+                            xtype: 'tbspacer',
+                            height: 100
+                        },{ //Dx
+                            xtype: 'multiselector',
+                            title: 'Selected Dx',
+                            id: 'diagnosis',
+                            name:'diagnosis',
+                            fieldName: 'description',
+                            valueField:'code',
+                            viewConfig: {
+                                deferEmptyText: false,
+                                emptyText: 'No Dx selected'
+                            },
+                            // TODO: fix ability to remove selected items when box is unchecked
+                            search: {
+                                field: 'description',
+                                store: 'Diagnoses',
+
+                                search: function (text) {
+                                    var me = this,
+                                        filter = me.searchFilter,
+                                        filters = me.getSearchStore().getFilters();
+
+                                    if (text) {
+                                        filters.beginUpdate();
+
+                                        if (filter) {
+                                            filter.setValue(text);
+                                        } else {
+                                            me.searchFilter = filter = new Ext.util.Filter({
+                                                id: 'search',
+                                                property: me.field,
+                                                value: text,
+                                                // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                                anyMatch: true
+                                            });
+                                        }
+
+                                        filters.add(filter);
+
+                                        filters.endUpdate();
+                                    } else if (filter) {
+                                        filters.remove(filter);
+                                    }
+                                }
+                            }
+                        },{ // Px
+                            xtype: 'multiselector',
+                            title: 'Selected Px',
+                            id: 'procedure',
+                            name:'procedure',
+                            fieldName: 'description',
+                            valueField:'code',
+
+                            viewConfig: {
+                                deferEmptyText: false,
+                                emptyText: 'No Px selected'
+                            },
+                            // TODO: fix ability to remove selected items when box is unchecked
+                            search: {
+                                field: 'description',
+                                store: 'Procedures',
+
+                                search: function (text) {
+                                    var me = this,
+                                        filter = me.searchFilter,
+                                        filters = me.getSearchStore().getFilters();
+
+                                    if (text) {
+                                        filters.beginUpdate();
+
+                                        if (filter) {
+                                            filter.setValue(text);
+                                        } else {
+                                            me.searchFilter = filter = new Ext.util.Filter({
+                                                id: 'search',
+                                                property: me.field,
+                                                value: text,
+                                                // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                                anyMatch: true
+                                            });
+                                        }
+
+                                        filters.add(filter);
+
+                                        filters.endUpdate();
+                                    } else if (filter) {
+                                        filters.remove(filter);
+                                    }
+                                }
+                            }
+                        },{ // Rx
+                            xtype: 'multiselector',
+                            title: 'Selected Rx',
+                            id: 'medication',
+                            name:'medication',
+                            fieldName: 'description',
+                            valueField:'code',
+                            viewConfig: {
+                                deferEmptyText: false,
+                                emptyText: 'No Rx selected'
+                            },
+                            // TODO: fix ability to remove selected items when box is unchecked
+                            search: {
+                                field: 'description',
+                                store: 'Medications',
+
+                                search: function (text) {
+                                    var me = this,
+                                        filter = me.searchFilter,
+                                        filters = me.getSearchStore().getFilters();
+
+                                    if (text) {
+                                        filters.beginUpdate();
+
+                                        if (filter) {
+                                            filter.setValue(text);
+                                        } else {
+                                            me.searchFilter = filter = new Ext.util.Filter({
+                                                id: 'search',
+                                                property: me.field,
+                                                value: text,
+                                                // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
+                                                anyMatch: true
+                                            });
+                                        }
+
+                                        filters.add(filter);
+
+                                        filters.endUpdate();
+                                    } else if (filter) {
+                                        filters.remove(filter);
+                                    }
+                                }
+                            }
+                        }]
+                    }).center();
+                }},
+
+            {
                 xtype: 'button',
                 itemId: 'button',
                 html: 'Toolbar here',
@@ -586,8 +757,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                     // begin test Rx
 
-               /*     submitted = Ext.getCmp('medication');
-
+                    submitted = Ext.getCmp('medication');
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show submitted Rx: ');
@@ -694,7 +864,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         }
 
                     }); // each()
-                    // end test Dx*/
+                    // end test Dx
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('payload for URL creation');
@@ -712,57 +882,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             text: 'Execute Query',
             handler: function() {
 
-                var element,
-                    auth = sessionStorage.sessionToken + ':unknown',
-                    hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth);
-
-                // clear form elements
-                element = Ext.getCmp('diagnosis');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('age');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('lab');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('medication');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('procedure');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('systolic');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('diastolic');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('sex');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('d_label');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('l_label');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-                element = Ext.getCmp('v_label');
-                if (element){  // destroy element if it exists
-                    element.destroy();
-                }
-
-                var panel = Ext.getCmp('Ajax'),
+                var auth = sessionStorage.sessionToken + ':unknown',
+                    hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
+                    panel = Ext.getCmp('Ajax'),
                     url = cardioCatalogQT.service.UtilityService.url_request(),
                     json = [],
                     records = [],
@@ -777,6 +899,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         data: records,
                         paging: false
                     });
+
+                cardioCatalogQT.service.UtilityService.destroy_cmp();
 
                 panel.setMasked({
                     xtype: 'loadmask',

@@ -295,7 +295,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     clear_all: function() {
         var Payload = Ext.getStore('Payload');
 
-        Payload.getProxy().clear();
+        Payload.removeAll();
         Payload.sync();
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -367,6 +367,118 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         Ext.getCmp('systolic').getEl().hide();
 
         Ext.getCmp('lab').getEl().hide();
+    },
+
+    destroy_cmp: function() {
+
+
+        // clear form elements
+        var element = Ext.getCmp('systolic');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+        element = Ext.getCmp('diastolic');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+        element = Ext.getCmp('sex');
+        if (element) {  // destroy element if it exists
+            element.hide();
+        }
+        element = Ext.getCmp('d_label');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+        element = Ext.getCmp('l_label');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+        element = Ext.getCmp('v_label');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+
+        element = Ext.getCmp('age');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+        element = Ext.getCmp('lab');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+
+        element = Ext.getCmp('medication');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+        element = Ext.getCmp('diagnosis');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+        element = Ext.getCmp('procedure');
+        if (element) {  // destroy element if it exists
+            element.destroy();
+        }
+    },
+
+    hide_cmp: function(param) {
+
+
+        // clear form elements
+        var element;
+
+        if (param === 'select') {
+
+
+            element = Ext.getCmp('systolic');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+            element = Ext.getCmp('diastolic');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+            element = Ext.getCmp('sex');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+            element = Ext.getCmp('d_label');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+            element = Ext.getCmp('l_label');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+            element = Ext.getCmp('v_label');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+
+            element = Ext.getCmp('age');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+            element = Ext.getCmp('lab');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+        }
+        if(param === 'multiselect') {
+
+            element = Ext.getCmp('medication');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+            element = Ext.getCmp('diagnosis');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+            element = Ext.getCmp('procedure');
+            if (element) {  // destroy element if it exists
+                element.hide();
+            }
+        }
     }
 
 });
