@@ -357,124 +357,34 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    destroy_cmp: function() {
+    multi_select_search: function(text,me) {
 
 
-        // clear form elements
-        var element = Ext.getCmp('systolic');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
-        element = Ext.getCmp('diastolic');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
-        element = Ext.getCmp('sex');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
-        element = Ext.getCmp('d_label');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
-        element = Ext.getCmp('l_label');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
-        element = Ext.getCmp('v_label');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
+        var
+            filter = me.searchFilter,
+            filters = me.getSearchStore().getFilters();
 
-        element = Ext.getCmp('age');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
-        element = Ext.getCmp('lab');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
+        if (text) {
+            filters.beginUpdate();
 
-        element = Ext.getCmp('medication');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
-        element = Ext.getCmp('diagnosis');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
-        element = Ext.getCmp('procedure');
-        if (element) {  // destroy element if it exists
-            element.destroy();
-        }
-    },
-
-    hide_cmp: function(param) {
-
-        // clear form elements
-        var element;
-
-            element = Ext.getCmp('systolic');
-            if (element) {  // destroy element if it exists
-                element.hide();
-            }
-            element = Ext.getCmp('diastolic');
-            if (element) {  // destroy element if it exists
-                element.hide();
-            }
-            element = Ext.getCmp('sex');
-            if (element) {  // destroy element if it exists
-                element.hide();
-            }
-            element = Ext.getCmp('d_label');
-            if (element) {  // destroy element if it exists
-                element.hide();
-            }
-            element = Ext.getCmp('l_label');
-            if (element) {  // destroy element if it exists
-                element.hide();
-            }
-            element = Ext.getCmp('v_label');
-            if (element) {  // destroy element if it exists
-                element.hide();
+            if (filter) {
+                filter.setValue(text);
+            } else {
+                me.searchFilter = filter = new Ext.util.Filter({
+                    id: 'search',
+                    property: me.field,
+                    value: text,
+                    anyMatch: true
+                });
             }
 
-            element = Ext.getCmp('age');
-            if (element) {  // destroy element if it exists
-                element.hide();
-            }
-            element = Ext.getCmp('lab');
-            if (element) {  // destroy element if it exists
-                element.hide();
-            }
+            filters.add(filter);
 
-        list = ['diagnosis','procedure','medication'];
-        if (list.indexOf( param ) !== -1 ) {
-            element = Ext.getCmp('medication');
-            if (element) {  // destroy element if it exists
-                element.getEl().toggle();
-            }
-            element = Ext.getCmp('diagnosis');
-            if (element) {  // destroy element if it exists
-                element.getEl().toggle();
-            }
-            element = Ext.getCmp('procedure');
-            if (element) {  // destroy element if it exists
-                element.getEl().toggle();
-            }
+            filters.endUpdate();
+        } else if (filter) {
+            filters.remove(filter);
         }
-    },
 
-    control_toggle: function(param){
-
-        var element;
-
-        cardioCatalogQT.service.UtilityService.hide_cmp('procedure');
-
-        element = Ext.getCmp(param);
-        if (element) {
-            element.getEl().toggle();
-        }
     }
 
 });

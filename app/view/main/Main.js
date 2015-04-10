@@ -6,7 +6,7 @@
  * TODO - Replace this content of this view to suite the needs of your application.
  */
 Ext.define('cardioCatalogQT.view.main.Main', {
-    extend: 'Ext.container.Container',
+    extend: 'Ext.tab.Panel',
     requires: [
         'cardioCatalogQT.view.main.MainController',
         'cardioCatalogQT.view.main.MainModel',
@@ -14,21 +14,33 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         'Ext.tip.QuickTipManager',
         'Ext.ux.ajax.JsonSimlet',
         'Ext.ux.ajax.SimManager',
+        'Ext.layout.container.Card',
         'Ext.layout.container.Card'
     ],
 
-    xtype: 'app-main',
+    //xtype: 'app-main',
 
-    controller: 'main',
+    xtype: 'layout-cardtabs',
+
+   /* controller: 'main',
     viewModel: {
         type: 'main'
+    },*/
+
+    style: 'background-color:#dfe8f6; ',
+    width: '100%',
+    height: 400,
+
+    defaults: {
+        bodyPadding: 15
     },
 
-    layout: {
-        type: 'border'
-    },
 
-    items: [{
+    //layout: {
+    //    type: 'border'
+    //},
+
+    items: [/*{
         xtype: 'panel',
         id: 'Test',
         styleHtmlContent: true,
@@ -37,193 +49,186 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             title: '{name}'
         },
 
-        region: 'west',
+        region: 'north',
         width: 145,
-        split: true,
+        split: true
+    },*/
         // vertical toolbar
-        lbar: [{
-            text: 'Login',
+        /*lbar: [ */
 
-            handler: function(){
-               cardioCatalogQT.service.UtilityService.http_auth();
-            }
-        },{
-            text: 'Select Criteria',
+        {
+            title:'Main',
+            region: 'center',
+            xtype: 'form',
+            id: 'Ajax',
+            styleHtmlContent: true,
+            items:[{
+                xtype: 'image',
+                src: 'resources/images/cv.png',
+                height: 50,
+                width: 280
+            },{
+                title: 'UI Sandbox'
+            }],
+            tbar:[{
+                text: 'Login',
 
-            handler: function() {
-                var panel = Ext.getCmp('Ajax');
-
-                //cardioCatalogQT.service.UtilityService.hide_cmp('multiselect');
-
-                if (panel){ // destroy element if it exists
-                    panel.setHtml('');
+                handler: function(){
+                    cardioCatalogQT.service.UtilityService.http_auth();
                 }
-                // force authentication
-                //cardioCatalogQT.service.UtilityService.http_auth();
+            }]
+        },{
+            title: 'Demographics',
+            xtype: 'form',
+            width: 200,
+            bodyPadding: 10,
+            defaults: {
+                anchor: '100%',
+                labelWidth: 100
+            },
 
-                // initialize data store
-                cardioCatalogQT.service.UtilityService.clear_all();
-                cardioCatalogQT.service.UtilityService.destroy_cmp();
+            items: [{ // Sex
+                id: 'sex',
+                name: 'sex',
+                items: [{
+                    xtype: 'combo',
+                    name: 'vitalComparator',
+                    queryMode: 'local',
+                    editable: false,
+                    value: 'eq',
+                    triggerAction: 'all',
+                    forceSelection: true,
+                    fieldLabel: 'Select sex',
+                    displayField: 'name',
+                    valueField: 'value',
+                    store: {
+                        fields: ['name', 'value'],
+                        data: [
+                            {name: 'female', value: 'f'},
+                            {name: 'male', value: 'm'}
+                        ]
+                    },
+                    handler: function () {
+                        Ext.getCmp('sex').getEl().toggle();
+                    }
+                }]
+            }, { // Age
+                id: 'age',
+                name: 'age',
+                labelWidth: 100,
+                xtype:'fieldcontainer',
+                items: [{
+                    xtype: 'combo',
+                    name: 'AgeComparator',
+                    queryMode: 'local',
+                    editable: false,
+                    value: 'eq',
+                    triggerAction: 'all',
+                    forceSelection: true,
+                    fieldLabel: 'Select age that is',
+                    displayField: 'name',
+                    valueField: 'value',
+                    store: {
+                        fields: ['name', 'value'],
+                        data: [
+                            {name: '=', value: 'eq'},
+                            {name: '<', value: 'lt'},
+                            {name: '<=', value: 'le'},
+                            {name: '>', value: 'gt'},
+                            {name: '>=', value: 'ge'}
+                        ]
+                    }
+                }, {
+                    xtype: 'numberfield',
+                    name: 'ageValue',
+                    fieldLabel: 'value of',
+                    value: ''
+                }]
+            }]
+        },{
+            title: 'Vitals',
 
-                Ext.widget('form', {
-                    xtype: 'multi-selector',
-                    width: 400,
-                    height: 600,
-                    requires: [
-                        'Ext.view.MultiSelector'
-                    ],
-                    renderTo: Ext.getBody(),
-                    items: [{
-                        xtype: 'tbspacer',
-                        height: 200
-                    },{ // control display of component
-                        text: 'DEMOGRAPHICS TEST',
-                        xtype: 'button',
-                        name: 'd_label',
-                        id: 'd_label',
-                        handler: function(){
-                            Ext.getCmp('sex').getEl().toggle();
-                            Ext.getCmp('age').getEl().toggle();
-                        }
-                    },{ // Sex
-                        id: 'sex',
-                        name:'sex',
-                        items: [{
-                            xtype: 'combo',
-                            name: 'vitalComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            value: 'eq',
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'Select sex',
-                            displayField: 'name',
-                            valueField: 'value',
-                            store: {
-                                fields: ['name', 'value'],
-                                data: [
-                                    {name : 'female', value: 'f'},
-                                    {name : 'male', value: 'm'}
-                                ]
-                            },
-                            handler: function() {
-                                Ext.getCmp('sex').getEl().toggle();
-                            }
-                        }]
-                    },{ // Age
-                        id: 'age',
-                        name:'age',
-                        items: [{
-                            xtype: 'combo',
-                            name: 'AgeComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            value: 'eq',
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'Select age that is',
-                            displayField: 'name',
-                            valueField: 'value',
-                            store: {
-                                fields: ['name', 'value'],
-                                data: [
-                                    {name : '=', value: 'eq'},
-                                    {name : '<', value: 'lt'},
-                                    {name : '<=', value: 'le'},
-                                    {name : '>', value: 'gt'},
-                                    {name : '>=', value: 'ge'}
-                                ]
-                            }
-                        },{
-                            xtype: 'numberfield',
-                            name: 'ageValue',
-                            fieldLabel: 'value of',
-                            value: ''
-                        }]
-                    },{
-                        xtype: 'tbspacer',
-                        height: 15
-                    },{ // control display of component
-                        text: 'VITALS TEST',
-                        xtype: 'button',
-                        name: 'v_label',
-                        id: 'v_label',
-                        handler: function(){
-                            Ext.getCmp('systolic').getEl().toggle();
-                            Ext.getCmp('diastolic').getEl().toggle();
-                        }
-                    },{ // Systolic
-                        id: 'systolic',
-                        name:'systolic',
-                        items: [{
-                            xtype: 'combo',
-                            name: 'SystolicComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            value: 'eq',
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'Select systolic bp that is',
-                            displayField: 'name',
-                            valueField: 'value',
-                            store: {
-                                fields: ['name', 'value'],
-                                data: [
-                                    {name : '=', value: 'eq'},
-                                    {name : '<', value: 'lt'},
-                                    {name : '<=', value: 'le'},
-                                    {name : '>', value: 'gt'},
-                                    {name : '>=', value: 'ge'}
-                                ]
-                            }
-                        },{
-                            xtype: 'numberfield',
-                            name: 'vitalValue',
-                            fieldLabel: 'value of',
-                            value: ''
-                        }]
-                    },{ // Diastolic
-                        id: 'diastolic',
-                        name:'diastolic',
-                        items: [{
-                            xtype: 'combo',
-                            name: 'SystolicComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            value: 'eq',
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'Select diastolic bp that is',
-                            displayField: 'name',
-                            valueField: 'value',
-                            store: {
-                                fields: ['name', 'value'],
-                                data: [
-                                    {name : '=', value: 'eq'},
-                                    {name : '<', value: 'lt'},
-                                    {name : '<=', value: 'le'},
-                                    {name : '>', value: 'gt'},
-                                    {name : '>=', value: 'ge'}
-                                ]
-                            }
-                        },{
-                            xtype: 'numberfield',
-                            name: 'vitalValue',
-                            fieldLabel: 'value of',
-                            value: ''
-                        }]
-                    },{
-                        xtype: 'tbspacer',
-                        height: 15
-                    },{ // control display of component
-                        text: 'LABS TEST',
-                        xtype: 'button',
-                        name: 'l_label',
-                        id: 'l_label',
-                        handler: function(){
-                            Ext.getCmp('lab').getEl().toggle();
-                        }
-                    },{ // LABS
+            xtype: 'form',
+            width: 200,
+            bodyPadding: 10,
+            defaults: {
+                anchor: '100%',
+                labelWidth: 100
+            },
+
+            items: [{ // Systolic
+                id: 'systolic',
+                name:'systolic',
+                items: [{
+                    xtype: 'combo',
+                    name: 'SystolicComparator',
+                    queryMode: 'local',
+                    editable: false,
+                    value: 'eq',
+                    triggerAction: 'all',
+                    forceSelection: true,
+                    fieldLabel: 'Select systolic bp that is',
+                    displayField: 'name',
+                    valueField: 'value',
+                    store: {
+                        fields: ['name', 'value'],
+                        data: [
+                            {name : '=', value: 'eq'},
+                            {name : '<', value: 'lt'},
+                            {name : '<=', value: 'le'},
+                            {name : '>', value: 'gt'},
+                            {name : '>=', value: 'ge'}
+                        ]
+                    }
+                },{
+                    xtype: 'numberfield',
+                    name: 'vitalValue',
+                    fieldLabel: 'value of',
+                    value: ''
+                }]
+            },{ // Diastolic
+                id: 'diastolic',
+                name:'diastolic',
+                items: [{
+                    xtype: 'combo',
+                    name: 'SystolicComparator',
+                    queryMode: 'local',
+                    editable: false,
+                    value: 'eq',
+                    triggerAction: 'all',
+                    forceSelection: true,
+                    fieldLabel: 'Select diastolic bp that is',
+                    displayField: 'name',
+                    valueField: 'value',
+                    store: {
+                        fields: ['name', 'value'],
+                        data: [
+                            {name : '=', value: 'eq'},
+                            {name : '<', value: 'lt'},
+                            {name : '<=', value: 'le'},
+                            {name : '>', value: 'gt'},
+                            {name : '>=', value: 'ge'}
+                        ]
+                    }
+                },{
+                    xtype: 'numberfield',
+                    name: 'vitalValue',
+                    fieldLabel: 'value of',
+                    value: ''
+                }]
+            }]
+
+        },{
+            title: 'Labs',
+            xtype: 'form',
+            width: 200,
+            bodyPadding: 10,
+            defaults: {
+                anchor: '100%',
+                labelWidth: 100
+            },
+
+            items: [{ /// LABS
                         id: 'lab',
                         name:'lab',
                         items: [{
@@ -269,168 +274,108 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             fieldLabel: 'value of',
                             value: ''
                         }]
-                    },{
-                        xtype: 'tbspacer',
-                        height: 15
-                    },{ //Dx
-                        xtype: 'multiselector',
-                        title: 'Selected Dx',
-                        id: 'diagnosis',
-                        name:'diagnosis',
-                        fieldName: 'description',
-                        valueField:'code',
-                        viewConfig: {
-                            deferEmptyText: false,
-                            emptyText: 'No Dx selected'
-                        },
-                        // TODO: fix ability to remove selected items when box is unchecked
-                        search: {
-                            field: 'description',
-                            store: 'Diagnoses',
-
-                            search: function (text) {
-                                var me = this,
-                                    filter = me.searchFilter,
-                                    filters = me.getSearchStore().getFilters();
-
-                                if (text) {
-                                    filters.beginUpdate();
-
-                                    if (filter) {
-                                        filter.setValue(text);
-                                    } else {
-                                        me.searchFilter = filter = new Ext.util.Filter({
-                                            id: 'search',
-                                            property: me.field,
-                                            value: text,
-                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
-                                            anyMatch: true
-                                        });
-                                    }
-
-                                    filters.add(filter);
-
-                                    filters.endUpdate();
-                                } else if (filter) {
-                                    filters.remove(filter);
-                                }
-                            }
-                        }
-                    },{ // Px
-                        xtype: 'multiselector',
-                        title: 'Selected Px',
-                        id: 'procedure',
-                        name:'procedure',
-                        fieldName: 'description',
-                        valueField:'code',
-
-                        viewConfig: {
-                            deferEmptyText: false,
-                            emptyText: 'No Px selected'
-                        },
-                        // TODO: fix ability to remove selected items when box is unchecked
-                        search: {
-                            field: 'description',
-                            store: 'Procedures',
-
-                            search: function (text) {
-                                var me = this,
-                                    filter = me.searchFilter,
-                                    filters = me.getSearchStore().getFilters();
-
-                                if (text) {
-                                    filters.beginUpdate();
-
-                                    if (filter) {
-                                        filter.setValue(text);
-                                    } else {
-                                        me.searchFilter = filter = new Ext.util.Filter({
-                                            id: 'search',
-                                            property: me.field,
-                                            value: text,
-                                            // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
-                                            anyMatch: true
-                                        });
-                                    }
-
-                                    filters.add(filter);
-
-                                    filters.endUpdate();
-                                } else if (filter) {
-                                    filters.remove(filter);
-                                }
-                            }
-                        }
-                        },{ // Rx
-                            xtype: 'multiselector',
-                            title: 'Selected Rx',
-                            id: 'medication',
-                            name:'medication',
-                            fieldName: 'description',
-                            valueField:'code',
-                            viewConfig: {
-                                deferEmptyText: false,
-                                emptyText: 'No Rx selected'
-                            },
-                            // TODO: fix ability to remove selected items when box is unchecked
-                            search: {
-                                field: 'description',
-                                store: 'Medications',
-
-                                search: function (text) {
-                                    var me = this,
-                                        filter = me.searchFilter,
-                                        filters = me.getSearchStore().getFilters();
-
-                                    if (text) {
-                                        filters.beginUpdate();
-
-                                        if (filter) {
-                                            filter.setValue(text);
-                                        } else {
-                                            me.searchFilter = filter = new Ext.util.Filter({
-                                                id: 'search',
-                                                property: me.field,
-                                                value: text,
-                                                // only change from http://docs.sencha.com/extjs/5.1/5.1.0-apidocs/source/MultiSelectorSearch.html#Ext-view-MultiSelectorSearch-method-search
-                                                anyMatch: true
-                                            });
-                                        }
-
-                                        filters.add(filter);
-
-                                        filters.endUpdate();
-                                    } else if (filter) {
-                                        filters.remove(filter);
-                                    }
-                                }
-                            }
-                        }]
-                }).center();
-            }},
-            {
-                text: 'Dx',
-                handler: function() {
-
-                    cardioCatalogQT.service.UtilityService.control_toggle('diagnosis');
-
-                }
+                    }]
+        },{
+            title: 'Diagnosis',
+            xtype: 'form',
+            width: 10,
+            //bodyPadding: 10,
+            defaults: {
+                //anchor: '100%',
+                //labelWidth: 100
             },
-            {
-                text: 'Px',
-                handler: function() {
 
-                    cardioCatalogQT.service.UtilityService.control_toggle('procedure');
+            items: [{ //Dx
+                xtype: 'multiselector',
+                title: 'Selected Dx',
+                id: 'diagnosis',
+                name:'diagnosis',
+                fieldName: 'description',
+                valueField:'code',
+                viewConfig: {
+                    deferEmptyText: false,
+                    emptyText: 'No Dx selected'
+                },
+                // TODO: fix ability to remove selected items when box is unchecked
+                search: {
+                    field: 'description',
+                    store: 'Diagnoses',
 
+                    search: function (text) {
+
+                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
+                    }
                 }
-            },
-            {
-                text: 'Rx',
-                handler: function() {
+            }]
 
-                    cardioCatalogQT.service.UtilityService.control_toggle('medication');
-                }
+        },{
+
+            title: 'Medications',
+            xtype: 'form',
+            width: 100,
+            bodyPadding: 10,
+            defaults: {
+                anchor: '100%',
+                labelWidth: 100
             },
+
+            items: [{ //Rx
+                xtype: 'multiselector',
+                title: 'Selected Rx',
+                id: 'medication',
+                name:'medications',
+                fieldName: 'description',
+                valueField:'code',
+                viewConfig: {
+                    deferEmptyText: false,
+                    emptyText: 'No Rx selected'
+                },
+                // TODO: fix ability to remove selected items when box is unchecked
+                search: {
+                    field: 'description',
+                    store: 'Medications',
+
+                    search: function (text) {
+
+                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
+                    }
+                }
+            }]
+
+        },{
+            title: 'Procedure',
+            xtype: 'form',
+            width: 200,
+            bodyPadding: 10,
+            defaults: {
+                anchor: '100%',
+                labelWidth: 100
+            },
+
+            items: [{ //Px
+                xtype: 'multiselector',
+                title: 'Selected Px',
+                id: 'procedure',
+                name:'procedure',
+                fieldName: 'description',
+                valueField:'code',
+                viewConfig: {
+                    deferEmptyText: false,
+                    emptyText: 'No Px selected'
+                },
+                // TODO: fix ability to remove selected items when box is unchecked
+                search: {
+                    field: 'description',
+                    store: 'Procedures',
+
+                    search: function (text) {
+
+                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
+                    }
+                }
+            }]
+
+        }/*
 
             {
                 xtype: 'button',
@@ -823,21 +768,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         cardioCatalogQT.service.UtilityService.template(panel, store);
                     }
                 });
-            }}
-        ]
-    },{
-        region: 'center',
-        xtype: 'form',
-        id: 'Ajax',
-        styleHtmlContent: true,
-        items:[{
-            xtype: 'image',
-            src: 'resources/images/cv.png',
-            height: 50,
-            width: 280
-        },{
-            title: 'UI Sandbox'
-        }]
-    }]
+            }}*/
+       // ]
+    //},
+
+    ]
 });
 
