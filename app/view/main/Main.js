@@ -5,6 +5,14 @@
  *
  * TODO - Replace this content of this view to suite the needs of your application.
  */
+
+
+// TODO:
+// 1. Combine elements for between as part of payload store insert
+// 2. Create URL
+// 3. Ajax URL
+// 4. Display results
+
 Ext.define('cardioCatalogQT.view.main.Main', {
     extend: 'Ext.tab.Panel',
     requires: [
@@ -18,43 +26,17 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         'Ext.layout.container.Card'
     ],
 
-    //xtype: 'app-main',
-
     xtype: 'layout-cardtabs',
 
-   /* controller: 'main',
-    viewModel: {
-        type: 'main'
-    },*/
-
-    style: 'background-color:#dfe8f6; ',
+    style: 'background-color:#dfe8f5;',
     width: '100%',
     height: 400,
 
     defaults: {
-        bodyPadding: 15
+        bodyPadding: 5
     },
 
-
-    //layout: {
-    //    type: 'border'
-    //},
-
-    items: [/*{
-        xtype: 'panel',
-        id: 'Test',
-        styleHtmlContent: true,
-
-        bind: {
-            title: '{name}'
-        },
-
-        region: 'north',
-        width: 145,
-        split: true
-    },*/
-        // vertical toolbar
-        /*lbar: [ */
+    items: [
 
         {
             title:'Main',
@@ -70,8 +52,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             },{
                 title: 'UI Sandbox'
             }],
-            tbar:[{
+            lbar:[{
                 text: 'Login',
+                xtype: 'button',
 
                 handler: function(){
                     cardioCatalogQT.service.UtilityService.http_auth();
@@ -135,16 +118,106 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             {name: '<', value: 'lt'},
                             {name: '<=', value: 'le'},
                             {name: '>', value: 'gt'},
-                            {name: '>=', value: 'ge'}
+                            {name: '>=', value: 'ge'},
+                            {name: 'between', value: 'bt'}
                         ]
                     }
                 }, {
+                    xtype: 'button',
+                    name: 'betweenAge',
+                    text: 'Or between',
+                    value: 'between',
+                    handler: function () {
+                        Ext.getCmp('upperAge').getEl().toggle();
+                    }
+                },{
                     xtype: 'numberfield',
                     name: 'ageValue',
                     fieldLabel: 'value of',
                     value: ''
+                },{
+                    xtype: 'numberfield',
+                    id: 'upperAge',
+                    fieldLabel: 'and',
+                    hidden: true
                 }]
-            }]
+            }],
+
+            lbar:[{
+                xtype: 'button',
+                itemId: 'button',
+                html: 'Toolbar here',
+                text: 'Save criteria',
+
+                // get write elements for query to Proxy store
+                handler: function() {
+
+                    var payload = Ext.getStore('Payload'),
+                        submitted,
+                        sx = [],
+                        age = [];
+
+                    // begin test sex:
+                    submitted = Ext.getCmp('sex');
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('show object sex: ');
+                        console.log(submitted.items)
+                    }
+
+                    Ext.Array.each(submitted, function (item) {
+                        sx.push(item.items.items[0].lastValue)
+
+                        // insert only if exists
+                        if (item.items.items[0].lastValue) {
+                            payload.add({
+                                type: 'sex',
+                                key: 'sex',
+                                comparator: 'eq',
+                                value: item.items.items[0].lastValue
+                            })
+                        }
+                    }); // each()
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(sx);
+                    }
+
+                    payload.sync();
+                    //end test sex
+
+                    // begin test age
+                    submitted = Ext.getCmp('age');
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('show object age');
+                        console.log(submitted.items);
+                    }
+
+                    Ext.Array.each(submitted, function (item) {
+                        age.push(item.items.items[0].lastValue); // age
+                        age.push(item.items.items[2].lastValue); // comparator
+                        age.push(item.items.items[3].lastValue); // comparator
+
+                        // insert only if exists
+                        if (item.items.items[1].lastValue) {
+
+                            payload.add({
+                                type: 'age',
+                                key: 'age',
+                                comparator: item.items.items[0].lastValue,
+                                value: item.items.items[1].lastValue
+                            })
+                        }
+                    }); // each()
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(age);
+                    }
+
+                    payload.sync();
+                    // end test age,
+                }}]
         },{
             title: 'Vitals',
 
@@ -216,253 +289,23 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     fieldLabel: 'value of',
                     value: ''
                 }]
-            }]
+            }],
 
-        },{
-            title: 'Labs',
-            xtype: 'form',
-            width: 200,
-            bodyPadding: 10,
-            defaults: {
-                anchor: '100%',
-                labelWidth: 100
-            },
-
-            items: [{ /// LABS
-                        id: 'lab',
-                        name:'lab',
-                        items: [{
-                            xtype: 'combo',
-                            width: 400,
-                            name: 'LabCode',
-                            queryMode: 'local',
-                            editable: false,
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            loading: true,
-                            fieldLabel: 'Select lab type',
-                            displayField: 'description',
-                            valueField: 'code',
-                            value: '13457-7',
-                            store: 'Labs'
-                        },
-                        {
-                            xtype: 'combo',
-                            name: 'LabComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            value: 'eq',
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'that is',
-                            displayField: 'name',
-                            valueField: 'value',
-                            store: {
-                                fields: ['name', 'value'],
-                                data: [
-                                    {name : '=', value: 'eq'},
-                                    {name : '<', value: 'lt'},
-                                    {name : '<=', value: 'le'},
-                                    {name : '>', value: 'gt'},
-                                    {name : '>=', value: 'ge'}
-                                ]
-                            }
-                        },
-                        {
-                            xtype: 'numberfield',
-                            name: 'labValue',
-                            fieldLabel: 'value of',
-                            value: ''
-                        }]
-                    }]
-        },{
-            title: 'Diagnosis',
-            xtype: 'form',
-            width: 10,
-            //bodyPadding: 10,
-            defaults: {
-                //anchor: '100%',
-                //labelWidth: 100
-            },
-
-            items: [{ //Dx
-                xtype: 'multiselector',
-                title: 'Selected Dx',
-                id: 'diagnosis',
-                name:'diagnosis',
-                fieldName: 'description',
-                valueField:'code',
-                viewConfig: {
-                    deferEmptyText: false,
-                    emptyText: 'No Dx selected'
-                },
-                // TODO: fix ability to remove selected items when box is unchecked
-                search: {
-                    field: 'description',
-                    store: 'Diagnoses',
-
-                    search: function (text) {
-
-                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
-                    }
-                }
-            }]
-
-        },{
-
-            title: 'Medications',
-            xtype: 'form',
-            width: 100,
-            bodyPadding: 10,
-            defaults: {
-                anchor: '100%',
-                labelWidth: 100
-            },
-
-            items: [{ //Rx
-                xtype: 'multiselector',
-                title: 'Selected Rx',
-                id: 'medication',
-                name:'medications',
-                fieldName: 'description',
-                valueField:'code',
-                viewConfig: {
-                    deferEmptyText: false,
-                    emptyText: 'No Rx selected'
-                },
-                // TODO: fix ability to remove selected items when box is unchecked
-                search: {
-                    field: 'description',
-                    store: 'Medications',
-
-                    search: function (text) {
-
-                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
-                    }
-                }
-            }]
-
-        },{
-            title: 'Procedure',
-            xtype: 'form',
-            width: 200,
-            bodyPadding: 10,
-            defaults: {
-                anchor: '100%',
-                labelWidth: 100
-            },
-
-            items: [{ //Px
-                xtype: 'multiselector',
-                title: 'Selected Px',
-                id: 'procedure',
-                name:'procedure',
-                fieldName: 'description',
-                valueField:'code',
-                viewConfig: {
-                    deferEmptyText: false,
-                    emptyText: 'No Px selected'
-                },
-                // TODO: fix ability to remove selected items when box is unchecked
-                search: {
-                    field: 'description',
-                    store: 'Procedures',
-
-                    search: function (text) {
-
-                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
-                    }
-                }
-            }]
-
-        }/*
-
-            {
+            lbar:[{
                 xtype: 'button',
                 itemId: 'button',
                 html: 'Toolbar here',
-                text: 'Submit Criteria',
+                text: 'Save criteria',
 
                 // get write elements for query to Proxy store
                 handler: function() {
 
                     var payload = Ext.getStore('Payload'),
                         submitted,
-                        sx = [],
-                        age = [],
                         systolic = [],
-                        diastolic = [],
-                        lab = [],
-                        dx = [],
-                        rx = [],
-                        px = [];
-
-                    // begin test sex:
-
-                    submitted = Ext.getCmp('sex');
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show object sex: ');
-                        console.log(submitted.items)
-                    }
-
-                    Ext.Array.each(submitted,function (item) {
-                        sx.push(item.items.items[0].lastValue)
-
-                        // insert only if exists
-                        if (item.items.items[0].lastValue) {
-                            payload.add({
-                                type: 'sex',
-                                key: 'sex',
-                                comparator: 'eq',
-                                value: item.items.items[0].lastValue
-                            })
-                        }
-                    }); // each()
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(sx);
-                    }
-
-                    payload.sync();
-
-                    //end test sex
-
-                    // begin test age
-
-                    submitted = Ext.getCmp('age');
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show object age');
-                        console.log(submitted.items);
-                    }
-
-                    Ext.Array.each(submitted,function (item) {
-                        age.push(item.items.items[0].lastValue); // age
-                        age.push(item.items.items[1].lastValue); // comparator
-
-                        // insert only if exists
-                        if (item.items.items[1].lastValue) {
-
-                            payload.add({
-                                type: 'age',
-                                key: 'age',
-                                comparator: item.items.items[0].lastValue,
-                                value: item.items.items[1].lastValue
-                            })
-                        }
-                    }); // each()
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(systolic);
-                    }
-
-                    payload.sync();
-
-                    // end test age
+                        diastolic = [];
 
                     // begin test systolic
-
                     submitted = Ext.getCmp('systolic');
 
                     if (cardioCatalogQT.config.mode === 'test') {
@@ -491,11 +334,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }
 
                     payload.sync();
-
                     // end test systolic
 
                     // begin test diastolic
-
                     submitted = Ext.getCmp('diastolic');
 
                     if (cardioCatalogQT.config.mode === 'test') {
@@ -524,11 +365,99 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }
 
                     payload.sync();
-
                     // end test diastolic
+                }}]
+        },{
+            title: 'Labs',
+            xtype: 'form',
+            width: 200,
+            bodyPadding: 10,
+            defaults: {
+                anchor: '100%',
+                labelWidth: 100
+            },
+
+            items: [{ // LABS
+                        id: 'lab',
+                        name:'lab',
+                        items: [{
+                            xtype: 'combo',
+                            flex : 1,
+                            width: 400,
+                            name: 'LabCode',
+                            queryMode: 'local',
+                            editable: false,
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            loading: true,
+                            fieldLabel: 'Select lab type',
+                            displayField: 'description',
+                            valueField: 'code',
+                            value: '13457-7',
+                            store: 'Labs'
+                        },
+                        {
+                            xtype: 'combo',
+                            flex : 1,
+                            name: 'LabComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: 'eq',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'that is',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name : '=', value: 'eq'},
+                                    {name : '<', value: 'lt'},
+                                    {name : '<=', value: 'le'},
+                                    {name : '>', value: 'gt'},
+                                    {name : '>=', value: 'ge'},
+                                    {name : 'between', value: 'bt'}
+                                ]
+                            }
+                        },{
+                            xtype: 'button',
+                            name: 'betweenLab',
+                            text: 'Or between',
+                            value: 'between',
+                            handler: function () {
+                                Ext.getCmp('upperLab').getEl().toggle();
+                            }
+                        },
+                        {
+                            xtype: 'numberfield',
+                            flex : 1,
+                            name: 'labValue',
+                            fieldLabel: 'Min value',
+                            value: ''
+                        },
+                        {
+                            xtype: 'numberfield',
+                            flex : 1,
+                            id: 'upperLab',
+                            fieldLabel: 'and',
+                            hidden: true
+                        }]
+                    }],
+
+            lbar:[{
+                xtype: 'button',
+                itemId: 'button',
+                html: 'Toolbar here',
+                text: 'Save criteria',
+
+                // get write elements for query to Proxy store
+                handler: function() {
+
+                    var payload = Ext.getStore('Payload'),
+                        submitted,
+                        lab = [];
 
                     // begin test lab
-
                     submitted = Ext.getCmp('lab');
 
                     if (cardioCatalogQT.config.mode === 'test') {
@@ -539,6 +468,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     Ext.Array.each(submitted, function (item) {
                         lab.push(item.items.items[0].lastValue); // type
                         lab.push(item.items.items[1].lastValue); // comparator
+                        lab.push(item.items.items[3].lastValue); // comparator
+                        lab.push(item.items.items[4].lastValue); // comparator
 
 
                         // only insert if exists
@@ -546,7 +477,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             payload.add({
                                 type: 'lab',
                                 key: item.items.items[0].lastValue,
-                                value: item.items.items[2].lastValue,
+                                value: item.items.items[3].lastValue,
                                 comparator: item.items.items[1].lastValue
                             })
                         }
@@ -558,86 +489,51 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }
 
                     payload.sync();
-
                     // end test lab
+                }}]
 
-                    // begin test Rx
+        },{
+            title: 'Diagnosis',
+            xtype: 'form',
 
-                    submitted = Ext.getCmp('medication');
+            items: [{ //Dx
+                width: 500,
+                xtype: 'multiselector',
+                title: 'Selected Dx',
+                id: 'diagnosis',
+                name:'diagnosis',
+                fieldName: 'description',
+                valueField:'code',
+                viewConfig: {
+                    deferEmptyText: false,
+                    emptyText: 'No Dx selected'
+                },
+                // TODO: fix ability to remove selected items when box is unchecked
+                search: {
+                    field: 'description',
+                    store: 'Diagnoses',
 
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show submitted Rx: ');
-                        console.log(submitted);
+                    search: function (text) {
+
+                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
                     }
+                }
+            }],
 
-                    Ext.Array.each(submitted.store.data.items, function (item) {
-                        rx.push(item.data.code,item.data.description);
+            lbar:[{
+                xtype: 'button',
+                itemId: 'button',
+                html: 'Toolbar here',
+                text: 'Save criteria',
 
-                        if (cardioCatalogQT.config.mode === 'test') {
-                            console.log(item)
-                        }
+                // get write elements for query to Proxy store
+                handler: function() {
 
-                        // TODO: ensure record does not already exist
-
-                        payload.add({
-                            type: 'rx',
-                            key: 'rx_code',
-                            comparator: 'eq',
-                            value: item.data.code,
-                            description: item.data.description
-                        });
-
-                        payload.sync();
-
-                        if (cardioCatalogQT.config.mode === 'test') {
-                            console.log('rx');
-                            console.log(rx);
-                            console.log(payload);
-                        }
-
-                    }); // each()
-
-                    // end test Rx
-
-                    // begin test Px
-
-                    submitted = Ext.getCmp('procedure');
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show submitted Px:');
-                        console.log(submitted);
-                    }
-
-                    Ext.Array.each(submitted.store.data.items, function (item) {
-                        px.push(item.data.code,item.data.description);
-
-                        if (cardioCatalogQT.config.mode === 'test') {
-                            console.log(item)
-                        }
-
-                        // TODO: ensure record does not already exist
-                        payload.add({
-                            type: 'px',
-                            key: 'proc_code',
-                            comparator: 'eq',
-                            value: item.data.code,
-                            description: item.data.description
-                        });
-
-                        payload.sync();
-
-                        if (cardioCatalogQT.config.mode === 'test') {
-                            console.log('px');
-                            console.log(px);
-                            console.log(payload);
-                        }
-
-                    }); // each()
-
-                    // end test Px
+                    var payload = Ext.getStore('Payload'),
+                        submitted,
+                        dx = [];
 
                     // begin test Dx
-
                     submitted = Ext.getCmp('diagnosis');
 
                     if (cardioCatalogQT.config.mode === 'test') {
@@ -671,20 +567,171 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                     }); // each()
                     // end test Dx
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('payload for URL creation');
-                        console.log(payload);
-                    }
-
-                    var url = cardioCatalogQT.service.UtilityService.url(payload);
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('call to make url: ' + url);
-                    }
                 }
 
-            },{
+            }]
+
+        },{
+
+            title: 'Medications',
+            xtype: 'form',
+
+            items: [{ //Rx
+                width: 500,
+                xtype: 'multiselector',
+                title: 'Selected Rx',
+                id: 'medication',
+                name:'medication',
+                fieldName: 'description',
+                valueField:'code',
+                viewConfig: {
+                    deferEmptyText: false,
+                    emptyText: 'No Rx selected'
+                },
+                // TODO: fix ability to remove selected items when box is unchecked
+                search: {
+                    field: 'description',
+                    store: 'Medications',
+
+                    search: function (text) {
+
+                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
+                    }
+                }
+            }],
+
+            lbar:[{
+                xtype: 'button',
+                itemId: 'button',
+                html: 'Toolbar here',
+                text: 'Save criteria',
+
+                // get write elements for query to Proxy store
+                handler: function() {
+
+                    var payload = Ext.getStore('Payload'),
+                        submitted,
+                        rx = [];
+
+                    // begin test Dx
+                    submitted = Ext.getCmp('medication');
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('show submitted Rx:');
+                        console.log(submitted);
+                    }
+
+                    Ext.Array.each(submitted.store.data.items, function (item) {
+                        rx.push(item.data.code,item.data.description);
+
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log(item)
+                        }
+
+                        // TODO: ensure record does not already exist
+                        payload.add({
+                            type: 'rx',
+                            key: 'rx_code',
+                            comparator: 'eq',
+                            value: item.data.code,
+                            description: item.data.description
+                        });
+
+                        payload.sync();
+
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('rx');
+                            console.log(rx);
+                            console.log(payload);
+                        }
+
+                    }); // each()
+                    // end test Rx
+                }
+
+            }]
+
+        },{
+            title: 'Procedure',
+            xtype: 'form',
+
+            items: [{ //Px
+                width: 500,
+                xtype: 'multiselector',
+                title: 'Selected Px',
+                id: 'procedure',
+                name:'procedure',
+                fieldName: 'description',
+                valueField:'code',
+                viewConfig: {
+                    deferEmptyText: false,
+                    emptyText: 'No Px selected'
+                },
+                // TODO: fix ability to remove selected items when box is unchecked
+                search: {
+                    field: 'description',
+                    store: 'Procedures',
+
+                    search: function (text) {
+
+                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
+                    }
+                }
+            }],
+
+            lbar:[{
+                xtype: 'button',
+                itemId: 'button',
+                html: 'Toolbar here',
+                text: 'Save criteria',
+
+                // get write elements for query to Proxy store
+                handler: function() {
+
+                    var payload = Ext.getStore('Payload'),
+                        submitted,
+                        px = [];
+
+                    // begin test Px
+                    submitted = Ext.getCmp('procedure');
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('show submitted Px:');
+                        console.log(submitted);
+                    }
+
+                    Ext.Array.each(submitted.store.data.items, function (item) {
+                        px.push(item.data.code,item.data.description);
+
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log(item)
+                        }
+
+                        // TODO: ensure record does not already exist
+                        payload.add({
+                            type: 'px',
+                            key: 'px_code',
+                            comparator: 'eq',
+                            value: item.data.code,
+                            description: item.data.description
+                        });
+
+                        payload.sync();
+
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('px');
+                            console.log(px);
+                            console.log(payload);
+                        }
+
+                    }); // each()
+                    // end test Px
+                }
+
+            }]
+        }/*,{
+
+
             text: 'Execute Query',
             handler: function() {
 
@@ -705,6 +752,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         data: records,
                         paging: false
                     });
+
+
+                var url = cardioCatalogQT.service.UtilityService.url(payload);
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('call to make url: ' + url);
+                }
 
                 cardioCatalogQT.service.UtilityService.destroy_cmp();
 
