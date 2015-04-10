@@ -12,6 +12,8 @@
 // 2. Create URL
 // 3. Ajax URL
 // 4. Display results
+// 5. Fix multi select resize
+
 
 Ext.define('cardioCatalogQT.view.main.Main', {
     extend: 'Ext.tab.Panel',
@@ -495,9 +497,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },{
             title: 'Diagnosis',
             xtype: 'form',
+            width: 600,
 
             items: [{ //Dx
-                width: 500,
+                width: 300,
                 xtype: 'multiselector',
                 title: 'Selected Dx',
                 id: 'diagnosis',
