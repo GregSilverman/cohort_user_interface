@@ -93,9 +93,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             {name: 'male', value: 'm'}
                         ]
                     },
-                    handler: function () {
-                        Ext.getCmp('sex').getEl().toggle();
-                    }
                 }]
             }, { // Age
                 id: 'age',
@@ -197,20 +194,42 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }
 
                     Ext.Array.each(submitted, function (item) {
-                        age.push(item.items.items[0].lastValue); // age
-                        age.push(item.items.items[2].lastValue); // comparator
-                        age.push(item.items.items[3].lastValue); // comparator
+                        age.push(item.items.items[0].lastValue); // comparator
+                        age.push(item.items.items[2].lastValue); // min age
+                        age.push(item.items.items[3].lastValue); // max age
 
                         // insert only if exists
-                        if (item.items.items[1].lastValue) {
+                        if (item.items.items[2].lastValue) {
 
-                            payload.add({
-                                type: 'age',
-                                key: 'age',
-                                comparator: item.items.items[0].lastValue,
-                                value: item.items.items[1].lastValue
-                            })
+                            var test_age = item.items.items[2].lastValue;
+
+                            if (item.items.items[0].lastValue === 'bt') {
+
+                                if (!item.items.items[3].lastValue) {
+
+                                    alert('Please enter max age to continue')
+                                }
+                                else {
+                                    test_age += ',' + item.items.items[3].lastValue;
+                                }
+                            }
+
+                            if (cardioCatalogQT.config.mode === 'test') {
+                                console.log('test age: ' + test_age);
+                            }
+
+                            if ((item.items.items[0].lastValue === 'bt' && item.items.items[3].lastValue) ||
+                                (!item.items.items[0].lastValue === 'bt' )) {
+
+                                payload.add({
+                                    type: 'age',
+                                    key: 'age',
+                                    comparator: item.items.items[0].lastValue,
+                                    value: test_age
+                                })
+                            }
                         }
+
                     }); // each()
 
                     if (cardioCatalogQT.config.mode === 'test') {
@@ -432,14 +451,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         },
                         {
                             xtype: 'numberfield',
-                            flex : 1,
                             name: 'labValue',
                             fieldLabel: 'Min value',
                             value: ''
                         },
                         {
                             xtype: 'numberfield',
-                            flex : 1,
                             id: 'upperLab',
                             fieldLabel: 'and',
                             hidden: true
