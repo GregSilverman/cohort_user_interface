@@ -414,7 +414,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             xtype: 'combo',
                             flex : 1,
                             width: 400,
-                            name: 'LabCode',
+                            itemId: 'labCode',
                             queryMode: 'local',
                             editable: false,
                             triggerAction: 'all',
@@ -429,7 +429,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         {
                             xtype: 'combo',
                             flex : 1,
-                            name: 'LabComparator',
+                            itemId: 'labComparator',
                             queryMode: 'local',
                             editable: false,
                             value: 'eq',
@@ -462,7 +462,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         },
                         {
                             xtype: 'numberfield',
-                            name: 'labValue',
+                            itemId: 'labValue',
                             fieldLabel: 'Min value',
                             value: ''
                         },
@@ -481,11 +481,23 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 text: 'Save criteria',
 
                 // get write elements for query to Proxy store
-                handler: function() {
+                handler: function(button) {
 
                     var payload = Ext.getStore('Payload'),
                         submitted,
-                        lab = [];
+                        lab = [],
+                        labComparator = button.up('form').down('#labComparator').value,
+                        labCode = button.up('form').down('#labCode').value,
+                        labValue = button.up('form').down('#labValue').value,
+                        upperLab = button.up('form').down('#upperLab').value;
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('show object vitals');
+                        console.log(labComparator);
+                        console.log(labCode);
+                        console.log(labValue);
+                        console.log(upperLab);
+                    }
 
                     // begin test lab
                     submitted = Ext.getCmp('labs');
@@ -495,31 +507,29 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         console.log(submitted.items)
                     }
 
-                    Ext.Array.each(submitted, function (item) {
-                        lab.push(item.items.items[0].lastValue); // type
-                        lab.push(item.items.items[1].lastValue); // comparator
-                        lab.push(item.items.items[3].lastValue); // comparator
-                        lab.push(item.items.items[4].lastValue); // comparator
+                    lab.push(labCode); // type
+                    lab.push(labComparator); // comparator
+                    lab.push(labValue); // comparator
+                    lab.push(upperLab); // comparator
 
 
-                        // only insert if exists
-                        if (item.items.items[2].lastValue) {
-                            payload.add({
-                                type: 'lab',
-                                key: item.items.items[0].lastValue,
-                                value: item.items.items[3].lastValue,
-                                comparator: item.items.items[1].lastValue
-                            })
-                        }
-                    }); // each()
+                    // only insert if exists
+                    if (labValue) {
+                        payload.add({
+                            type: 'lab',
+                            key: labCode,
+                            value: labValue,
+                            comparator: labComparator
+                        })
+                    }
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('labs:');
                         console.log(lab);
                     }
 
-                    payload.sync();
-                    // end test lab
+                payload.sync();
+                // end test lab
                 }}]
 
         },{
