@@ -172,8 +172,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         console.log(upperAge);
                     }
 
-                    submitted = Ext.getCmp('demographics');
-
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show object demographics:');
                         console.log(submitted.items);
@@ -499,28 +497,50 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         console.log(upperLab);
                     }
 
-                    // begin test lab
-                    submitted = Ext.getCmp('labs');
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show object labs');
-                        console.log(submitted.items)
-                    }
-
                     lab.push(labCode); // type
                     lab.push(labComparator); // comparator
                     lab.push(labValue); // comparator
                     lab.push(upperLab); // comparator
 
-
-                    // only insert if exists
+                    // insert only if exists
                     if (labValue) {
-                        payload.add({
-                            type: 'lab',
-                            key: labCode,
-                            value: labValue,
-                            comparator: labComparator
-                        })
+
+                        var test_lab = labValue
+
+                        if (labComparator === 'bt') {
+
+                            if (!upperLab) {
+                                alert('Please enter max lab to continue')
+                            }
+                            else {
+                                test_lab += ',' + upperLab;
+                            }
+                        }
+
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('test age: ' + test_lab);
+                        }
+
+                        if ((labComparator === 'bt' &&
+                            labValue &&
+                            upperLab) ||
+
+                            (!upperLab &&
+                            labComparator !== 'bt' &&
+                            labValue)) {
+
+                            payload.add({
+                                type: 'lab',
+                                key: labCode,
+                                value: test_lab,
+                                comparator: labComparator
+                            });
+
+                            payload.sync();
+                        }
+                        else{
+                            // error conditions here
+                        }
                     }
 
                     if (cardioCatalogQT.config.mode === 'test') {
