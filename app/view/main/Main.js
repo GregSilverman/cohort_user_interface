@@ -120,16 +120,16 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             {name: '>=', value: 'ge'},
                             {name: 'between', value: 'bt'}
                         ]
-                    }
-                }, {
-                    xtype: 'button',
-                    name: 'betweenAge',
-                    text: 'Or between',
-                    value: 'between',
+                    },
                     listeners: {
-                        click: function () {
-                            //handler: function () { // TODO: test use of listener
-                            Ext.getCmp('upperAge').getEl().toggle();
+                        change: function(combo, value) {
+                            // use component query to retrieve the other field
+                            if (value === 'bt') {
+                                console.log('YESH!');
+                                Ext.getCmp('upperAge').getEl().toggle();
+                            } else {
+                                console.log('NO!');
+                            }
                         }
                     }
                 },{
@@ -168,23 +168,23 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     Ext.Array.each(submitted, function (item) {
                         demo.push(item.items.items[0].lastValue);
                         demo.push(item.items.items[1].lastValue);
+                        demo.push(item.items.items[2].lastValue);
                         demo.push(item.items.items[3].lastValue);
-                        demo.push(item.items.items[4].lastValue);
 
                         // insert sex only if exists
                         if (item.items.items[0].lastValue) {
 
                             if ((item.items.items[1].lastValue === 'bt' &&
-                                item.items.items[3].lastValue &&
-                                item.items.items[4].lastValue) ||
+                                item.items.items[2].lastValue &&
+                                item.items.items[3].lastValue) ||
 
                                 (item.items.items[1].lastValue !== 'bt' &&
-                                item.items.items[3].lastValue &&
-                                !item.items.items[4].lastValue) ||
+                                item.items.items[2].lastValue &&
+                                !item.items.items[3].lastValue) ||
 
                                 (item.items.items[1].lastValue !== 'bt' &&
-                                !item.items.items[3].lastValue &&
-                                !item.items.items[4].lastValue)) {
+                                !item.items.items[2].lastValue &&
+                                !item.items.items[3].lastValue)) {
 
                                 payload.add({
                                     type: 'sex',
@@ -204,11 +204,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         // insert only if exists
                         if (item.items.items[3].lastValue) {
 
-                            var test_age = item.items.items[3].lastValue;
+                            var test_age = item.items.items[2].lastValue;
 
                             if (item.items.items[1].lastValue === 'bt') {
 
-                                if (!item.items.items[4].lastValue) {
+                                if (!item.items.items[3].lastValue) {
                                     alert('Please enter max age to continue')
                                 }
                                 else {
@@ -221,12 +221,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             }
 
                             if ((item.items.items[1].lastValue === 'bt' &&
-                                item.items.items[3].lastValue &&
-                                item.items.items[4].lastValue) ||
+                                item.items.items[2].lastValue &&
+                                item.items.items[3].lastValue) ||
 
-                                (!item.items.items[4].lastValue &&
+                                (!item.items.items[3].lastValue &&
                                 item.items.items[1].lastValue !== 'bt' &&
-                                item.items.items[3].lastValue)) {
+                                item.items.items[2].lastValue)) {
 
                                 payload.add({
                                     type: 'age',
@@ -438,14 +438,17 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                     {name : '>=', value: 'ge'},
                                     {name : 'between', value: 'bt'}
                                 ]
-                            }
-                        },{
-                            xtype: 'button',
-                            name: 'betweenLab',
-                            text: 'Or between',
-                            value: 'between',
-                            handler: function () {
-                                Ext.getCmp('upperLab').getEl().toggle();
+                            },
+                            listeners: {
+                                change: function(combo, value) {
+                                    // use component query to retrieve the other field
+                                    if (value === 'bt') {
+                                        console.log('YESH!');
+                                        Ext.getCmp('upperLab').getEl().toggle();
+                                    } else {
+                                        console.log('NO!');
+                                    }
+                                }
                             }
                         },
                         {
