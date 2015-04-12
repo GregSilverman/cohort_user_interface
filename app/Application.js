@@ -36,7 +36,7 @@ Ext.define('cardioCatalogQT.Application', {
 
     init: function() {
         // start the mask on the body and get a reference to the mask
-        splashscreen = Ext.getBody().mask('Loading cardioCatalogQT, please stand by ...', 'splashscreen');
+       // splashscreen = Ext.getBody().mask('Loading cardioCatalogQT, please stand by ...', 'splashscreen');
     },
 
     launch: function () {
@@ -59,8 +59,7 @@ Ext.define('cardioCatalogQT.Application', {
 
         };
 
-
-        Ext.tip.QuickTipManager.init();
+      /*  Ext.tip.QuickTipManager.init();
         var task = new Ext.util.DelayedTask(function() {
 
             // fade out the body mask
@@ -76,7 +75,7 @@ Ext.define('cardioCatalogQT.Application', {
             });
         });
 
-        task.delay(1000);
+        task.delay(1000); */
 
         // TODO - Launch the application
 

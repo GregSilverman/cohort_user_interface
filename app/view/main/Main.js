@@ -72,10 +72,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 labelWidth: 100
             },
 
-            items: [{ // Sex
-                id: 'sex',
-                name: 'sex',
-                items: [{
+            items: [{
+                xtype: 'tbspacer',
+                height: 25
+            },{ // Demographics
+                id: 'demographics',
+                name: 'demographics',
+                items: [{ // Sex
                     xtype: 'combo',
                     name: 'vitalComparator',
                     queryMode: 'local',
@@ -93,13 +96,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             {name: 'male', value: 'm'}
                         ]
                     },
-                }]
-            }, { // Age
-                id: 'age',
-                name: 'age',
-                labelWidth: 100,
-                xtype:'fieldcontainer',
-                items: [{
+                },{
+                    xtype: 'tbspacer',
+                    height: 50
+                }, { // Age
                     xtype: 'combo',
                     name: 'AgeComparator',
                     queryMode: 'local',
@@ -126,8 +126,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     name: 'betweenAge',
                     text: 'Or between',
                     value: 'between',
-                    handler: function () {
-                        Ext.getCmp('upperAge').getEl().toggle();
+                    listeners: {
+                        click: function () {
+                            //handler: function () { // TODO: test use of listener
+                            Ext.getCmp('upperAge').getEl().toggle();
+                        }
                     }
                 },{
                     xtype: 'numberfield',
@@ -148,69 +151,68 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 html: 'Toolbar here',
                 text: 'Save criteria',
 
-                // get write elements for query to Proxy store
+                // process demographics
                 handler: function() {
 
                     var payload = Ext.getStore('Payload'),
                         submitted,
-                        sx = [],
-                        age = [];
+                        demo = [];
 
-                    // begin test sex:
-                    submitted = Ext.getCmp('sex');
+                    submitted = Ext.getCmp('demographics');
 
                     if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show object sex: ');
-                        console.log(submitted.items)
-                    }
-
-                    Ext.Array.each(submitted, function (item) {
-                        sx.push(item.items.items[0].lastValue)
-
-                        // insert only if exists
-                        if (item.items.items[0].lastValue) {
-                            payload.add({
-                                type: 'sex',
-                                key: 'sex',
-                                comparator: 'eq',
-                                value: item.items.items[0].lastValue
-                            })
-                        }
-                    }); // each()
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(sx);
-                    }
-
-                    payload.sync();
-                    //end test sex
-
-                    // begin test age
-                    submitted = Ext.getCmp('age');
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show object age');
+                        console.log('show object demographics:');
                         console.log(submitted.items);
                     }
 
                     Ext.Array.each(submitted, function (item) {
-                        age.push(item.items.items[0].lastValue); // comparator
-                        age.push(item.items.items[2].lastValue); // min age
-                        age.push(item.items.items[3].lastValue); // max age
+                        demo.push(item.items.items[0].lastValue);
+                        demo.push(item.items.items[1].lastValue);
+                        demo.push(item.items.items[3].lastValue);
+                        demo.push(item.items.items[4].lastValue);
+
+                        // insert sex only if exists
+                        if (item.items.items[0].lastValue) {
+
+                            if ((item.items.items[1].lastValue === 'bt' &&
+                                item.items.items[3].lastValue &&
+                                item.items.items[4].lastValue) ||
+
+                                (item.items.items[1].lastValue !== 'bt' &&
+                                item.items.items[3].lastValue &&
+                                !item.items.items[4].lastValue) ||
+
+                                (item.items.items[1].lastValue !== 'bt' &&
+                                !item.items.items[3].lastValue &&
+                                !item.items.items[4].lastValue)) {
+
+                                payload.add({
+                                    type: 'sex',
+                                    key: 'sex',
+                                    comparator: 'eq',
+                                    value: item.items.items[0].lastValue
+                                });
+
+                                payload.sync();
+                            }
+                            else {
+
+                                // error conditionals here
+                            }
+                        }
 
                         // insert only if exists
-                        if (item.items.items[2].lastValue) {
+                        if (item.items.items[3].lastValue) {
 
-                            var test_age = item.items.items[2].lastValue;
+                            var test_age = item.items.items[3].lastValue;
 
-                            if (item.items.items[0].lastValue === 'bt') {
+                            if (item.items.items[1].lastValue === 'bt') {
 
-                                if (!item.items.items[3].lastValue) {
-
+                                if (!item.items.items[4].lastValue) {
                                     alert('Please enter max age to continue')
                                 }
                                 else {
-                                    test_age += ',' + item.items.items[3].lastValue;
+                                    test_age += ',' + item.items.items[4].lastValue;
                                 }
                             }
 
@@ -218,27 +220,34 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 console.log('test age: ' + test_age);
                             }
 
-                            if ((item.items.items[0].lastValue === 'bt' && item.items.items[3].lastValue) ||
-                                (!item.items.items[0].lastValue === 'bt' )) {
+                            if ((item.items.items[1].lastValue === 'bt' &&
+                                item.items.items[3].lastValue &&
+                                item.items.items[4].lastValue) ||
+
+                                (!item.items.items[4].lastValue &&
+                                item.items.items[1].lastValue !== 'bt' &&
+                                item.items.items[3].lastValue)) {
 
                                 payload.add({
                                     type: 'age',
                                     key: 'age',
-                                    comparator: item.items.items[0].lastValue,
+                                    comparator: item.items.items[1].lastValue,
                                     value: test_age
-                                })
+                                });
+
+                                payload.sync();
+                            }
+                            else{
+                                // error conditions here
                             }
                         }
-
                     }); // each()
 
                     if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(age);
+                        console.log(demo);
                     }
 
-                    payload.sync();
-                    // end test age,
-                }}]
+                }}] // end demographics
         },{
             title: 'Vitals',
 
@@ -250,9 +259,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 labelWidth: 100
             },
 
-            items: [{ // Systolic
-                id: 'systolic',
-                name:'systolic',
+            items: [{
+                xtype: 'tbspacer',
+                height: 25
+            },{ // Vitals
+                id: 'vitals',
+                name:'vitals',
                 items: [{
                     xtype: 'combo',
                     name: 'SystolicComparator',
@@ -276,16 +288,15 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }
                 },{
                     xtype: 'numberfield',
-                    name: 'vitalValue',
+                    name: 'systolicValue',
                     fieldLabel: 'value of',
                     value: ''
-                }]
-            },{ // Diastolic
-                id: 'diastolic',
-                name:'diastolic',
-                items: [{
+                },{
+                    xtype: 'tbspacer',
+                    height: 25
+                },{ // Diastolic
                     xtype: 'combo',
-                    name: 'SystolicComparator',
+                    name: 'DiastolicComparator',
                     queryMode: 'local',
                     editable: false,
                     value: 'eq',
@@ -306,7 +317,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }
                 },{
                     xtype: 'numberfield',
-                    name: 'vitalValue',
+                    name: 'diastolicValue',
                     fieldLabel: 'value of',
                     value: ''
                 }]
@@ -323,20 +334,21 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                     var payload = Ext.getStore('Payload'),
                         submitted,
-                        systolic = [],
-                        diastolic = [];
+                        vitals = [];
 
                     // begin test systolic
-                    submitted = Ext.getCmp('systolic');
+                    submitted = Ext.getCmp('vitals');
 
                     if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show object systolic');
+                        console.log('show object vitals');
                         console.log(submitted.items);
                     }
 
                     Ext.Array.each(submitted,function (item) {
-                        systolic.push(item.items.items[0].lastValue); // systolic
-                        systolic.push(item.items.items[1].lastValue); // comparator
+                        vitals.push(item.items.items[0].lastValue); // systolic comparator
+                        vitals.push(item.items.items[1].lastValue); // value
+                        vitals.push(item.items.items[2].lastValue); // diastolic comparator
+                        vitals.push(item.items.items[3].lastValue); // value
 
                         // insert only if exists
                         if (item.items.items[1].lastValue) {
@@ -346,50 +358,37 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                                 key: 'blood_pressure_systolic',
                                 comparator: item.items.items[0].lastValue,
                                 value: item.items.items[1].lastValue
-                            })
+                            });
+
+                            payload.sync();
                         }
-                    }); // each()
 
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(systolic);
-                    }
-
-                    payload.sync();
-                    // end test systolic
-
-                    // begin test diastolic
-                    submitted = Ext.getCmp('diastolic');
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show object diastolic');
-                        console.log(submitted.items);
-                    }
-
-                    Ext.Array.each(submitted,function (item) {
-                        diastolic.push(item.items.items[0].lastValue); // diastolic
-                        diastolic.push(item.items.items[1].lastValue); // comparator
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('show object diastolic');
+                            console.log(submitted.items);
+                        }
 
                         // insert only if exists
-                        if (item.items.items[1].lastValue) {
+                        if (item.items.items[3].lastValue) {
 
                             payload.add({
                                 type: 'blood_pressure_diastolic',
                                 key: 'blood_pressure_diastolic',
-                                comparator: item.items.items[0].lastValue,
-                                value: item.items.items[1].lastValue
-                            })
+                                comparator: item.items.items[2].lastValue,
+                                value: item.items.items[3].lastValue
+                            });
+
+                            payload.sync();
                         }
                     }); // each()
 
                     if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(diastolic);
+                        console.log(vitals);
                     }
 
-                    payload.sync();
-                    // end test diastolic
-                }}]
+                }}] // end vitals
         },{
-            title: 'Labs',
+            title: 'Labs', // TODO: test use of regions
             xtype: 'form',
             width: 200,
             bodyPadding: 10,
@@ -399,8 +398,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             },
 
             items: [{ // LABS
-                        id: 'lab',
-                        name:'lab',
+                        id: 'labs',
+                        name:'labs',
                         items: [{
                             xtype: 'combo',
                             flex : 1,
@@ -477,7 +476,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         lab = [];
 
                     // begin test lab
-                    submitted = Ext.getCmp('lab');
+                    submitted = Ext.getCmp('labs');
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show object labs');
@@ -597,7 +596,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             xtype: 'form',
 
             items: [{ //Rx
-                width: 500,
+                width: 300,
                 xtype: 'multiselector',
                 title: 'Selected Rx',
                 id: 'medication',
