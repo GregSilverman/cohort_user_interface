@@ -46,7 +46,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     console.log('found payload: Dx!' + i);
                     console.log(payload.data.items[i].data);
                     console.log(rec.data.key);
-
                 }
 
             }
@@ -65,7 +64,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     console.log('found payload: diastolic!');
                     console.log(rec.data.key);
                     console.log(parent);
-
                 }
             }
 
@@ -77,7 +75,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     console.log('found payload: systolic!');
                     console.log(rec.data.key);
                     console.log(parent);
-
                 }
             }
 
@@ -85,21 +82,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                 lab.push(rec);
 
-
                 if (cardioCatalogQT.config.mode === 'test') {
-
                     console.log(rec);
                     console.log('found payload: lab!');
                     console.log(rec.data.key);
                     console.log(parent);
-
                 }
             }
-
-            // assemble URL
-            //TEST payload:
-            // lab:test_code;eq;13457-7;lab:result_value_num;ge;160;
-            // vital:blood_pressure;eq;blood_pressure;vital:blood_pressure_systolic;ge;160
 
             url += rec.data.type +
                 seperator  +
@@ -182,7 +171,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('query: ' + query_criteria);
             }
 
-       });
+        });
 
         queries.add({
             url: url,
@@ -197,7 +186,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log('last query model:');
             console.log(queries.last());
             console.log(queries.last().data.url);
-
         }
 
         return url;
@@ -291,7 +279,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     clear_all: function() {
         var Payload = Ext.getStore('Payload');
 
-        Payload.removeAll();
+        Payload.getProxy().clear();
+        Payload.data.clear();
         Payload.sync();
 
         if (cardioCatalogQT.config.mode === 'test') {

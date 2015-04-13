@@ -37,6 +37,7 @@ Ext.define('cardioCatalogQT.Application', {
     init: function() {
         // start the mask on the body and get a reference to the mask
        // splashscreen = Ext.getBody().mask('Loading cardioCatalogQT, please stand by ...', 'splashscreen');
+
     },
 
     launch: function () {
@@ -81,7 +82,6 @@ Ext.define('cardioCatalogQT.Application', {
         // TODO - Launch the application
 
         Ext.onReady(function () {
-
 
         });
     }

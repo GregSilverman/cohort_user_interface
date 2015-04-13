@@ -22,10 +22,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         var auth = sessionStorage.sessionToken + ':unknown',
             hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
             panel = button.up('form'),
-            url = cardioCatalogQT.service.UtilityService.url_request(),
             json = [],
             records = [],
             payload = Ext.getStore('Payload'),
+            url,
             store = Ext.create('Ext.data.Store',{
                 fields: [
                     'attribute',
@@ -42,7 +42,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log('component: ');
             console.log(panel);
         }
-        var url = cardioCatalogQT.service.UtilityService.url(payload);
+
+        // construct URL and submit criteria to Query store
+        if (payload.getCount() > 0) {
+            cardioCatalogQT.service.UtilityService.url(payload);
+        }
+        // get url
+        url = cardioCatalogQT.service.UtilityService.url_request();
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
@@ -105,6 +111,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
                 // render template
                 cardioCatalogQT.service.UtilityService.template(panel, store);
+                // clear criteria from store
+                cardioCatalogQT.service.UtilityService.clear_all();
             }
         });
     },
