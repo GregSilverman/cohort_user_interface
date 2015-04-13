@@ -44,10 +44,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
 
         // construct URL and submit criteria to Query store
+        // if no criteria have been selected then run the last
         if (payload.getCount() > 0) {
             cardioCatalogQT.service.UtilityService.url(payload);
         }
-        // get url
+        // get last url
         url = cardioCatalogQT.service.UtilityService.url_request();
 
         if (cardioCatalogQT.config.mode === 'test') {
