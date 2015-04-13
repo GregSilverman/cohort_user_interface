@@ -44,7 +44,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             title:'Main',
             region: 'center',
             xtype: 'form',
-            id: 'Ajax',
+            itemId: 'Ajax',
             styleHtmlContent: true,
             items:[{
                 xtype: 'image',
@@ -61,7 +61,102 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 handler: function(){
                     cardioCatalogQT.service.UtilityService.http_auth();
                 }
-            }]
+            },
+            {
+                text: 'Execute Query',
+                handler: function(button) {
+
+                    var auth = sessionStorage.sessionToken + ':unknown',
+                        hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
+                        panel = button.up('form'),
+                        url = cardioCatalogQT.service.UtilityService.url_request(),
+                        json = [],
+                        records = [],
+                        store = Ext.create('Ext.data.Store',{
+                            fields: [
+                                'attribute',
+                                'sid',
+                                'value',
+                                'N',
+                                'source'
+                            ],
+                            data: records,
+                            paging: false
+                        });
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('component: ');
+                        console.log(panel);
+                    }
+                    //var url = cardioCatalogQT.service.UtilityService.url(payload);
+
+                    //if (cardioCatalogQT.config.mode === 'test') {
+                    //    console.log('call to make url: ' + url);
+                    //}
+
+                    panel.setMasked({
+                        xtype: 'loadmask',
+                        message: 'Loading...'
+                    });
+
+                    // send auth header before Ajax request to disable auth form
+                    Ext.Ajax.on('beforerequest', (function(klass, request) {
+                        if (request.failure) { // already have auth token: do nothing
+                            return null;
+                        }
+                        else { // send auth token
+                            return request.headers.Authorization = hash;
+                        }
+                    }), this);
+
+                    Ext.Ajax.request({
+                        cors: true,
+                        url: url,
+                        useDefaultXhrHeader: false,
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+                        disableCaching: false,
+                        success: function(response) {
+                            json = Ext.decode(response.responseText);
+                            if (cardioCatalogQT.config.mode === 'test') {
+                                console.log('json' + json);
+                            }
+
+                            if(json !== null &&  typeof (json) !==  'undefined'){
+
+                                Ext.each(json, function(entry) {
+                                    Ext.each(json.items || [], function(tuple) {
+
+                                        records.push({
+                                            N: tuple[0].N,
+                                            sid: tuple[0].sid,
+                                            source: tuple[0].source
+                                        });
+                                        if (cardioCatalogQT.config.mode === 'test') {
+                                            console.log(tuple[0].source
+                                            + 'N ' + tuple[0].N
+                                            + 'attribute ' + tuple[0].attribute
+                                            + 'sid ' + tuple[0].sid
+                                            + 'value ' + tuple[0].value);
+                                        }
+                                    });
+                                });
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log(records);
+                                }
+
+                                //update store with data
+                                store.add(records);
+                            }
+
+                            // render template
+                            cardioCatalogQT.service.UtilityService.template(panel, store);
+                        }
+                    });
+                }}
+
+            ]
         },{
             title: 'Demographics',
             xtype: 'form',
@@ -76,8 +171,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 xtype: 'tbspacer',
                 height: 25
             },{ // Demographics
-                id: 'demographics',
-                name: 'demographics',
+                itemId: 'demographics',
                 items: [{ // Sex
                     xtype: 'combo',
                     itemId: 'sexValue',
@@ -95,7 +189,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             {name: 'female', value: 'f'},
                             {name: 'male', value: 'm'}
                         ]
-                    },
+                    }
                 },{
                     xtype: 'tbspacer',
                     height: 50
@@ -134,7 +228,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     }
                 },{
                     xtype: 'numberfield',
-                    name: 'ageValue',
                     itemId: 'ageValue',
                     fieldLabel: 'value of',
                     value: ''
@@ -156,12 +249,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 handler: function(button) {
 
                     var payload = Ext.getStore('Payload'),
-                        submitted,
                         demo = [],
-                        sexValue = button.up('form').down('#sexValue').value,
-                        ageComparator = button.up('form').down('#ageComparator').value,
-                        ageValue = button.up('form').down('#ageValue').value,
-                        upperAge = button.up('form').down('#upperAge').value;
+                        form = button.up('form'),
+                        sexValue = form.down('#sexValue').value,
+                        ageComparator = form.down('#ageComparator').value,
+                        ageValue = form.down('#ageValue').value,
+                        upperAge = form.down('#upperAge').value;
 
 
                     if (cardioCatalogQT.config.mode === 'test') {
@@ -170,11 +263,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         console.log(ageComparator);
                         console.log(ageValue);
                         console.log(upperAge);
-                    }
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('show object demographics:');
-                        console.log(submitted.items);
                     }
 
                     demo.push(sexValue);
@@ -215,7 +303,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     // insert only if exists
                     if (ageValue) {
 
-                        var test_age = ageValue
+                        var test_age = ageValue;
 
                         if (ageComparator === 'bt') {
 
@@ -273,8 +361,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 xtype: 'tbspacer',
                 height: 25
             },{ // Vitals
-                id: 'vitals',
-                name:'vitals',
                 itemId: 'vitals',
                 items: [{
                     xtype: 'combo',
@@ -342,14 +428,14 @@ Ext.define('cardioCatalogQT.view.main.Main', {
 
                 // get write elements for query to Proxy store
                 handler: function(button) {
-                    // TODO: cleanup all iccky submitted references !!!!!!!!!!!!
 
                     var payload = Ext.getStore('Payload'),
                         vitals = [],
-                        systolicComparator = button.up('form').down('#systolicComparator').value,
-                        systolicValue = button.up('form').down('#systolicValue').value,
-                        diastolicComparator = button.up('form').down('#diastolicComparator').value,
-                        diastolicValue = button.up('form').down('#diastolicValue').value;
+                        form = button.up('form'),
+                        systolicComparator = form.down('#systolicComparator').value,
+                        systolicValue = form.down('#systolicValue').value,
+                        diastolicComparator = form.down('#diastolicComparator').value,
+                        diastolicValue = form.down('#diastolicValue').value;
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show object vitals');
@@ -406,71 +492,70 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             },
 
             items: [{ // LABS
-                        id: 'labs',
-                        name:'labs',
-                        items: [{
-                            xtype: 'combo',
-                            flex : 1,
-                            width: 400,
-                            itemId: 'labCode',
-                            queryMode: 'local',
-                            editable: false,
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            loading: true,
-                            fieldLabel: 'Select lab type',
-                            displayField: 'description',
-                            valueField: 'code',
-                            value: '13457-7',
-                            store: 'Labs'
-                        },
-                        {
-                            xtype: 'combo',
-                            flex : 1,
-                            itemId: 'labComparator',
-                            queryMode: 'local',
-                            editable: false,
-                            value: 'eq',
-                            triggerAction: 'all',
-                            forceSelection: true,
-                            fieldLabel: 'that is',
-                            displayField: 'name',
-                            valueField: 'value',
-                            store: {
-                                fields: ['name', 'value'],
-                                data: [
-                                    {name : '=', value: 'eq'},
-                                    {name : '<', value: 'lt'},
-                                    {name : '<=', value: 'le'},
-                                    {name : '>', value: 'gt'},
-                                    {name : '>=', value: 'ge'},
-                                    {name : 'between', value: 'bt'}
-                                ]
-                            },
-                            listeners: {
-                                change: function(combo, value) {
-                                    // use component query to  toggle the hidden state of upper value
-                                    if (value === 'bt') {
-                                        combo.up('form').down('#upperLab').show();
-                                    } else {
-                                        combo.up('form').down('#upperLab').hide();
-                                    }
-                                }
+                itemId: 'labs',
+                items: [{
+                    xtype: 'combo',
+                    flex : 1,
+                    width: 400,
+                    itemId: 'labCode',
+                    queryMode: 'local',
+                    editable: false,
+                    triggerAction: 'all',
+                    forceSelection: true,
+                    loading: true,
+                    fieldLabel: 'Select lab type',
+                    displayField: 'description',
+                    valueField: 'code',
+                    value: '13457-7',
+                    store: 'Labs'
+                },
+                {
+                    xtype: 'combo',
+                    flex : 1,
+                    itemId: 'labComparator',
+                    queryMode: 'local',
+                    editable: false,
+                    value: 'eq',
+                    triggerAction: 'all',
+                    forceSelection: true,
+                    fieldLabel: 'that is',
+                    displayField: 'name',
+                    valueField: 'value',
+                    store: {
+                        fields: ['name', 'value'],
+                        data: [
+                            {name : '=', value: 'eq'},
+                            {name : '<', value: 'lt'},
+                            {name : '<=', value: 'le'},
+                            {name : '>', value: 'gt'},
+                            {name : '>=', value: 'ge'},
+                            {name : 'between', value: 'bt'}
+                        ]
+                    },
+                    listeners: {
+                        change: function(combo, value) {
+                            // use component query to  toggle the hidden state of upper value
+                            if (value === 'bt') {
+                                combo.up('form').down('#upperLab').show();
+                            } else {
+                                combo.up('form').down('#upperLab').hide();
                             }
-                        },
-                        {
-                            xtype: 'numberfield',
-                            itemId: 'labValue',
-                            fieldLabel: 'Min value',
-                            value: ''
-                        },
-                        {
-                            xtype: 'numberfield',
-                            itemId: 'upperLab',
-                            fieldLabel: 'and',
-                            hidden: true
-                        }]
-                    }],
+                        }
+                    }
+                },
+                {
+                    xtype: 'numberfield',
+                    itemId: 'labValue',
+                    fieldLabel: 'Min value',
+                    value: ''
+                },
+                {
+                    xtype: 'numberfield',
+                    itemId: 'upperLab',
+                    fieldLabel: 'and',
+                    hidden: true
+                }]
+            }],
 
             lbar:[{
                 xtype: 'button',
@@ -482,12 +567,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 handler: function(button) {
 
                     var payload = Ext.getStore('Payload'),
-                        submitted,
                         lab = [],
-                        labComparator = button.up('form').down('#labComparator').value,
-                        labCode = button.up('form').down('#labCode').value,
-                        labValue = button.up('form').down('#labValue').value,
-                        upperLab = button.up('form').down('#upperLab').value;
+                        form = button.up('form'),
+                        labComparator = form.down('#labComparator').value,
+                        labCode = form.down('#labCode').value,
+                        labValue = form.down('#labValue').value,
+                        upperLab = form.down('#upperLab').value;
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show object vitals');
@@ -548,10 +633,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                         console.log(lab);
                     }
 
-                payload.sync();
-                // end test lab
-                }}]
-
+                    payload.sync();
+                }}] // end test lab
         },{
             title: 'Diagnosis',
             xtype: 'form',
@@ -561,8 +644,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 width: 300,
                 xtype: 'multiselector',
                 title: 'Selected Dx',
-                id: 'diagnosis',
-                name:'diagnosis',
+                itemId: 'diagnosis',
                 fieldName: 'description',
                 valueField:'code',
                 viewConfig: {
@@ -588,21 +670,20 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 text: 'Save criteria',
 
                 // get write elements for query to Proxy store
-                handler: function() {
+                handler: function(button) {
 
                     var payload = Ext.getStore('Payload'),
-                        submitted,
-                        dx = [];
+                        dx = [],
+                        form = button.up('form'),
+                        diagnoses = form.down('#diagnosis').store.data.items;
 
                     // begin test Dx
-                    submitted = Ext.getCmp('diagnosis');
-
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show submitted Dx:');
-                        console.log(submitted);
+                        console.log(diagnoses);
                     }
 
-                    Ext.Array.each(submitted.store.data.items, function (item) {
+                    Ext.Array.each(diagnoses, function (item) {
                         dx.push(item.data.code,item.data.description);
 
                         if (cardioCatalogQT.config.mode === 'test') {
@@ -641,8 +722,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 width: 300,
                 xtype: 'multiselector',
                 title: 'Selected Rx',
-                id: 'medication',
-                name:'medication',
+                itemId: 'medication',
                 fieldName: 'description',
                 valueField:'code',
                 viewConfig: {
@@ -668,21 +748,20 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 text: 'Save criteria',
 
                 // get write elements for query to Proxy store
-                handler: function() {
+                handler: function(button) {
 
                     var payload = Ext.getStore('Payload'),
-                        submitted,
-                        rx = [];
+                        rx = [],
+                        form = button.up('form'),
+                        medications = form.down('#medication').store.data.items;
 
                     // begin test Dx
-                    submitted = Ext.getCmp('medication');
-
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show submitted Rx:');
-                        console.log(submitted);
+                        console.log(medications);
                     }
 
-                    Ext.Array.each(submitted.store.data.items, function (item) {
+                    Ext.Array.each(medications, function (item) {
                         rx.push(item.data.code,item.data.description);
 
                         if (cardioCatalogQT.config.mode === 'test') {
@@ -720,8 +799,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 width: 500,
                 xtype: 'multiselector',
                 title: 'Selected Px',
-                id: 'procedure',
-                name:'procedure',
+                itemId: 'procedure',
                 fieldName: 'description',
                 valueField:'code',
                 viewConfig: {
@@ -747,21 +825,20 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 text: 'Save criteria',
 
                 // get write elements for query to Proxy store
-                handler: function() {
+                handler: function(button) {
 
                     var payload = Ext.getStore('Payload'),
-                        submitted,
-                        px = [];
+                        px = [],
+                        form = button.up('form'),
+                        procedures = form.store.data.items;
 
                     // begin test Px
-                    submitted = Ext.getCmp('procedure');
-
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('show submitted Px:');
-                        console.log(submitted);
+                        console.log(procedures);
                     }
 
-                    Ext.Array.each(submitted.store.data.items, function (item) {
+                    Ext.Array.each(procedures, function (item) {
                         px.push(item.data.code,item.data.description);
 
                         if (cardioCatalogQT.config.mode === 'test') {
@@ -790,100 +867,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 }
 
             }]
-        }/*,{
-
-
-            text: 'Execute Query',
-            handler: function() {
-
-                var auth = sessionStorage.sessionToken + ':unknown',
-                    hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
-                    panel = Ext.getCmp('Ajax'),
-                    url = cardioCatalogQT.service.UtilityService.url_request(),
-                    json = [],
-                    records = [],
-                    store = Ext.create('Ext.data.Store',{
-                        fields: [
-                            'attribute',
-                            'sid',
-                            'value',
-                            'N',
-                            'source'
-                        ],
-                        data: records,
-                        paging: false
-                    });
-
-
-                var url = cardioCatalogQT.service.UtilityService.url(payload);
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('call to make url: ' + url);
-                }
-
-                cardioCatalogQT.service.UtilityService.destroy_cmp();
-
-                panel.setMasked({
-                    xtype: 'loadmask',
-                    message: 'Loading...'
-                });
-
-                // send auth header before Ajax request to disable auth form
-                Ext.Ajax.on('beforerequest', (function(klass, request) {
-                    if (request.failure) { // already have auth token: do nothing
-                        return null;
-                    }
-                    else { // send auth token
-                        return request.headers.Authorization = hash;
-                    }
-                }), this);
-
-                Ext.Ajax.request({
-                    cors: true,
-                    url: url,
-                    useDefaultXhrHeader: false,
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    disableCaching: false,
-                    success: function(response) {
-                        json = Ext.decode(response.responseText);
-                        if (cardioCatalogQT.config.mode === 'test') {
-                            console.log('json' + json);
-                        }
-
-                        if(json !== null &&  typeof (json) !==  'undefined'){
-
-                            Ext.each(json, function(entry) {
-                                Ext.each(json.items || [], function(tuple) {
-
-                                    records.push({
-                                        N: tuple[0].N,
-                                        sid: tuple[0].sid,
-                                        source: tuple[0].source
-                                    });
-                                    if (cardioCatalogQT.config.mode === 'test') {
-                                        console.log(tuple[0].source
-                                        + 'N ' + tuple[0].N
-                                        + 'attribute ' + tuple[0].attribute
-                                        + 'sid ' + tuple[0].sid
-                                        + 'value ' + tuple[0].value);
-                                    }
-                                });
-                            });
-                            if (cardioCatalogQT.config.mode === 'test') {
-                                console.log(records);
-                            }
-
-                            //update store with data
-                            store.add(records);
-                        }
-
-                        // render template
-                        cardioCatalogQT.service.UtilityService.template(panel, store);
-                    }
-                });
-            }}*/
+        },
        // ]
     //},
 
