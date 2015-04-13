@@ -55,7 +55,8 @@ Ext.define('cardioCatalogQT.Application', {
             apiLogin: '/api/token',
             apiResource: '/api/resource',
             apiFactor: '/api/factor',
-            apiGetQ: '/api/getQ/'
+            apiGetQ: '/api/getQ/',
+            callingFrom: ''
 
         };
 

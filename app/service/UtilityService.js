@@ -253,28 +253,24 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         panel.setData(store);
 
         tpl = new Ext.XTemplate(
-            '<tpl for=".">',
-                '<div class="clinical_phi" style="padding: 0 0 10px 20px;">',
-                    '<tpl if="data.lft == 1">',
-                        '<p>PATIENT: {data.sid}</p>',
-                        '<p>___________________</p>',
-                    '</tpl>',
-                    '<div class="data" style="padding: 0 0 10px 20px;">',
+            '<table border=\'\1\'\ style=\'\width:25%\'\>',
+                '<tr>',
+                    '<td>sid</td>',
+                '</tr>',
+                '<tpl for=".">',
+                    '<tr>',
+                        '<td>{data.sid}</td>',
+                    '</tr>',
+                '</tpl>',
+            '</table>'
+                    /*'<div class="data" style="padding: 0 0 10px 20px;">',
                         '<tpl if="data.source == \'clinical\'">',
                             '<li>{data.attribute.attribute_value} : {data.value} </li>',
                         '</tpl>',
                         '<tpl if="data.source == \'phi\'">',
                             '<li>{data.attribute_value} : {data.value} </li>',
                         '</tpl>',
-                    '</div>',
-                '</div>',
-
-                '<div class="aggregate" style="padding: 0 0 10px 20px;">',
-                    '<tpl if="data.source == \'aggregate\'">',
-                        '<li> sid: {data.sid} </li>',
-                    '</tpl>',
-                '</div>',
-            '</tpl>'
+                    '</div>',*/
         );
         // render template with store data to panel using HTML and remove mask from parent object
 
