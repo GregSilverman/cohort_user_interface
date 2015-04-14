@@ -14,14 +14,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         'Ext.window.MessageBox'
     ],
 
-    onClickButton: function () {
-        Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
-    },
-
     onExecuteClick: function (button) {
         var auth = sessionStorage.sessionToken + ':unknown',
             hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
-            panel = button.up('form'),
+            panel = button.up('form').up().down('#results'),
             json = [],
             records = [],
             payload = Ext.getStore('Payload'),
@@ -46,10 +42,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         // construct URL and submit criteria to Query store
         // if no criteria have been selected then run the last
         if (payload.getCount() > 0) {
-            cardioCatalogQT.service.UtilityService.url(payload);
+            url = cardioCatalogQT.service.UtilityService.url(payload);
         }
-        // get last url
-        url = cardioCatalogQT.service.UtilityService.url_request();
+        // get last submitted url
+        else {
+            url = cardioCatalogQT.service.UtilityService.url_request();
+        }
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
@@ -276,7 +274,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             labComparator = form.down('#labComparator').value,
             labCode = form.down('#labCode').value,
             labValue = form.down('#labValue').value,
-            upperLab = form.down('#upperLab').value;
+            upperLab = form.down('#upperLab').value,
+            labComparatorSecond = form.down('#labComparatorSecond').value,
+            labCodeSecond = form.down('#labCodeSecond').value,
+            labValueSecond = form.down('#labValueSecond').value,
+            upperLabSecond = form.down('#upperLabSecond').value;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object vitals');
@@ -289,7 +291,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         // insert only if exists
         if (labValue) {
 
-            var test_lab = labValue
+            var test_lab = labValue,
+                test_lab_second = labValueSecond;
 
             if (labComparator === 'bt') {
 
@@ -301,17 +304,39 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
             }
 
+            if (labComparatorSecond === 'bt') {
+
+                if (!upperLabSecond) {
+                    alert('Please enter max lab to continue')
+                }
+                else {
+                    test_lab_second += ',' + upperLab;
+                }
+            }
+
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('test age: ' + test_lab);
             }
 
-            if ((labComparator === 'bt' &&
+            if (((labComparator === 'bt' &&
                 labValue &&
                 upperLab) ||
 
                 (!upperLab &&
                 labComparator !== 'bt' &&
-                labValue)) {
+                labValue)) &&
+
+                ((labComparatorSecond === 'bt' &&
+                labValueSecond &&
+                upperLabSecond) ||
+
+                (!upperLabSecond &&
+                labComparatorSecond !== 'bt' &&
+                labValueSecond) ||
+
+                (!labValueSecond)))
+
+            {
 
                 payload.add({
                     type: 'lab',
@@ -332,6 +357,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             lab.push(labComparator); // comparator
             lab.push(labValue); // comparator
             lab.push(upperLab); // comparator
+            lab.push(labCodeSecond); // type
+            lab.push(labComparatorSecond); // comparator
+            lab.push(labValueSecond); // comparator
+            lab.push(upperLabSecond); // comparator
             console.log('labs:');
             console.log(lab);
         }

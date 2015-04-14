@@ -9,22 +9,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         this.initConfig(config);
     },
 
-    url: function(payload){
-
+    url: function(payload) {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
-            dx =[],
-            systolic = [],
-            diastolic = [],
-            lab = [],
             url =  cardioCatalogQT.config.protocol,
             seperator = ':',
             delimiter = ';',
             n = payload.getCount(),
             i = 0,
             parent,
-            query_criteria = '',
-            labs = Ext.getStore('Labs'),
-            description;
+            query_criteria = '';
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('Service test:' + payload);
@@ -38,22 +31,138 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type); // get parent value
 
+            url += rec.data.type +
+                seperator  +
+                parent +
+                delimiter;
+
+            if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                payload.data.items[i].data.key === 'blood_pressure_diastolic' ||
+                payload.data.items[i].data.type === 'lab'){
+                url += 'eq';
+            }
+            else {
+                url += rec.data.comparator
+            }
+
+            url += delimiter;
+
+            if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                payload.data.items[i].data.key === 'blood_pressure_diastolic'){
+                url += 'blood_pressure'
+            }
+            else if (payload.data.items[i].data.type === 'lab') {
+                url += rec.data.key
+            }
+            else {
+                url += rec.data.value
+            }
+
+            url +=  delimiter +
+                rec.data.type +
+                seperator;
+
+            if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                payload.data.items[i].data.key === 'blood_pressure_diastolic'){
+                url += payload.data.items[i].data.key;
+            }
+            else if (payload.data.items[i].data.type === 'lab') {
+                url += 'result_value_num';
+            }
+            else {
+                url += parent;
+            }
+
+            url += delimiter +
+                rec.data.comparator +
+                delimiter +
+                rec.data.value;
+
+            i += 1;
+
+            // separate all query units by delimiter, except for the last
+            if (i < n){
+                url += delimiter;
+            }
+
+        });
+
+        query_criteria += cardioCatalogQT.service.UtilityService.criteria(payload);
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('query: ' + query_criteria);
+        }
+
+        queries.add({
+            url: url,
+            user: 'gms',
+            criteria: query_criteria
+        });
+
+        queries.sync();
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            // get the last inserted url
+            console.log('last query model:');
+            console.log(queries.last());
+            console.log(queries.last().data.url);
+        }
+
+        return url;
+    },
+
+    criteria: function(payload){
+
+        var dx =[],
+            px = [],
+            rx = [],
+            systolic = [],
+            diastolic = [],
+            lab = [],
+            sex = [],
+            age = [],
+            parent,
+            criteria = '',
+            labs = Ext.getStore('Labs'),
+            description;
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('Service test:' + payload);
+        }
+
+        payload.each(function(rec) {
+
             if (payload.findExact('type','dx') != -1) {
 
                 dx.push(rec);
 
                 if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('found payload: Dx!' + i);
-                    console.log(payload.data.items[i].data);
+                    console.log('found payload: Dx!');
                     console.log(rec.data.key);
                 }
 
             }
 
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('i: ' + i);
-                console.log('url : ' + url);
-                console.log(rec);
+            if (payload.findExact('type','rx') != -1) {
+
+                dx.push(rec);
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('found payload: Rx!');
+                    console.log(rec.data.key);
+                }
+
+            }
+
+            if (payload.findExact('type','px') != -1) {
+
+                dx.push(rec);
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('found payload: Px!');
+                    console.log(rec.data.key);
+                }
+
             }
 
             if (payload.findExact('type','blood_pressure_diastolic') != -1) {
@@ -74,121 +183,61 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     console.log(rec);
                     console.log('found payload: systolic!');
                     console.log(rec.data.key);
-                    console.log(parent);
+                }
+            }
+
+            if (payload.findExact('type','sex') != -1) {
+
+                systolic.push(rec);
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log(rec);
+                    console.log('found payload: sex!');
+                    console.log(rec.data.key);
+                }
+            }
+
+            if (payload.findExact('type','age') != -1) {
+
+                systolic.push(rec);
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log(rec);
+                    console.log('found payload: age!');
+                    console.log(rec.data.key);
                 }
             }
 
             if (payload.findExact('type','lab') != -1) {
 
                 lab.push(rec);
-
                 if (cardioCatalogQT.config.mode === 'test') {
                     console.log(rec);
                     console.log('found payload: lab!');
                     console.log(rec.data.key);
-                    console.log(parent);
                 }
             }
 
-            url += rec.data.type +
-                seperator  +
-                parent +
-                delimiter;
-
-                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
-                    payload.data.items[i].data.key === 'blood_pressure_diastolic' ||
-                    payload.data.items[i].data.type === 'lab'){
-                    url += 'eq';
-                }
-                else {
-                    url += rec.data.comparator
-                }
-
-            url += delimiter;
-
-                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
-                    payload.data.items[i].data.key === 'blood_pressure_diastolic'){
-                   url += 'blood_pressure'
-                }
-                else if (payload.data.items[i].data.type === 'lab') {
-                   url += rec.data.key
-
-                    // get description for labs from store
-                    description = labs.findRecord('code',rec.data.key);
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('description:');
-                        console.log(description.data.description);
-                    }
-                }
-                else {
-                    url += rec.data.value
-                }
-
-            url +=  delimiter +
-                rec.data.type +
-                seperator;
-
-                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
-                    payload.data.items[i].data.key === 'blood_pressure_diastolic'){
-                    url += payload.data.items[i].data.key;
-                }
-                else if (payload.data.items[i].data.type === 'lab') {
-                    url += 'result_value_num';
-                }
-                else {
-                    url += parent;
-                }
-
-            url += delimiter +
-                rec.data.comparator +
-                delimiter +
-                rec.data.value;
-
-            i += 1;
-
-            // separate all query units by delimiter, except for the last
-            if (i < n){
-                url += delimiter;
-            }
-
-            // save for display
-            query_criteria += rec.data.type.toUpperCase() + ' '
+            criteria += rec.data.type.toUpperCase() + ' '
                             + rec.data.comparator + ' '
                             + rec.data.value + ' ';
 
-            // cannot grab description from xtype = 'combo'
+            // cannot grab description from xtype = 'combo', so go to store
             if (rec.data.type === 'lab') {
-                query_criteria += description.data.description.toUpperCase() + ' ';
+                description = labs.findRecord('code',rec.data.key);
+                criteria += description.data.description.toUpperCase() + ' ';
             }
             else {
-                query_criteria += rec.data.description.toUpperCase() + ' ';
+                criteria += rec.data.description.toUpperCase() + ' ';
             }
 
-            query_criteria += '<br>';
+            criteria += '<br>';
 
             if (cardioCatalogQT.config.mode === 'test') {
-                console.log('query: ' + query_criteria);
+                console.log('query: ' + criteria);
             }
 
         });
 
-        queries.add({
-            url: url,
-            user: 'gms',
-            criteria: query_criteria
-        });
-
-        queries.sync();
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            // get the last inserted url
-            console.log('last query model:');
-            console.log(queries.last());
-            console.log(queries.last().data.url);
-        }
-
-        return url;
+        return criteria;
     },
 
     // TODO: ensure payload exists, is clean and does not produce spurious results
@@ -251,14 +300,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     '</tr>',
                 '</tpl>',
             '</table>'
-                    /*'<div class="data" style="padding: 0 0 10px 20px;">',
-                        '<tpl if="data.source == \'clinical\'">',
-                            '<li>{data.attribute.attribute_value} : {data.value} </li>',
-                        '</tpl>',
-                        '<tpl if="data.source == \'phi\'">',
-                            '<li>{data.attribute_value} : {data.value} </li>',
-                        '</tpl>',
-                    '</div>',*/
         );
         // render template with store data to panel using HTML and remove mask from parent object
 
@@ -272,8 +313,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                             + criteria
                             + '<br>'
                             + tpl.apply(store)); //TODO: add criteria on which query was executed
-        panel.unmask();
-
     },
 
     clear_all: function() {
@@ -344,9 +383,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     multi_select_search: function(text,me) {
 
-
-        var
-            filter = me.searchFilter,
+        var filter = me.searchFilter,
             filters = me.getSearchStore().getFilters();
 
         if (text) {

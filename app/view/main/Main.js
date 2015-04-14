@@ -25,15 +25,16 @@ Ext.define('cardioCatalogQT.view.main.Main', {
     width: '100%',
     height: 400,
 
+    layout: 'border',
     defaults: {
         bodyPadding: 5
     },
     items: [{
             title:'Main',
-            region: 'center',
+            region: 'south',
             xtype: 'form',
             itemId: 'Ajax',
-            id: 'Ajax',
+            flex: 1,
             styleHtmlContent: true,
             items:[{
                 xtype: 'image',
@@ -50,6 +51,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 handler: function(){
                     cardioCatalogQT.service.UtilityService.http_auth();
                 }
+            },{
+                text: 'Show Selected Criteria',
+                xtype: 'button',
+                itemId: 'show',
+                handler: 'onShowClick'
             },
             {
                 text: 'Execute Query',
@@ -57,6 +63,14 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 itemId: 'execute',
                 handler: 'onExecuteClick'
             }]
+        },
+        {
+            title:'Results',
+            region: 'central',
+            xtype: 'form',
+            itemId: 'results',
+            flex: 1,
+            styleHtmlContent: true,
         },
         // begin form elements here
         {
@@ -180,14 +194,31 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             {name : '<', value: 'lt'},
                             {name : '<=', value: 'le'},
                             {name : '>', value: 'gt'},
-                            {name : '>=', value: 'ge'}
+                            {name : '>=', value: 'ge'},
+                            {name: 'between', value: 'bt'}
                         ]
+                    },
+
+                    listeners: {
+                        change: function(combo, value) {
+                            // use component query to  toggle the hidden state of upper value
+                            if (value === 'bt') {
+                                combo.up('form').down('#upperSystolic').show();
+                            } else {
+                                combo.up('form').down('#upperSystolic').hide();
+                            }
+                        }
                     }
                 },{
                     xtype: 'numberfield',
                     itemId: 'systolicValue',
                     fieldLabel: 'value of',
                     value: ''
+                },{
+                    xtype: 'numberfield',
+                    itemId: 'upperSystolic',
+                    fieldLabel: 'and',
+                    hidden: true
                 },{
                     xtype: 'tbspacer',
                     height: 25
@@ -209,14 +240,31 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                             {name : '<', value: 'lt'},
                             {name : '<=', value: 'le'},
                             {name : '>', value: 'gt'},
-                            {name : '>=', value: 'ge'}
+                            {name : '>=', value: 'ge'},
+                            {name: 'between', value: 'bt'}
                         ]
+                    },
+
+                    listeners: {
+                        change: function(combo, value) {
+                            // use component query to  toggle the hidden state of upper value
+                            if (value === 'bt') {
+                                combo.up('form').down('#upperDiastolic').show();
+                            } else {
+                                combo.up('form').down('#upperDiastolic').hide();
+                            }
+                        }
                     }
                 },{
                     xtype: 'numberfield',
                     itemId: 'diastolicValue',
                     fieldLabel: 'value of',
                     value: ''
+                },{
+                    xtype: 'numberfield',
+                    itemId: 'upperDiastolic',
+                    fieldLabel: 'and',
+                    hidden: true
                 }]
             }],
             lbar:[{
@@ -298,6 +346,70 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 {
                     xtype: 'numberfield',
                     itemId: 'upperLab',
+                    fieldLabel: 'and',
+                    hidden: true
+                },{
+                    xtype: 'tbspacer',
+                    width: 50
+                },{
+                    xtype: 'combo',
+                    flex : 1,
+                    width: 400,
+                    itemId: 'labCodeSecond',
+                    queryMode: 'local',
+                    editable: false,
+                    triggerAction: 'all',
+                    forceSelection: true,
+                    loading: true,
+                    fieldLabel: 'Select lab type',
+                    displayField: 'description',
+                    valueField: 'code',
+                    value: '',
+                    store: 'Labs'
+                },
+                {
+                    xtype: 'combo',
+                    flex : 1,
+                    itemId: 'labComparatorSecond',
+                    queryMode: 'local',
+                    editable: false,
+                    value: 'eq',
+                    triggerAction: 'all',
+                    forceSelection: true,
+                    fieldLabel: 'that is',
+                    displayField: 'name',
+                    valueField: 'value',
+                    store: {
+                        fields: ['name', 'value'],
+                        data: [
+                            {name : '=', value: 'eq'},
+                            {name : '<', value: 'lt'},
+                            {name : '<=', value: 'le'},
+                            {name : '>', value: 'gt'},
+                            {name : '>=', value: 'ge'},
+                            {name : 'between', value: 'bt'}
+                        ]
+                    },
+                    listeners: {
+                        change: function(combo, value) {
+                            // use component query to  toggle the hidden state of upper value
+                            if (value === 'bt') {
+                                combo.up('form').down('#upperLabSecond').show();
+                            } else {
+                                combo.up('form').down('#upperLabSecond').hide();
+                            }
+                        }
+                    }
+                },
+                {
+                    xtype: 'numberfield',
+                    itemId: 'labValueSecond',
+                    fieldLabel: 'Min value',
+                    value: ''
+                },
+                {
+                    xtype: 'numberfield',
+                    itemId: 'upperLabSecond',
                     fieldLabel: 'and',
                     hidden: true
                 }]
