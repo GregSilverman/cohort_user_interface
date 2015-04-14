@@ -70,7 +70,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             xtype: 'form',
             itemId: 'results',
             flex: 1,
-            styleHtmlContent: true,
+            styleHtmlContent: true
         },
         // begin form elements here
         {
