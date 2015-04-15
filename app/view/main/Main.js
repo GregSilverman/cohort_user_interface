@@ -352,6 +352,15 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     xtype: 'tbspacer',
                     width: 50
                 },{
+                    xtype: 'button',
+                    text: 'Add another lab',
+                    listeners: {
+                        click: function(button) {
+                            button.up('form').down('#labCodeSecond').show();
+                            button.up('form').down('#labComparatorSecond').show();
+                            button.up('form').down('#labValueSecond').show();                        }
+                    }
+                },{
                     xtype: 'combo',
                     flex : 1,
                     width: 400,
@@ -364,6 +373,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     fieldLabel: 'Select lab type',
                     displayField: 'description',
                     valueField: 'code',
+                        hidden: true,
                     value: '',
                     store: 'Labs'
                 },
@@ -379,6 +389,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     fieldLabel: 'that is',
                     displayField: 'name',
                     valueField: 'value',
+                    hidden: true,
                     store: {
                         fields: ['name', 'value'],
                         data: [
@@ -405,7 +416,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     xtype: 'numberfield',
                     itemId: 'labValueSecond',
                     fieldLabel: 'Min value',
-                    value: ''
+                    value: '',
+                    hidden: true
                 },
                 {
                     xtype: 'numberfield',
