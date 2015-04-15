@@ -116,6 +116,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         });
     },
 
+    onShowClick: function (button) {
+        var panel = button.up('form').up().down('#results'),
+            store = Ext.getStore('Payload');
+        // render template
+        cardioCatalogQT.service.UtilityService.criteria_template(panel, store);
+    },
+
     onSubmitDemographics: function (button) {
         var payload = Ext.getStore('Payload'),
             demo = [],
@@ -152,6 +159,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     type: 'sex',
                     key: 'sex',
                     comparator: 'eq',
+                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                     value: sexValue
                 });
 
@@ -194,6 +202,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     type: 'age',
                     key: 'age',
                     comparator: ageComparator,
+                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator),
                     value: test_age
                 });
 
@@ -220,8 +229,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             form = button.up('form'),
             systolicComparator = form.down('#systolicComparator').value,
             systolicValue = form.down('#systolicValue').value,
+            upperSystolic = form.down('#upperSystolic').value,
             diastolicComparator = form.down('#diastolicComparator').value,
-            diastolicValue = form.down('#diastolicValue').value;
+            diastolicValue = form.down('#diastolicValue').value,
+            upperDiastolic = form.down('#upperDiastolic').value;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object vitals');
@@ -231,40 +242,93 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(diastolicValue);
         }
 
-        // insert only if exists
-        if (systolicValue) {
+        if (systolicValue || diatolicValue) {
 
-            payload.add({
-                type: 'blood_pressure_systolic',
-                key: 'blood_pressure_systolic',
-                comparator: systolicComparator,
-                value: systolicValue
-            });
+            var test_systolic = systolicValue,
+                test_diastolic = diastolicValue;
 
-            payload.sync();
+            if (systolicComparator === 'bt') {
+
+                if (!upperSystolic) {
+                    alert('Please enter max diastolic to continue')
+                }
+                else {
+                    test_systolic += ',' + upperSystolic;
+                }
+            }
+
+            if (diastolicComparator === 'bt') {
+
+                if (!upperDisatolic) {
+                    alert('Please enter max lab to continue')
+                }
+                else {
+                    test_diastolic += ',' + upperDiastolic;
+                }
+            }
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('test systolic : ' + test_systolic);
+                console.log('test diastolic: ' + test_diastolic);
+            }
+
+            // insert only if exists
+            if (((systolicComparator === 'bt' &&
+                systolicValue &&
+                upperSystolic) ||
+
+                (!upperSystolic &&
+                systolicComparator !== 'bt' &&
+                systolicValue)) &&
+
+                ((diastolicComparator === 'bt' &&
+                diastolicValue &&
+                upperDiastolic) ||
+
+                (!upperDiastolic &&
+                diastolicComparator !== 'bt' &&
+                diastolicValue) ||
+
+                (!diastolicValue))) {
+
+                if (systolicValue) {
+                    payload.add({
+                        type: 'blood_pressure_systolic',
+                        key: 'blood_pressure_systolic',
+                        comparator: systolicComparator,
+                        comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(systolicComparator),
+                        value: test_systolic
+                    });
+
+                    payload.sync();
+                }
+
+                if (diastolicValue) {
+
+                    payload.add({
+                        type: 'blood_pressure_diastolic',
+                        key: 'blood_pressure_diastolic',
+                        comparator: diastolicComparator,
+                        comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(diastolicComparator),
+                        value: test_diastolic
+                    });
+                    payload.sync();
+                }
+            }
+            else {
+                // error conditions here
+            }
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                vitals.push(systolicComparator);
+                vitals.push(systolicValue);
+                vitals.push(diastolicComparator);
+                vitals.push(diastolicValue);
+                console.log('vitals');
+                console.log(vitals);
+            }
         }
 
-        // insert only if exists
-        if (diastolicValue) {
-
-            payload.add({
-                type: 'blood_pressure_diastolic',
-                key: 'blood_pressure_diastolic',
-                comparator: diastolicComparator,
-                value: diastolicValue
-            });
-
-            payload.sync();
-        }
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            vitals.push(systolicComparator);
-            vitals.push(systolicValue);
-            vitals.push(diastolicComparator);
-            vitals.push(diastolicValue);
-            console.log('vitals');
-            console.log(vitals);
-        }
     },
 
     onSubmitLabs: function (button) {
@@ -278,7 +342,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             labComparatorSecond = form.down('#labComparatorSecond').value,
             labCodeSecond = form.down('#labCodeSecond').value,
             labValueSecond = form.down('#labValueSecond').value,
-            upperLabSecond = form.down('#upperLabSecond').value;
+            upperLabSecond = form.down('#upperLabSecond').value,
+            labs = Ext.getStore('Labs');
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object vitals');
@@ -310,12 +375,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     alert('Please enter max lab to continue')
                 }
                 else {
-                    test_lab_second += ',' + upperLab;
+                    test_lab_second += ',' + upperLabSecond;
                 }
             }
 
             if (cardioCatalogQT.config.mode === 'test') {
-                console.log('test age: ' + test_lab);
+                console.log('test lab : ' + test_lab);
+                console.log('test lab second: ' + test_lab_second);
             }
 
             if (((labComparator === 'bt' &&
@@ -334,38 +400,51 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 labComparatorSecond !== 'bt' &&
                 labValueSecond) ||
 
-                (!labValueSecond)))
+                (!labValueSecond))) {
 
-            {
+                if (labValue) {
+                    payload.add({
+                        type: 'lab',
+                        key: labCode,
+                        value: test_lab,
+                        comparator: labComparator,
+                        comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labComparator).toUpperCase(),
+                        description: labs.findRecord('code',labCode).data.description
+                    });
+                    payload.sync();
+                }
 
-                payload.add({
-                    type: 'lab',
-                    key: labCode,
-                    value: test_lab,
-                    comparator: labComparator
-                });
-
-                payload.sync();
+                if (labValueSecond) {
+                    payload.add({
+                        type: 'lab',
+                        key: labCodeSecond,
+                        value: test_lab_second,
+                        comparator: labComparatorSecond,
+                        comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labComparatorSecond).toUpperCase(),
+                        description: labs.findRecord('code',labCodeSecond).data.description
+                    });
+                    payload.sync();
+                }
             }
-            else{
+            else {
                 // error conditions here
             }
-        }
 
-        if (cardioCatalogQT.config.mode === 'test') {
-            lab.push(labCode); // type
-            lab.push(labComparator); // comparator
-            lab.push(labValue); // comparator
-            lab.push(upperLab); // comparator
-            lab.push(labCodeSecond); // type
-            lab.push(labComparatorSecond); // comparator
-            lab.push(labValueSecond); // comparator
-            lab.push(upperLabSecond); // comparator
-            console.log('labs:');
-            console.log(lab);
-        }
 
-        payload.sync();
+            if (cardioCatalogQT.config.mode === 'test') {
+                lab.push(labCode); // type
+                lab.push(labComparator); // comparator
+                lab.push(labValue); // comparator
+                lab.push(upperLab); // comparator
+                lab.push(labCodeSecond); // type
+                lab.push(labComparatorSecond); // comparator
+                lab.push(labValueSecond); // comparator
+                lab.push(upperLabSecond); // comparator
+                console.log('labs:');
+                console.log(lab);
+            }
+
+        }
     },
 
     onSubmitDiagnoses: function(button) {
@@ -390,8 +469,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 type: 'dx',
                 key: 'dx_code',
                 comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                 value: item.data.code,
-                description: item.data.description
+                description: item.data.description.toUpperCase()
             });
 
             payload.sync();
@@ -429,8 +509,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 type: 'px',
                 key: 'px_code',
                 comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                 value: item.data.code,
-                description: item.data.description
+                description: item.data.description.toUpperCase()
             });
 
             payload.sync();
@@ -467,8 +548,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 type: 'rx',
                 key: 'rx_code',
                 comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                 value: item.data.code,
-                description: item.data.description
+                description: item.data.description.toUpperCase()
             });
 
             payload.sync();

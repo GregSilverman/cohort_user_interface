@@ -124,7 +124,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             parent,
             criteria = '',
             labs = Ext.getStore('Labs'),
-            description;
+            description,
+            comparator;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('Service test:' + payload);
@@ -188,7 +189,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             if (payload.findExact('type','sex') != -1) {
 
-                systolic.push(rec);
+                sex.push(rec);
                 if (cardioCatalogQT.config.mode === 'test') {
                     console.log(rec);
                     console.log('found payload: sex!');
@@ -198,7 +199,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             if (payload.findExact('type','age') != -1) {
 
-                systolic.push(rec);
+                age.push(rec);
                 if (cardioCatalogQT.config.mode === 'test') {
                     console.log(rec);
                     console.log('found payload: age!');
@@ -216,23 +217,24 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
             }
 
+            // get symblo for display
+            comparator = cardioCatalogQT.service.UtilityService.comparator_hash(rec.data.comparator);
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('query comparator ');
+                console.log(comparator);
+            }
+
             criteria += rec.data.type.toUpperCase() + ' '
-                            + rec.data.comparator + ' '
+                            + ' ' + comparator + ' ' + ' '
                             + rec.data.value + ' ';
 
-            // cannot grab description from xtype = 'combo', so go to store
-            if (rec.data.type === 'lab') {
-                description = labs.findRecord('code',rec.data.key);
-                criteria += description.data.description.toUpperCase() + ' ';
-            }
-            else {
-                criteria += rec.data.description.toUpperCase() + ' ';
-            }
+            criteria += rec.data.description.toUpperCase() + ' ';
 
             criteria += '<br>';
 
             if (cardioCatalogQT.config.mode === 'test') {
-                console.log('query: ' + criteria);
+                console.log('query criteria: ' + criteria);
             }
 
         });
@@ -258,14 +260,37 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     parent_hash: function(type) {
 
         var map = new Ext.util.HashMap();
-            map.add('blood_pressure_systolic', 'blood_pressure');
-            map.add('blood_pressure_diastolic', 'blood_pressure');
-            map.add('sex', 'sex');
-            map.add('age','age');
-            map.add('dx', 'dx_code');
-            map.add('lab', 'test_code');
-            map.add('px', 'proc_code');
-            map.add('rx', 'drug_code');
+
+        map.add('blood_pressure_systolic', 'blood_pressure');
+        map.add('blood_pressure_diastolic', 'blood_pressure');
+        map.add('sex', 'sex');
+        map.add('age','age');
+        map.add('dx', 'dx_code');
+        map.add('lab', 'test_code');
+        map.add('px', 'proc_code');
+        map.add('rx', 'drug_code');
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('parent');
+            console.log(type);
+            console.log(map.get(type));
+        }
+
+        return map.get(type);
+
+    },
+
+    // get symbol for display
+    comparator_hash: function(type) {
+
+        var map = new Ext.util.HashMap();
+
+        map.add('eq', '=');
+        map.add('lt', '<');
+        map.add('le', '<=');
+        map.add('gt','>');
+        map.add('ge', '>=');
+        map.add('bt', 'between');
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('parent');
@@ -312,7 +337,36 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                             + '<br>'
                             + criteria
                             + '<br>'
-                            + tpl.apply(store)); //TODO: add criteria on which query was executed
+                            + tpl.apply(store));
+    },
+
+    criteria_template: function(panel, store) {
+        var tpl;
+
+        // bind store to form panel
+        panel.setData(store);
+
+        tpl = new Ext.XTemplate(
+            '<table border=\'\1\'\ style=\'\width:25%\'\>',
+                '<tr>',
+                    '<td>CRITERIA</td>',
+                '</tr>',
+                '<tpl for=".">',
+                    '<tr>',
+                    // '<td>{data.sid}</td>',
+                        '<td>{data.key},{data.comparatorSymbol},{data.value},{data.description}</td>',
+                    '</tr>',
+                '</tpl>',
+            '</table>'
+        );
+        // render template with store data to panel using HTML and remove mask from parent object
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('submitted criteria:');
+            console.log(store);
+        }
+
+        panel.setHtml(tpl.apply(store)); //TODO: add criteria on which query was executed
     },
 
     clear_all: function() {
