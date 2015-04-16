@@ -299,6 +299,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     loading: true,
                     fieldLabel: 'Select lab type',
                     displayField: 'description',
+                    fieldName: 'description',
                     valueField: 'code',
                     value: '13457-7',
                     store: 'Labs'
@@ -372,8 +373,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     loading: true,
                     fieldLabel: 'Select lab type',
                     displayField: 'description',
+                    fieldName: 'description',
                     valueField: 'code',
-                        hidden: true,
+                    hidden: true,
                     value: '',
                     store: 'Labs'
                 },

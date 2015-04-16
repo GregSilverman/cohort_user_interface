@@ -354,7 +354,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 '<tpl for=".">',
                     '<tr>',
                     // '<td>{data.sid}</td>',
-                        '<td>{data.key},{data.comparatorSymbol},{data.value},{data.description}</td>',
+                        '<tpl if="data.type === \'lab\' || data.type === \'dx\' || data.type === \'px\' || data.type === \'rx\' ">',
+                            '<td>{data.type} {data.comparatorSymbol} {data.description}</td>',
+                        '<tpl else>',
+                            '<td>{data.type} {data.comparatorSymbol} {data.value}</td>',
+                        '</tpl>',
                     '</tr>',
                 '</tpl>',
             '</table>'

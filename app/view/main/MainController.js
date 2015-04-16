@@ -337,16 +337,18 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             form = button.up('form'),
             labComparator = form.down('#labComparator').value,
             labCode = form.down('#labCode').value,
+            labDescription = form.down('#labCode').rawValue,
             labValue = form.down('#labValue').value,
             upperLab = form.down('#upperLab').value,
             labComparatorSecond = form.down('#labComparatorSecond').value,
             labCodeSecond = form.down('#labCodeSecond').value,
+            labDescriptionSecond = form.down('#labCodeSecond').rawValue,
             labValueSecond = form.down('#labValueSecond').value,
-            upperLabSecond = form.down('#upperLabSecond').value,
-            labs = Ext.getStore('Labs');
+            upperLabSecond = form.down('#upperLabSecond').value;
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('show object vitals');
+            console.log('show object labs');
+            console.log(form.down('#labCode'));
             console.log(labComparator);
             console.log(labCode);
             console.log(labValue);
@@ -409,7 +411,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         value: test_lab,
                         comparator: labComparator,
                         comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labComparator).toUpperCase(),
-                        description: labs.findRecord('code',labCode).data.description
+                        description: labDescription
                     });
                     payload.sync();
                 }
@@ -421,7 +423,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         value: test_lab_second,
                         comparator: labComparatorSecond,
                         comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labComparatorSecond).toUpperCase(),
-                        description: labs.findRecord('code',labCodeSecond).data.description
+                        description: labDescriptionSecond
                     });
                     payload.sync();
                 }
