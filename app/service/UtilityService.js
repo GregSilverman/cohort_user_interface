@@ -9,6 +9,17 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         this.initConfig(config);
     },
 
+    // assemble URL for Ajax call to API
+    // format is criterionA_part1;criterionA_part2
+    // part1 maintains information for either the bucket from which to pull (e.g., lab -> test_code bucket), or the single attribute bucket from which to pull (e.g., sex = m)
+    // part2 maintains information about the specific item and criterion by value to pul (e.g, labs -> result_value compared to desired result, or sex = m)
+    // each part has three delimited sections in the format type:key;comparator;value, where type gives the reference to
+    // a) type of data and key identifies the bucket name,
+    // b) comparator is the comparison operator and
+    // c) value is the criterion value
+    //
+    // mappings to actual attribute names are resolved via a hash lookup
+    // comparators for static defaults are set in code below (e.g., blood_pressure/lab)
     url: function(payload) {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
             url =  cardioCatalogQT.config.protocol,
@@ -28,8 +39,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         payload.each(function(rec) {
 
-            parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type); // get parent value
+            parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type); // get parent value for assembling bucket query in API
 
+            // section "a" of query
             url += rec.data.type +
                 seperator  +
                 parent +
@@ -46,7 +58,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             url += delimiter;
 
-
+            // section "b"
             if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
                 payload.data.items[i].data.key === 'blood_pressure_diastolic'){
                 url += 'blood_pressure'
@@ -73,6 +85,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 url += parent;
             }
 
+            // section "c"
             url += delimiter +
                 rec.data.comparator +
                 delimiter +
@@ -88,7 +101,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         });
 
         // save criteria in data store
-
         queries.add({
             url: url,
             user: 'gms',
@@ -107,6 +119,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         return url;
     },
 
+    // used for display with query results
     criteria: function(payload){
 
         var criteria = '',
@@ -144,7 +157,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     // TODO: ensure payload exists, is clean and does not produce spurious results
     url_request: function(){
-        var queries = Ext.getStore('Queries'),//,
+        var queries = Ext.getStore('Queries'),
             url = queries.last().data.url;
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -156,7 +169,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    // get parent element
+    // get parent element for pulling correct bucket
     parent_hash: function(type) {
 
         var map = new Ext.util.HashMap();
@@ -257,7 +270,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         '<tpl if="data.type === \'dx\' || data.type === \'px\' || data.type === \'rx\' ">',
                             '<td>{data.type} {data.comparatorSymbol} {data.description}</td>',
                         '<tpl elseif="data.type === \'lab\'">',
-                            '<td>{data.type} {data.description} {data.comparatorSymbol} {data.value}</td>',
+                            '<td> {data.description} {data.comparatorSymbol} {data.value}</td>',
                         '<tpl else>',
                             '<td>{data.type} {data.comparatorSymbol} {data.value}</td>',
                         '</tpl>',
@@ -341,6 +354,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
+    // customized search, as per http://stackoverflow.com/questions/28974034/multiselect-search-whole-string
     multi_select_search: function(text,me) {
 
         var filter = me.searchFilter,

@@ -21,22 +21,13 @@ Ext.define('cardioCatalogQT.Application', {
         'Ext.state.CookieProvider',
         'Ext.window.MessageBox',
         'Ext.tip.QuickTipManager',
-        'cardioCatalogQT.*',
         'Ext.form.Panel',
         'Ext.ux.form.MultiSelect',
         'Ext.ux.form.ItemSelector',
-        'cardioCatalogQT.service.UtilityService',
-        'cardioCatalogQT.service.Base64'
+        'cardioCatalogQT.*'
     ],
 
-    //autoCreateViewport: true,
-
-    // create a reference in Ext.application so we can access it from multiple functions
-    splashscreen: {},
-
     init: function() {
-        // start the mask on the body and get a reference to the mask
-       // splashscreen = Ext.getBody().mask('Loading cardioCatalogQT, please stand by ...', 'splashscreen');
 
     },
 
@@ -60,24 +51,6 @@ Ext.define('cardioCatalogQT.Application', {
             callingFrom: ''
 
         };
-
-      /*  Ext.tip.QuickTipManager.init();
-        var task = new Ext.util.DelayedTask(function() {
-
-            // fade out the body mask
-            splashscreen.fadeOut({
-                duration: 500,
-                remove: true
-            });
-
-            // fade out the message
-            splashscreen.next().fadeOut({
-                duration: 500,
-                remove: true
-            });
-        });
-
-        task.delay(1000); */
 
         // TODO - Launch the application
 
