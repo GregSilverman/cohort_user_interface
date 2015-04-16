@@ -3,7 +3,6 @@
  * "autoCreateViewport" property. That setting automatically applies the "viewport"
  * plugin to promote that instance of this class to the body element.
  *
- * TODO - Replace this content of this view to suite the needs of your application.
  */
 
 Ext.define('cardioCatalogQT.view.main.Main', {
@@ -70,7 +69,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             styleHtmlContent: true
         },
 
-        // begin tab elements here
+        // Tab elements:
         // widget references to cardioCatalogQT.form
         {
             xtype: 'demographicForm'

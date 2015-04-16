@@ -34,22 +34,16 @@ Ext.define('cardioCatalogQT.Application', {
     launch: function () {
 
         Ext.Loader.setConfig({enabled: true});
-        Ext.Loader.setPath('Ext.ux', 'Library/JavaScript/ext-js-5.1.0/examples/ux');
 
+        // Static parameters
         cardioCatalogQT.config = {
 
             mode: 'test', // switch to control use of staging or production server
             protocol: 'http://',
             host: 'imagelibrary.ahc.umn.edu',
-            apiClinical: '/api/clinical/',
-            apiPhi: '/api/phi/',
-            apiAggregate: '/api/aggregate/',
             apiLogin: '/api/token',
-            apiResource: '/api/resource',
             apiFactor: '/api/factor',
-            apiGetQ: '/api/getQ/',
-            callingFrom: ''
-
+            apiGetQ: '/api/getQ/'
         };
 
         // TODO - Launch the application
