@@ -16,16 +16,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             delimiter = ';',
             n = payload.getCount(),
             i = 0,
-            parent,
-            query_criteria = '';
+            parent;
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('Service test:' + payload);
+            console.log('URL payload:' + payload);
             console.log('n: ' + n);
         }
 
-        url += cardioCatalogQT.config.host;
-        url += cardioCatalogQT.config.apiGetQ;
+        url += cardioCatalogQT.config.host
+            + cardioCatalogQT.config.apiGetQ;
 
         payload.each(function(rec) {
 
@@ -37,15 +36,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 delimiter;
 
             if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
-                payload.data.items[i].data.key === 'blood_pressure_diastolic' ||
-                payload.data.items[i].data.type === 'lab'){
+                    payload.data.items[i].data.key === 'blood_pressure_diastolic' ||
+                    payload.data.items[i].data.type === 'lab') {
                 url += 'eq';
             }
             else {
-                url += rec.data.comparator
+                url += rec.data.comparator;
             }
 
             url += delimiter;
+
 
             if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
                 payload.data.items[i].data.key === 'blood_pressure_diastolic'){
@@ -87,25 +87,21 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         });
 
-        query_criteria += cardioCatalogQT.service.UtilityService.criteria(payload);
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('query: ' + query_criteria);
-        }
+        // save criteria in data store
 
         queries.add({
             url: url,
             user: 'gms',
-            criteria: query_criteria
+            criteria: cardioCatalogQT.service.UtilityService.criteria(payload)
         });
 
         queries.sync();
 
         if (cardioCatalogQT.config.mode === 'test') {
             // get the last inserted url
-            console.log('last query model:');
             console.log(queries.last());
             console.log(queries.last().data.url);
+            console.log(queries.last().data.criteria);
         }
 
         return url;
@@ -113,18 +109,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     criteria: function(payload){
 
-        var dx =[],
-            px = [],
-            rx = [],
-            systolic = [],
-            diastolic = [],
-            lab = [],
-            sex = [],
-            age = [],
-            parent,
-            criteria = '',
-            labs = Ext.getStore('Labs'),
-            description,
+        var criteria = '',
             comparator;
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -133,91 +118,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         payload.each(function(rec) {
 
-            if (payload.findExact('type','dx') != -1) {
-
-                dx.push(rec);
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('found payload: Dx!');
-                    console.log(rec.data.key);
-                }
-
-            }
-
-            if (payload.findExact('type','rx') != -1) {
-
-                dx.push(rec);
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('found payload: Rx!');
-                    console.log(rec.data.key);
-                }
-
-            }
-
-            if (payload.findExact('type','px') != -1) {
-
-                dx.push(rec);
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('found payload: Px!');
-                    console.log(rec.data.key);
-                }
-
-            }
-
-            if (payload.findExact('type','blood_pressure_diastolic') != -1) {
-
-                diastolic.push(rec);
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log(rec);
-                    console.log('found payload: diastolic!');
-                    console.log(rec.data.key);
-                    console.log(parent);
-                }
-            }
-
-            if (payload.findExact('type','blood_pressure_systolic') != -1) {
-
-                systolic.push(rec);
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log(rec);
-                    console.log('found payload: systolic!');
-                    console.log(rec.data.key);
-                }
-            }
-
-            if (payload.findExact('type','sex') != -1) {
-
-                sex.push(rec);
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log(rec);
-                    console.log('found payload: sex!');
-                    console.log(rec.data.key);
-                }
-            }
-
-            if (payload.findExact('type','age') != -1) {
-
-                age.push(rec);
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log(rec);
-                    console.log('found payload: age!');
-                    console.log(rec.data.key);
-                }
-            }
-
-            if (payload.findExact('type','lab') != -1) {
-
-                lab.push(rec);
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log(rec);
-                    console.log('found payload: lab!');
-                    console.log(rec.data.key);
-                }
-            }
-
-            // get symblo for display
+            // get symbol for display
             comparator = cardioCatalogQT.service.UtilityService.comparator_hash(rec.data.comparator);
 
             if (cardioCatalogQT.config.mode === 'test') {
@@ -227,9 +128,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             criteria += rec.data.type.toUpperCase() + ' '
                             + ' ' + comparator + ' ' + ' '
-                            + rec.data.value + ' ';
-
-            criteria += rec.data.description.toUpperCase() + ' ';
+                            + rec.data.value + ' '+  ' '
+                            + rec.data.description.toUpperCase() + ' ';
 
             criteria += '<br>';
 
