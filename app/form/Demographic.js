@@ -4,7 +4,7 @@
 
 Ext.define('cardioCatalogQT.form.Demographic', {
     extend: 'Ext.form.Panel',
-    alias : 'widget.demographicForm',
+    alias: 'widget.demographicForm',
     config: {
         variableHeights: false,
         title: 'Demographics',

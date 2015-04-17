@@ -68,7 +68,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             flex: 1,
             styleHtmlContent: true
         },
-
+        {
+            xtype: 'criteriaGrid'
+        },
         // Tab elements:
         // widget references to cardioCatalogQT.form
         {

@@ -9,7 +9,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.main-view',
 
-
     requires: [
         'Ext.window.MessageBox'
     ],
