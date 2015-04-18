@@ -34,7 +34,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             styleHtmlContent: true,
             items:[{
                 xtype: 'image',
-                src: 'resources/images/cv.png',
+                src: 'resources/images/R3D3.png',
                 height: 50,
                 width: 280
             },{

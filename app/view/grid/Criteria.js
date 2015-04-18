@@ -25,11 +25,11 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
 
     // This view acts as the default listener scope for listeners declared within it.
     // For example the selectionModel's selectionchange listener resolves to this.
-    defaultListenerScope: true,
+    defaultListenerScope: false,
 
     // This view acts as a reference holder for all components below it which have a reference config
     // For example the onSelectionChange listener accesses a button using its reference
-    referenceHolder: true,
+    //referenceHolder: true,
 
     onSelectionChange: function(sm, selections) {
         this.getReferences().removeButton.setDisabled(selections.length === 0);

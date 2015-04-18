@@ -16,7 +16,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     onExecuteClick: function (button) {
         var auth = sessionStorage.sessionToken + ':unknown',
             hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
-            panel = button.up('form').up().down('#results'),
+            panel = button.up().up().up().down('#results'),
             json = [],
             records = [],
             payload = Ext.getStore('Payload'),
