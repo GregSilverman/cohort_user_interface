@@ -21,7 +21,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
     width: '100%',
     height: 400,
 
-    layout: 'border',
+    layout: 'vbox',
     defaults: {
         bodyPadding: 5
     },
@@ -63,10 +63,13 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         {
             title:'Results',
             region: 'central',
-            xtype: 'form',
-            itemId: 'results',
+            xtype: 'container',
             flex: 1,
-            styleHtmlContent: true
+            itemId: 'results'
+            //styleHtmlContent: true
+        },
+        {
+            xtype: 'resultsGrid'
         },
         {
             xtype: 'criteriaGrid'

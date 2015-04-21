@@ -3,16 +3,19 @@
  * needed for your application, but these edits will have to be merged by
  * Sencha Cmd when upgrading.
  */
+
 Ext.application({
     name: 'cardioCatalogQT',
 
     extend: 'cardioCatalogQT.Application',
     
     autoCreateViewport: 'cardioCatalogQT.view.main.Main'
-	
+
     //-------------------------------------------------------------------------
     // Most customizations should be made to cardioCatalogQT.Application. If you need to
     // customize this file, doing so below this section reduces the likelihood
     // of merge conflicts when upgrading to new versions of Sencha Cmd.
     //-------------------------------------------------------------------------
 });
+
+

@@ -21,7 +21,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             records = [],
             payload = Ext.getStore('Payload'),
             url,
-            store = Ext.create('Ext.data.Store',{
+           /* store = Ext.create('Ext.data.Store',{
                 fields: [
                     'attribute',
                     'sid',
@@ -31,7 +31,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 ],
                 data: records,
                 paging: false
-            });
+            });*/
+            store =  Ext.create('cardioCatalogQT.store.Results');
+
+        store.getProxy().clear();
+        store.data.clear();
+        store.sync();
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('component: ');
@@ -100,12 +105,19 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                             }
                         });
                     });
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(records);
-                    }
 
                     //update store with data
                     store.add(records);
+                    store.sync();
+
+                    button.up().up().up().down('#gridTest').getStore().load();
+
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(records);
+                        console.log('store');
+                        console.log(store);
+                    }
                 }
                 // render template
                 cardioCatalogQT.service.UtilityService.template(panel, store);

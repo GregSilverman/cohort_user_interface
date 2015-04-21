@@ -4,16 +4,16 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
     xtype: 'framing-buttons',
     store: 'Payload',
 
-    controller: 'main-view',
+    //controller: 'main-view',
     requires: [
         'cardioCatalogQT.view.main.MainController'
     ],
 
     columns: [
-        {text: "Description", flex: 1, sortable: true, dataIndex: 'description'},
         {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
         {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
-        {text: "Value", width: 120, sortable: true, dataIndex: 'value'}
+        {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
+        {text: "Description", flex: 1, sortable: true, dataIndex: 'description'}
     ],
     columnLines: true,
     selModel: {
@@ -45,7 +45,7 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
         },
         items: [{
             minWidth: 80,
-            text: 'Execute',
+            text: 'Search on criteria',
             xtype: 'button',
             itemId: 'executeTest',
             handler: 'onExecuteClick'

@@ -3,6 +3,14 @@
  * Ext.application(). This is the ideal place to handle application launch and initialization
  * details.
  */
+
+Ext.Loader.setConfig({
+    enabled: true,
+    paths: {
+        'Ext.ux.exporter': 'exporter'
+    }
+});
+
 Ext.define('cardioCatalogQT.Application', {
     extend: 'Ext.app.Application',
     
@@ -14,10 +22,12 @@ Ext.define('cardioCatalogQT.Application', {
         'Medications',
         'Procedures',
         'Payload',
-        'Queries'
+        'Queries',
+        'Results'
     ],
     requires: [
         'Ext.app.*',
+        'Ext.ux.exporter.Exporter',
         'Ext.state.CookieProvider',
         'Ext.window.MessageBox',
         'Ext.tip.QuickTipManager',
