@@ -13,6 +13,7 @@ Ext.define('cardioCatalogQT.store.Results', {
 
         storeId: 'Results',
         autoLoad: true,
+        pageSize: undefined,
 
         proxy: {
             type: 'localstorage',

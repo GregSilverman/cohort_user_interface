@@ -4,6 +4,7 @@
  * details.
  */
 
+// See https://github.com/yogeshpandey009/Ext.ux.Exporter/
 Ext.Loader.setConfig({
     enabled: true,
     paths: {

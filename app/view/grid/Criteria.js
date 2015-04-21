@@ -65,7 +65,7 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
     frame: true,
     iconCls: 'icon-grid',
     alias: 'widget.criteriaGrid',
-    title: 'Search',
+    title: 'SearchCriteria',
 
     initComponent: function() {
         this.width = 750;

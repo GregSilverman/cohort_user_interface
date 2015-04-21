@@ -1,40 +1,33 @@
 Ext.define('cardioCatalogQT.view.grid.Results', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.container.Container',
 
     alias: 'widget.resultsGrid',
     itemId: 'test',
-    flex: 1,
-    styleHtmlContent: true,
-    title: 'Test',
+    title: 'ExportData',
 
-    //controller: 'main-view',
     requires: [
         'cardioCatalogQT.view.main.MainController',
         'Ext.ux.exporter.Exporter'
     ],
-
     items: [{
+        xtype: 'exporterbutton',
+        component: '#gridTest',
+        region: 'north'
+    },{
         xtype: 'tbspacer',
-        height: 25
-    }, {
-        xtype: 'grid',
+        height: 10
+    },{
+        xtype: 'gridpanel',
         store: 'Results',
         itemId:'gridTest',
-        scrollable: true,
+        autoScroll:true,
+        autoHeight: true,
+        maxHeight: 500,
         columns: [{
             text: 'sid',
-            xtype: 'templatecolumn',
-            dataIndex: 'sid',
-            tpl: '{sid}'
+            dataIndex: 'sid'
         }]
 
-    },{
-        xtype: 'exportbutton',
-        store: 'Results'
-        //Or you can use
-        //component: someGrid
-        //component: someTree
-        //component: '#someGridItemId'
     }]
 
 

@@ -34,9 +34,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             });*/
             store =  Ext.create('cardioCatalogQT.store.Results');
 
+        //localStorage.clear();
         store.getProxy().clear();
         store.data.clear();
         store.sync();
+
+
+        //button.up().up().up().down('#gridTest').getStore().load();
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('component: ');
@@ -117,6 +121,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         console.log(records);
                         console.log('store');
                         console.log(store);
+                        console.log(button.up().up().up().down('#gridTest').getStore().load());
                     }
                 }
                 // render template
