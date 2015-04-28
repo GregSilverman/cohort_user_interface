@@ -10,7 +10,9 @@ Ext.define('cardioCatalogQT.store.Payload', {
             {name: 'comparator', type: 'string'},
             {name: 'comparatorSymbol', type: 'string'},
             {name: 'value', type: 'string'},
-            {name: 'description', type: 'string'}
+            {name: 'description', type: 'string'},
+            {name: 'n', type: 'string'}
+
 
         ],
 

@@ -4,9 +4,7 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
     xtype: 'framing-buttons',
     store: 'Payload',
     itemId: 'searchGrid',
-    id: 'searchGrid',
 
-    //controller: 'main-view',
     requires: [
         'cardioCatalogQT.view.main.MainController'
     ],
@@ -15,7 +13,8 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
         {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
         {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
         {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
-        {text: "Description", flex: 1, sortable: true, dataIndex: 'description'}
+        {text: "Description", flex: 1, sortable: true, dataIndex: 'description'},
+        {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
     ],
     columnLines: true,
     selModel: {
@@ -25,7 +24,7 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
         }
     },
 
-    // This view acts as the default listener scope for listeners declared within it.
+    // When true, this view acts as the default listener scope for listeners declared within it.
     // For example the selectionModel's selectionchange listener resolves to this.
     defaultListenerScope: false,
 
@@ -46,11 +45,17 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
             text: 'Search on criteria',
             xtype: 'button',
             itemId: 'executeTest',
-            handler: 'onExecuteClick'
+            handler: 'onSearchClick'
         }]
         }, {
         xtype: 'toolbar',
         items: [{
+            reference: 'andButton',
+            text: 'AND',
+            tooltip: 'Add the selected criteria as AND',
+            iconCls: 'and',
+            handler: 'onCriterionAnd'
+        },'-',{
             reference: 'orButton',
             text: 'OR',
             tooltip: 'Add the selected criteria as OR',
@@ -58,7 +63,7 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
             handler: 'onCriterionOr'
         },'-',{
             reference: 'removeButton',  // The referenceHolder can access this button by this name
-            text: 'Remove Criterion',
+            text: 'Remove',
             tooltip: 'Remove the selected item',
             iconCls: 'remove',
             disabled: true,
@@ -70,7 +75,7 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
     frame: true,
     iconCls: 'icon-grid',
     alias: 'widget.criteriaGrid',
-    title: 'SearchCriteria',
+    title: 'Search',
 
     initComponent: function() {
         this.width = 750;

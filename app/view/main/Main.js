@@ -61,7 +61,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             }]
         },
         {
-            title:'QueryResults',
+            title:'Results',
             region: 'central',
             xtype: 'container',
             flex: 1,

@@ -113,7 +113,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         queries.add({
             url: url,
             user: 'gms',
-            criteria: cardioCatalogQT.service.UtilityService.criteria(payload)
+            criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
         });
 
         queries.sync();
@@ -129,13 +129,22 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     },
 
     // used for display with query results
-    criteria: function(payload){
+    criteria: function(payload, options, n){
 
         var criteria = '',
-            comparator;
+            comparator,
+            bool,
+            i = 0;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('Service test:' + payload);
+        }
+
+        if (!options.delimiter || options.delimiter === ';'){
+            bool = 'AND';
+        }
+        else if (options.delimiter === '|'){
+            bool = 'OR';
         }
 
         payload.each(function(rec) {
@@ -150,8 +159,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             criteria += rec.data.type.toUpperCase() + ' '
                             + ' ' + comparator + ' ' + ' '
-                            + rec.data.value + ' '+  ' '
+                            + rec.data.value + ' ' +  ' '
                             + rec.data.description.toUpperCase() + ' ';
+
+            i += 1;
+
+            // separate all query units by appropriate boolean operater
+            if (i < n){
+                criteria += bool;
+            }
 
             criteria += '<br>';
 
@@ -390,6 +406,174 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             filters.remove(filter);
         }
 
+    },
+
+    assemble_bool: function(button, options){
+        var grid = button.up('grid'),
+            selection = grid.getSelectionModel().getSelection(),
+            store = Ext.getStore('Payload'),
+            test = [];
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('grid');
+            console.log(grid);
+            console.log('selection');
+            console.log(selection);
+            console.log('store');
+            console.log(store);
+        }
+
+        if (selection) {
+
+            // array of elements on which to filter
+            Ext.Array.each(selection, function (item) {
+                test.push(item.data.id);
+
+            });
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('test');
+                console.log(test);
+            }
+
+            store.clearFilter(true); // Clears old filters
+            store.filter([ // filter on selected array elements
+                {
+                    filterFn: function(rec) {
+                        return Ext.Array.indexOf(test, rec.get('id')) != -1;
+                    }
+                }
+            ]);
+
+            // create URL
+            cardioCatalogQT.service.UtilityService.url(store,options);
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered store');
+                console.log(store);
+                console.log('url');
+                console.log(cardioCatalogQT.service.UtilityService.url(store,options));
+            }
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
+    },
+
+    submit_query: function(button, url){
+
+        var auth = sessionStorage.sessionToken + ':unknown',
+            hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
+            panel = button.up().up().up().down('#results'),
+            json = [],
+            records = [],
+            //payload = Ext.getStore('Payload'),
+            //url,
+            store =  Ext.create('cardioCatalogQT.store.Results');
+            /*options = {
+                delimiter: null
+            };*/
+
+        //localStorage.clear();
+        store.getProxy().clear();
+        store.data.clear();
+        store.sync();
+
+        // Make sure current store contents are displayed on grid
+        //button.up().up().up().down('#gridTest').getStore().load();
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('component: ');
+            console.log(panel);
+        }
+
+/*        // construct URL and submit criteria to Query store
+        // if no criteria have been selected then run the last generated query
+        if (payload.getCount() > 0) {
+            url = cardioCatalogQT.service.UtilityService.url(payload, options);
+        }
+        // get last submitted url
+        else {
+            url = cardioCatalogQT.service.UtilityService.url_request();
+  l     }*/
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('call to make url: ' + url);
+        }
+
+        panel.setMasked({
+            xtype: 'loadmask',
+            message: 'Loading...'
+        });
+
+        // send auth header before Ajax request to disable auth form
+        Ext.Ajax.on('beforerequest', (function(klass, request) {
+            if (request.failure) { // already have auth token: do nothing
+                return null;
+            }
+            else { // send auth token
+                return request.headers.Authorization = hash;
+            }
+        }), this);
+
+        Ext.Ajax.request({
+            cors: true,
+            url: url,
+            useDefaultXhrHeader: false,
+            headers: {
+                'Accept': 'application/json'
+            },
+            disableCaching: false,
+            success: function(response) {
+                json = Ext.decode(response.responseText);
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('json' + json);
+                }
+
+                if(json !== null &&  typeof (json) !==  'undefined'){
+
+                    // custom JSON reader as per
+                    // http://stackoverflow.com/questions/11159480/sencha-touch-store-json-file-containing-array
+                    Ext.each(json, function(entry) {
+                        Ext.each(json.items || [], function(tuple) {
+
+                            records.push({
+                                N: tuple[0].N,
+                                sid: tuple[0].sid,
+                                source: tuple[0].source
+                            });
+                            if (cardioCatalogQT.config.mode === 'test') {
+                                console.log(tuple[0].source
+                                    + 'N ' + tuple[0].N
+                                    + 'attribute ' + tuple[0].attribute
+                                    + 'sid ' + tuple[0].sid
+                                    + 'value ' + tuple[0].value);
+                            }
+                        });
+                    });
+
+                    //update store with data
+                    store.add(records);
+                    store.sync();
+
+                    // reload store for grid display
+                    //button.up().up().up().down('#gridTest').getStore().load();
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(records);
+                        console.log('store');
+                        console.log(store);
+                        console.log(button.up().up().up().down('#gridTest').getStore().load());
+                    }
+                }
+                // render template
+                cardioCatalogQT.service.UtilityService.template(panel, store);
+                // clear criteria from store
+                cardioCatalogQT.service.UtilityService.clear_all();
+            }
+        });
     }
 
 });
