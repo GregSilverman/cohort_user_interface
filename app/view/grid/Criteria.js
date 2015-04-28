@@ -3,6 +3,8 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
 
     xtype: 'framing-buttons',
     store: 'Payload',
+    itemId: 'searchGrid',
+    id: 'searchGrid',
 
     //controller: 'main-view',
     requires: [
@@ -31,10 +33,6 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
     // For example the onSelectionChange listener accesses a button using its reference
     //referenceHolder: true,
 
-    onSelectionChange: function(sm, selections) {
-        this.getReferences().removeButton.setDisabled(selections.length === 0);
-    },
-
     // inline buttons
     dockedItems: [{
         xtype: 'toolbar',
@@ -53,11 +51,18 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
         }, {
         xtype: 'toolbar',
         items: [{
+            reference: 'orButton',
+            text: 'OR',
+            tooltip: 'Add the selected criteria as OR',
+            iconCls: 'or',
+            handler: 'onCriterionOr'
+        },'-',{
             reference: 'removeButton',  // The referenceHolder can access this button by this name
             text: 'Remove Criterion',
             tooltip: 'Remove the selected item',
             iconCls: 'remove',
-            disabled: false
+            disabled: true,
+            handler: 'onCriterionRemove'
         }]
     }],
 

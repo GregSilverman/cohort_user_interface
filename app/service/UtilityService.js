@@ -20,18 +20,27 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     //
     // mappings to actual attribute names are resolved via a hash lookup
     // comparators for static defaults are set in code below (e.g., blood_pressure/lab)
-    url: function(payload) {
+    url: function(payload, options) {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
             url =  cardioCatalogQT.config.protocol,
             seperator = ':',
+            bool_delimiter,
             delimiter = ';',
             n = payload.getCount(),
             i = 0,
             parent;
 
+        if (!options.delimiter){
+            bool_delimiter = ';';
+        }
+        else{
+            bool_delimiter = options.delimiter;
+        }
+
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('URL payload:' + payload);
             console.log('n: ' + n);
+            console.log('delimiter: ' + delimiter);
         }
 
         url += cardioCatalogQT.config.host
@@ -95,7 +104,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             // separate all query units by delimiter, except for the last
             if (i < n){
-                url += delimiter;
+                url += bool_delimiter;
             }
 
         });

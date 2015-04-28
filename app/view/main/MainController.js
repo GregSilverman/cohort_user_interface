@@ -21,17 +21,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             records = [],
             payload = Ext.getStore('Payload'),
             url,
-           /* store = Ext.create('Ext.data.Store',{
-                fields: [
-                    'attribute',
-                    'sid',
-                    'value',
-                    'N',
-                    'source'
-                ],
-                data: records,
-                paging: false
-            });*/
             store =  Ext.create('cardioCatalogQT.store.Results');
 
         //localStorage.clear();
@@ -39,7 +28,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         store.data.clear();
         store.sync();
 
-
+        // Make sure current store contents are displayed on grid
         //button.up().up().up().down('#gridTest').getStore().load();
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -48,7 +37,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
 
         // construct URL and submit criteria to Query store
-        // if no criteria have been selected then run the last
+        // if no criteria have been selected then run the last generated query
         if (payload.getCount() > 0) {
             url = cardioCatalogQT.service.UtilityService.url(payload);
         }
@@ -114,8 +103,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     store.add(records);
                     store.sync();
 
-                    button.up().up().up().down('#gridTest').getStore().load();
-
+                    // reload store for grid display
+                    //button.up().up().up().down('#gridTest').getStore().load();
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log(records);
@@ -581,6 +570,96 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
         }); // each()
+    },
+
+    onSelectionChange: function(sm, selections) {
+        this.getReferences().removeButton.setDisabled(selections.length === 0);
+    },
+
+    onCriterionRemove: function (button) {
+            var grid = button.up('grid'),
+                selection = grid.getView().getSelectionModel().getSelection(),
+                store = Ext.getStore('Payload');
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('grid');
+                console.log(grid);
+                console.log('selection');
+                console.log(selection);
+                console.log('store');
+                console.log(store);
+            }
+
+            if (selection) {
+                store.remove(selection);
+                store.sync();
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('removed')
+                    console.log(store)
+                }
+            }
+            else {
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('nada')
+                }
+            }
+        },
+
+    onCriterionOr: function (button) {
+        var grid = button.up('grid'),
+            selection = grid.getSelectionModel().getSelection(),
+            store = Ext.getStore('Payload'),
+            test = [],
+            options = {
+                delimiter: '|'
+            };
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('grid');
+            console.log(grid);
+            console.log('selection');
+            console.log(selection);
+            console.log('store');
+            console.log(store);
+        }
+
+        if (selection) {
+
+            // array of elements on which to filter
+            Ext.Array.each(selection, function (item) {
+                test.push(item.data.id);
+
+            });
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('test');
+                console.log(test);
+            }
+
+            store.clearFilter(true); // Clears old filters
+            store.filter([ // filter on array elements
+                {
+                    filterFn: function(rec) {
+                        return Ext.Array.indexOf(test, rec.get('id')) != -1;
+                    }
+                }
+            ]);
+
+            cardioCatalogQT.service.UtilityService.url(store,options);
+
+            //store.sync();
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('removed');
+                console.log(store);
+                console.log('url');
+                console.log(cardioCatalogQT.service.UtilityService.url(store,options));
+            }
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
     }
 
 });
