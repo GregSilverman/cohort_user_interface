@@ -40,6 +40,7 @@ Ext.define('cardioCatalogQT.form.Procedure', {
             height:25
         },{ // When
             xtype: 'combo',
+            width: 200,
             itemId: 'procedureWhenComparator',
             queryMode: 'local',
             editable: false,
@@ -70,11 +71,13 @@ Ext.define('cardioCatalogQT.form.Procedure', {
             }
         }, {
             xtype: 'datefield',
+            width: 200,
             itemId: 'procedureWhenValue',
             fieldLabel: 'value of',
             hideTrigger:true
         }, {
             xtype: 'datefield',
+            width: 200,
             itemId: 'upperProcedureWhen',
             fieldLabel: 'and',
             hidden: true,

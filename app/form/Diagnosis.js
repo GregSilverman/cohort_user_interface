@@ -40,6 +40,7 @@ Ext.define('cardioCatalogQT.form.Diagnosis', {
             height:25
         },{ // When
             xtype: 'combo',
+            width: 200,
             itemId: 'diagnosisWhenComparator',
             queryMode: 'local',
             editable: false,
@@ -70,11 +71,13 @@ Ext.define('cardioCatalogQT.form.Diagnosis', {
             }
         }, {
             xtype: 'datefield',
+            width: 200,
             itemId: 'diagnosisWhenValue',
             fieldLabel: 'value of',
             hideTrigger:true
         }, {
             xtype: 'datefield',
+            width: 200,
             itemId: 'upperDiagnosisWhen',
             fieldLabel: 'and',
             hidden: true,
