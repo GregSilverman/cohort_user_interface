@@ -112,6 +112,52 @@ Ext.define('cardioCatalogQT.form.Vital', {
             },{
                 xtype: 'tbspacer',
                 height:25
+            },{ // Diastolic
+                xtype: 'combo',
+                itemId: 'diastolicComparator',
+                queryMode: 'local',
+                editable: false,
+                value: 'eq',
+                triggerAction: 'all',
+                forceSelection: true,
+                fieldLabel: 'Select diastolic bp that is',
+                displayField: 'name',
+                valueField: 'value',
+                store: {
+                    fields: ['name', 'value'],
+                    data: [
+                        {name: '=', value: 'eq'},
+                        {name: '<', value: 'lt'},
+                        {name: '<=', value: 'le'},
+                        {name: '>', value: 'gt'},
+                        {name: '>=', value: 'ge'},
+                        {name: 'between', value: 'bt'}
+                    ]
+                },
+
+                listeners: {
+                    change: function (combo, value) {
+                        // use component query to  toggle the hidden state of upper value
+                        if (value === 'bt') {
+                            combo.up('form').down('#upperDiastolic').show();
+                        } else {
+                            combo.up('form').down('#upperDiastolic').hide();
+                        }
+                    }
+                }
+            }, {
+                xtype: 'numberfield',
+                itemId: 'diastolicValue',
+                fieldLabel: 'value of',
+                value: ''
+            }, {
+                xtype: 'numberfield',
+                itemId: 'upperDiastolic',
+                fieldLabel: 'and',
+                hidden: true
+            },{
+                xtype: 'tbspacer',
+                height:25
             },{ // When
                 xtype: 'combo',
                 itemId: 'vitalWhenComparator',

@@ -198,6 +198,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('test systolic : ' + test_systolic);
                 console.log('test diastolic: ' + test_diastolic);
+                console.log('systolic' + systolicValue)
+                console.log('systolicComp' + systolicComparator)
+                console.log('systolicUpper' + upperSystolic)
+
             }
 
             // insert only if exists
@@ -207,7 +211,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 (!upperSystolic &&
                 systolicComparator !== 'bt' &&
-                systolicValue)) &&
+                systolicValue) ||
+
+                (!systolicValue)) &&
 
                 ((diastolicComparator === 'bt' &&
                 diastolicValue &&
@@ -215,9 +221,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 (!upperDiastolic &&
                 diastolicComparator !== 'bt' &&
-                diastolicValue)
+                diastolicValue) ||
 
-                )) {
+                (!diastolicValue))) {
 
                 if (systolicValue) {
                     payload.add({
