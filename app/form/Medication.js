@@ -35,6 +35,50 @@ Ext.define('cardioCatalogQT.form.Medication', {
                     cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
                 }
             }
+        },{
+            xtype: 'tbspacer',
+            height:25
+        },{ // When
+            xtype: 'combo',
+            itemId: 'medicationWhenComparator',
+            queryMode: 'local',
+            editable: false,
+            value: 'eq',
+            triggerAction: 'all',
+            forceSelection: true,
+            fieldLabel: 'Select medication date that is',
+            displayField: 'name',
+            valueField: 'value',
+            store: {
+                fields: ['name', 'value'],
+                data: [
+                    {name: '<=', value: 'le'},
+                    {name: '>=', value: 'ge'},
+                    {name: 'between', value: 'bt'}
+                ]
+            },
+
+            listeners: {
+                change: function (combo, value) {
+                    // use component query to  toggle the hidden state of upper value
+                    if (value === 'bt') {
+                        combo.up('form').down('#upperMedicationWhen').show();
+                    } else {
+                        combo.up('form').down('#upperMedicationWhen').hide();
+                    }
+                }
+            }
+        }, {
+            xtype: 'datefield',
+            itemId: 'medicationWhenValue',
+            fieldLabel: 'value of',
+            hideTrigger:true
+        }, {
+            xtype: 'datefield',
+            itemId: 'upperMedicationWhen',
+            fieldLabel: 'and',
+            hidden: true,
+            hideTrigger:true
         }],
         lbar:[{
             xtype: 'button',

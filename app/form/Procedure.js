@@ -35,6 +35,50 @@ Ext.define('cardioCatalogQT.form.Procedure', {
                     cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
                 }
             }
+        },{
+            xtype: 'tbspacer',
+            height:25
+        },{ // When
+            xtype: 'combo',
+            itemId: 'procedureWhenComparator',
+            queryMode: 'local',
+            editable: false,
+            value: 'eq',
+            triggerAction: 'all',
+            forceSelection: true,
+            fieldLabel: 'Select procedure date that is',
+            displayField: 'name',
+            valueField: 'value',
+            store: {
+                fields: ['name', 'value'],
+                data: [
+                    {name: '<=', value: 'le'},
+                    {name: '>=', value: 'ge'},
+                    {name: 'between', value: 'bt'}
+                ]
+            },
+
+            listeners: {
+                change: function (combo, value) {
+                    // use component query to  toggle the hidden state of upper value
+                    if (value === 'bt') {
+                        combo.up('form').down('#upperProcedureWhen').show();
+                    } else {
+                        combo.up('form').down('#upperProcedureWhen').hide();
+                    }
+                }
+            }
+        }, {
+            xtype: 'datefield',
+            itemId: 'procedureWhenValue',
+            fieldLabel: 'value of',
+            hideTrigger:true
+        }, {
+            xtype: 'datefield',
+            itemId: 'upperProcedureWhen',
+            fieldLabel: 'and',
+            hidden: true,
+            hideTrigger:true
         }],
         lbar:[{
             xtype: 'button',

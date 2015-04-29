@@ -35,6 +35,50 @@ Ext.define('cardioCatalogQT.form.Diagnosis', {
                     cardioCatalogQT.service.UtilityService.multi_select_search(text, this);
                 }
             }
+        },{
+            xtype: 'tbspacer',
+            height:25
+        },{ // When
+            xtype: 'combo',
+            itemId: 'diagnosisWhenComparator',
+            queryMode: 'local',
+            editable: false,
+            value: 'eq',
+            triggerAction: 'all',
+            forceSelection: true,
+            fieldLabel: 'Select diagnosis date that is',
+            displayField: 'name',
+            valueField: 'value',
+            store: {
+                fields: ['name', 'value'],
+                data: [
+                    {name: '<=', value: 'le'},
+                    {name: '>=', value: 'ge'},
+                    {name: 'between', value: 'bt'}
+                ]
+            },
+
+            listeners: {
+                change: function (combo, value) {
+                    // use component query to  toggle the hidden state of upper value
+                    if (value === 'bt') {
+                        combo.up('form').down('#upperDiagnosisWhen').show();
+                    } else {
+                        combo.up('form').down('#upperDiagnosisWhen').hide();
+                    }
+                }
+            }
+        }, {
+            xtype: 'datefield',
+            itemId: 'diagnosisWhenValue',
+            fieldLabel: 'value of',
+            hideTrigger:true
+        }, {
+            xtype: 'datefield',
+            itemId: 'upperDiagnosisWhen',
+            fieldLabel: 'and',
+            hidden: true,
+            hideTrigger:true
         }],
         lbar: [{
             xtype: 'button',
