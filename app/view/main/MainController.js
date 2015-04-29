@@ -170,7 +170,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(diastolicValue);
         }
 
-        if (systolicValue || diatolicValue) {
+        if (systolicValue || diastolicValue) {
 
             var test_systolic = systolicValue,
                 test_diastolic = diastolicValue;
@@ -178,7 +178,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (systolicComparator === 'bt') {
 
                 if (!upperSystolic) {
-                    alert('Please enter max diastolic to continue')
+                    alert('Please enter max systolic to continue')
                 }
                 else {
                     test_systolic += ',' + upperSystolic;
@@ -187,8 +187,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             if (diastolicComparator === 'bt') {
 
-                if (!upperDisatolic) {
-                    alert('Please enter max lab to continue')
+                if (!upperDiastolic) {
+                    alert('Please enter max diastolic to continue')
                 }
                 else {
                     test_diastolic += ',' + upperDiastolic;
@@ -215,9 +215,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 (!upperDiastolic &&
                 diastolicComparator !== 'bt' &&
-                diastolicValue) ||
+                diastolicValue)
 
-                (!diastolicValue))) {
+                )) {
 
                 if (systolicValue) {
                     payload.add({
