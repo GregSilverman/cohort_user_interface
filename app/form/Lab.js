@@ -160,7 +160,16 @@ Ext.define('cardioCatalogQT.form.Lab', {
             }, {
                 xtype: 'tbspacer',
                 height:25
-            },{ // When
+            }, { //TODO: Add hide control
+                    xtype: 'button',
+                    text: 'Constrain search by date range',
+                    listeners: {
+                        click: function (button) {
+                            button.up('form').down('#labWhenComparator').show();
+                            button.up('form').down('#labWhenValue').show();
+                        }
+                    }
+            }, { // When
                 xtype: 'combo',
                 width: 200,
                 itemId: 'labWhenComparator',
@@ -172,6 +181,7 @@ Ext.define('cardioCatalogQT.form.Lab', {
                 fieldLabel: 'Select lab date that is',
                 displayField: 'name',
                 valueField: 'value',
+                hidden: true,
                 store: {
                     fields: ['name', 'value'],
                     data: [
@@ -196,6 +206,7 @@ Ext.define('cardioCatalogQT.form.Lab', {
                 width: 200,
                 itemId: 'labWhenValue',
                 fieldLabel: 'value of',
+                hidden: true,
                 hideTrigger:true
             }, {
                 xtype: 'datefield',

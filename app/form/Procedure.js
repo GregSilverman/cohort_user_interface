@@ -12,11 +12,11 @@ Ext.define('cardioCatalogQT.form.Procedure', {
         width: 200,
         bodyPadding: 10,
         defaults: {
-            anchor: '25%',
             labelWidth: 100
         },
         items: [{
             width: 100,
+            anchor: '25%',
             xtype: 'multiselector',
             title: 'Selected Px',
             itemId: 'procedure',
@@ -38,9 +38,19 @@ Ext.define('cardioCatalogQT.form.Procedure', {
         },{
             xtype: 'tbspacer',
             height:25
+        },{ //TODO: Add hide control
+            xtype: 'button',
+            text: 'Constrain search by date range',
+            listeners: {
+                click: function (button) {
+                    button.up('form').down('#procedureWhenComparator').show();
+                    button.up('form').down('#procedureWhenValue').show();
+                }
+            }
         },{ // When
             xtype: 'combo',
-            width: 200,
+            width: 100,
+            anchor: '10%',
             itemId: 'procedureWhenComparator',
             queryMode: 'local',
             editable: false,
@@ -50,6 +60,7 @@ Ext.define('cardioCatalogQT.form.Procedure', {
             fieldLabel: 'Select procedure date that is',
             displayField: 'name',
             valueField: 'value',
+            hidden: true,
             store: {
                 fields: ['name', 'value'],
                 data: [
@@ -71,13 +82,16 @@ Ext.define('cardioCatalogQT.form.Procedure', {
             }
         }, {
             xtype: 'datefield',
-            width: 200,
+            width: 100,
+            anchor: '10%',
             itemId: 'procedureWhenValue',
             fieldLabel: 'value of',
+            hidden: true,
             hideTrigger:true
         }, {
             xtype: 'datefield',
-            width: 200,
+            width: 100,
+            anchor: '10%',
             itemId: 'upperProcedureWhen',
             fieldLabel: 'and',
             hidden: true,

@@ -235,6 +235,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     });
 
                     payload.sync();
+                    console.log('YESH')
                 }
 
                 if (diastolicValue) {

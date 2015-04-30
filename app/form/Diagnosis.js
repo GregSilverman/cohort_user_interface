@@ -12,11 +12,11 @@ Ext.define('cardioCatalogQT.form.Diagnosis', {
         width: 200,
         bodyPadding: 10,
         defaults: {
-            anchor: '25%',
             labelWidth: 100
         },
         items: [{ //Dx
             width: 100,
+            anchor: '25%',
             xtype: 'multiselector',
             title: 'Selected Dx',
             itemId: 'diagnosis',
@@ -38,9 +38,19 @@ Ext.define('cardioCatalogQT.form.Diagnosis', {
         },{
             xtype: 'tbspacer',
             height:25
+        }, { //TODO: Add hide control
+            xtype: 'button',
+            text: 'Constrain search by date range',
+            listeners: {
+                click: function (button) {
+                    button.up('form').down('#diagnosisWhenComparator').show();
+                    button.up('form').down('#diagnosisWhenValue').show();
+                }
+            }
         },{ // When
             xtype: 'combo',
-            width: 200,
+            width: 100,
+            anchor: '10%',
             itemId: 'diagnosisWhenComparator',
             queryMode: 'local',
             editable: false,
@@ -49,6 +59,7 @@ Ext.define('cardioCatalogQT.form.Diagnosis', {
             forceSelection: true,
             fieldLabel: 'Select diagnosis date that is',
             displayField: 'name',
+            hidden: true,
             valueField: 'value',
             store: {
                 fields: ['name', 'value'],
@@ -71,13 +82,16 @@ Ext.define('cardioCatalogQT.form.Diagnosis', {
             }
         }, {
             xtype: 'datefield',
-            width: 200,
+            width: 100,
+            anchor: '10%',
             itemId: 'diagnosisWhenValue',
             fieldLabel: 'value of',
+            hidden: true,
             hideTrigger:true
         }, {
             xtype: 'datefield',
-            width: 200,
+            width: 100,
+            anchor: '10%',
             itemId: 'upperDiagnosisWhen',
             fieldLabel: 'and',
             hidden: true,

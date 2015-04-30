@@ -158,7 +158,16 @@ Ext.define('cardioCatalogQT.form.Vital', {
             },{
                 xtype: 'tbspacer',
                 height:25
-            },{ // When
+            },{
+                xtype: 'button',
+                text: 'Constrain search by date range',
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#vitalWhenComparator').show();
+                        button.up('form').down('#vitalWhenValue').show();
+                    }
+                }
+            }, { // When
                 xtype: 'combo',
                 itemId: 'vitalWhenComparator',
                 queryMode: 'local',
@@ -169,6 +178,7 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 fieldLabel: 'Select vital date that is',
                 displayField: 'name',
                 valueField: 'value',
+                hidden: true,
                 store: {
                     fields: ['name', 'value'],
                     data: [
@@ -192,6 +202,7 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 xtype: 'datefield',
                 itemId: 'vitalWhenValue',
                 fieldLabel: 'value of',
+                hidden: true,
                 hideTrigger:true
             }, {
                 xtype: 'datefield',

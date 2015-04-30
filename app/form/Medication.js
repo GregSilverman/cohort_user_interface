@@ -12,11 +12,11 @@ Ext.define('cardioCatalogQT.form.Medication', {
         width: 200,
         bodyPadding: 10,
         defaults: {
-            anchor: '25%',
             labelWidth: 100
         },
         items: [{
             width: 100,
+            anchor: '25%',
             xtype: 'multiselector',
             title: 'Selected Rx',
             itemId: 'medication',
@@ -38,9 +38,19 @@ Ext.define('cardioCatalogQT.form.Medication', {
         },{
             xtype: 'tbspacer',
             height:25
+        },{ //TODO: Add hide control
+            xtype: 'button',
+            text: 'Constrain search by date range',
+            listeners: {
+                click: function (button) {
+                    button.up('form').down('#medicationWhenComparator').show();
+                    button.up('form').down('#medicationWhenValue').show();
+                }
+            }
         },{ // When
             xtype: 'combo',
-            width: 200,
+            width: 100,
+            anchor: '10%',
             itemId: 'medicationWhenComparator',
             queryMode: 'local',
             editable: false,
@@ -50,6 +60,7 @@ Ext.define('cardioCatalogQT.form.Medication', {
             fieldLabel: 'Select medication date that is',
             displayField: 'name',
             valueField: 'value',
+            hidden: true,
             store: {
                 fields: ['name', 'value'],
                 data: [
@@ -71,13 +82,16 @@ Ext.define('cardioCatalogQT.form.Medication', {
             }
         }, {
             xtype: 'datefield',
-            width: 200,
+            width: 100,
+            anchor: '10%',
             itemId: 'medicationWhenValue',
             fieldLabel: 'value of',
+            hidden: true,
             hideTrigger:true
         }, {
             xtype: 'datefield',
-            width: 200,
+            width: 100,
+            anchor: '10%',
             itemId: 'upperMedicationWhen',
             fieldLabel: 'and',
             hidden: true,
