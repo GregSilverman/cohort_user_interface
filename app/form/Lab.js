@@ -144,15 +144,13 @@ Ext.define('cardioCatalogQT.form.Lab', {
                         }
                     }
                 }
-            },
-            {
+            }, {
                 xtype: 'numberfield',
                 itemId: 'labValueSecond',
                 fieldLabel: 'Min value',
                 value: '',
                 hidden: true
-            },
-            {
+            }, {
                 xtype: 'numberfield',
                 itemId: 'upperLabSecond',
                 fieldLabel: 'and',
