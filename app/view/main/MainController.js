@@ -18,7 +18,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             delimiter: null
         },
             payload = Ext.getStore('Payload'),
-            url;
+            url,
+            form = button.up('form');
 
         // construct URL and submit criteria to Query store
         if (payload.getCount() > 0) {
@@ -30,6 +31,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
 
         cardioCatalogQT.service.UtilityService.submit_query(button, url);
+
+        form.up().down('#searchGrid').getStore().load();
     },
 
     onSearchClick: function (button) {
