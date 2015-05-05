@@ -153,11 +153,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         var criteria = '',
             comparator,
+            date_comparator,
             bool,
             i = 0;
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('Service test:' + payload);
+            console.log('Service test:');
+            console.log(payload);
         }
 
         if (!options.delimiter || options.delimiter === ';'){
@@ -171,16 +173,26 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             // get symbol for display
             comparator = cardioCatalogQT.service.UtilityService.comparator_hash(rec.data.comparator);
+            date_comparator = cardioCatalogQT.service.UtilityService.comparator_hash(rec.data.dateComparator);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('query comparator ');
                 console.log(comparator);
+                console.log('date comparator ');
+                console.log(date_comparator);
+
             }
 
             criteria += rec.data.type.toUpperCase() + ' '
                             + ' ' + comparator + ' ' + ' '
                             + rec.data.value + ' ' +  ' '
-                            + rec.data.description.toUpperCase() + ' ';
+                            + rec.data.description.toUpperCase();
+
+
+            if (rec.data.dateValue){
+                criteria += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
+                    + rec.data.dateValue
+            }
 
             i += 1;
 
