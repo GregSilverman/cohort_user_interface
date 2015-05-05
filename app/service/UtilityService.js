@@ -18,6 +18,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     // b) comparator is the comparison operator and
     // c) value is the criterion value
     //
+    // Date comparisons are appended to the criterion value
+    // They are denoted by the character string DATE
+    // TODO: fix below -> in use so that string can be parsed as a date component on its own in the API
+    // Comparator operators are different than the standard
+    //
     // mappings to actual attribute names are resolved via a hash lookup
     // comparators for static defaults are set in code below (e.g., blood_pressure/lab)
     url: function(payload, options) {
@@ -38,7 +43,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         }
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('URL payload:' + payload);
+            console.log('URL payload:')
+            console.log(payload);
             console.log('n: ' + n);
             console.log('delimiter: ' + delimiter);
         }
@@ -47,8 +53,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             + cardioCatalogQT.config.apiGetQ;
 
         payload.each(function(rec) {
-
-            parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type); // get parent value for assembling bucket query in API
+            // get parent value for assembling bucket query in API
+            parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type);
 
             // section "a" of query
             url += rec.data.type +
@@ -79,6 +85,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 url += rec.data.value
             }
 
+            // add date here
+            if (payload.data.items[i].data.dateValue){
+                url += ',DATE,' +
+                    cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
+                    payload.data.items[i].data.dateValue
+            }
+
             url +=  delimiter +
                 rec.data.type +
                 seperator;
@@ -99,6 +112,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 rec.data.comparator +
                 delimiter +
                 rec.data.value;
+
+            // add date here
+            if (payload.data.items[i].data.dateValue){
+                url += ',DATE,' +
+                    cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
+                    payload.data.items[i].data.dateValue
+            }
 
             i += 1;
 
@@ -226,8 +246,26 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         map.add('eq', '=');
         map.add('lt', '<');
         map.add('le', '<=');
-        map.add('gt','>');
+        map.add('gt', '>');
         map.add('ge', '>=');
+        map.add('bt', 'between');
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('parent');
+            console.log(type);
+            console.log(map.get(type));
+        }
+
+        return map.get(type);
+
+    },
+
+    date_hash: function(type) {
+
+        var map = new Ext.util.HashMap();
+
+        map.add('le', 'less');
+        map.add('ge', 'greater');
         map.add('bt', 'between');
 
         if (cardioCatalogQT.config.mode === 'test') {

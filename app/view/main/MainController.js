@@ -160,7 +160,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             upperSystolic = form.down('#upperSystolic').value,
             diastolicComparator = form.down('#diastolicComparator').value,
             diastolicValue = form.down('#diastolicValue').value,
-            upperDiastolic = form.down('#upperDiastolic').value;
+            upperDiastolic = form.down('#upperDiastolic').value,
+            vitalWhenComparator = form.down('#vitalWhenComparator').value,
+            vitalWhenValue = form.down('#vitalWhenValue').value,
+            upperVitalWhen = form.down('#upperVitalWhen').value,
+            whenValue = Ext.Date.format(vitalWhenValue, 'Y-m-d'),
+            upperWhenValue = Ext.Date.format(upperVitalWhen, 'Y-m-d');
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object vitals');
@@ -168,12 +173,28 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(systolicValue);
             console.log(diastolicComparator);
             console.log(diastolicValue);
+            console.log(vitalWhenComparator);
+            console.log(vitalWhenValue);
+            console.log(upperVitalWhen);
         }
 
         if (systolicValue || diastolicValue) {
 
             var test_systolic = systolicValue,
-                test_diastolic = diastolicValue;
+                test_diastolic = diastolicValue,
+                test_date = whenValue;
+
+
+            if (vitalWhenComparator === 'bt') {
+
+                if (!upperVitalWhen) {
+                    alert('Please enter max diastolic to continue')
+                }
+                else {
+                    test_date += ',' + upperWhenValue;
+                }
+            }
+
 
             if (systolicComparator === 'bt') {
 
@@ -181,7 +202,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     alert('Please enter max systolic to continue')
                 }
                 else {
-                    test_systolic += ',' + upperSystolic;
+                    test_systolic += ',' + upperSystolic ;
                 }
             }
 
@@ -195,12 +216,20 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
             }
 
+
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('test systolic : ' + test_systolic);
                 console.log('test diastolic: ' + test_diastolic);
-                console.log('systolic' + systolicValue)
-                console.log('systolicComp' + systolicComparator)
-                console.log('systolicUpper' + upperSystolic)
+                console.log('test date: ' + test_date);
+                console.log('systolic' + systolicValue);
+                console.log('systolicComp' + systolicComparator);
+                console.log('systolicUpper' + upperSystolic);
+                console.log('diastolic' + systolicValue);
+                console.log('diastolicComp' + systolicComparator);
+                console.log('diastolicUpper' + upperSystolic);
+                console.log('when ' + whenValue);
+                console.log('whenComp' + vitalWhenComparator);
+                console.log('whenUpper' + upperWhenValue);
 
             }
 
@@ -231,7 +260,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         key: 'blood_pressure_systolic',
                         comparator: systolicComparator,
                         comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(systolicComparator),
-                        value: test_systolic
+                        value: test_systolic,
+                        dateComparator: vitalWhenComparator,
+                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(vitalWhenComparator),
+                        dateValue: test_date
                     });
 
                     payload.sync();

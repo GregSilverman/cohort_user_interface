@@ -11,8 +11,10 @@ Ext.define('cardioCatalogQT.store.Payload', {
             {name: 'comparatorSymbol', type: 'string'},
             {name: 'value', type: 'string'},
             {name: 'description', type: 'string'},
-            {name: 'n', type: 'string'}
-
+            {name: 'n', type: 'string'},
+            {name: 'dateComparator', type: 'string'},
+            {name: 'dateComparatorSymbol', type: 'string'},
+            {name: 'dateValue', type: 'string'}
 
         ],
 
