@@ -84,7 +84,7 @@ Ext.define('cardioCatalogQT.form.Lab', {
                 width: 50
             }, {
                 xtype: 'button',
-                text: 'Add another lab',
+                text: 'Select another lab',
                 listeners: {
                     click: function (button) {
                         button.up('form').down('#labCodeSecond').show();
@@ -158,16 +158,37 @@ Ext.define('cardioCatalogQT.form.Lab', {
             }, {
                 xtype: 'tbspacer',
                 height:25
-            }, { //TODO: Add hide control
+            }, {
                     xtype: 'button',
                     text: 'Constrain search by date range',
+                    itemId: 'showWhen',
+                    hidden: false,
                     listeners: {
                         click: function (button) {
                             button.up('form').down('#labWhenComparator').show();
                             button.up('form').down('#labWhenValue').show();
+                            button.up('form').down('#hideWhen').show();
+                            button.up('form').down('#showWhen').hide();
                         }
                     }
-            }, { // When
+            }, {
+                    xtype: 'button',
+                    text: 'Hide date range',
+                    itemId: 'hideWhen',
+                    hidden: true,
+                    listeners: {
+                        click: function (button) {
+                            button.up('form').down('#labWhenComparator').hide();
+                            button.up('form').down('#labWhenValue').hide();
+                            button.up('form').down('#upperLabWhen').hide();
+                            button.up('form').down('#labWhenComparator').setValue('');
+                            button.up('form').down('#labWhenValue').setValue('');
+                            button.up('form').down('#upperLabWhen').setValue('');
+                            button.up('form').down('#hideWhen').hide();
+                            button.up('form').down('#showWhen').show();
+                        }
+                    }
+            },{ // When
                 xtype: 'combo',
                 width: 200,
                 itemId: 'labWhenComparator',

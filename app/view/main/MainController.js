@@ -152,6 +152,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         // reload store on grid
         form.up().down('#searchGrid').getStore().load();
+
+        // clear form
+        form.reset();
     },
 
     onSubmitVitals: function(button) {
@@ -191,7 +194,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (vitalWhenComparator === 'bt') {
 
                 if (!upperVitalWhen) {
-                    alert('Please enter max diastolic to continue')
+                    alert('Please enter max date to continue')
                 }
                 else {
                     test_date += ',' + upperWhenValue;
@@ -304,6 +307,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         // reload store on grid
         form.up().down('#searchGrid').getStore().load();
 
+        // clear form
+        form.reset();
+
     },
 
     onSubmitLabs: function (button) {
@@ -349,7 +355,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (labWhenComparator === 'bt') {
 
                 if (!upperLabWhen) {
-                    alert('Please enter max ilab to continue')
+                    alert('Please enter max date to continue')
                 }
                 else {
                     test_date += ',' + upperWhenValue;
@@ -450,7 +456,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         }
         // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
+        form.up().down('#searchGrid').getStore().load()
+
+        // clear form
+        form.reset();
     },
 
     onSubmitDiagnoses: function(button) {
@@ -476,7 +485,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (diagnosisWhenComparator === 'bt') {
 
                 if (!upperDiagnosisWhen) {
-                    alert('Please enter max diagnosis to continue')
+                    alert('Please enter max date to continue')
                 }
                 else {
                     test_date += ',' + upperWhenValue;
@@ -513,6 +522,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }); // each()
         // reload store on grid
         form.up().down('#searchGrid').getStore().load();
+
+        // clear form
+        form.reset();
     },
 
     onSubmitProcedures: function(button) {
@@ -539,7 +551,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (procedureWhenComparator === 'bt') {
 
                 if (!upperProcedureWhen) {
-                    alert('Please enter max procedure to continue')
+                    alert('Please enter max date continue')
                 }
                 else {
                     test_date += ',' + upperWhenValue;
@@ -575,6 +587,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }); // each()
         // reload store on grid
         form.up().down('#searchGrid').getStore().load();
+
+        // clear form
+        form.reset();
     },
 
     onSubmitMedications: function(button) {
@@ -600,7 +615,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (medicationWhenComparator === 'bt') {
 
                 if (!upperMedicationWhen) {
-                    alert('Please enter max medication to continue')
+                    alert('Please enter max date to continue')
                 }
                 else {
                     test_date += ',' + upperWhenValue;
@@ -636,6 +651,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }); // each()
         // reload store on grid
         form.up().down('#searchGrid').getStore().load();
+
+        // clear form
+        form.reset();
     },
 
     onSelectionChange: function(sm, selections) {

@@ -41,10 +41,31 @@ Ext.define('cardioCatalogQT.form.Diagnosis', {
         }, { //TODO: Add hide control
             xtype: 'button',
             text: 'Constrain search by date range',
+            itemId: 'showWhen',
+            hidden: false,
             listeners: {
                 click: function (button) {
                     button.up('form').down('#diagnosisWhenComparator').show();
                     button.up('form').down('#diagnosisWhenValue').show();
+                    button.up('form').down('#hideWhen').show();
+                    button.up('form').down('#showWhen').hide();
+                }
+            }
+        },{
+            xtype: 'button',
+            text: 'Hide date range',
+            itemId: 'hideWhen',
+            hidden: true,
+            listeners: {
+                click: function (button) {
+                    button.up('form').down('#diagnosisWhenComparator').hide();
+                    button.up('form').down('#diagnosisWhenValue').hide();
+                    button.up('form').down('#upperDiagnosisWhen').hide();
+                    button.up('form').down('#diagnosisWhenComparator').setValue('');
+                    button.up('form').down('#diagnosisWhenValue').setValue('');
+                    button.up('form').down('#upperDiagnosisWhen').setValue('');
+                    button.up('form').down('#hideWhen').hide();
+                    button.up('form').down('#showWhen').show();
                 }
             }
         },{ // When

@@ -161,10 +161,31 @@ Ext.define('cardioCatalogQT.form.Vital', {
             },{
                 xtype: 'button',
                 text: 'Constrain search by date range',
+                itemId: 'showWhen',
+                hidden: false,
                 listeners: {
                     click: function (button) {
                         button.up('form').down('#vitalWhenComparator').show();
                         button.up('form').down('#vitalWhenValue').show();
+                        button.up('form').down('#hideWhen').show();
+                        button.up('form').down('#showWhen').hide();
+                    }
+                }
+            },{
+                xtype: 'button',
+                text: 'Hide date range',
+                itemId: 'hideWhen',
+                hidden: true,
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#vitalWhenComparator').hide();
+                        button.up('form').down('#vitalWhenValue').hide();
+                        button.up('form').down('#upperVitalWhen').hide();
+                        button.up('form').down('#vitalWhenComparator').setValue('');
+                        button.up('form').down('#vitalWhenValue').setValue('');
+                        button.up('form').down('#upperVitalWhen').setValue('');
+                        button.up('form').down('#hideWhen').hide();
+                        button.up('form').down('#showWhen').show();
                     }
                 }
             }, { // When

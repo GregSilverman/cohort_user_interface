@@ -41,10 +41,31 @@ Ext.define('cardioCatalogQT.form.Medication', {
         },{ //TODO: Add hide control
             xtype: 'button',
             text: 'Constrain search by date range',
+            itemId: 'showWhen',
+            hidden: false,
             listeners: {
                 click: function (button) {
                     button.up('form').down('#medicationWhenComparator').show();
                     button.up('form').down('#medicationWhenValue').show();
+                    button.up('form').down('#hideWhen').show();
+                    button.up('form').down('#showWhen').hide();
+                }
+            }
+        },{
+            xtype: 'button',
+            text: 'Hide date range',
+            itemId: 'hideWhen',
+            hidden: true,
+            listeners: {
+                click: function (button) {
+                    button.up('form').down('#medicationWhenComparator').hide();
+                    button.up('form').down('#medicationWhenValue').hide();
+                    button.up('form').down('#upperMedicationWhen').hide();
+                    button.up('form').down('#medicationWhenComparator').setValue('');
+                    button.up('form').down('#medicationWhenValue').setValue('');
+                    button.up('form').down('#upperMedicationWhen').setValue('');
+                    button.up('form').down('#hideWhen').hide();
+                    button.up('form').down('#showWhen').show();
                 }
             }
         },{ // When
