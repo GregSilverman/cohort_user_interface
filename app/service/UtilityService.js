@@ -173,7 +173,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             // get symbol for display
             comparator = cardioCatalogQT.service.UtilityService.comparator_hash(rec.data.comparator);
-            date_comparator = cardioCatalogQT.service.UtilityService.comparator_hash(rec.data.dateComparator);
+            date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(rec.data.dateComparator);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('query comparator ');
