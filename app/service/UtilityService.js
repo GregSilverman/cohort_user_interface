@@ -272,6 +272,24 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
+    date_comparator_hash: function(type) {
+
+        var map = new Ext.util.HashMap();
+
+        map.add('le', 'before');
+        map.add('ge', 'after');
+        map.add('bt', 'between');
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('parent');
+            console.log(type);
+            console.log(map.get(type));
+        }
+
+        return map.get(type);
+
+    },
+
     date_hash: function(type) {
 
         var map = new Ext.util.HashMap();

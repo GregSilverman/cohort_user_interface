@@ -165,8 +165,8 @@ Ext.define('cardioCatalogQT.form.Lab', {
                     hidden: false,
                     listeners: {
                         click: function (button) {
-                            button.up('form').down('#labWhenComparator').show();
-                            button.up('form').down('#labWhenValue').show();
+                            button.up('form').down('#whenComparator').show();
+                            button.up('form').down('#whenValue').show();
                             button.up('form').down('#hideWhen').show();
                             button.up('form').down('#showWhen').hide();
                         }
@@ -178,12 +178,12 @@ Ext.define('cardioCatalogQT.form.Lab', {
                     hidden: true,
                     listeners: {
                         click: function (button) {
-                            button.up('form').down('#labWhenComparator').hide();
-                            button.up('form').down('#labWhenValue').hide();
-                            button.up('form').down('#upperLabWhen').hide();
-                            button.up('form').down('#labWhenComparator').setValue('');
-                            button.up('form').down('#labWhenValue').setValue('');
-                            button.up('form').down('#upperLabWhen').setValue('');
+                            button.up('form').down('#whenComparator').hide();
+                            button.up('form').down('#whenValue').hide();
+                            button.up('form').down('#upperWhenValue').hide();
+                            button.up('form').down('#whenComparator').setValue('');
+                            button.up('form').down('#whenValue').setValue('');
+                            button.up('form').down('#upperWhenValue').setValue('');
                             button.up('form').down('#hideWhen').hide();
                             button.up('form').down('#showWhen').show();
                         }
@@ -191,7 +191,7 @@ Ext.define('cardioCatalogQT.form.Lab', {
             },{ // When
                 xtype: 'combo',
                 width: 200,
-                itemId: 'labWhenComparator',
+                itemId: 'whenComparator',
                 queryMode: 'local',
                 editable: false,
                 value: 'eq',
@@ -214,23 +214,23 @@ Ext.define('cardioCatalogQT.form.Lab', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperLabWhen').show();
+                            combo.up('form').down('#upperWhenValue').show();
                         } else {
-                            combo.up('form').down('#upperLabWhen').hide();
+                            combo.up('form').down('#upperWhenValue').hide();
                         }
                     }
                 }
             }, {
                 xtype: 'datefield',
                 width: 200,
-                itemId: 'labWhenValue',
+                itemId: 'whenValue',
                 fieldLabel: 'value of',
                 hidden: true,
                 hideTrigger:true
             }, {
                 xtype: 'datefield',
                 width: 200,
-                itemId: 'upperLabWhen',
+                itemId: 'upperWhenValue',
                 fieldLabel: 'and',
                 hidden: true,
                 hideTrigger:true

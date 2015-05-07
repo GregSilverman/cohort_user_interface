@@ -165,8 +165,8 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#vitalWhenComparator').show();
-                        button.up('form').down('#vitalWhenValue').show();
+                        button.up('form').down('#whenComparator').show();
+                        button.up('form').down('#whenValue').show();
                         button.up('form').down('#hideWhen').show();
                         button.up('form').down('#showWhen').hide();
                     }
@@ -178,19 +178,19 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#vitalWhenComparator').hide();
-                        button.up('form').down('#vitalWhenValue').hide();
-                        button.up('form').down('#upperVitalWhen').hide();
-                        button.up('form').down('#vitalWhenComparator').setValue('');
-                        button.up('form').down('#vitalWhenValue').setValue('');
-                        button.up('form').down('#upperVitalWhen').setValue('');
+                        button.up('form').down('#whenComparator').hide();
+                        button.up('form').down('#whenValue').hide();
+                        button.up('form').down('#upperWhenValue').hide();
+                        button.up('form').down('#whenComparator').setValue('');
+                        button.up('form').down('#whenValue').setValue('');
+                        button.up('form').down('#upperWhenValue').setValue('');
                         button.up('form').down('#hideWhen').hide();
                         button.up('form').down('#showWhen').show();
                     }
                 }
             }, { // When
                 xtype: 'combo',
-                itemId: 'vitalWhenComparator',
+                itemId: 'whenComparator',
                 queryMode: 'local',
                 editable: false,
                 value: 'eq',
@@ -213,21 +213,21 @@ Ext.define('cardioCatalogQT.form.Vital', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperVitalWhen').show();
+                            combo.up('form').down('#upperWhenValue').show();
                         } else {
-                            combo.up('form').down('#upperVitalWhen').hide();
+                            combo.up('form').down('#upperWhenValue').hide();
                         }
                     }
                 }
             }, {
                 xtype: 'datefield',
-                itemId: 'vitalWhenValue',
+                itemId: 'whenValue',
                 fieldLabel: 'value of',
                 hidden: true,
                 hideTrigger:true
             }, {
                 xtype: 'datefield',
-                itemId: 'upperVitalWhen',
+                itemId: 'upperWhenValue',
                 fieldLabel: 'and',
                 hidden: true,
                 hideTrigger:true

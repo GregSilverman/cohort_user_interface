@@ -167,11 +167,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             diastolicComparator = form.down('#diastolicComparator').value,
             diastolicValue = form.down('#diastolicValue').value,
             upperDiastolic = form.down('#upperDiastolic').value,
-            vitalWhenComparator = form.down('#vitalWhenComparator').value,
-            vitalWhenValue = form.down('#vitalWhenValue').value,
-            upperVitalWhen = form.down('#upperVitalWhen').value,
-            whenValue = Ext.Date.format(vitalWhenValue, 'Y-m-d'),
-            upperWhenValue = Ext.Date.format(upperVitalWhen, 'Y-m-d');
+            whenComparator = form.down('#whenComparator').value,
+            whenValue = form.down('#whenValue').value,
+            upperWhenValue = form.down('#upperWhenValue').value,
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object vitals');
@@ -179,9 +179,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(systolicValue);
             console.log(diastolicComparator);
             console.log(diastolicValue);
-            console.log(vitalWhenComparator);
-            console.log(vitalWhenValue);
-            console.log(upperVitalWhen);
+            console.log(whenComparator);
+            console.log(whenValue);
+            console.log(upperWhenValue);
         }
 
         if (systolicValue || diastolicValue) {
@@ -191,9 +191,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 test_date = whenValue;
 
 
-            if (vitalWhenComparator === 'bt') {
+            if (whenComparator === 'bt') {
 
-                if (!upperVitalWhen) {
+                if (!upperWhenValue) {
                     alert('Please enter max date to continue')
                 }
                 else {
@@ -234,7 +234,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log('diastolicComp' + systolicComparator);
                 console.log('diastolicUpper' + upperSystolic);
                 console.log('when ' + whenValue);
-                console.log('whenComp' + vitalWhenComparator);
+                console.log('whenComp' + whenComparator);
                 console.log('whenUpper' + upperWhenValue);
 
             }
@@ -267,8 +267,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         comparator: systolicComparator,
                         comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(systolicComparator),
                         value: test_systolic,
-                        dateComparator: vitalWhenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(vitalWhenComparator),
+                        dateComparator: whenComparator,
+                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                         dateValue: test_date
                     });
 
@@ -284,8 +284,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         comparator: diastolicComparator,
                         comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(diastolicComparator),
                         value: test_diastolic,
-                        dateComparator: vitalWhenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(vitalWhenComparator),
+                        dateComparator: whenComparator,
+                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                         dateValue: test_date
                     });
                     payload.sync();
@@ -326,11 +326,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             labDescriptionSecond = form.down('#labCodeSecond').rawValue,
             labValueSecond = form.down('#labValueSecond').value,
             upperLabSecond = form.down('#upperLabSecond').value,
-            labWhenComparator = form.down('#labWhenComparator').value,
-            labWhenValue = form.down('#labWhenValue').value,
-            upperLabWhen = form.down('#upperLabWhen').value,
-            whenValue = Ext.Date.format(labWhenValue, 'Y-m-d'),
-            upperWhenValue = Ext.Date.format(upperLabWhen, 'Y-m-d');
+            whenComparator = form.down('#whenComparator').value,
+            whenValue = form.down('#whenValue').value,
+            upperWhenValue = form.down('#upperWhenValue').value,
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
 
 
@@ -351,17 +351,15 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 test_lab_second = labValueSecond,
                 test_date = whenValue;
 
+            if (whenComparator === 'bt') {
 
-            if (labWhenComparator === 'bt') {
-
-                if (!upperLabWhen) {
+                if (!upperWhenValue) {
                     alert('Please enter max date to continue')
                 }
                 else {
                     test_date += ',' + upperWhenValue;
                 }
             }
-
 
             if (labComparator === 'bt') {
 
@@ -414,8 +412,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         comparator: labComparator,
                         comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labComparator).toUpperCase(),
                         description: labDescription,
-                        dateComparator: labWhenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labWhenComparator),
+                        dateComparator: whenComparator,
+                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                         dateValue: test_date
                     });
                     payload.sync();
@@ -429,8 +427,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         comparator: labComparatorSecond,
                         comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labComparatorSecond).toUpperCase(),
                         description: labDescriptionSecond,
-                        dateComparator: labWhenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labWhenComparator),
+                        dateComparator: whenComparator,
+                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                         dateValue: test_date
                     });
                     payload.sync();
@@ -467,11 +465,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             dx = [],
             form = button.up('form'),
             diagnoses = form.down('#diagnosis').store.data.items,
-            diagnosisWhenComparator = form.down('#diagnosisWhenComparator').value,
-            diagnosisWhenValue = form.down('#diagnosisWhenValue').value,
-            upperDiagnosisWhen = form.down('#upperDiagnosisWhen').value,
-            whenValue = Ext.Date.format(diagnosisWhenValue, 'Y-m-d'),
-            upperWhenValue = Ext.Date.format(upperDiagnosisWhen, 'Y-m-d');
+            whenComparator = form.down('#whenComparator').value,
+            whenValue = form.down('#whenValue').value,
+            upperWhenValue = form.down('#upperWhenValue').value,
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show submitted Dx:');
@@ -482,9 +480,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             var test_date = whenValue;
 
-            if (diagnosisWhenComparator === 'bt') {
+            if (whenComparator === 'bt') {
 
-                if (!upperDiagnosisWhen) {
+                if (!upperWhenValue) {
                     alert('Please enter max date to continue')
                 }
                 else {
@@ -505,8 +503,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                 value: item.data.code,
                 description: item.data.description.toUpperCase(),
-                dateComparator: diagnosisWhenComparator,
-                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(diagnosisWhenComparator),
+                dateComparator: whenComparator,
+                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                 dateValue: test_date
             });
 
@@ -532,11 +530,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             px = [],
             form = button.up('form'),
             procedures = form.down('#procedure').store.data.items,
-            procedureWhenComparator = form.down('#procedureWhenComparator').value,
-            procedureWhenValue = form.down('#procedureWhenValue').value,
-            upperProcedureWhen = form.down('#upperProcedureWhen').value,
-            whenValue = Ext.Date.format(procedureWhenValue, 'Y-m-d'),
-            upperWhenValue = Ext.Date.format(upperProcedureWhen, 'Y-m-d');
+            whenComparator = form.down('#whenComparator').value,
+            whenValue = form.down('#whenValue').value,
+            upperWhenValue = form.down('#upperWhenValue').value,
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         // begin test Rx
         if (cardioCatalogQT.config.mode === 'test') {
@@ -548,9 +546,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             var test_date = whenValue;
 
-            if (procedureWhenComparator === 'bt') {
+            if (whenComparator === 'bt') {
 
-                if (!upperProcedureWhen) {
+                if (!upperWhenValue) {
                     alert('Please enter max date continue')
                 }
                 else {
@@ -570,8 +568,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                 value: item.data.code,
                 description: item.data.description.toUpperCase(),
-                dateComparator: procedureWhenComparator,
-                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(procedureWhenComparator),
+                dateComparator: whenComparator,
+                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                 dateValue: test_date
             });
 
@@ -597,11 +595,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             rx = [],
             form = button.up('form'),
             medications = form.down('#medication').store.data.items,
-            medicationWhenComparator = form.down('#medicationWhenComparator').value,
-            medicationWhenValue = form.down('#medicationWhenValue').value,
-            upperMedicationWhen = form.down('#upperMedicationWhen').value,
-            whenValue = Ext.Date.format(medicationWhenValue, 'Y-m-d'),
-            upperWhenValue = Ext.Date.format(upperMedicationWhen, 'Y-m-d');
+            whenComparator = form.down('#whenComparator').value,
+            whenValue = form.down('#whenValue').value,
+            upperWhenValue = form.down('#upperWhenValue').value,
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show submitted Rx:');
@@ -612,9 +610,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             var test_date = whenValue;
 
-            if (medicationWhenComparator === 'bt') {
+            if (whenComparator === 'bt') {
 
-                if (!upperMedicationWhen) {
+                if (!upperWhenValue) {
                     alert('Please enter max date to continue')
                 }
                 else {
@@ -634,8 +632,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                 value: item.data.code,
                 description: item.data.description.toUpperCase(),
-                dateComparator: medicationWhenComparator,
-                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(medicationWhenComparator),
+                dateComparator: whenComparator,
+                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                 dateValue: test_date
             });
 
