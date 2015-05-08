@@ -321,11 +321,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             labDescription = form.down('#labCode').rawValue,
             labValue = form.down('#labValue').value,
             upperLab = form.down('#upperLab').value,
-            labComparatorSecond = form.down('#labComparatorSecond').value,
-            labCodeSecond = form.down('#labCodeSecond').value,
-            labDescriptionSecond = form.down('#labCodeSecond').rawValue,
-            labValueSecond = form.down('#labValueSecond').value,
-            upperLabSecond = form.down('#upperLabSecond').value,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
             upperWhenValue = form.down('#upperWhenValue').value,
@@ -348,7 +343,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
 
             var test_lab = labValue,
-                test_lab_second = labValueSecond,
                 test_date = whenValue;
 
             if (whenComparator === 'bt') {
@@ -371,19 +365,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
             }
 
-            if (labComparatorSecond === 'bt') {
-
-                if (!upperLabSecond) {
-                    alert('Please enter max lab to continue')
-                }
-                else {
-                    test_lab_second += ',' + upperLabSecond;
-                }
-            }
-
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('test lab : ' + test_lab);
-                console.log('test lab second: ' + test_lab_second);
             }
 
             if (((labComparator === 'bt' &&
@@ -392,17 +375,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 (!upperLab &&
                 labComparator !== 'bt' &&
-                labValue)) &&
-
-                ((labComparatorSecond === 'bt' &&
-                labValueSecond &&
-                upperLabSecond) ||
-
-                (!upperLabSecond &&
-                labComparatorSecond !== 'bt' &&
-                labValueSecond) ||
-
-                (!labValueSecond))) {
+                labValue))) {
 
                 if (labValue) {
                     payload.add({
@@ -418,43 +391,23 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     });
                     payload.sync();
                 }
-
-                if (labValueSecond) {
-                    payload.add({
-                        type: 'lab',
-                        key: labCodeSecond,
-                        value: test_lab_second,
-                        comparator: labComparatorSecond,
-                        comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labComparatorSecond).toUpperCase(),
-                        description: labDescriptionSecond,
-                        dateComparator: whenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                        dateValue: test_date
-                    });
-                    payload.sync();
+                else {
+                    // error conditions here
                 }
             }
-            else {
-                // error conditions here
-            }
-
 
             if (cardioCatalogQT.config.mode === 'test') {
                 lab.push(labCode); // type
                 lab.push(labComparator); // comparator
                 lab.push(labValue); // comparator
                 lab.push(upperLab); // comparator
-                lab.push(labCodeSecond); // type
-                lab.push(labComparatorSecond); // comparator
-                lab.push(labValueSecond); // comparator
-                lab.push(upperLabSecond); // comparator
                 console.log('labs:');
                 console.log(lab);
             }
 
         }
         // reload store on grid
-        form.up().down('#searchGrid').getStore().load()
+        form.up().down('#searchGrid').getStore().load();
 
         // clear form
         form.reset();

@@ -20,7 +20,38 @@ Ext.define('cardioCatalogQT.form.Vital', {
             height: 25
         }, {
             itemId: 'vitals',
-            items: [{
+            items: [
+                {
+                    xtype: 'button',
+                    text: 'Constrain Systolic',
+                    itemId: 'showSystolic',
+                    hidden: false,
+                    listeners: {
+                        click: function (button) {
+                            button.up('form').down('#systolicComparator').show();
+                            button.up('form').down('#systolicValue').show();
+                            button.up('form').down('#hideSystolic').show();
+                            button.up('form').down('#showSystolic').hide();
+                        }
+                    }
+                }, {
+                    xtype: 'button',
+                    text: 'Hide systolic',
+                    itemId: 'hideSystolic',
+                    hidden: true,
+                    listeners: {
+                        click: function (button) {
+                            button.up('form').down('#systolicComparator').hide();
+                            button.up('form').down('#systolicValue').hide();
+                            button.up('form').down('#upperSystolic').hide();
+                            button.up('form').down('#systolicComparator').setValue('');
+                            button.up('form').down('#systolicValue').setValue('');
+                            button.up('form').down('#upperSystolic').setValue('');
+                            button.up('form').down('#hideSystolic').hide();
+                            button.up('form').down('#showSystolic').show();
+                        }
+                    }
+                },{
                 xtype: 'combo',
                 itemId: 'systolicComparator',
                 queryMode: 'local',
@@ -31,6 +62,7 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 fieldLabel: 'Select systolic bp that is',
                 displayField: 'name',
                 valueField: 'value',
+                hidden: true,
                 store: {
                     fields: ['name', 'value'],
                     data: [
@@ -57,6 +89,7 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 xtype: 'numberfield',
                 itemId: 'systolicValue',
                 fieldLabel: 'value of',
+                hidden: true,
                 value: ''
             }, {
                 xtype: 'numberfield',
@@ -64,9 +97,36 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 fieldLabel: 'and',
                 hidden: true
             }, {
-                xtype: 'tbspacer',
-                height: 25
-            }, { // Diastolic
+                    xtype: 'button',
+                    text: 'Constrain Diastolic',
+                    itemId: 'showDiastolic',
+                    hidden: false,
+                    listeners: {
+                        click: function (button) {
+                            button.up('form').down('#diastolicComparator').show();
+                            button.up('form').down('#diastolicValue').show();
+                            button.up('form').down('#hideDiastolic').show();
+                            button.up('form').down('#showDiastolic').hide();
+                        }
+                    }
+                }, {
+                    xtype: 'button',
+                    text: 'Hide diastolic',
+                    itemId: 'hideDiastolic',
+                    hidden: true,
+                    listeners: {
+                        click: function (button) {
+                            button.up('form').down('#diastolicComparator').hide();
+                            button.up('form').down('#diastolicValue').hide();
+                            button.up('form').down('#upperDiastolic').hide();
+                            button.up('form').down('#diastolicComparator').setValue('');
+                            button.up('form').down('#diastolicValue').setValue('');
+                            button.up('form').down('#upperDiastolic').setValue('');
+                            button.up('form').down('#hideDiastolic').hide();
+                            button.up('form').down('#showDiastolic').show();
+                        }
+                    }
+                }, { // Diastolic
                 xtype: 'combo',
                 itemId: 'diastolicComparator',
                 queryMode: 'local',
@@ -77,6 +137,7 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 fieldLabel: 'Select diastolic bp that is',
                 displayField: 'name',
                 valueField: 'value',
+                hidden: true,
                 store: {
                     fields: ['name', 'value'],
                     data: [
@@ -103,6 +164,7 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 xtype: 'numberfield',
                 itemId: 'diastolicValue',
                 fieldLabel: 'value of',
+                hidden: true,
                 value: ''
             }, {
                 xtype: 'numberfield',
@@ -112,49 +174,6 @@ Ext.define('cardioCatalogQT.form.Vital', {
             },{
                 xtype: 'tbspacer',
                 height:25
-            },{ // Diastolic
-                xtype: 'combo',
-                itemId: 'diastolicComparator',
-                queryMode: 'local',
-                editable: false,
-                value: 'eq',
-                triggerAction: 'all',
-                forceSelection: true,
-                fieldLabel: 'Select diastolic bp that is',
-                displayField: 'name',
-                valueField: 'value',
-                store: {
-                    fields: ['name', 'value'],
-                    data: [
-                        {name: '=', value: 'eq'},
-                        {name: '<', value: 'lt'},
-                        {name: '<=', value: 'le'},
-                        {name: '>', value: 'gt'},
-                        {name: '>=', value: 'ge'},
-                        {name: 'between', value: 'bt'}
-                    ]
-                },
-
-                listeners: {
-                    change: function (combo, value) {
-                        // use component query to  toggle the hidden state of upper value
-                        if (value === 'bt') {
-                            combo.up('form').down('#upperDiastolic').show();
-                        } else {
-                            combo.up('form').down('#upperDiastolic').hide();
-                        }
-                    }
-                }
-            }, {
-                xtype: 'numberfield',
-                itemId: 'diastolicValue',
-                fieldLabel: 'value of',
-                value: ''
-            }, {
-                xtype: 'numberfield',
-                itemId: 'upperDiastolic',
-                fieldLabel: 'and',
-                hidden: true
             },{
                 xtype: 'tbspacer',
                 height:25

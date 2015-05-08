@@ -33,6 +33,36 @@ Ext.define('cardioCatalogQT.form.Lab', {
                 valueField: 'code',
                 value: '13457-7',
                 store: 'Labs'
+            },{
+                xtype: 'button',
+                text: 'Constrain lab value',
+                itemId: 'showLab',
+                hidden: false,
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#labComparator').show();
+                        button.up('form').down('#labValue').show();
+                        button.up('form').down('#hideLab').show();
+                        button.up('form').down('#showLab').hide();
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: 'Hide lab constraint',
+                itemId: 'hideLab',
+                hidden: true,
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#labComparator').hide();
+                        button.up('form').down('#labValue').hide();
+                        button.up('form').down('#upperLab').hide();
+                        button.up('form').down('#labComparator').setValue('');
+                        button.up('form').down('#labValue').setValue('');
+                        button.up('form').down('#upperLab').setValue('');
+                        button.up('form').down('#hideLab').hide();
+                        button.up('form').down('#showLab').show();
+                    }
+                }
             },
             {
                 xtype: 'combo',
@@ -46,6 +76,7 @@ Ext.define('cardioCatalogQT.form.Lab', {
                 fieldLabel: 'that is',
                 displayField: 'name',
                 valueField: 'value',
+                hidden: true,
                 store: {
                     fields: ['name', 'value'],
                     data: [
@@ -72,6 +103,7 @@ Ext.define('cardioCatalogQT.form.Lab', {
                 xtype: 'numberfield',
                 itemId: 'labValue',
                 fieldLabel: 'Min value',
+                hidden: true,
                 value: ''
             },
             {
@@ -82,79 +114,6 @@ Ext.define('cardioCatalogQT.form.Lab', {
             }, {
                 xtype: 'tbspacer',
                 width: 50
-            }, {
-                xtype: 'button',
-                text: 'Select another lab',
-                listeners: {
-                    click: function (button) {
-                        button.up('form').down('#labCodeSecond').show();
-                        button.up('form').down('#labComparatorSecond').show();
-                        button.up('form').down('#labValueSecond').show();
-                    }
-                }
-            }, {
-                xtype: 'combo',
-                flex: 1,
-                width: 400,
-                itemId: 'labCodeSecond',
-                queryMode: 'local',
-                editable: false,
-                triggerAction: 'all',
-                forceSelection: true,
-                loading: true,
-                fieldLabel: 'Select lab type',
-                displayField: 'description',
-                fieldName: 'description',
-                valueField: 'code',
-                hidden: true,
-                value: '',
-                store: 'Labs'
-            },
-            {
-                xtype: 'combo',
-                flex: 1,
-                itemId: 'labComparatorSecond',
-                queryMode: 'local',
-                editable: false,
-                value: 'eq',
-                triggerAction: 'all',
-                forceSelection: true,
-                fieldLabel: 'that is',
-                displayField: 'name',
-                valueField: 'value',
-                hidden: true,
-                store: {
-                    fields: ['name', 'value'],
-                    data: [
-                        {name: '=', value: 'eq'},
-                        {name: '<', value: 'lt'},
-                        {name: '<=', value: 'le'},
-                        {name: '>', value: 'gt'},
-                        {name: '>=', value: 'ge'},
-                        {name: 'between', value: 'bt'}
-                    ]
-                },
-                listeners: {
-                    change: function (combo, value) {
-                        // use component query to  toggle the hidden state of upper value
-                        if (value === 'bt') {
-                            combo.up('form').down('#upperLabSecond').show();
-                        } else {
-                            combo.up('form').down('#upperLabSecond').hide();
-                        }
-                    }
-                }
-            }, {
-                xtype: 'numberfield',
-                itemId: 'labValueSecond',
-                fieldLabel: 'Min value',
-                value: '',
-                hidden: true
-            }, {
-                xtype: 'numberfield',
-                itemId: 'upperLabSecond',
-                fieldLabel: 'and',
-                hidden: true
             }, {
                 xtype: 'tbspacer',
                 height:25
