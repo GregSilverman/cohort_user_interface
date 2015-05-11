@@ -163,14 +163,15 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             form = button.up('form'),
             systolicComparator = form.down('#systolicComparator').value,
             systolicValue = form.down('#systolicValue').value,
-            upperSystolic = form.down('#upperSystolic').value,
+            upperSystolicValue = form.down('#upperSystolicValue').value,
             diastolicComparator = form.down('#diastolicComparator').value,
             diastolicValue = form.down('#diastolicValue').value,
-            upperDiastolic = form.down('#upperDiastolic').value,
+            upperDiastolicValue = form.down('#upperDiastolicValue').value,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value,
-            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = form.down('#upperWhenValue').value;
+
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d');
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -204,21 +205,21 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             if (systolicComparator === 'bt') {
 
-                if (!upperSystolic) {
+                if (!upperSystolicValue) {
                     alert('Please enter max systolic to continue')
                 }
                 else {
-                    test_systolic += ',' + upperSystolic ;
+                    test_systolic += ',' + upperSystolicValue ;
                 }
             }
 
             if (diastolicComparator === 'bt') {
 
-                if (!upperDiastolic) {
+                if (!upperDiastolicValue) {
                     alert('Please enter max diastolic to continue')
                 }
                 else {
-                    test_diastolic += ',' + upperDiastolic;
+                    test_diastolic += ',' + upperDiastolicValue;
                 }
             }
 
@@ -229,10 +230,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log('test date: ' + test_date);
                 console.log('systolic' + systolicValue);
                 console.log('systolicComp' + systolicComparator);
-                console.log('systolicUpper' + upperSystolic);
+                console.log('systolicUpper' + upperSystolicValue);
                 console.log('diastolic' + systolicValue);
                 console.log('diastolicComp' + systolicComparator);
-                console.log('diastolicUpper' + upperSystolic);
+                console.log('diastolicUpper' + upperSystolicValue);
                 console.log('when ' + whenValue);
                 console.log('whenComp' + whenComparator);
                 console.log('whenUpper' + upperWhenValue);
@@ -242,9 +243,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             // insert only if exists
             if (((systolicComparator === 'bt' &&
                 systolicValue &&
-                upperSystolic) ||
+                upperSystolicValue) ||
 
-                (!upperSystolic &&
+                (!upperSystolicValue &&
                 systolicComparator !== 'bt' &&
                 systolicValue) ||
 
@@ -252,9 +253,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 ((diastolicComparator === 'bt' &&
                 diastolicValue &&
-                upperDiastolic) ||
+                upperDiastolicValue) ||
 
-                (!upperDiastolic &&
+                (!upperDiastolicValue &&
                 diastolicComparator !== 'bt' &&
                 diastolicValue) ||
 
@@ -320,11 +321,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             labCode = form.down('#labCode').value,
             labDescription = form.down('#labCode').rawValue,
             labValue = form.down('#labValue').value,
-            upperLab = form.down('#upperLab').value,
+            upperLabValue = form.down('#upperLabValue').value,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value,
-            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = form.down('#upperWhenValue').value;
+
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d');
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
 
@@ -335,7 +337,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(labComparator);
             console.log(labCode);
             console.log(labValue);
-            console.log(upperLab);
+            console.log(upperLabValue);
         }
 
         // insert only if exists
@@ -357,11 +359,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             if (labComparator === 'bt') {
 
-                if (!upperLab) {
+                if (!upperLabValue) {
                     alert('Please enter max lab to continue')
                 }
                 else {
-                    test_lab += ',' + upperLab;
+                    test_lab += ',' + upperLabValue;
                 }
             }
 
@@ -371,9 +373,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             if (((labComparator === 'bt' &&
                 labValue &&
-                upperLab) ||
+                upperLabValue) ||
 
-                (!upperLab &&
+                (!upperLabValue &&
                 labComparator !== 'bt' &&
                 labValue))) {
 
@@ -400,7 +402,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 lab.push(labCode); // type
                 lab.push(labComparator); // comparator
                 lab.push(labValue); // comparator
-                lab.push(upperLab); // comparator
+                lab.push(upperLabValue); // comparator
                 console.log('labs:');
                 console.log(lab);
             }
@@ -420,8 +422,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             diagnoses = form.down('#diagnosis').store.data.items,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value,
-            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = form.down('#upperWhenValue').value;
+
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d');
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -446,7 +449,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log(item)
             }
-
 
             // TODO: ensure record does not already exist
             payload.add({
@@ -485,8 +487,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             procedures = form.down('#procedure').store.data.items,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value,
-            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = form.down('#upperWhenValue').value;
+        
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d');
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         // begin test Rx
@@ -550,8 +553,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             medications = form.down('#medication').store.data.items,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value,
-            whenValue = Ext.Date.format(whenValue, 'Y-m-d'),
+            upperWhenValue = form.down('#upperWhenValue').value;
+        
+            whenValue = Ext.Date.format(whenValue, 'Y-m-d');
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         if (cardioCatalogQT.config.mode === 'test') {

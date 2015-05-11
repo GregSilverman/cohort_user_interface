@@ -46,7 +46,7 @@ Ext.define('cardioCatalogQT.form.Demographic', {
                 itemId: 'ageComparator',
                 queryMode: 'local',
                 editable: false,
-                value: 'eq',
+                value: '',
                 triggerAction: 'all',
                 forceSelection: true,
                 fieldLabel: 'Select age that is',

@@ -55,10 +55,10 @@ Ext.define('cardioCatalogQT.form.Lab', {
                     click: function (button) {
                         button.up('form').down('#labComparator').hide();
                         button.up('form').down('#labValue').hide();
-                        button.up('form').down('#upperLab').hide();
+                        button.up('form').down('#upperLabValue').hide();
                         button.up('form').down('#labComparator').setValue('');
                         button.up('form').down('#labValue').setValue('');
-                        button.up('form').down('#upperLab').setValue('');
+                        button.up('form').down('#upperLabValue').setValue('');
                         button.up('form').down('#hideLab').hide();
                         button.up('form').down('#showLab').show();
                     }
@@ -70,7 +70,7 @@ Ext.define('cardioCatalogQT.form.Lab', {
                 itemId: 'labComparator',
                 queryMode: 'local',
                 editable: false,
-                value: 'eq',
+                value: '',
                 triggerAction: 'all',
                 forceSelection: true,
                 fieldLabel: 'that is',
@@ -92,15 +92,15 @@ Ext.define('cardioCatalogQT.form.Lab', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperLab').show();
+                            combo.up('form').down('#upperLabValue').show();
                         } else {
-                            combo.up('form').down('#upperLab').hide();
+                            combo.up('form').down('#upperLabValue').hide();
                         }
                     }
                 }
             },
             {
-                xtype: 'numberfield',
+                xtype: 'textfield',
                 itemId: 'labValue',
                 fieldLabel: 'Min value',
                 hidden: true,
@@ -108,7 +108,7 @@ Ext.define('cardioCatalogQT.form.Lab', {
             },
             {
                 xtype: 'numberfield',
-                itemId: 'upperLab',
+                itemId: 'upperLabValue',
                 fieldLabel: 'and',
                 hidden: true
             }, {
@@ -153,7 +153,7 @@ Ext.define('cardioCatalogQT.form.Lab', {
                 itemId: 'whenComparator',
                 queryMode: 'local',
                 editable: false,
-                value: 'eq',
+                value: '',
                 triggerAction: 'all',
                 forceSelection: true,
                 fieldLabel: 'Select lab date that is',
