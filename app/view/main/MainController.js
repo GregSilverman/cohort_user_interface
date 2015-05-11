@@ -58,14 +58,14 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             sexValue = form.down('#sexValue').value,
             ageComparator = form.down('#ageComparator').value,
             ageValue = form.down('#ageValue').value,
-            upperAge = form.down('#upperAge').value;
+            upperAgeValue = form.down('#upperAgeValue').value;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object demographics');
             console.log(sexValue);
             console.log(ageComparator);
             console.log(ageValue);
-            console.log(upperAge);
+            console.log(upperAgeValue);
         }
 
         // insert sex only if exists
@@ -73,15 +73,15 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             if ((ageComparator === 'bt' &&
                 ageValue &&
-                upperAge) ||
+                upperAgeValue) ||
 
                 (ageComparator !== 'bt' &&
                 ageValue &&
-                !upperAge) ||
+                !upperAgeValue) ||
 
                 (ageComparator !== 'bt' &&
                 !ageValue &&
-                !upperAge)) {
+                !upperAgeValue)) {
 
                 payload.add({
                     type: 'sex',
@@ -106,11 +106,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             if (ageComparator === 'bt') {
 
-                if (!upperAge) {
+                if (!upperAgeValue) {
                     alert('Please enter max age to continue')
                 }
                 else {
-                    test_age += ',' + upperAge;
+                    test_age += ',' + upperAgeValue;
                 }
             }
 
@@ -120,9 +120,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             if ((ageComparator === 'bt' &&
                 ageValue &&
-                upperAge) ||
+                upperAgeValue) ||
 
-                (!upperAge &&
+                (!upperAgeValue &&
                 ageComparator !== 'bt' &&
                 ageValue)) {
 
@@ -145,7 +145,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             demo.push(sexValue);
             demo.push(ageComparator);
             demo.push(ageValue);
-            demo.push(upperAge);
+            demo.push(upperAgeValue);
             console.log('demographics:');
             console.log(demo);
         }

@@ -20,7 +20,32 @@ Ext.define('cardioCatalogQT.form.Demographic', {
             height: 25
         },{
             itemId: 'demographics',
-            items: [{ // Sex
+            items: [{
+                xtype: 'button',
+                text: 'Constrain by sex',
+                itemId: 'showSex',
+                hidden: false,
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#sexValue').show();
+                        button.up('form').down('#hideSex').show();
+                        button.up('form').down('#showSex').hide();
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: 'Hide sex constraint',
+                itemId: 'hideSex',
+                hidden: true,
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#sexValue').hide();
+                        button.up('form').down('#sexValue').setValue('');
+                        button.up('form').down('#hideSex').hide();
+                        button.up('form').down('#showSex').show();
+                    }
+                }
+            },{ // Sex
                 xtype: 'combo',
                 itemId: 'sexValue',
                 queryMode: 'local',
@@ -31,6 +56,7 @@ Ext.define('cardioCatalogQT.form.Demographic', {
                 fieldLabel: 'Select sex',
                 displayField: 'name',
                 valueField: 'value',
+                hidden: true,
                 store: {
                     fields: ['name', 'value'],
                     data: [
@@ -41,6 +67,36 @@ Ext.define('cardioCatalogQT.form.Demographic', {
             },{
                 xtype: 'tbspacer',
                 height: 50
+            }, {
+                xtype: 'button',
+                text: 'Constrain Age',
+                itemId: 'showAge',
+                hidden: false,
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#ageComparator').show();
+                        button.up('form').down('#ageValue').show();
+                        button.up('form').down('#hideAge').show();
+                        button.up('form').down('#showAge').hide();
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: 'Hide age',
+                itemId: 'hideAge',
+                hidden: true,
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#ageComparator').hide();
+                        button.up('form').down('#ageValue').hide();
+                        button.up('form').down('#upperAgeValue').hide();
+                        button.up('form').down('#ageComparator').setValue('');
+                        button.up('form').down('#ageValue').setValue('');
+                        button.up('form').down('#upperAgeValue').setValue('');
+                        button.up('form').down('#hideAge').hide();
+                        button.up('form').down('#showAge').show();
+                    }
+                }
             }, { // Age
                 xtype: 'combo',
                 itemId: 'ageComparator',
@@ -52,6 +108,7 @@ Ext.define('cardioCatalogQT.form.Demographic', {
                 fieldLabel: 'Select age that is',
                 displayField: 'name',
                 valueField: 'value',
+                hidden: true,
                 store: {
                     fields: ['name', 'value'],
                     data: [
@@ -68,9 +125,9 @@ Ext.define('cardioCatalogQT.form.Demographic', {
                     change: function(combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperAge').show();
+                            combo.up('form').down('#upperAgeValue').show();
                         } else {
-                            combo.up('form').down('#upperAge').hide();
+                            combo.up('form').down('#upperAgeValue').hide();
                         }
                     }
                 }
@@ -78,10 +135,11 @@ Ext.define('cardioCatalogQT.form.Demographic', {
                 xtype: 'numberfield',
                 itemId: 'ageValue',
                 fieldLabel: 'value of',
-                value: ''
+                value: '',
+                hidden: true
             },{
                 xtype: 'numberfield',
-                itemId: 'upperAge',
+                itemId: 'upperAgeValue',
                 fieldLabel: 'and',
                 hidden: true
             }]

@@ -20,38 +20,37 @@ Ext.define('cardioCatalogQT.form.Vital', {
             height: 25
         }, {
             itemId: 'vitals',
-            items: [
-                {
-                    xtype: 'button',
-                    text: 'Constrain Systolic',
-                    itemId: 'showSystolic',
-                    hidden: false,
-                    listeners: {
-                        click: function (button) {
-                            button.up('form').down('#systolicComparator').show();
-                            button.up('form').down('#systolicValue').show();
-                            button.up('form').down('#hideSystolic').show();
-                            button.up('form').down('#showSystolic').hide();
-                        }
+            items: [{
+                xtype: 'button',
+                text: 'Constrain Systolic',
+                itemId: 'showSystolic',
+                hidden: false,
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#systolicComparator').show();
+                        button.up('form').down('#systolicValue').show();
+                        button.up('form').down('#hideSystolic').show();
+                        button.up('form').down('#showSystolic').hide();
                     }
-                }, {
-                    xtype: 'button',
-                    text: 'Hide systolic',
-                    itemId: 'hideSystolic',
-                    hidden: true,
-                    listeners: {
-                        click: function (button) {
-                            button.up('form').down('#systolicComparator').hide();
-                            button.up('form').down('#systolicValue').hide();
-                            button.up('form').down('#upperSystolicValue').hide();
-                            button.up('form').down('#systolicComparator').setValue('');
-                            button.up('form').down('#systolicValue').setValue('');
-                            button.up('form').down('#upperSystolicValue').setValue('');
-                            button.up('form').down('#hideSystolic').hide();
-                            button.up('form').down('#showSystolic').show();
-                        }
+                }
+            }, {
+                xtype: 'button',
+                text: 'Hide systolic',
+                itemId: 'hideSystolic',
+                hidden: true,
+                listeners: {
+                    click: function (button) {
+                        button.up('form').down('#systolicComparator').hide();
+                        button.up('form').down('#systolicValue').hide();
+                        button.up('form').down('#upperSystolicValue').hide();
+                        button.up('form').down('#systolicComparator').setValue('');
+                        button.up('form').down('#systolicValue').setValue('');
+                        button.up('form').down('#upperSystolicValue').setValue('');
+                        button.up('form').down('#hideSystolic').hide();
+                        button.up('form').down('#showSystolic').show();
                     }
-                },{
+            }
+            },{
                 xtype: 'combo',
                 itemId: 'systolicComparator',
                 queryMode: 'local',
