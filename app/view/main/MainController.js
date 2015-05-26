@@ -721,14 +721,43 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         this.getReferences().removeButton.setDisabled(selections.length === 0);
     },
 
-    onSelectionChange: function(sm, selections) {
-        this.getReferences().removeButton.setDisabled(selections.length === 0);
+    onSelectionDemoChange: function(sm, selections) {
+        this.getReferences().removeDemoButton.setDisabled(selections.length === 0);
     },
 
     onCriterionRemove: function (button) {
+        var grid = button.up('grid'),
+            selection = grid.getView().getSelectionModel().getSelection(),
+            store = Ext.getStore('Payload');
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('grid');
+            console.log(grid);
+            console.log('selection');
+            console.log(selection);
+            console.log('store');
+            console.log(store);
+        }
+
+        if (selection) {
+            store.remove(selection);
+            store.sync();
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('removed')
+                console.log(store)
+            }
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
+    },
+
+    onCriterionDemoRemove: function (button) {
             var grid = button.up('grid'),
                 selection = grid.getView().getSelectionModel().getSelection(),
-                store = Ext.getStore('Payload');
+                store = Ext.getStore('DemographicsPayload');
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('grid');

@@ -25,13 +25,14 @@ Ext.define('cardioCatalogQT.form.DemoTest', {
     selModel: {
         type: 'checkboxmodel',
         listeners: {
-            selectionchange: 'onSelectionChange'
+            selectionchange: 'onSelectionDemoChange'
         }
     },
 
     // When true, this view acts as the default listener scope for listeners declared within it.
     // For example the selectionModel's selectionchange listener resolves to this.
     defaultListenerScope: false,
+
     config: {
         variableHeights: false,
         title: 'DemoTest',
@@ -51,16 +52,8 @@ Ext.define('cardioCatalogQT.form.DemoTest', {
             layout: {
                 pack: 'center'
             },
-            items: [{
-                minWidth: 80,
-                text: 'Search on criteria',
-                xtype: 'button',
-                itemId: 'executeTest',
-                handler: 'onSearchClick'
-            }]
-        }, {
-            xtype: 'toolbar',
-            items: [{
+            items: [
+                {
                 reference: 'andButton',
                 text: 'AND',
                 tooltip: 'Add the selected criteria as AND',
@@ -73,13 +66,22 @@ Ext.define('cardioCatalogQT.form.DemoTest', {
                 iconCls: 'or',
                 handler: 'onCriterionOr'
             },'-',{
-                reference: 'removeButton',  // The referenceHolder can access this button by this name
+                reference: 'removeDemoButton',  // The referenceHolder can access this button by this name
                 text: 'Remove',
                 tooltip: 'Remove the selected item',
                 iconCls: 'remove',
                 disabled: true,
-                handler: 'onCriterionRemove'
+                handler: 'onCriterionDemoRemove'
             },{
+                minWidth: 80,
+                text: 'Search on criteria',
+                xtype: 'button',
+                itemId: 'executeTest',
+                handler: 'onSearchClick'
+            }]
+        }, {
+            xtype: 'toolbar',
+            items: [{
                 xtype: 'button',
                 text: 'Constrain by sex',
                 itemId: 'showSex',
