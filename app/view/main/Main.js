@@ -80,6 +80,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },
 
         {
+            xtype: 'demoForm'
+        },
+
+        {
             xtype: 'vitalForm'
         },
 

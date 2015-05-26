@@ -1,6 +1,6 @@
-Ext.define('cardioCatalogQT.store.Payload', {
+Ext.define('cardioCatalogQT.store.DemographicsPayload', {
     extend: 'Ext.data.Store',
-    alias: 'store.Payload',
+    alias: 'store.DemographicsPayload',
 
     config:{
         idProperty: 'id',
@@ -23,7 +23,7 @@ Ext.define('cardioCatalogQT.store.Payload', {
 
         proxy: {
             type: 'sessionstorage',
-            id: 'payload'
+            id: 'demographicsPayload'
         }
     }
 });

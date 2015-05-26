@@ -51,6 +51,112 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         cardioCatalogQT.service.UtilityService.criteria_template(panel, store);
     },
 
+    onSubmitDemoTest: function (button) {
+        var payload = Ext.getStore('DemographicsPayload'),
+            demo = [],
+            form = button.up('grid'),
+            sexValue = form.down('#sexValue').value,
+            ageComparator = form.down('#ageComparator').value,
+            ageValue = form.down('#ageValue').value,
+            upperAgeValue = form.down('#upperAgeValue').value;
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('show object demographics');
+            console.log(sexValue);
+            console.log(ageComparator);
+            console.log(ageValue);
+            console.log(upperAgeValue);
+        }
+
+        // insert sex only if exists
+        if (sexValue) {
+
+            if ((ageComparator === 'bt' &&
+                ageValue &&
+                upperAgeValue) ||
+
+                (ageComparator !== 'bt' &&
+                ageValue &&
+                !upperAgeValue) ||
+
+                (ageComparator !== 'bt' &&
+                !ageValue &&
+                !upperAgeValue)) {
+
+                payload.add({
+                    type: 'sex',
+                    key: 'sex',
+                    comparator: 'eq',
+                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
+                    value: sexValue
+                });
+
+                payload.sync();
+            }
+            else {
+
+                // error conditionals here
+            }
+        }
+
+        // insert only if exists
+        if (ageValue) {
+
+            var test_age = ageValue;
+
+            if (ageComparator === 'bt') {
+
+                if (!upperAgeValue) {
+                    alert('Please enter max age to continue')
+                }
+                else {
+                    test_age += ',' + upperAgeValue;
+                }
+            }
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('test age: ' + test_age);
+            }
+
+            if ((ageComparator === 'bt' &&
+                ageValue &&
+                upperAgeValue) ||
+
+                (!upperAgeValue &&
+                ageComparator !== 'bt' &&
+                ageValue)) {
+
+                payload.add({
+                    type: 'age',
+                    key: 'age',
+                    comparator: ageComparator,
+                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator),
+                    value: test_age
+                });
+
+                payload.sync();
+            }
+            else{
+                // error conditions here
+            }
+        }
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            demo.push(sexValue);
+            demo.push(ageComparator);
+            demo.push(ageValue);
+            demo.push(upperAgeValue);
+            console.log('demographics:');
+            console.log(demo);
+        }
+
+        // reload store on grid
+        form.up().down('#searchGrid').getStore().load();
+        form.up().down('#demoGrid').getStore().load();
+
+        // clear form
+        //form.reset();
+    },
     onSubmitDemographics: function (button) {
         var payload = Ext.getStore('Payload'),
             demo = [],
@@ -609,6 +715,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         // clear form
         form.reset();
+    },
+
+    onSelectionChange: function(sm, selections) {
+        this.getReferences().removeButton.setDisabled(selections.length === 0);
     },
 
     onSelectionChange: function(sm, selections) {

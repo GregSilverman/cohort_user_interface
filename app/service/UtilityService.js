@@ -406,6 +406,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log('url: ' + url);
         }
 
+        Ext.Ajax.on('beforerequest', (function(klass, request) {
+            if (request.failure) { // already have auth token: do nothing
+                return null;
+            }
+            else { // send auth token
+                return null; //request.headers.Authorization = hash;
+            }
+        }), this);
+
         Ext.Ajax.request({
             cors: true,
             type: 'GET',
@@ -557,7 +566,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(panel);
         }
 
-/*        // construct URL and submit criteria to Query store
+/*      // construct URL and submit criteria to Query store
         // if no criteria have been selected then run the last generated query
         if (payload.getCount() > 0) {
             url = cardioCatalogQT.service.UtilityService.url(payload, options);
@@ -582,7 +591,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 return null;
             }
             else { // send auth token
-                return request.headers.Authorization = hash;
+                return null; //request.headers.Authorization = hash;
             }
         }), this);
 
