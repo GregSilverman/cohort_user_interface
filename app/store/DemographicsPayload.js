@@ -14,7 +14,8 @@ Ext.define('cardioCatalogQT.store.DemographicsPayload', {
             {name: 'n', type: 'string'},
             {name: 'dateComparator', type: 'string'},
             {name: 'dateComparatorSymbol', type: 'string'},
-            {name: 'dateValue', type: 'string'}
+            {name: 'dateValue', type: 'string'},
+            {name: 'criteria', type: 'string'}
 
         ],
 

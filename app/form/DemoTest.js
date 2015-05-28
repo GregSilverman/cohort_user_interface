@@ -17,6 +17,7 @@ Ext.define('cardioCatalogQT.form.DemoTest', {
         {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
         {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
         {text: "Description", flex: 1, sortable: true, dataIndex: 'description'},
+        {text: "Combined", flex: 1, sortable: true, dataIndex: 'criteria'},
         {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
         {text: "When", flex: 1, sortable: true, dataIndex: 'dateValue'},
         {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
@@ -53,13 +54,13 @@ Ext.define('cardioCatalogQT.form.DemoTest', {
                 pack: 'center'
             },
             items: [
-                {
+                { // Combine checked items with AND
                 reference: 'andButton',
                 text: 'AND',
                 tooltip: 'Add the selected criteria as AND',
                 iconCls: 'and',
                 handler: 'onCriterionAnd'
-            },'-',{
+            },'-',{ // Combine checked items with OR
                 reference: 'orButton',
                 text: 'OR',
                 tooltip: 'Add the selected criteria as OR',
@@ -74,13 +75,14 @@ Ext.define('cardioCatalogQT.form.DemoTest', {
                 handler: 'onCriterionDemoRemove'
             },{
                 minWidth: 80,
-                text: 'Search on criteria',
+                text: 'Add to search',
                 xtype: 'button',
                 itemId: 'executeTest',
                 handler: 'onSearchClick'
             }]
         }, {
             xtype: 'toolbar',
+            height: 200,
             items: [{
                 xtype: 'button',
                 text: 'Constrain by sex',
@@ -208,7 +210,7 @@ Ext.define('cardioCatalogQT.form.DemoTest', {
             xtype: 'button',
             itemId: 'button',
             html: 'Toolbar here',
-            text: 'Save criteria',
+            text: 'Add',
             handler: 'onSubmitDemoTest'
         }] // end demographics
     }

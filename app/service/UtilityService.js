@@ -27,19 +27,24 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     // comparators for static defaults are set in code below (e.g., blood_pressure/lab)
     url: function(payload, options) {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
+            demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
             url =  cardioCatalogQT.config.protocol,
             seperator = ':',
             bool_delimiter,
             delimiter = ';',
             n = payload.getCount(),
             i = 0,
-            parent;
+            parent,
+            key = '', // grab keys for boolean combined criteria
+            bool_op; // flag type of oeprator for testing
 
         if (!options.delimiter){
             bool_delimiter = ';';
+            bool_op = 'AND';
         }
         else{
             bool_delimiter = options.delimiter;
+            bool_op = 'OR;'
         }
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -120,12 +125,27 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     payload.data.items[i].data.dateValue
             }
 
+            // assemble multi-instance keys for boolean combined model instances
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('store id');
+                console.log(payload.data.items[i].data.id);
+
+                if (i === 0){
+                    key = payload.data.items[i].data.id;
+                }
+                else {
+                     key += ',' + payload.data.items[i].data.id;
+                }
+                console.log(key);
+            }
+
             i += 1;
 
             // separate all query units by delimiter, except for the last
             if (i < n){
                 url += bool_delimiter;
             }
+
 
         });
 
@@ -137,6 +157,18 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         });
 
         queries.sync();
+
+        // deal with boolean combinations
+        if (cardioCatalogQT.service.UtilityService.criteria(payload, options, n)) {
+
+            demo_test.add({
+                key: key,
+                type: bool_op,
+                criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
+            });
+
+            demo_test.sync();
+        }
 
         if (cardioCatalogQT.config.mode === 'test') {
             // get the last inserted url
@@ -489,6 +521,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         var grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
             store = Ext.getStore('Payload'),
+            test_store = Ext.getStore('DemographicsPayload'),
             test = [];
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -522,8 +555,18 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
             ]);
 
+            test_store.clearFilter(true); // Clears old filters
+            test_store.filter([ // filter on selected array elements
+                {
+                    filterFn: function(rec) {
+                        return Ext.Array.indexOf(test, rec.get('id')) != -1;
+                    }
+                }
+            ]);
             // create URL
             cardioCatalogQT.service.UtilityService.url(store,options);
+
+            cardioCatalogQT.service.UtilityService.url(test_store,options);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('filtered store');

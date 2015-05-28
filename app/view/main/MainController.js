@@ -781,14 +781,15 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     console.log('nada')
                 }
             }
-        },
+    },
 
     onCriterionOr: function (button) {
         var options = {
-                delimiter: '|'
-            };
+                    delimiter: '|'
+                };
 
         cardioCatalogQT.service.UtilityService.assemble_bool(button, options);
+
     },
 
     onCriterionAnd: function (button) {
