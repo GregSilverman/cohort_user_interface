@@ -29,7 +29,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
             demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
             url =  cardioCatalogQT.config.protocol,
-            atomic_unit, // each specific item to be queried
+            url_payload = '',
+            atomic_unit, // = '' each specific item to be queried
             atoms = Ext.create('cardioCatalogQT.store.Atoms'), // store of atomic_units
             seperator = ':',
             bool_delimiter,
@@ -138,7 +139,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     key = payload.data.items[i].data.id;
                 }
                 else {
-                     key += ',' + payload.data.items[i].data.id;
+                    key += ',' + payload.data.items[i].data.id;
                 }
                 console.log(key);
                 console.log('atomic_unit');
@@ -159,16 +160,36 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log(atoms);
             }
 
-            url += atomic_unit;
+            url_payload += atomic_unit;
 
             i += 1;
 
             // separate all query units by delimiter, except for the last
             if (i < n){
-                url += bool_delimiter;
-                console.log(url);
+                url_payload += bool_delimiter;
             }
         });
+
+        if (url_payload) {
+
+            atoms.add({
+                type: 'boolean',
+                key: key,
+                atomic_unit: url_payload,
+                criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
+            });
+
+            atoms.sync();
+        }
+
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('url_payload');
+            console.log(url_payload);
+        }
+
+
+        url += url_payload;
 
         // save criteria in data store
         queries.add({
