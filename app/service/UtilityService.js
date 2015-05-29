@@ -29,6 +29,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
             demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
             url =  cardioCatalogQT.config.protocol,
+            atomic_unit, // each specific item to be queried
+            atoms = Ext.create('cardioCatalogQT.store.Atoms'), // store of atomic_units
             seperator = ':',
             bool_delimiter,
             delimiter = ';',
@@ -36,15 +38,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             i = 0,
             parent,
             key = '', // grab keys for boolean combined criteria
-            bool_op; // flag type of oeprator for testing
+            bool_op; // flag type of operator for testing
 
-        if (!options.delimiter){
+        if (!options.delimiter || options.delimiter === ';'){
             bool_delimiter = ';';
             bool_op = 'AND';
         }
         else{
             bool_delimiter = options.delimiter;
-            bool_op = 'OR;'
+            bool_op = 'OR'
         }
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -61,8 +63,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             // get parent value for assembling bucket query in API
             parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type);
 
+            atomic_unit = '';
+
             // section "a" of query
-            url += rec.data.type +
+            atomic_unit = rec.data.type +
                 seperator  +
                 parent +
                 delimiter;
@@ -70,57 +74,57 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
                     payload.data.items[i].data.key === 'blood_pressure_diastolic' ||
                     payload.data.items[i].data.type === 'lab') {
-                url += 'eq';
+                atomic_unit += 'eq';
             }
             else {
-                url += rec.data.comparator;
+                atomic_unit  += rec.data.comparator;
             }
 
-            url += delimiter;
+            atomic_unit += delimiter;
 
             // section "b"
             if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
                 payload.data.items[i].data.key === 'blood_pressure_diastolic'){
-                url += 'blood_pressure'
+                atomic_unit += 'blood_pressure';
             }
             else if (payload.data.items[i].data.type === 'lab') {
-                url += rec.data.key
+                atomic_unit += rec.data.key;
             }
             else {
-                url += rec.data.value
+                atomic_unit += rec.data.value;
             }
 
             // add date here
             if (payload.data.items[i].data.dateValue){
-                url += ',DATE,' +
+                atomic_unit += ',DATE,' +
                     cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
-                    payload.data.items[i].data.dateValue
+                    payload.data.items[i].data.dateValue;
             }
 
-            url +=  delimiter +
+            atomic_unit +=  delimiter +
                 rec.data.type +
                 seperator;
 
             if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
                 payload.data.items[i].data.key === 'blood_pressure_diastolic'){
-                url += payload.data.items[i].data.key;
+                atomic_unit += payload.data.items[i].data.key;
             }
             else if (payload.data.items[i].data.type === 'lab') {
-                url += 'result_value_num';
+                atomic_unit += 'result_value_num';
             }
             else {
-                url += parent;
+                atomic_unit += parent;
             }
 
             // section "c"
-            url += delimiter +
+            atomic_unit += delimiter +
                 rec.data.comparator +
                 delimiter +
                 rec.data.value;
 
             // add date here
             if (payload.data.items[i].data.dateValue){
-                url += ',DATE,' +
+                atomic_unit += ',DATE,' +
                     cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
                     payload.data.items[i].data.dateValue
             }
@@ -137,16 +141,33 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                      key += ',' + payload.data.items[i].data.id;
                 }
                 console.log(key);
+                console.log('atomic_unit');
+                console.log(atomic_unit);
             }
+
+            atoms.add({
+                type: rec.data.type,
+                key: payload.data.items[i].data.id,
+                atomic_unit: atomic_unit,
+                criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
+            });
+
+            atoms.sync();
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('atoms');
+                console.log(atoms);
+            }
+
+            url += atomic_unit;
 
             i += 1;
 
             // separate all query units by delimiter, except for the last
             if (i < n){
                 url += bool_delimiter;
+                console.log(url);
             }
-
-
         });
 
         // save criteria in data store
