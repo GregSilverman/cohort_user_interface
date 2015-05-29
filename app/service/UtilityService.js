@@ -25,6 +25,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     //
     // mappings to actual attribute names are resolved via a hash lookup
     // comparators for static defaults are set in code below (e.g., blood_pressure/lab)
+
+    // TODO: handle creation of boolean combined atomic_units
     url: function(payload, options) {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
             demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
@@ -187,7 +189,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log('url_payload');
             console.log(url_payload);
         }
-
 
         url += url_payload;
 
