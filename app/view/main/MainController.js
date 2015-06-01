@@ -35,6 +35,41 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         form.up().down('#searchGrid').getStore().load();
     },
 
+
+    onExecuteTest: function (button) {
+        var atoms = Ext.getStore('Atoms'),
+            form = button.up('form'),
+            url_pre =  cardioCatalogQT.config.protocol,
+            url;
+
+            url_pre += cardioCatalogQT.config.host
+                + cardioCatalogQT.config.apiGetQ;
+
+        atoms.each(function(rec) {
+
+            console.log('atoms rec')
+            console.log(rec);
+
+            // create url using atomic_unit for dispaly of count in grid
+            // pass rec.data.key to know which store record gets updated with count
+
+            if (rec.data.type === 'sex' || rec.data.type === 'age' || rec.data.type === 'boolean') {
+                url = url_pre + rec.data.atomic_unit;
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('test url: ' + url);
+                    console.log('id:' + rec.data.key);
+                }
+
+                cardioCatalogQT.service.UtilityService.query_test(button, url, rec.data.key);
+            }
+
+
+
+        });
+        //form.up().down('#searchGrid').getStore().load();
+    },
+
     onSearchClick: function (button) {
         var url;
 
@@ -380,7 +415,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     });
 
                     payload.sync();
-                    console.log('YESH')
                 }
 
                 if (diastolicValue) {
@@ -789,7 +823,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 };
 
         cardioCatalogQT.service.UtilityService.assemble_bool(button, options);
-
     },
 
     onCriterionAnd: function (button) {

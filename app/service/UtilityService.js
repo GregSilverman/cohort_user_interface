@@ -34,10 +34,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             url_payload = '',
             atomic_unit, // = '' each specific item to be queried
             atoms = Ext.create('cardioCatalogQT.store.Atoms'), // store of atomic_units
+            store = Ext.create('cardioCatalogQT.store.Results'),
             seperator = ':',
             bool_delimiter,
             delimiter = ';',
             n = payload.getCount(),
+            m,
             i = 0,
             parent,
             key = '', // grab keys for boolean combined criteria
@@ -66,7 +68,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             // get parent value for assembling bucket query in API
             parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type);
 
-            atomic_unit = '';
+            //atomic_unit = '';
 
             // section "a" of query
             atomic_unit = rec.data.type +
@@ -148,6 +150,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log(atomic_unit);
             }
 
+
+            var test = url + atomic_unit;
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('test url');
+                console.log(test);
+            }
+            //cardioCatalogQT.service.UtilityService.query_test(test);
+
             atoms.add({
                 type: rec.data.type,
                 key: payload.data.items[i].data.id,
@@ -172,11 +183,29 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             }
         });
 
+        // deal with boolean combinations
+        if (cardioCatalogQT.service.UtilityService.criteria(payload, options, n)) {
+
+            demo_test.add({
+                key: key,
+                type: bool_op,
+                criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
+            });
+
+            demo_test.sync();
+            demo_test.last(); // get last inserted id for creation of boolean atomic store record
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('demo_test');
+                console.log(demo_test.last().id);
+            }
+        }
+
         if (url_payload) {
 
             atoms.add({
                 type: 'boolean',
-                key: key,
+                key: demo_test.last().id,
                 atomic_unit: url_payload,
                 criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
             });
@@ -201,17 +230,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         queries.sync();
 
-        // deal with boolean combinations
-        if (cardioCatalogQT.service.UtilityService.criteria(payload, options, n)) {
-
-            demo_test.add({
-                key: key,
-                type: bool_op,
-                criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
-            });
-
-            demo_test.sync();
-        }
 
         if (cardioCatalogQT.config.mode === 'test') {
             // get the last inserted url
@@ -416,9 +434,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         panel.setHtml(n + ' patients met the given criteria:'
                             + '<br>'
-                            + criteria
+                            //+ criteria
                             + '<br>'
                             + tpl.apply(store));
+
+        return n;
     },
 
     criteria_template: function(panel, store) {
@@ -581,7 +601,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             // array of elements on which to filter
             Ext.Array.each(selection, function (item) {
                 test.push(item.data.id);
-
             });
 
             if (cardioCatalogQT.config.mode === 'test') {
@@ -632,12 +651,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             panel = button.up().up().up().down('#results'),
             json = [],
             records = [],
-            //payload = Ext.getStore('Payload'),
-            //url,
+        //payload = Ext.getStore('Payload'),
+        //url,
             store =  Ext.create('cardioCatalogQT.store.Results');
-            /*options = {
-                delimiter: null
-            };*/
+        /*options = {
+         delimiter: null
+         };*/
 
         //localStorage.clear();
         store.getProxy().clear();
@@ -652,15 +671,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(panel);
         }
 
-/*      // construct URL and submit criteria to Query store
-        // if no criteria have been selected then run the last generated query
-        if (payload.getCount() > 0) {
-            url = cardioCatalogQT.service.UtilityService.url(payload, options);
-        }
-        // get last submitted url
-        else {
-            url = cardioCatalogQT.service.UtilityService.url_request();
-  l     }*/
+        /*      // construct URL and submit criteria to Query store
+         // if no criteria have been selected then run the last generated query
+         if (payload.getCount() > 0) {
+         url = cardioCatalogQT.service.UtilityService.url(payload, options);
+         }
+         // get last submitted url
+         else {
+         url = cardioCatalogQT.service.UtilityService.url_request();
+         l     }*/
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
@@ -737,6 +756,114 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 cardioCatalogQT.service.UtilityService.clear_all();
             }
         });
+    },
+
+    query_test: function(button, url, id){
+
+        var auth = sessionStorage.sessionToken + ':unknown',
+            hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
+            json = [],
+            panel = button.up().up().up().down('#results'),
+            records = [],
+            n,
+            store =  Ext.create('cardioCatalogQT.store.Results'),
+            test = Ext.getStore('DemographicsPayload');
+
+        //localStorage.clear();
+        store.getProxy().clear();
+        store.data.clear();
+        store.sync();
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('component: ');
+            console.log(panel);
+        }
+
+        // Make sure current store contents are displayed on grid
+        //button.up().up().up().down('#gridTest').getStore().load();
+
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('call to make url: ' + url);
+        }
+
+        // send auth header before Ajax request to disable auth form
+        Ext.Ajax.on('beforerequest', (function(klass, request) {
+            if (request.failure) { // already have auth token: do nothing
+                return null;
+            }
+            else { // send auth token
+                return null; //request.headers.Authorization = hash;
+            }
+        }), this);
+
+        Ext.Ajax.request({
+            cors: true,
+            url: url,
+            useDefaultXhrHeader: false,
+            headers: {
+                'Accept': 'application/json'
+            },
+            disableCaching: false,
+            success: function(response) {
+                json = Ext.decode(response.responseText);
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('json' + json);
+                }
+
+                if(json !== null &&  typeof (json) !==  'undefined'){
+
+                    // custom JSON reader as per
+                    // http://stackoverflow.com/questions/11159480/sencha-touch-store-json-file-containing-array
+                    Ext.each(json, function(entry) {
+                        Ext.each(json.items || [], function(tuple) {
+
+                            records.push({
+                                N: tuple[0].N,
+                                sid: tuple[0].sid,
+                                source: tuple[0].source
+                            });
+                            if (cardioCatalogQT.config.mode === 'test') {
+                                console.log(tuple[0].source
+                                    + 'N ' + tuple[0].N
+                                    + 'attribute ' + tuple[0].attribute
+                                    + 'sid ' + tuple[0].sid
+                                    + 'value ' + tuple[0].value);
+                            }
+                        });
+                    });
+
+                    //update store with data
+                    store.add(records);
+                    store.sync();
+
+                    // reload store for grid display
+                    //button.up().up().up().down('#gridTest').getStore().load();
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(records);
+                        console.log('store');
+                        console.log(store);
+                        console.log(store.getCount());
+                    }
+
+                }
+
+                // get n for update of store attribute
+                n = cardioCatalogQT.service.UtilityService.template(panel, store);
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('n is -> ' + n);
+                }
+
+                var update_record = test.findRecord('id', id);
+                update_record.set('n', n);
+                test.sync();
+
+            }
+        });
+
     }
+
 
 });

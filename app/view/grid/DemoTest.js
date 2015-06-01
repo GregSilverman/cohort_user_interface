@@ -2,7 +2,7 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.form.DemoTest', {
+Ext.define('cardioCatalogQT.view.main.DemoTest', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.demoForm',
     itemId: 'demoGrid',
@@ -78,7 +78,7 @@ Ext.define('cardioCatalogQT.form.DemoTest', {
                 text: 'Add to search',
                 xtype: 'button',
                 itemId: 'executeTest',
-                handler: 'onSearchClick'
+                handler: 'onExecuteTest'
             }]
         }, {
             xtype: 'toolbar',
