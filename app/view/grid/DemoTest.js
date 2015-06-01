@@ -16,10 +16,7 @@ Ext.define('cardioCatalogQT.view.main.DemoTest', {
         {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
         {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
         {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
-        {text: "Description", flex: 1, sortable: true, dataIndex: 'description'},
         {text: "Combined", flex: 1, sortable: true, dataIndex: 'criteria'},
-        {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
-        {text: "When", flex: 1, sortable: true, dataIndex: 'dateValue'},
         {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
     ],
     columnLines: true,
