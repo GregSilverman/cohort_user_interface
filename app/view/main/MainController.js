@@ -40,15 +40,43 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         var atoms = Ext.getStore('Atoms'),
             form = button.up('form'),
             url_pre =  cardioCatalogQT.config.protocol,
-            url;
+            url,
+            store = Ext.create('cardioCatalogQT.store.Payload'),
+            test = Ext.getStore('DemographicsPayload');
 
             url_pre += cardioCatalogQT.config.host
                 + cardioCatalogQT.config.apiGetQ;
 
         atoms.each(function(rec) {
 
-            console.log('atoms rec')
-            console.log(rec);
+            var record = test.findRecord('id', rec.data.key);
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('record:');
+                console.log(record.data);
+            }
+
+            // move selected criteria to main payload: TODO create single class to handle payload
+            store.add({
+                type: record.data.type,
+                key: record.data.key,
+                comparator: record.data.comparator,
+                comparatorSymbol: record.data.comparatorSymbol,
+                value: record.data.value,
+                description: record.data.criteria,
+                n: record.data.n,
+                dateComparator: record.data.dateComparator,
+                dateComparatorSymbol: record.data.dateComparatorSymbol,
+                dateValue: record.data.dateValue
+                //criteria: record.data.criteria
+            });
+
+            store.sync();
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('atoms rec')
+                console.log(rec);
+            }
 
             // create url using atomic_unit for dispaly of count in grid
             // pass rec.data.key to know which store record gets updated with count
