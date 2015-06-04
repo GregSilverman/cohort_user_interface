@@ -67,8 +67,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 n: record.data.n,
                 dateComparator: record.data.dateComparator,
                 dateComparatorSymbol: record.data.dateComparatorSymbol,
-                dateValue: record.data.dateValue
-                //criteria: record.data.criteria
+                dateValue: record.data.dateValue,
+                criteria: record.data.criteria
             });
 
             store.sync();
@@ -146,12 +146,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 !ageValue &&
                 !upperAgeValue)) {
 
+                // TODO: implement citerion builder independent of all data in stores
+                var criterion = 'SEX' + ' ' + cardioCatalogQT.service.UtilityService.comparator_hash('eq') + ' ' + sexValue + ' <br>';
+
                 payload.add({
                     type: 'sex',
                     key: 'sex',
                     comparator: 'eq',
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
-                    value: sexValue
+                    value: sexValue,
+                    criteria: criterion
                 });
 
                 payload.sync();
@@ -202,6 +206,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             else{
                 // error conditions here
             }
+
+
         }
 
         if (cardioCatalogQT.config.mode === 'test') {

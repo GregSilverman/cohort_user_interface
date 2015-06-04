@@ -40,10 +40,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             delimiter = ';',
             n = payload.getCount(),
             i = 0,
+            crit,
             parent,
-            tuple,
+            new_atom,
             match,
-            stuph = '', // combination of boolean expression and other terms
+            found_atom = '', // combination of boolean expression and other terms
             key = '', // grab keys for boolean combined criteria
             bool_op; // flag type of operator for testing
 
@@ -143,13 +144,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 if (cardioCatalogQT.config.mode === 'test') {
                     console.log('store id');
                     console.log(payload.data.items[i].data.id);
+                }
 
-                    if (i === 0) {
-                        key = payload.data.items[i].data.id;
-                    }
-                    else {
-                        key += ',' + payload.data.items[i].data.id;
-                    }
+                if (i === 0) {
+                    key = payload.data.items[i].data.id;
+                }
+                else {
+                    key += ',' + payload.data.items[i].data.id;
+                }
+
+                if (cardioCatalogQT.config.mode === 'test') {
                     console.log(key);
                     console.log('atomic_unit');
                     console.log(atomic_unit);
@@ -158,6 +162,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 var test = url + atomic_unit;
 
                 match = cardioCatalogQT.service.UtilityService.match(target, payload.data.items[i].data.id, source);
+
 
                 if (cardioCatalogQT.config.mode === 'test') {
                     console.log('test url');
@@ -187,16 +192,27 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 i += 1;
 
                 // separate all query units by delimiter, except for the last
-                if (i < n) {
+                // TODO: need to not count if type is boolean
+                if (i < n-1) {
                     url_payload += bool_delimiter;
                 }
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('stuph AAAA' + rec.data.criteria);
+                }
+
+                crit = rec.data.criteria + ' ' + bool_op + ' ';
             }
             else {
                 // get id of store element
 
-                stuph += cardioCatalogQT.service.UtilityService.find(target, rec.data.id);
+                found_atom += ' (' + cardioCatalogQT.service.UtilityService.find(target, rec.data.id) + ' )';
+                crit += ' (' + rec.data.criteria + ')';
 
-                console.log('stuph' + stuph + rec.data.criteria)
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('crit' + crit);
+                }
 
             }
         });
@@ -206,8 +222,39 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             if (url_payload) {
 
-                var hmmm = Ext.getStore('DemographicsPayload')
-                hmmm.clearFilter();
+                var hmmm = Ext.getStore('DemographicsPayload');
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('last up:' + payload.last().id + '  ' + key);
+                    console.log(payload.last())
+                }
+
+                // deal with composite key issue
+                // where key references payload record
+                var new_key = payload.last().data.key,
+                    new_id = payload.last().data.id;
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('new stuff:' + new_key + ' ' + new_id);
+                }
+                // if new_key is NOT integer, that is, one of sex, age, etc., do nothing
+                if (isNaN(new_key) && new_key.indexOf(',') == -1) {
+                    key = key;
+                    crit = cardioCatalogQT.service.UtilityService.criteria(payload, options, n);
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('non composite criterion: ' + crit);
+                    }
+                }
+                // otherwise create composite key
+                else {
+                    key = key + ',' + new_id;
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('new key:' + key);
+                    }
+                    //crit = payload.last().data.criteria + cardioCatalogQT.service.UtilityService.criteria(payload, options, n);
+                }
+
+                //hmmm.clearFilter();
 
                 var m = hmmm.findBy(function (record, id) {
 
@@ -216,23 +263,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     }
 
                 });
-
-                console.log('last up:' + payload.last().id + '  ' + key);
-                console.log(payload.last())
-
-                var new_key = payload.last().data.key;
-
-                //if (key.indexOf(',') == -1) {
-                //    console.log('No compound key found!');
-
-                if (isNaN(new_key) && new_key.indexOf(',') == -1) {
-                    key = key;
-                }
-                else {
-                    key = key + ',' + new_key;
-                }
-
-
                 //}
 
                 if (m === -1) {
@@ -240,21 +270,39 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     demo_test.add({
                         key: key,
                         type: bool_op,
-                        criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
+                        criteria: crit
                     });
                     demo_test.sync();
-
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('demo_test');
                         console.log(demo_test.last().id);
-                        console.log(stuph + bool_delimiter + url_payload)
+                        console.log(found_atom + bool_delimiter + url_payload)
+                    }
+
+                    if (!url_payload){
+                        new_atom = found_atom;
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('atoms 1:' + new_atom);
+                        }
+                    }
+                    else if (!found_atom){
+                        new_atom = url_payload;
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('atoms 2:' + new_atom);
+                        }
+                    }
+                    else if (url_payload && found_atom) {
+                        new_atom = found_atom + bool_delimiter + url_payload;
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('atoms 3:' + new_atom + ' ' + n);
+                        }
                     }
 
                     atoms.add({
                         type: 'boolean',
                         key: demo_test.last().id,
-                        atomic_unit: stuph + bool_delimiter + url_payload,
+                        atomic_unit: new_atom,
                         source: source
                     });
 
@@ -262,7 +310,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
             }
         }
-
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('url_payload');
@@ -275,7 +322,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         queries.add({
             url: url,
             user: 'gms',
-            criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
+            criteria: crit // cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
         });
 
         queries.sync();
@@ -295,20 +342,22 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         var atom = '';
 
         store.each(function(rec){
-            console.log('find each' + id);
-            console.log(rec);
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('find each' + id);
+                console.log(rec);
+            }
 
             //var atom = store.findRecord('key', id);
 
             if (rec.data.key == id){
-                console.log('TRUE!')
                 atom = rec.data.atomic_unit
             }
             else {
-                console.log('FALSE')
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('FALSE')
+                }
             }
 
-            console.log(atom);
 
         });
 
@@ -316,36 +365,31 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     },
 
     match: function(store, key_id, source){
-        store.each(function(rec){
-            console.log('target each');
-            console.log(rec);
-        });
-
-        var i = 0;
-
-        console.log('target');
-        console.log(store);
-        console.log(key_id);
 
         //cardioCatalogQT.service.UtilityService.query_test(test);
         var match = store.findBy(function(record,id) {
 
             // do not do strict type matching due to issue with key_id
             if(record.data.key == key_id && record.data.source == source) {
-                console.log('RECORD FOUND!');
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('RECORD FOUND!');
+                }
                 return true;
             }
-
-            console.log('record not found!')
-            console.log(record.data.key)
+            else{
+                return false
+            }
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('record not found!')
+                console.log(record.data.key)
+            }
 
         });
-
-        console.log(match);
 
         return match
 
     },
+
     // used for display with query results
     criteria: function(payload, options, n){
 
