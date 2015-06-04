@@ -7,8 +7,8 @@ Ext.define('cardioCatalogQT.store.Atoms', {
         fields: [
             {name: 'type', type: 'string'},
             {name: 'key', type: 'string'},
-            {name: 'atomic_unit', type: 'string'}
-
+            {name: 'atomic_unit', type: 'string'},
+            {name: 'source', type: 'string'}
         ],
 
         storeId: 'Atoms',

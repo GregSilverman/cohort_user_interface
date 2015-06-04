@@ -848,17 +848,20 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     onCriterionOr: function (button) {
         var options = {
                     delimiter: '|'
-                };
+            },
+            source = 'demographics'; // TODO: add to global config
 
-        cardioCatalogQT.service.UtilityService.assemble_bool(button, options);
+
+        cardioCatalogQT.service.UtilityService.assemble_bool(button, options, source);
     },
 
     onCriterionAnd: function (button) {
         var options = {
                 delimiter: ';'
-            };
+            },
+            source = 'demographics';
 
-        cardioCatalogQT.service.UtilityService.assemble_bool(button, options);
+        cardioCatalogQT.service.UtilityService.assemble_bool(button, options, source);
     }
 
 });

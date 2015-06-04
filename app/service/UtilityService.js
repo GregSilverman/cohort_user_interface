@@ -27,7 +27,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     // comparators for static defaults are set in code below (e.g., blood_pressure/lab)
 
     // TODO: handle creation of boolean combined atomic_units
-    url: function(payload, options) {
+    url: function(payload, options, source, target) {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
             demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
             url =  cardioCatalogQT.config.protocol,
@@ -39,9 +39,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             bool_delimiter,
             delimiter = ';',
             n = payload.getCount(),
-            m,
             i = 0,
             parent,
+            tuple,
+            match,
+            stuph = '', // combination of boolean expression and other terms
             key = '', // grab keys for boolean combined criteria
             bool_op; // flag type of operator for testing
 
@@ -66,151 +68,199 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         payload.each(function(rec) {
             // get parent value for assembling bucket query in API
-            parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type);
 
-            //atomic_unit = '';
+            if (rec.data.type !== 'OR' && rec.data.type !== 'AND') {
 
-            // section "a" of query
-            atomic_unit = rec.data.type +
-                seperator  +
-                parent +
-                delimiter;
+                parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type);
 
-            if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                //atomic_unit = '';
+
+                // section "a" of query
+                atomic_unit = rec.data.type +
+                    seperator +
+                    parent +
+                    delimiter;
+
+                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
                     payload.data.items[i].data.key === 'blood_pressure_diastolic' ||
                     payload.data.items[i].data.type === 'lab') {
-                atomic_unit += 'eq';
-            }
-            else {
-                atomic_unit  += rec.data.comparator;
-            }
-
-            atomic_unit += delimiter;
-
-            // section "b"
-            if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
-                payload.data.items[i].data.key === 'blood_pressure_diastolic'){
-                atomic_unit += 'blood_pressure';
-            }
-            else if (payload.data.items[i].data.type === 'lab') {
-                atomic_unit += rec.data.key;
-            }
-            else {
-                atomic_unit += rec.data.value;
-            }
-
-            // add date here
-            if (payload.data.items[i].data.dateValue){
-                atomic_unit += ',DATE,' +
-                    cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
-                    payload.data.items[i].data.dateValue;
-            }
-
-            atomic_unit +=  delimiter +
-                rec.data.type +
-                seperator;
-
-            if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
-                payload.data.items[i].data.key === 'blood_pressure_diastolic'){
-                atomic_unit += payload.data.items[i].data.key;
-            }
-            else if (payload.data.items[i].data.type === 'lab') {
-                atomic_unit += 'result_value_num';
-            }
-            else {
-                atomic_unit += parent;
-            }
-
-            // section "c"
-            atomic_unit += delimiter +
-                rec.data.comparator +
-                delimiter +
-                rec.data.value;
-
-            // add date here
-            if (payload.data.items[i].data.dateValue){
-                atomic_unit += ',DATE,' +
-                    cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
-                    payload.data.items[i].data.dateValue
-            }
-
-            // assemble multi-instance keys for boolean combined model instances
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('store id');
-                console.log(payload.data.items[i].data.id);
-
-                if (i === 0){
-                    key = payload.data.items[i].data.id;
+                    atomic_unit += 'eq';
                 }
                 else {
-                    key += ',' + payload.data.items[i].data.id;
+                    atomic_unit += rec.data.comparator;
                 }
-                console.log(key);
-                console.log('atomic_unit');
-                console.log(atomic_unit);
+
+                atomic_unit += delimiter;
+
+                // section "b"
+                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                    payload.data.items[i].data.key === 'blood_pressure_diastolic') {
+                    atomic_unit += 'blood_pressure';
+                }
+                else if (payload.data.items[i].data.type === 'lab') {
+                    atomic_unit += rec.data.key;
+                }
+                else {
+                    atomic_unit += rec.data.value;
+                }
+
+                // add date here
+                if (payload.data.items[i].data.dateValue) {
+                    atomic_unit += ',DATE,' +
+                        cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
+                        payload.data.items[i].data.dateValue;
+                }
+
+                atomic_unit += delimiter +
+                    rec.data.type +
+                    seperator;
+
+                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
+                    payload.data.items[i].data.key === 'blood_pressure_diastolic') {
+                    atomic_unit += payload.data.items[i].data.key;
+                }
+                else if (payload.data.items[i].data.type === 'lab') {
+                    atomic_unit += 'result_value_num';
+                }
+                else {
+                    atomic_unit += parent;
+                }
+
+                // section "c"
+                atomic_unit += delimiter +
+                    rec.data.comparator +
+                    delimiter +
+                    rec.data.value;
+
+                // add date here
+                if (payload.data.items[i].data.dateValue) {
+                    atomic_unit += ',DATE,' +
+                        cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
+                        payload.data.items[i].data.dateValue
+                }
+
+                // assemble multi-instance keys for boolean combined model instances
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('store id');
+                    console.log(payload.data.items[i].data.id);
+
+                    if (i === 0) {
+                        key = payload.data.items[i].data.id;
+                    }
+                    else {
+                        key += ',' + payload.data.items[i].data.id;
+                    }
+                    console.log(key);
+                    console.log('atomic_unit');
+                    console.log(atomic_unit);
+                }
+
+                var test = url + atomic_unit;
+
+                match = cardioCatalogQT.service.UtilityService.match(target, payload.data.items[i].data.id, source);
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('test url');
+                    console.log(test);
+                    console.log('match');
+                    //console.log(match);
+                    console.log(payload.data.items[i].data.id + source)
+                }
+
+                if (match === -1) {
+                    atoms.add({
+                        type: rec.data.type,
+                        key: payload.data.items[i].data.id,
+                        atomic_unit: atomic_unit,
+                        source: source
+                    });
+
+                    atoms.sync();
+                }
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log('atoms');
+                    console.log(atoms);
+                }
+
+                url_payload += atomic_unit;
+
+                i += 1;
+
+                // separate all query units by delimiter, except for the last
+                if (i < n) {
+                    url_payload += bool_delimiter;
+                }
             }
+            else {
+                // get id of store element
 
+                stuph += cardioCatalogQT.service.UtilityService.find(target, rec.data.id);
 
-            var test = url + atomic_unit;
+                console.log('stuph' + stuph + rec.data.criteria)
 
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('test url');
-                console.log(test);
-            }
-            //cardioCatalogQT.service.UtilityService.query_test(test);
-
-            atoms.add({
-                type: rec.data.type,
-                key: payload.data.items[i].data.id,
-                atomic_unit: atomic_unit,
-                criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
-            });
-
-            atoms.sync();
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('atoms');
-                console.log(atoms);
-            }
-
-            url_payload += atomic_unit;
-
-            i += 1;
-
-            // separate all query units by delimiter, except for the last
-            if (i < n){
-                url_payload += bool_delimiter;
             }
         });
 
         // deal with boolean combinations
-        if (cardioCatalogQT.service.UtilityService.criteria(payload, options, n)) {
+        if (cardioCatalogQT.service.UtilityService.criteria(payload, options, n) && n > 1) {
 
-            demo_test.add({
-                key: key,
-                type: bool_op,
-                criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
-            });
+            if (url_payload) {
 
-            demo_test.sync();
-            demo_test.last(); // get last inserted id for creation of boolean atomic store record
+                var hmmm = Ext.getStore('DemographicsPayload')
+                hmmm.clearFilter();
 
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('demo_test');
-                console.log(demo_test.last().id);
+                var m = hmmm.findBy(function (record, id) {
+
+                    if (record.data.key == key && record.data.type == bool_op) {
+                        return true;
+                    }
+
+                });
+
+                console.log('last up:' + payload.last().id + '  ' + key);
+                console.log(payload.last())
+
+                var new_key = payload.last().data.key;
+
+                //if (key.indexOf(',') == -1) {
+                //    console.log('No compound key found!');
+
+                if (isNaN(new_key) && new_key.indexOf(',') == -1) {
+                    key = key;
+                }
+                else {
+                    key = key + ',' + new_key;
+                }
+
+
+                //}
+
+                if (m === -1) {
+
+                    demo_test.add({
+                        key: key,
+                        type: bool_op,
+                        criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
+                    });
+                    demo_test.sync();
+
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('demo_test');
+                        console.log(demo_test.last().id);
+                        console.log(stuph + bool_delimiter + url_payload)
+                    }
+
+                    atoms.add({
+                        type: 'boolean',
+                        key: demo_test.last().id,
+                        atomic_unit: stuph + bool_delimiter + url_payload,
+                        source: source
+                    });
+
+                    atoms.sync();
+                }
             }
-        }
-
-        if (url_payload) {
-
-            atoms.add({
-                type: 'boolean',
-                key: demo_test.last().id,
-                atomic_unit: url_payload,
-                criteria: cardioCatalogQT.service.UtilityService.criteria(payload, options, n)
-            });
-
-            atoms.sync();
         }
 
 
@@ -241,6 +291,61 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         return url;
     },
 
+    find: function(store, id) {
+        var atom = '';
+
+        store.each(function(rec){
+            console.log('find each' + id);
+            console.log(rec);
+
+            //var atom = store.findRecord('key', id);
+
+            if (rec.data.key == id){
+                console.log('TRUE!')
+                atom = rec.data.atomic_unit
+            }
+            else {
+                console.log('FALSE')
+            }
+
+            console.log(atom);
+
+        });
+
+        return atom
+    },
+
+    match: function(store, key_id, source){
+        store.each(function(rec){
+            console.log('target each');
+            console.log(rec);
+        });
+
+        var i = 0;
+
+        console.log('target');
+        console.log(store);
+        console.log(key_id);
+
+        //cardioCatalogQT.service.UtilityService.query_test(test);
+        var match = store.findBy(function(record,id) {
+
+            // do not do strict type matching due to issue with key_id
+            if(record.data.key == key_id && record.data.source == source) {
+                console.log('RECORD FOUND!');
+                return true;
+            }
+
+            console.log('record not found!')
+            console.log(record.data.key)
+
+        });
+
+        console.log(match);
+
+        return match
+
+    },
     // used for display with query results
     criteria: function(payload, options, n){
 
@@ -580,10 +685,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    assemble_bool: function(button, options){
+    assemble_bool: function(button, options, source){
         var grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
             store = Ext.getStore('Payload'),
+            target = Ext.getStore('Atoms'),
             test_store = Ext.getStore('DemographicsPayload'),
             test = [];
 
@@ -626,9 +732,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
             ]);
             // create URL
-            cardioCatalogQT.service.UtilityService.url(store,options);
+            //cardioCatalogQT.service.UtilityService.url(store,options,source,target);
 
-            cardioCatalogQT.service.UtilityService.url(test_store,options);
+            cardioCatalogQT.service.UtilityService.url(test_store,options,source,target);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('filtered store');
