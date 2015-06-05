@@ -149,16 +149,21 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 // TODO: implement citerion builder independent of all data in stores
                 var criterion = 'SEX' + ' ' + cardioCatalogQT.service.UtilityService.comparator_hash('eq') + ' ' + sexValue + ' <br>';
 
+                // TODO: implement atomic_unit builder at time of model instance creation
+
                 payload.add({
                     type: 'sex',
                     key: 'sex',
                     comparator: 'eq',
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                     value: sexValue,
-                    criteria: criterion
+                    criteria: criterion,
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue)
                 });
 
                 payload.sync();
+
+                console.log('atom:' + cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue))
             }
             else {
 

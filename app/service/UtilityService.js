@@ -27,6 +27,78 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     // comparators for static defaults are set in code below (e.g., blood_pressure/lab)
 
     // TODO: handle creation of boolean combined atomic_units
+
+
+
+    make_atom: function(type, key, comparator, value) {
+        var
+            atomic_unit, // = '' each specific item to be queried
+            seperator = ':',
+            delimiter = ';',
+            parent;
+
+
+        parent = cardioCatalogQT.service.UtilityService.parent_hash(type);
+
+        // section "a" of query
+        atomic_unit = type +
+            seperator +
+            parent +
+            delimiter;
+
+        if (key === 'blood_pressure_systolic' ||
+            key === 'blood_pressure_diastolic' ||
+            type === 'lab') {
+            atomic_unit += 'eq';
+        }
+        else {
+            atomic_unit += comparator;
+        }
+
+        atomic_unit += delimiter;
+
+        // section "b"
+        if (key === 'blood_pressure_systolic' ||
+            key === 'blood_pressure_diastolic') {
+            atomic_unit += 'blood_pressure';
+        }
+        else if (type === 'lab') {
+            atomic_unit += key;
+        }
+        else {
+            atomic_unit += value;
+        }
+
+        atomic_unit += delimiter +
+            type +
+            seperator;
+
+        if (key === 'blood_pressure_systolic' ||
+            key === 'blood_pressure_diastolic') {
+            atomic_unit += key;
+        }
+        else if (type === 'lab') {
+            atomic_unit += 'result_value_num';
+        }
+        else {
+            atomic_unit += parent;
+        }
+
+        // section "c"
+        atomic_unit += delimiter +
+            comparator +
+            delimiter +
+            value;
+
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('atomic_unit');
+            console.log(atomic_unit);
+        }
+
+        return atomic_unit;
+    },
+
     url: function(payload, options, source, target) {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
             demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
