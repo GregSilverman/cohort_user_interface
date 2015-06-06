@@ -28,8 +28,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     // TODO: handle creation of boolean combined atomic_units
 
-
-
     make_atom: function(type, key, comparator, value) {
         var
             atomic_unit, // = '' each specific item to be queried
@@ -99,207 +97,117 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         return atomic_unit;
     },
 
-    url: function(payload, options, source, target) {
+    make_molecule: function(payload, options, source, target) {
         var queries = Ext.create('cardioCatalogQT.store.Queries'),
-            demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
             url =  cardioCatalogQT.config.protocol,
             url_payload = '',
             atomic_unit, // = '' each specific item to be queried
             atoms = Ext.create('cardioCatalogQT.store.Atoms'), // store of atomic_units
             store = Ext.create('cardioCatalogQT.store.Results'),
-            seperator = ':',
+            demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
             bool_delimiter,
-            delimiter = ';',
             n = payload.getCount(),
             i = 0,
-            crit,
-            parent,
-            new_atom,
+            new_criteria = '',
             match,
-            found_atom = '', // combination of boolean expression and other terms
-            key = '', // grab keys for boolean combined criteria
-            bool_op; // flag type of operator for testing
+            bool_operator,
+            new_atom = '', // combination of boolean expression and other terms
+            key = ''; // grab keys for boolean combined criteria
 
         if (!options.delimiter || options.delimiter === ';'){
             bool_delimiter = ';';
-            bool_op = 'AND';
+            bool_operator = 'AND';
         }
         else{
             bool_delimiter = options.delimiter;
-            bool_op = 'OR'
+            bool_operator = 'OR'
         }
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('URL payload:')
+            console.log('Test payload:')
             console.log(payload);
             console.log('n: ' + n);
-            console.log('delimiter: ' + delimiter);
         }
 
         url += cardioCatalogQT.config.host
             + cardioCatalogQT.config.apiGetQ;
 
         payload.each(function(rec) {
-            // get parent value for assembling bucket query in API
 
-            if (rec.data.type !== 'OR' && rec.data.type !== 'AND') {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('payload record');
+                console.log(rec.data);
+            }
 
-                parent = cardioCatalogQT.service.UtilityService.parent_hash(rec.data.type);
+            // separate all query units by delimiter, except for the last
+            // TODO: need to not count if type is boolean
 
-                //atomic_unit = '';
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('criteria record:' + rec.data.criteria);
+                console.log('atom record:' + rec.data.atom);
+            }
 
-                // section "a" of query
-                atomic_unit = rec.data.type +
-                    seperator +
-                    parent +
-                    delimiter;
+            new_atom += rec.data.atom;
+            new_criteria += rec.data.criteria;
 
-                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
-                    payload.data.items[i].data.key === 'blood_pressure_diastolic' ||
-                    payload.data.items[i].data.type === 'lab') {
-                    atomic_unit += 'eq';
-                }
-                else {
-                    atomic_unit += rec.data.comparator;
-                }
-
-                atomic_unit += delimiter;
-
-                // section "b"
-                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
-                    payload.data.items[i].data.key === 'blood_pressure_diastolic') {
-                    atomic_unit += 'blood_pressure';
-                }
-                else if (payload.data.items[i].data.type === 'lab') {
-                    atomic_unit += rec.data.key;
-                }
-                else {
-                    atomic_unit += rec.data.value;
-                }
-
-                // add date here
-                if (payload.data.items[i].data.dateValue) {
-                    atomic_unit += ',DATE,' +
-                        cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
-                        payload.data.items[i].data.dateValue;
-                }
-
-                atomic_unit += delimiter +
-                    rec.data.type +
-                    seperator;
-
-                if (payload.data.items[i].data.key === 'blood_pressure_systolic' ||
-                    payload.data.items[i].data.key === 'blood_pressure_diastolic') {
-                    atomic_unit += payload.data.items[i].data.key;
-                }
-                else if (payload.data.items[i].data.type === 'lab') {
-                    atomic_unit += 'result_value_num';
-                }
-                else {
-                    atomic_unit += parent;
-                }
-
-                // section "c"
-                atomic_unit += delimiter +
-                    rec.data.comparator +
-                    delimiter +
-                    rec.data.value;
-
-                // add date here
-                if (payload.data.items[i].data.dateValue) {
-                    atomic_unit += ',DATE,' +
-                        cardioCatalogQT.service.UtilityService.date_hash(rec.data.dateComparator) + ',' +
-                        payload.data.items[i].data.dateValue
-                }
-
-                // assemble multi-instance keys for boolean combined model instances
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('store id');
-                    console.log(payload.data.items[i].data.id);
-                }
-
-                if (i === 0) {
-                    key = payload.data.items[i].data.id;
-                }
-                else {
-                    key += ',' + payload.data.items[i].data.id;
-                }
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log(key);
-                    console.log('atomic_unit');
-                    console.log(atomic_unit);
-                }
-
-                var test = url + atomic_unit;
-
-                match = cardioCatalogQT.service.UtilityService.match(target, payload.data.items[i].data.id, source);
-
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('test url');
-                    console.log(test);
-                    console.log('match');
-                    //console.log(match);
-                    console.log(payload.data.items[i].data.id + source)
-                }
-
-                if (match === -1) {
-                    atoms.add({
-                        type: rec.data.type,
-                        key: payload.data.items[i].data.id,
-                        atomic_unit: atomic_unit,
-                        source: source
-                    });
-
-                    atoms.sync();
-                }
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('atoms');
-                    console.log(atoms);
-                }
-
-                url_payload += atomic_unit;
-
-                i += 1;
-
-                // separate all query units by delimiter, except for the last
-                // TODO: need to not count if type is boolean
-                if (i < n-1) {
-                    url_payload += bool_delimiter;
-                }
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('stuph AAAA' + rec.data.criteria);
-                }
-
-                crit = rec.data.criteria + ' ' + bool_op + ' ';
+            if (i === 0) {
+                key = payload.data.items[i].data.id;
             }
             else {
-                // get id of store element
-
-                found_atom += ' (' + cardioCatalogQT.service.UtilityService.find(target, rec.data.id) + ' )';
-                crit += ' (' + rec.data.criteria + ')';
-
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('crit' + crit);
-                }
-
+                key += ',' + payload.data.items[i].data.id;
             }
+
+            i += 1;
+
+            if (i < n) {
+                new_atom += bool_delimiter;
+                new_criteria += bool_operator + ' ';
+            }
+
+
         });
 
+        // add parentheses
+
+        new_atom = '(' + new_atom + ')';
+        new_criteria = '(' + new_criteria + ')';
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('new criteria: ' + new_criteria);
+            console.log('new atom: ' +  new_atom);
+        }
+
+        var new_key = payload.last().data.key,
+            new_id = payload.last().data.id;
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('new key and id:' + new_key + ' ' + new_id);
+        }
+        // if new_key is NOT integer, that is, one of sex, age, etc., do nothing
+        if (isNaN(new_key) && new_key.indexOf(',') == -1) {
+            key = key;
+        }
+        // otherwise create composite key
+        else {
+            //key = key + ',' + new_id;
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('new key:' + key);
+            }
+            //crit = payload.last().data.criteria + cardioCatalogQT.service.UtilityService.criteria(payload, options, n);
+        }
+
+        demo_test.add({
+            key: key,
+            type: bool_operator,
+            criteria: new_criteria,
+            atom: new_atom
+        });
+        demo_test.sync();
+
         // deal with boolean combinations
-        if (cardioCatalogQT.service.UtilityService.criteria(payload, options, n) && n > 1) {
+/*        if (cardioCatalogQT.service.UtilityService.criteria(payload, options, n) && n > 1) {
 
             if (url_payload) {
-
-                var hmmm = Ext.getStore('DemographicsPayload');
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('last up:' + payload.last().id + '  ' + key);
-                    console.log(payload.last())
-                }
 
                 // deal with composite key issue
                 // where key references payload record
@@ -326,9 +234,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     //crit = payload.last().data.criteria + cardioCatalogQT.service.UtilityService.criteria(payload, options, n);
                 }
 
+
+
                 //hmmm.clearFilter();
 
-                var m = hmmm.findBy(function (record, id) {
+                /!*var m = hmmm.findBy(function (record, id) {
 
                     if (record.data.key == key && record.data.type == bool_op) {
                         return true;
@@ -379,9 +289,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     });
 
                     atoms.sync();
-                }
+                } *!/
             }
-        }
+        }*/
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('url_payload');
@@ -850,13 +760,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             // create URL
             //cardioCatalogQT.service.UtilityService.url(store,options,source,target);
 
-            cardioCatalogQT.service.UtilityService.url(test_store,options,source,target);
+            cardioCatalogQT.service.UtilityService.make_molecule(test_store,options,source,target);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('filtered store');
                 console.log(store);
                 console.log('url');
-                console.log(cardioCatalogQT.service.UtilityService.url(store,options));
+                console.log(cardioCatalogQT.service.UtilityService.make_molecule(store,options));
             }
         }
         else {
