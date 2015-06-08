@@ -147,7 +147,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 !upperAgeValue)) {
 
                 // TODO: implement citerion builder independent of all data in stores
-                var criterion = 'SEX' + ' ' + cardioCatalogQT.service.UtilityService.comparator_hash('eq') + ' ' + sexValue + ' <br>';
+                var criterion = 'SEX' +
+                    ' ' +
+                    cardioCatalogQT.service.UtilityService.comparator_hash('eq') +
+                    ' ' +
+                    sexValue;
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
@@ -861,7 +865,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     delimiter: '|'
             },
             source = 'demographics'; // TODO: add to global config
-
 
         cardioCatalogQT.service.UtilityService.assemble_bool(button, options, source);
     },
