@@ -162,29 +162,25 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         });
 
-        // add parentheses
-        molecule = '(' + molecule + ')';
-        new_criteria = '(' + new_criteria + ')';
+        if (molecule && new_criteria) {
 
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('new criteria: ' + new_criteria);
-            console.log('new atom: ' +  molecule);
+            // add parentheses
+            molecule = '(' + molecule + ')';
+            new_criteria = '(' + new_criteria + ')';
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('new criteria: ' + new_criteria);
+                console.log('new atom: ' + molecule);
+            }
+
+            demo_test.add({
+                key: key,
+                type: bool_operator,
+                criteria: new_criteria,
+                atom: molecule
+            });
+            demo_test.sync();
         }
-
-        var new_key = payload.last().data.key,
-            new_id = payload.last().data.id;
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('new key and id:' + new_key + ' ' + new_id);
-        }
-
-        demo_test.add({
-            key: key,
-            type: bool_operator,
-            criteria: new_criteria,
-            atom: molecule
-        });
-        demo_test.sync();
 
         return url;
     },
@@ -197,8 +193,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('find each' + id);
                 console.log(rec);
             }
-
-            //var atom = store.findRecord('key', id);
 
             if (rec.data.key == id){
                 atom = rec.data.atomic_unit
