@@ -162,7 +162,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                     value: sexValue,
                     criteria: criterion,
-                    atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue)
+                    atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue) + ')'
                 });
 
                 payload.sync();
