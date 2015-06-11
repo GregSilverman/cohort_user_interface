@@ -849,13 +849,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 store.remove(selection);
                 store.sync();
                 if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('removed')
-                    console.log(store)
+                    console.log('removed');
+                    console.log(store);
                 }
             }
             else {
                 if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('nada')
+                    console.log('nada');
                 }
             }
     },
@@ -863,19 +863,26 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     onCriterionOr: function (button) {
         var options = {
                     delimiter: '|'
-            },
-            source = 'demographics'; // TODO: add to global config
+            };
 
-        cardioCatalogQT.service.UtilityService.assemble_bool(button, options, source);
+        cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
     },
 
     onCriterionAnd: function (button) {
         var options = {
                 delimiter: ';'
-            },
-            source = 'demographics';
+            };
 
-        cardioCatalogQT.service.UtilityService.assemble_bool(button, options, source);
+        cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
+    },
+
+    // clear filter and reload store into grid
+    onFilterClear: function (button) {
+        var grid = button.up('grid'),
+            store = Ext.getStore('DemographicsPayload');
+
+        store.clearFilter();
+        grid.getStore().load();
     }
 
 });

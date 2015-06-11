@@ -70,6 +70,12 @@ Ext.define('cardioCatalogQT.view.main.DemoTest', {
                 iconCls: 'remove',
                 disabled: true,
                 handler: 'onCriterionDemoRemove'
+            },'-',{ // ClearFilter
+                reference: 'ClearFilter',
+                text: 'Clear',
+                tooltip: 'Clear the current filter',
+                iconCls: 'clear',
+                handler: 'onFilterClear'
             },{
                 minWidth: 80,
                 text: 'Add to search',

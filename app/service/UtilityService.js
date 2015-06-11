@@ -97,12 +97,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         return atomic_unit;
     },
 
-    make_molecule: function(payload, options, source, target) {
-        var url =  cardioCatalogQT.config.protocol,
-            demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
+    // TODO: figure out why multiples are getting inserted after first boolean molecular assemblage
+    make_molecule: function(payload, options) {
+        var demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
             bool_delimiter,
             n = payload.getCount(),
             i = 0,
+            matched,
             new_criteria = '',
             bool_operator,
             molecule = '', // combination of boolean expression and other terms
@@ -122,9 +123,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(payload);
             console.log('n: ' + n);
         }
-
-        url += cardioCatalogQT.config.host
-            + cardioCatalogQT.config.apiGetQ;
 
         payload.each(function(rec) {
 
@@ -171,6 +169,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('new criteria: ' + new_criteria);
                 console.log('new atom: ' + molecule);
+                console.log('key: '  + key);
+                console.log('bool_op: ' + bool_operator);
             }
 
             demo_test.add({
@@ -181,57 +181,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             });
             demo_test.sync();
         }
-
-        return url;
-    },
-
-    find: function(store, id) {
-        var atom = '';
-
-        store.each(function(rec){
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('find each' + id);
-                console.log(rec);
-            }
-
-            if (rec.data.key == id){
-                atom = rec.data.atomic_unit
-            }
-            else {
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('FALSE')
-                }
-            }
-
-
-        });
-
-        return atom
-    },
-
-    match: function(store, key_id, source){
-
-        //cardioCatalogQT.service.UtilityService.query_test(test);
-        var match = store.findBy(function(record,id) {
-
-            // do not do strict type matching due to issue with key_id
-            if(record.data.key == key_id && record.data.source == source) {
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('RECORD FOUND!');
-                }
-                return true;
-            }
-            else{
-                return false
-            }
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('record not found!')
-                console.log(record.data.key)
-            }
-
-        });
-
-        return match
 
     },
 
@@ -574,11 +523,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    assemble_bool: function(button, options, source){
+    assemble_boolean: function(button, options){
         var grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
             store = Ext.getStore('Payload'),
-            target = Ext.getStore('Atoms'),
             test_store = Ext.getStore('DemographicsPayload'),
             test = [];
 
@@ -620,16 +568,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     }
                 }
             ]);
-            // create URL
-            //cardioCatalogQT.service.UtilityService.url(store,options,source,target);
 
-            cardioCatalogQT.service.UtilityService.make_molecule(test_store,options,source,target);
+            cardioCatalogQT.service.UtilityService.make_molecule(test_store,options);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('filtered store');
                 console.log(store);
-                console.log('url');
-                console.log(cardioCatalogQT.service.UtilityService.make_molecule(store,options));
             }
         }
         else {
@@ -637,6 +581,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('nada')
             }
         }
+
     },
 
     submit_query: function(button, url){
