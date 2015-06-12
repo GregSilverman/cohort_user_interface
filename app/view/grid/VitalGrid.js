@@ -2,9 +2,37 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.form.Vital', {
-    extend: 'Ext.form.Panel',
-    alias : 'widget.vitalForm',
+Ext.define('cardioCatalogQT.view.main.VitalGrid', {
+    extend: 'Ext.grid.Panel',
+    alias: 'widget.vitalGrid',
+    itemId: 'vitalGrid',
+    store: 'VitalsPayload',
+
+    requires: [
+        'cardioCatalogQT.view.main.MainController'
+    ],
+
+    columns: [
+        {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
+        {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
+        {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
+        {text: "Combined", flex: 1, sortable: true, dataIndex: 'criteria'},
+        {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
+        {text: "When", flex: 1, sortable: true, dataIndex: 'dateValue'},
+        {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
+    ],
+    columnLines: true,
+    selModel: {
+        type: 'checkboxmodel',
+        listeners: {
+            selectionchange: 'onSelectionDemoChange'
+        }
+    },
+
+    // When true, this view acts as the default listener scope for listeners declared within it.
+    // For example the selectionModel's selectionchange listener resolves to this.
+    defaultListenerScope: false,
+
     config: {
         variableHeights: false,
         title: 'Vitals',
@@ -15,9 +43,48 @@ Ext.define('cardioCatalogQT.form.Vital', {
             anchor: '100%',
             labelWidth: 100
         },
-        items: [{
-            xtype: 'tbspacer',
-            height: 25
+
+        // inline buttons
+        dockedItems: [{
+            xtype: 'toolbar',
+            dock: 'bottom',
+            ui: 'footer',
+            layout: {
+                pack: 'center'
+            },
+            items: [
+                { // Combine checked items with AND
+                reference: 'andButton',
+                text: 'AND',
+                tooltip: 'Add the selected criteria as AND',
+                iconCls: 'and',
+                handler: 'onCriterionAnd'
+            },'-',{ // Combine checked items with OR
+                reference: 'orButton',
+                text: 'OR',
+                tooltip: 'Add the selected criteria as OR',
+                iconCls: 'or',
+                handler: 'onCriterionOr'
+            },'-',{
+                reference: 'removeDemoButton',  // The referenceHolder can access this button by this name
+                text: 'Remove',
+                tooltip: 'Remove the selected item',
+                iconCls: 'remove',
+                disabled: true,
+                handler: 'onCriterionDemoRemove'
+            },'-',{ // ClearFilter
+                reference: 'ClearFilter',
+                text: 'Clear',
+                tooltip: 'Clear the current filter',
+                iconCls: 'clear',
+                handler: 'onFilterClear'
+            },{
+                minWidth: 80,
+                text: 'Add to search',
+                xtype: 'button',
+                itemId: 'executeTest',
+                handler: 'onExecuteTest'
+            }]
         }, {
             itemId: 'vitals',
             items: [{
@@ -27,10 +94,10 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#systolicComparator').show();
-                        button.up('form').down('#systolicValue').show();
-                        button.up('form').down('#hideSystolic').show();
-                        button.up('form').down('#showSystolic').hide();
+                        button.up('grid').down('#systolicComparator').show();
+                        button.up('grid').down('#systolicValue').show();
+                        button.up('grid').down('#hideSystolic').show();
+                        button.up('grid').down('#showSystolic').hide();
                     }
                 }
             }, {
@@ -40,14 +107,14 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#systolicComparator').hide();
-                        button.up('form').down('#systolicValue').hide();
-                        button.up('form').down('#upperSystolicValue').hide();
-                        button.up('form').down('#systolicComparator').setValue('');
-                        button.up('form').down('#systolicValue').setValue('');
-                        button.up('form').down('#upperSystolicValue').setValue('');
-                        button.up('form').down('#hideSystolic').hide();
-                        button.up('form').down('#showSystolic').show();
+                        button.up('grid').down('#systolicComparator').hide();
+                        button.up('grid').down('#systolicValue').hide();
+                        button.up('grid').down('#upperSystolicValue').hide();
+                        button.up('grid').down('#systolicComparator').setValue('');
+                        button.up('grid').down('#systolicValue').setValue('');
+                        button.up('grid').down('#upperSystolicValue').setValue('');
+                        button.up('grid').down('#hideSystolic').hide();
+                        button.up('grid').down('#showSystolic').show();
                     }
             }
             },{
@@ -78,9 +145,9 @@ Ext.define('cardioCatalogQT.form.Vital', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperSystolicValue').show();
+                            combo.up('grid').down('#upperSystolicValue').show();
                         } else {
-                            combo.up('form').down('#upperSystolicValue').hide();
+                            combo.up('grid').down('#upperSystolicValue').hide();
                         }
                     }
                 }
@@ -102,10 +169,10 @@ Ext.define('cardioCatalogQT.form.Vital', {
                     hidden: false,
                     listeners: {
                         click: function (button) {
-                            button.up('form').down('#diastolicComparator').show();
-                            button.up('form').down('#diastolicValue').show();
-                            button.up('form').down('#hideDiastolic').show();
-                            button.up('form').down('#showDiastolic').hide();
+                            button.up('grid').down('#diastolicComparator').show();
+                            button.up('grid').down('#diastolicValue').show();
+                            button.up('grid').down('#hideDiastolic').show();
+                            button.up('grid').down('#showDiastolic').hide();
                         }
                     }
                 }, {
@@ -115,14 +182,14 @@ Ext.define('cardioCatalogQT.form.Vital', {
                     hidden: true,
                     listeners: {
                         click: function (button) {
-                            button.up('form').down('#diastolicComparator').hide();
-                            button.up('form').down('#diastolicValue').hide();
-                            button.up('form').down('#upperDiastolicValue').hide();
-                            button.up('form').down('#diastolicComparator').setValue('');
-                            button.up('form').down('#diastolicValue').setValue('');
-                            button.up('form').down('#upperDiastolicValue').setValue('');
-                            button.up('form').down('#hideDiastolic').hide();
-                            button.up('form').down('#showDiastolic').show();
+                            button.up('grid').down('#diastolicComparator').hide();
+                            button.up('grid').down('#diastolicValue').hide();
+                            button.up('grid').down('#upperDiastolicValue').hide();
+                            button.up('grid').down('#diastolicComparator').setValue('');
+                            button.up('grid').down('#diastolicValue').setValue('');
+                            button.up('grid').down('#upperDiastolicValue').setValue('');
+                            button.up('grid').down('#hideDiastolic').hide();
+                            button.up('grid').down('#showDiastolic').show();
                         }
                     }
                 }, { // Diastolic
@@ -153,9 +220,9 @@ Ext.define('cardioCatalogQT.form.Vital', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperDiastolicValue').show();
+                            combo.up('grid').down('#upperDiastolicValue').show();
                         } else {
-                            combo.up('form').down('#upperDiastolicValue').hide();
+                            combo.up('grid').down('#upperDiastolicValue').hide();
                         }
                     }
                 }
@@ -183,10 +250,10 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#whenComparator').show();
-                        button.up('form').down('#whenValue').show();
-                        button.up('form').down('#hideWhen').show();
-                        button.up('form').down('#showWhen').hide();
+                        button.up('grid').down('#whenComparator').show();
+                        button.up('grid').down('#whenValue').show();
+                        button.up('grid').down('#hideWhen').show();
+                        button.up('grid').down('#showWhen').hide();
                     }
                 }
             },{
@@ -196,14 +263,14 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#whenComparator').hide();
-                        button.up('form').down('#whenValue').hide();
-                        button.up('form').down('#upperWhenValue').hide();
-                        button.up('form').down('#whenComparator').setValue('');
-                        button.up('form').down('#whenValue').setValue('');
-                        button.up('form').down('#upperWhenValue').setValue('');
-                        button.up('form').down('#hideWhen').hide();
-                        button.up('form').down('#showWhen').show();
+                        button.up('grid').down('#whenComparator').hide();
+                        button.up('grid').down('#whenValue').hide();
+                        button.up('grid').down('#upperWhenValue').hide();
+                        button.up('grid').down('#whenComparator').setValue('');
+                        button.up('grid').down('#whenValue').setValue('');
+                        button.up('grid').down('#upperWhenValue').setValue('');
+                        button.up('grid').down('#hideWhen').hide();
+                        button.up('grid').down('#showWhen').show();
                     }
                 }
             }, { // When
@@ -231,9 +298,9 @@ Ext.define('cardioCatalogQT.form.Vital', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperWhenValue').show();
+                            combo.up('grid').down('#upperWhenValue').show();
                         } else {
-                            combo.up('form').down('#upperWhenValue').hide();
+                            combo.up('grid').down('#upperWhenValue').hide();
                         }
                     }
                 }
@@ -251,12 +318,16 @@ Ext.define('cardioCatalogQT.form.Vital', {
                 hideTrigger:true
             }]
         }],
-        lbar: [{
+
+
+        lbar:[{
             xtype: 'button',
             itemId: 'button',
             html: 'Toolbar here',
-            text: 'Save criteria',
-            handler: 'onSubmitVitals'
-        }] // end vitals
+            text: 'Add',
+            handler: 'onSubmitVitalsTest'
+        }] // end demographics
     }
+
+
 });

@@ -5,7 +5,7 @@
 Ext.define('cardioCatalogQT.view.main.DemographicGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.demographicGrid',
-    itemId: 'demoGrid',
+    itemId: 'demographicGrid',
     store: 'DemographicsPayload',
 
     requires: [
