@@ -104,12 +104,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     },
 
     // TODO: figure out why multiples are getting inserted after first boolean molecular assemblage
+    // TODO: How to have demo_test be more generic????
     make_molecule: function(payload, options) {
         var demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
             bool_delimiter,
             n = payload.getCount(),
             i = 0,
-            matched,
             new_criteria = '',
             bool_operator,
             molecule = '', // combination of boolean expression and other terms
