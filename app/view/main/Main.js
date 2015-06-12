@@ -76,11 +76,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         // Tab elements:
         // widget references to cardioCatalogQT.form
         {
-            xtype: 'demographicForm'
-        },
-
-        {
-            xtype: 'demoForm'
+            xtype: 'demographicGrid'
         },
 
         {

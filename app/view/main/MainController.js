@@ -35,67 +35,84 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         form.up().down('#searchGrid').getStore().load();
     },
 
+    onAddSearchGridClick: function (button) {
+        var grid = button.up('grid'),
+            selection = grid.getSelectionModel().getSelection(),
+            target = Ext.create('cardioCatalogQT.store.Payload'), // target store
+            source, // source store
+            filtered = []; // arroay of filtered source id elements
 
-    onExecuteTest: function (button) {
-        var atoms = Ext.getStore('Atoms'),
-            form = button.up('form'),
-            url_pre =  cardioCatalogQT.config.protocol,
-            url,
-            store = Ext.create('cardioCatalogQT.store.Payload'),
-            test = Ext.getStore('DemographicsPayload');
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('DEMO grid: ');
+            console.log(grid);
+            console.log(grid.store);
+        }
 
-            url_pre += cardioCatalogQT.config.host
-                + cardioCatalogQT.config.apiGetQ;
+        // bind grid store as source
+        source = grid.store;
 
-        atoms.each(function(rec) {
+        // filter selected items from grid
+        if (selection) {
 
-            var record = test.findRecord('id', rec.data.key);
+            // array of elements on which to filter
+            Ext.Array.each(selection, function (item) {
+                filtered.push(item.data.id);
+            });
+
+            source.clearFilter(true); // Clears old filters
+            source.filter([ // filter on selected array elements
+                {
+                    filterFn: function(rec) {
+                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
+                    }
+                }
+            ]);
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered store id:');
+                console.log(filtered);
+            }
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
+
+        // add filtered source -> target
+        source.each(function(rec) {
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('record:');
-                console.log(record.data);
-            }
-
-            // move selected criteria to main payload: TODO create single class to handle payload
-            store.add({
-                type: record.data.type,
-                key: record.data.key,
-                comparator: record.data.comparator,
-                comparatorSymbol: record.data.comparatorSymbol,
-                value: record.data.value,
-                description: record.data.criteria,
-                n: record.data.n,
-                dateComparator: record.data.dateComparator,
-                dateComparatorSymbol: record.data.dateComparatorSymbol,
-                dateValue: record.data.dateValue,
-                criteria: record.data.criteria
-            });
-
-            store.sync();
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('atoms rec')
                 console.log(rec);
             }
 
-            // create url using atomic_unit for dispaly of count in grid
-            // pass rec.data.key to know which store record gets updated with count
+            // move selected criteria to main payload: TODO create single class to handle payload
+            target.add({
+                type: rec.data.type,
+                key: rec.data.key,
+                comparator: rec.data.comparator,
+                comparatorSymbol: rec.data.comparatorSymbol,
+                value: rec.data.value,
+                description: rec.data.criteria,
+                n: rec.data.n,
+                dateComparator: rec.data.dateComparator,
+                dateComparatorSymbol: rec.data.dateComparatorSymbol,
+                dateValue: rec.data.dateValue,
+                criteria: rec.data.criteria
+            });
 
-            if (rec.data.type === 'sex' || rec.data.type === 'age' || rec.data.type === 'boolean') {
-                url = url_pre + rec.data.atomic_unit;
+            target.sync();
 
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('test url: ' + url);
-                    console.log('id:' + rec.data.key);
-                }
-
-                cardioCatalogQT.service.UtilityService.query_test(button, url, rec.data.key);
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('target rec');
+                console.log(rec);
             }
 
-
-
         });
-        //form.up().down('#searchGrid').getStore().load();
+
+        // refresh grid
+        grid.up().down('#searchGrid').getStore().load();
     },
 
     onSearchClick: function (button) {
@@ -114,7 +131,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         cardioCatalogQT.service.UtilityService.criteria_template(panel, store);
     },
 
-    onSubmitDemoTest: function (button) {
+    onSubmitDemographics: function (button) {
         var payload = Ext.getStore('DemographicsPayload'),
             demo = [],
             form = button.up('grid'),
@@ -444,112 +461,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         // clear form
         //form.reset();
-    },
-
-    onSubmitDemographics: function (button) {
-        var payload = Ext.getStore('Payload'),
-            demo = [],
-            form = button.up('form'),
-            sexValue = form.down('#sexValue').value,
-            ageComparator = form.down('#ageComparator').value,
-            ageValue = form.down('#ageValue').value,
-            upperAgeValue = form.down('#upperAgeValue').value;
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('show object demographics');
-            console.log(sexValue);
-            console.log(ageComparator);
-            console.log(ageValue);
-            console.log(upperAgeValue);
-        }
-
-        // insert sex only if exists
-        if (sexValue) {
-
-            if ((ageComparator === 'bt' &&
-                ageValue &&
-                upperAgeValue) ||
-
-                (ageComparator !== 'bt' &&
-                ageValue &&
-                !upperAgeValue) ||
-
-                (ageComparator !== 'bt' &&
-                !ageValue &&
-                !upperAgeValue)) {
-
-                payload.add({
-                    type: 'sex',
-                    key: 'sex',
-                    comparator: 'eq',
-                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
-                    value: sexValue
-                });
-
-                payload.sync();
-            }
-            else {
-
-                // error conditionals here
-            }
-        }
-
-        // insert only if exists
-        if (ageValue) {
-
-            var test_age = ageValue;
-
-            if (ageComparator === 'bt') {
-
-                if (!upperAgeValue) {
-                    alert('Please enter max age to continue')
-                }
-                else {
-                    test_age += ',' + upperAgeValue;
-                }
-            }
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('test age: ' + test_age);
-            }
-
-            if ((ageComparator === 'bt' &&
-                ageValue &&
-                upperAgeValue) ||
-
-                (!upperAgeValue &&
-                ageComparator !== 'bt' &&
-                ageValue)) {
-
-                payload.add({
-                    type: 'age',
-                    key: 'age',
-                    comparator: ageComparator,
-                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator),
-                    value: test_age
-                });
-
-                payload.sync();
-            }
-            else{
-                // error conditions here
-            }
-        }
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            demo.push(sexValue);
-            demo.push(ageComparator);
-            demo.push(ageValue);
-            demo.push(upperAgeValue);
-            console.log('demographics:');
-            console.log(demo);
-        }
-
-        // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
-
-        // clear form
-        form.reset();
     },
 
     onSubmitVitals: function(button) {

@@ -2,9 +2,9 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.main.DemoTest', {
+Ext.define('cardioCatalogQT.view.main.DemographicGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.demoForm',
+    alias: 'widget.demographicGrid',
     itemId: 'demoGrid',
     store: 'DemographicsPayload',
 
@@ -33,7 +33,7 @@ Ext.define('cardioCatalogQT.view.main.DemoTest', {
 
     config: {
         variableHeights: false,
-        title: 'DemoTest',
+        title: 'Demographics',
         xtype: 'form',
         width: 200,
         bodyPadding: 10,
@@ -80,8 +80,8 @@ Ext.define('cardioCatalogQT.view.main.DemoTest', {
                 minWidth: 80,
                 text: 'Add to search',
                 xtype: 'button',
-                itemId: 'executeTest',
-                handler: 'onExecuteTest'
+                itemId: 'searchClick',
+                handler: 'onAddSearchGridClick'
             }]
         }, {
             xtype: 'toolbar',
@@ -214,7 +214,7 @@ Ext.define('cardioCatalogQT.view.main.DemoTest', {
             itemId: 'button',
             html: 'Toolbar here',
             text: 'Add',
-            handler: 'onSubmitDemoTest'
+            handler: 'onSubmitDemographics'
         }] // end demographics
     }
 
