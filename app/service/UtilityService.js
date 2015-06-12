@@ -28,7 +28,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     // TODO: handle creation of boolean combined atomic_units
 
-    make_atom: function(type, key, comparator, value) {
+    make_atom: function(type, key, comparator, value, dateComparator, dateValue) {
         var
             atomic_unit, // = '' each specific item to be queried
             seperator = ':',
@@ -88,6 +88,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             delimiter +
             value;
 
+        // add date here
+        if (dateValue){
+            atomic_unit += ',DATE,' +
+                cardioCatalogQT.service.UtilityService.date_hash(dateComparator) + ',' +
+                dateValue
+        }
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('atomic_unit');
