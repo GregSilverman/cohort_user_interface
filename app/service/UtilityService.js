@@ -532,9 +532,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     assemble_boolean: function(button, options){
         var grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
-            store = Ext.getStore('Payload'),
-            test_store = Ext.getStore('DemographicsPayload'),
-            test = [];
+            source, // source store to filter
+            filtered = []; // source ids that are filtered
+
+        // bind grid store as source
+        source = grid.store;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('grid');
@@ -542,44 +544,35 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log('selection');
             console.log(selection);
             console.log('store');
-            console.log(store);
+            console.log(source);
         }
 
         if (selection) {
 
             // array of elements on which to filter
             Ext.Array.each(selection, function (item) {
-                test.push(item.data.id);
+                filtered.push(item.data.id);
             });
 
             if (cardioCatalogQT.config.mode === 'test') {
-                console.log('test');
-                console.log(test);
+                console.log('filtered');
+                console.log(filtered);
             }
 
-            store.clearFilter(true); // Clears old filters
-            store.filter([ // filter on selected array elements
+            source.clearFilter(true); // Clears old filters
+            source.filter([ // filter on selected array elements
                 {
                     filterFn: function(rec) {
-                        return Ext.Array.indexOf(test, rec.get('id')) != -1;
+                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
                     }
                 }
             ]);
 
-            test_store.clearFilter(true); // Clears old filters
-            test_store.filter([ // filter on selected array elements
-                {
-                    filterFn: function(rec) {
-                        return Ext.Array.indexOf(test, rec.get('id')) != -1;
-                    }
-                }
-            ]);
-
-            cardioCatalogQT.service.UtilityService.make_molecule(test_store,options);
+            cardioCatalogQT.service.UtilityService.make_molecule(source,options);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('filtered store');
-                console.log(store);
+                console.log(source);
             }
         }
         else {

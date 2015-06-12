@@ -259,7 +259,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         // reload store on grid
         form.up().down('#searchGrid').getStore().load();
-        form.up().down('#demoGrid').getStore().load();
+        form.up().down('#demographicGrid').getStore().load();
 
         // clear form
         //form.reset();
