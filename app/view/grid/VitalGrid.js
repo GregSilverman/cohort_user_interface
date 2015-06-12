@@ -82,8 +82,8 @@ Ext.define('cardioCatalogQT.view.main.VitalGrid', {
                 minWidth: 80,
                 text: 'Add to search',
                 xtype: 'button',
-                itemId: 'executeTest',
-                handler: 'onExecuteTest'
+                itemId: 'searchClick',
+                handler: 'onAddSearchGridClick'
             }]
         }, {
             itemId: 'vitals',
