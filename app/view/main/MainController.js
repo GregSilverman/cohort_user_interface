@@ -46,6 +46,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log('DEMO grid: ');
             console.log(grid);
             console.log(grid.store);
+            console.log(grid.store.storeId); // use for control of inserting boolean combined statements
         }
 
         // bind grid store as source
