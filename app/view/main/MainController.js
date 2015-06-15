@@ -922,6 +922,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     onSelectionDemoChange: function(sm, selections) {
         this.getReferences().removeDemoButton.setDisabled(selections.length === 0);
+        console.log('!!!!!')
     },
 
     onCriterionRemove: function (button) {
