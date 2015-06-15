@@ -2,7 +2,7 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.main.VitalGrid', {
+Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.vitalGrid',
     itemId: 'vitalGrid',

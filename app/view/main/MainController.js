@@ -95,11 +95,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 comparator: rec.data.comparator,
                 comparatorSymbol: rec.data.comparatorSymbol,
                 value: rec.data.value,
-                description: rec.data.criteria,
+                //description: rec.data.criteria,
                 n: rec.data.n,
                 dateComparator: rec.data.dateComparator,
                 dateComparatorSymbol: rec.data.dateComparatorSymbol,
                 dateValue: rec.data.dateValue,
+                atom: rec.data.atom,
                 criteria: rec.data.criteria
             });
 
@@ -266,7 +267,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         //form.reset();
     },
 
-    onSubmitVitalsTest: function(button) {
+    onSubmitVitals: function(button) {
         var payload = Ext.getStore('VitalsPayload'),
             vitals = [],
             form = button.up('grid'),
@@ -620,9 +621,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSubmitLabs: function (button) {
-        var payload = Ext.getStore('Payload'),
+        var payload = Ext.getStore('LabsPayload'),
             lab = [],
-            form = button.up('form'),
+            form = button.up('grid'),
             labComparator = form.down('#labComparator').value,
             labCode = form.down('#labCode').value,
             labDescription = form.down('#labCode').rawValue,
@@ -631,10 +632,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
             upperWhenValue = form.down('#upperWhenValue').value;
-
             whenValue = Ext.Date.format(whenValue, 'Y-m-d');
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
-
 
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -715,16 +714,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         }
         // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
+        //form.up().down('#searchGrid').getStore().load();
 
         // clear form
-        form.reset();
+        //form.reset();
     },
 
     onSubmitDiagnoses: function(button) {
-        var payload = Ext.getStore('Payload'),
+        var payload = Ext.getStore('DiagnosesPayload'),
             dx = [],
-            form = button.up('form'),
+            form = button.up('grid'),
             diagnoses = form.down('#diagnosis').store.data.items,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
@@ -780,16 +779,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         }); // each()
         // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
+        //form.up().down('#searchGrid').getStore().load();
 
         // clear form
-        form.reset();
+        //form.reset();
     },
 
     onSubmitProcedures: function(button) {
-        var payload = Ext.getStore('Payload'),
+        var payload = Ext.getStore('ProceduresPayload'),
             px = [],
-            form = button.up('form'),
+            form = button.up('grid'),
             procedures = form.down('#procedure').store.data.items,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
@@ -846,16 +845,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         }); // each()
         // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
+        //form.up().down('#searchGrid').getStore().load();
 
         // clear form
-        form.reset();
+        //form.reset();
     },
 
     onSubmitMedications: function(button) {
-        var payload = Ext.getStore('Payload'),
+        var payload = Ext.getStore('MedicationsPayload'),
             rx = [],
-            form = button.up('form'),
+            form = button.up('grid'),
             medications = form.down('#medication').store.data.items,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
@@ -911,10 +910,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         }); // each()
         // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
+        //form.up().down('#searchGrid').getStore().load();
 
         // clear form
-        form.reset();
+        //form.reset();
     },
 
     onSelectionChange: function(sm, selections) {
@@ -954,6 +953,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
     },
 
+    // TODO: generalize this across all grids
     onCriterionDemoRemove: function (button) {
             var grid = button.up('grid'),
                 selection = grid.getView().getSelectionModel().getSelection(),
@@ -999,6 +999,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
     },
 
+    // TODO: generalize this across all grids
     // clear filter and reload store into grid
     onFilterClear: function (button) {
         var grid = button.up('grid'),

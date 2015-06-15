@@ -106,7 +106,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     // TODO: figure out why multiples are getting inserted after first boolean molecular assemblage
     // TODO: How to have demo_test be more generic????
     make_molecule: function(payload, options) {
-        var demo_test = Ext.create('cardioCatalogQT.store.DemographicsPayload'),
+        var target, // target store for boolean combined statements
             bool_delimiter,
             n = payload.getCount(),
             i = 0,
@@ -124,10 +124,17 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             bool_operator = 'OR'
         }
 
+        // set target store to appropriate source
+        target = Ext.create('cardioCatalogQT.store.' + payload.storeId);
+
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('Test payload:')
             console.log(payload);
             console.log('n: ' + n);
+            console.log('storeId: ');
+            console.log(payload.storeId);
+            console.log('target:');
+            console.log(target);
         }
 
         payload.each(function(rec) {
@@ -137,9 +144,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log(rec.data);
             }
 
-            // separate all query units by delimiter, except for the last
-            // TODO: need to not count if type is boolean
-
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('criteria record:' + rec.data.criteria);
                 console.log('atom record:' + rec.data.atom);
@@ -148,6 +152,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             molecule += rec.data.atom;
             new_criteria += rec.data.criteria;
 
+            // create composite key
             if (i === 0) {
                 key = payload.data.items[i].data.id;
             }
@@ -157,6 +162,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             i += 1;
 
+            // separate all query units by delimiter, except for the last
             if (i < n) {
                 molecule += bool_delimiter;
                 new_criteria += ' ' +
@@ -166,6 +172,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         });
 
+        // insert boolean combination into store
         if (molecule && new_criteria) {
 
             // add parentheses
@@ -179,13 +186,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('bool_op: ' + bool_operator);
             }
 
-            demo_test.add({
+            target.add({
                 key: key,
                 type: bool_operator,
                 criteria: new_criteria,
                 atom: molecule
             });
-            demo_test.sync();
+            target.sync();
         }
 
     },

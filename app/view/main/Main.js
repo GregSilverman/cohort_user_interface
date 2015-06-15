@@ -84,17 +84,17 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },
 
         {
-            xtype: 'labForm'
+            xtype: 'labGrid'
         },
         {
-            xtype: 'diagnosisForm'
+            xtype: 'diagnosisGrid'
 
         },
         {
-            xtype: 'medicationForm'
+            xtype: 'medicationGrid'
         },
         {
-            xtype: 'procedureForm'
+            xtype: 'procedureGrid'
         }
     ]
 });

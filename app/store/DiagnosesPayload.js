@@ -1,6 +1,6 @@
-Ext.define('cardioCatalogQT.store.Payload', {
+Ext.define('cardioCatalogQT.store.DiagnosesPayload', {
     extend: 'Ext.data.Store',
-    alias: 'store.Payload',
+    alias: 'store.DiagnosesPayload',
 
     config:{
         idProperty: 'id',
@@ -16,7 +16,8 @@ Ext.define('cardioCatalogQT.store.Payload', {
             {name: 'dateComparatorSymbol', type: 'string'},
             {name: 'dateValue', type: 'string'},
             {name: 'atom', type: 'string'},
-            {name: 'criteria', type: 'string'}
+            {name: 'criteria', type: 'string'} // for display purposes in grid using tooltips
+
         ],
 
         storeId: 'Payload',
@@ -24,7 +25,7 @@ Ext.define('cardioCatalogQT.store.Payload', {
 
         proxy: {
             type: 'sessionstorage',
-            id: 'payload'
+            id: 'diagnosesPayload'
         }
     }
 });

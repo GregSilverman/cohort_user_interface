@@ -2,11 +2,11 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
+Ext.define('cardioCatalogQT.view.grid.MedicationsGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.demographicGrid',
-    itemId: 'demographicGrid',
-    store: 'DemographicsPayload',
+    alias: 'widget.medicationGrid',
+    itemId: 'medicationGrid',
+    store: 'MedicationsPayload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
@@ -17,6 +17,9 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
         {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
         {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
         {text: "Combined", flex: 1, sortable: true, dataIndex: 'criteria'},
+        {text: "Description", flex: 1, sortable: true, dataIndex: 'description'},
+        {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
+        {text: "When", flex: 1, sortable: true, dataIndex: 'dateValue'},
         {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
     ],
     columnLines: true,
@@ -33,9 +36,9 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
 
     config: {
         variableHeights: false,
-        title: 'Demographics',
+        title: 'Medications',
         xtype: 'form',
-        width: 200,
+        width: 500,
         bodyPadding: 10,
         defaults: {
             anchor: '100%',
@@ -84,127 +87,110 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 handler: 'onAddSearchGridClick'
             }]
         }, {
-            xtype: 'toolbar',
-            height: 200,
+            itemId: 'medications',
             items: [{
+                width: 100,
+                anchor: '25%',
+                xtype: 'multiselector',
+                title: 'Selected Rx',
+                itemId: 'medication',
+                fieldName: 'description',
+                valueField:'code',
+                viewConfig: {
+                    deferEmptyText: false,
+                    emptyText: 'No Rx selected'
+                },
+                // TODO: fix ability to remove selected items when box is unchecked
+                search: {
+                    field: 'description',
+                    store: 'Medications',
+
+                    search: function (text) {
+                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
+                    }
+                }
+            },{
+                xtype: 'tbspacer',
+                height:25
+            },{ //TODO: Add hide control
                 xtype: 'button',
-                text: 'Constrain by sex',
-                itemId: 'showSex',
+                text: 'Constrain search by date range',
+                itemId: 'showWhen',
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#sexValue').show();
-                        button.up('grid').down('#hideSex').show();
-                        button.up('grid').down('#showSex').hide();
+                        button.up('grid').down('#whenComparator').show();
+                        button.up('grid').down('#whenValue').show();
+                        button.up('grid').down('#hideWhen').show();
+                        button.up('grid').down('#showWhen').hide();
                     }
                 }
-            }, {
+            },{
                 xtype: 'button',
-                text: 'Hide sex constraint',
-                itemId: 'hideSex',
+                text: 'Hide date range',
+                itemId: 'hideWhen',
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#sexValue').hide();
-                        button.up('grid').down('#sexValue').setValue('');
-                        button.up('grid').down('#hideSex').hide();
-                        button.up('grid').down('#showSex').show();
+                        button.up('grid').down('#whenComparator').hide();
+                        button.up('grid').down('#whenValue').hide();
+                        button.up('grid').down('#upperWhenValue').hide();
+                        button.up('grid').down('#whenComparator').setValue('');
+                        button.up('grid').down('#whenValue').setValue('');
+                        button.up('grid').down('#upperWhenValue').setValue('');
+                        button.up('grid').down('#hideWhen').hide();
+                        button.up('grid').down('#showWhen').show();
                     }
                 }
-            },{ // Sex
+            },{ // When
                 xtype: 'combo',
-                itemId: 'sexValue',
+                width: 100,
+                anchor: '20%',
+                itemId: 'whenComparator',
                 queryMode: 'local',
                 editable: false,
                 value: 'eq',
                 triggerAction: 'all',
                 forceSelection: true,
-                fieldLabel: 'Select sex',
+                fieldLabel: 'Select medication date that is',
                 displayField: 'name',
                 valueField: 'value',
                 hidden: true,
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        {name: 'female', value: 'f'},
-                        {name: 'male', value: 'm'}
-                    ]
-                }
-            }, {
-                xtype: 'button',
-                text: 'Constrain Age',
-                itemId: 'showAge',
-                hidden: false,
-                listeners: {
-                    click: function (button) {
-                        button.up('grid').down('#ageComparator').show();
-                        button.up('grid').down('#ageValue').show();
-                        button.up('grid').down('#hideAge').show();
-                        button.up('grid').down('#showAge').hide();
-                    }
-                }
-            }, {
-                xtype: 'button',
-                text: 'Hide age',
-                itemId: 'hideAge',
-                hidden: true,
-                listeners: {
-                    click: function (button) {
-                        button.up('grid').down('#ageComparator').hide();
-                        button.up('grid').down('#ageValue').hide();
-                        button.up('grid').down('#upperAgeValue').hide();
-                        button.up('grid').down('#ageComparator').setValue('');
-                        button.up('grid').down('#ageValue').setValue('');
-                        button.up('grid').down('#upperAgeValue').setValue('');
-                        button.up('grid').down('#hideAge').hide();
-                        button.up('grid').down('#showAge').show();
-                    }
-                }
-            }, { // Age
-                xtype: 'combo',
-                itemId: 'ageComparator',
-                queryMode: 'local',
-                editable: false,
-                value: '',
-                triggerAction: 'all',
-                forceSelection: true,
-                fieldLabel: 'Select age that is',
-                displayField: 'name',
-                valueField: 'value',
-                hidden: true,
-                store: {
-                    fields: ['name', 'value'],
-                    data: [
-                        {name: '=', value: 'eq'},
-                        {name: '<', value: 'lt'},
                         {name: '<=', value: 'le'},
-                        {name: '>', value: 'gt'},
                         {name: '>=', value: 'ge'},
                         {name: 'between', value: 'bt'}
                     ]
                 },
 
                 listeners: {
-                    change: function(combo, value) {
+                    change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('grid').down('#upperAgeValue').show();
+                            combo.up('grid').down('#upperWhenValue').show();
                         } else {
-                            combo.up('grid').down('#upperAgeValue').hide();
+                            combo.up('grid').down('#upperWhenValue').hide();
                         }
                     }
                 }
-            },{
-                xtype: 'numberfield',
-                itemId: 'ageValue',
+            }, {
+                xtype: 'datefield',
+                width: 100,
+                anchor: '20%',
+                itemId: 'whenValue',
                 fieldLabel: 'value of',
-                value: '',
-                hidden: true
-            },{
-                xtype: 'numberfield',
-                itemId: 'upperAgeValue',
+                hidden: true,
+                hideTrigger:true
+            }, {
+                xtype: 'datefield',
+                width: 100,
+                anchor: '20%',
+                itemId: 'upperWhenValue',
                 fieldLabel: 'and',
-                hidden: true
+                hidden: true,
+                hideTrigger:true
             }]
         }],
 
@@ -214,7 +200,7 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
             itemId: 'button',
             html: 'Toolbar here',
             text: 'Add',
-            handler: 'onSubmitDemographics'
+            handler: 'onSubmitMedications'
         }] // end demographics
     }
 
