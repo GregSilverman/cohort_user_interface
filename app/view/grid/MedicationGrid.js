@@ -26,7 +26,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
     selModel: {
         type: 'checkboxmodel',
         listeners: {
-            selectionchange: 'onSelectionRxChange'
+            selectionchange: 'onSelectionChange'
         }
     },
 
@@ -67,12 +67,12 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 iconCls: 'or',
                 handler: 'onCriterionOr'
             },'-',{
-                reference: 'removeRxButton',  // The referenceHolder can access this button by this name
+                reference: 'removeMedcationButton',  // The referenceHolder can access this button by this name
                 text: 'Remove',
                 tooltip: 'Remove the selected item',
                 iconCls: 'remove',
                 disabled: true,
-                handler: 'onCriterionRxRemove'
+                handler: 'onCriterionRemove'
             },'-',{ // ClearFilter
                 reference: 'ClearFilter',
                 text: 'Clear',

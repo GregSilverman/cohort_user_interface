@@ -26,7 +26,7 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
     selModel: {
         type: 'checkboxmodel',
         listeners: {
-            selectionchange: 'onSelectionPxChange'
+            selectionchange: 'onSelectionChange'
         }
     },
 
@@ -67,12 +67,12 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
                 iconCls: 'or',
                 handler: 'onCriterionOr'
             },'-',{
-                reference: 'removePxButton',  // The referenceHolder can access this button by this name
+                reference: 'removeProcedureButton',  // The referenceHolder can access this button by this name
                 text: 'Remove',
                 tooltip: 'Remove the selected item',
                 iconCls: 'remove',
                 disabled: true,
-                handler: 'onCriterionPxRemove'
+                handler: 'onCriterionRemove'
             },'-',{ // ClearFilter
                 reference: 'ClearFilter',
                 text: 'Clear',

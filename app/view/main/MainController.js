@@ -40,7 +40,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             selection = grid.getSelectionModel().getSelection(),
             target = Ext.create('cardioCatalogQT.store.Payload'), // target store
             source, // source store
-            filtered = []; // arroay of filtered source id elements
+            filtered = []; // array of filtered source id elements
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('DEMO grid: ');
@@ -763,13 +763,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     onSelectionChange: function(sm, selections) {
         this.getReferences().removeButton.setDisabled(selections.length === 0);
+        this.getReferences().removeDemographicButton.setDisabled(selections.length === 0);
+        this.getReferences().removeVitalButton.setDisabled(selections.length === 0);
+        this.getReferences().removeLabButton.setDisabled(selections.length === 0);
+        this.getReferences().removeDiagnosisButton.setDisabled(selections.length === 0);
+        this.getReferences().removeMedicationButton.setDisabled(selections.length === 0);
+        this.getReferences().removeProcedureButton.setDisabled(selections.length === 0);
     },
 
-    onSelectionDemoChange: function(sm, selections) {
-        this.getReferences().removeDemoButton.setDisabled(selections.length === 0);
-        console.log('!!!!!')
-    },
 
+    // TODO: generalize this across all grids
     onCriterionRemove: function (button) {
         var grid = button.up('grid'),
             selection = grid.getView().getSelectionModel().getSelection(),
@@ -799,35 +802,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
     },
 
-    // TODO: generalize this across all grids
-    onCriterionDemoRemove: function (button) {
-            var grid = button.up('grid'),
-                selection = grid.getView().getSelectionModel().getSelection(),
-                store = Ext.getStore('DemographicsPayload');
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('grid');
-                console.log(grid);
-                console.log('selection');
-                console.log(selection);
-                console.log('store');
-                console.log(store);
-            }
-
-            if (selection) {
-                store.remove(selection);
-                store.sync();
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('removed');
-                    console.log(store);
-                }
-            }
-            else {
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('nada');
-                }
-            }
-    },
 
     onCriterionOr: function (button) {
         var options = {
