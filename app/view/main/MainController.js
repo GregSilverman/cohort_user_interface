@@ -776,7 +776,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     onCriterionRemove: function (button) {
         var grid = button.up('grid'),
             selection = grid.getView().getSelectionModel().getSelection(),
-            store = Ext.getStore('Payload');
+            store,
+            // bind grid store as source
+            source = grid.store;
+
+
+        store = Ext.getStore(source);
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('grid');
