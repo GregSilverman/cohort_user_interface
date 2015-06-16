@@ -272,7 +272,7 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
             itemId: 'button',
             html: 'Toolbar here',
             text: 'Add',
-            handler: 'onSubmitLabsTest'
+            handler: 'onSubmitLabs'
         }] // end demographics
     }
 

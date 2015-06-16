@@ -325,7 +325,7 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
             itemId: 'button',
             html: 'Toolbar here',
             text: 'Add',
-            handler: 'onSubmitVitalsTest'
+            handler: 'onSubmitVitals'
         }] // end demographics
     }
 

@@ -2,7 +2,7 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.grid.ProceduresGrid', {
+Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.procedureGrid',
     itemId: 'procedureGrid',
