@@ -95,8 +95,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 comparator: rec.data.comparator,
                 comparatorSymbol: rec.data.comparatorSymbol,
                 value: rec.data.value,
-                //description: rec.data.criteria,
-                n: rec.data.n,
+                description: rec.data.criteria,
+                //n: rec.data.n,
                 dateComparator: rec.data.dateComparator,
                 dateComparatorSymbol: rec.data.dateComparatorSymbol,
                 dateValue: rec.data.dateValue,
@@ -476,10 +476,14 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             upperLabValue = form.down('#upperLabValue').value,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value;
-            whenValue = Ext.Date.format(whenValue, 'Y-m-d');
-            upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
+            upperWhenValue = form.down('#upperWhenValue').value,
+            criterion,
+            date_comparator;
 
+        whenValue = Ext.Date.format(whenValue, 'Y-m-d');
+        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d'),
+
+        date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object labs');
@@ -529,6 +533,18 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 labComparator !== 'bt' &&
                 labValue))) {
 
+                // TODO: implement citerion builder independent of all data in stores
+                criterion =  labCode +
+                    ' ' +
+                    cardioCatalogQT.service.UtilityService.comparator_hash(labComparator) +
+                    ' ' +
+                    test_lab;
+
+                if (test_date){
+
+                    criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
+                        + test_date;
+                }
                 if (labValue) {
                     payload.add({
                         type: 'lab',
@@ -538,8 +554,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(labComparator).toUpperCase(),
                         description: labDescription,
                         dateComparator: whenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                        dateValue: test_date
+                        dateComparatorSymbol: date_comparator,
+                        dateValue: test_date,
+                        criteria: criterion,
+                        atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('lab', 'lab', labComparator, test_lab, whenComparator, test_date) + ')'
                     });
                     payload.sync();
                 }
@@ -561,6 +579,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         // reload store on grid
         //form.up().down('#searchGrid').getStore().load();
 
+        // reload store on grid
+        form.up().down('#searchGrid').getStore().load();
+        form.up().down('#labGrid').getStore().load();
         // clear form
         //form.reset();
     },
@@ -572,10 +593,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             diagnoses = form.down('#diagnosis').store.data.items,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value;
+            upperWhenValue = form.down('#upperWhenValue').value,
+            criterion,
+            date_comparator;
 
             whenValue = Ext.Date.format(whenValue, 'Y-m-d');
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
+            date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show submitted Dx:');
@@ -600,6 +624,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(item)
             }
 
+            // TODO: implement citerion builder independent of all data in stores
+            criterion =  item.data.description;
+
+            if (test_date){
+                criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
+                + test_date;
+            }
             // TODO: ensure record does not already exist
             payload.add({
                 type: 'dx',
@@ -609,8 +640,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 value: item.data.code,
                 description: item.data.description.toUpperCase(),
                 dateComparator: whenComparator,
-                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                dateValue: test_date
+                dateComparatorSymbol: date_comparator,
+                dateValue: test_date,
+                criteria: criterion,
+                atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date) + ')'
             });
 
             payload.sync();
@@ -626,6 +659,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         // reload store on grid
         //form.up().down('#searchGrid').getStore().load();
 
+        // reload store on grid
+        form.up().down('#searchGrid').getStore().load();
+        form.up().down('#diagnosisGrid').getStore().load();
         // clear form
         //form.reset();
     },
@@ -637,10 +673,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             procedures = form.down('#procedure').store.data.items,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value;
-        
+            upperWhenValue = form.down('#upperWhenValue').value,
+            criterion,
+            date_comparator;
+
             whenValue = Ext.Date.format(whenValue, 'Y-m-d');
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
+            date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
 
         // begin test Rx
         if (cardioCatalogQT.config.mode === 'test') {
@@ -665,6 +704,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log(item)
             }
+            // TODO: implement citerion builder independent of all data in stores
+            criterion =  item.data.description;
+
+            if (test_date){
+                criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
+                + test_date;
+            }
 
             // TODO: ensure record does not already exist
             payload.add({
@@ -675,8 +721,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 value: item.data.code,
                 description: item.data.description.toUpperCase(),
                 dateComparator: whenComparator,
-                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                dateValue: test_date
+                dateComparatorSymbol: date_comparator,
+                dateValue: test_date,
+                criteria: criterion,
+                atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date) + ')'
             });
 
             payload.sync();
@@ -692,6 +740,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         // reload store on grid
         //form.up().down('#searchGrid').getStore().load();
 
+        form.up().down('#procedureGrid').getStore().load();
+        form.up().down('#diagnosisGrid').getStore().load();
         // clear form
         //form.reset();
     },
@@ -703,10 +753,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             medications = form.down('#medication').store.data.items,
             whenComparator = form.down('#whenComparator').value,
             whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value;
-        
+            upperWhenValue = form.down('#upperWhenValue').value,
+            criterion,
+            date_comparator;
+
             whenValue = Ext.Date.format(whenValue, 'Y-m-d');
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
+            date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show submitted Rx:');
@@ -731,6 +784,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(item)
             }
 
+            // TODO: implement citerion builder independent of all data in stores
+            criterion =  item.data.description;
+
+            if (test_date){
+                criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
+                + test_date;
+            }
             // TODO: ensure record does not already exist
             payload.add({
                 type: 'rx',
@@ -741,7 +801,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 description: item.data.description.toUpperCase(),
                 dateComparator: whenComparator,
                 dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                dateValue: test_date
+                dateValue: test_date,
+                criteria: criterion,
+                atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date) + ')'
             });
 
             payload.sync();
@@ -757,6 +819,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         // reload store on grid
         //form.up().down('#searchGrid').getStore().load();
 
+        form.up().down('#medicationGrid').getStore().load();
+        form.up().down('#diagnosisGrid').getStore().load();
         // clear form
         //form.reset();
     },
@@ -828,7 +892,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     // clear filter and reload store into grid
     onFilterClear: function (button) {
         var grid = button.up('grid'),
-            store = Ext.getStore('DemographicsPayload');
+        // bind grid store as source
+            source = grid.store,
+            store = Ext.getStore(source);
 
         store.clearFilter();
         grid.getStore().load();

@@ -89,7 +89,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
         }, {
             itemId: 'medications',
             items: [{
-                width: 100,
+                width: 300,
                 anchor: '25%',
                 xtype: 'multiselector',
                 title: 'Selected Rx',
@@ -144,7 +144,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 }
             },{ // When
                 xtype: 'combo',
-                width: 100,
+                width: 200,
                 anchor: '20%',
                 itemId: 'whenComparator',
                 queryMode: 'local',
@@ -177,7 +177,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 }
             }, {
                 xtype: 'datefield',
-                width: 100,
+                width: 200,
                 anchor: '20%',
                 itemId: 'whenValue',
                 fieldLabel: 'value of',
@@ -185,7 +185,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 hideTrigger:true
             }, {
                 xtype: 'datefield',
-                width: 100,
+                width: 200,
                 anchor: '20%',
                 itemId: 'upperWhenValue',
                 fieldLabel: 'and',
