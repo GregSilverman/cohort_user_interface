@@ -856,7 +856,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     },
 
-
     // TODO: generalize this across all grids
     onCriterionRemove: function (button) {
         var grid = button.up('grid'),
