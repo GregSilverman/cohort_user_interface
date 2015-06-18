@@ -826,13 +826,34 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSelectionChange: function(sm, selections) {
-        this.getReferences().removeButton.setDisabled(selections.length === 0);
-        this.getReferences().removeDemographicButton.setDisabled(selections.length === 0);
-        this.getReferences().removeVitalButton.setDisabled(selections.length === 0);
-        this.getReferences().removeLabButton.setDisabled(selections.length === 0);
-        this.getReferences().removeDiagnosisButton.setDisabled(selections.length === 0);
-        this.getReferences().removeMedicationButton.setDisabled(selections.length === 0);
-        this.getReferences().removeProcedureButton.setDisabled(selections.length === 0);
+        var store = sm.store.storeId;
+
+        console.log('sm:');
+        console.log(sm);
+        console.log(sm.store.storeId);
+
+        if (store === 'Payload') {
+            this.getReferences().removeButton.setDisabled(selections.length === 0);
+        }
+        else if (store === 'DemographicsPayload') {
+            this.getReferences().removeDemographicButton.setDisabled(selections.length === 0);
+        }
+        else if (store === 'VitalsPayload') {
+            this.getReferences().removeVitalButton.setDisabled(selections.length === 0);
+        }
+        else if (store === 'LabsPayload') {
+            this.getReferences().removeLabButton.setDisabled(selections.length === 0);
+        }
+        else if (store === 'DiagnosesPayload') {
+            this.getReferences().removeDiagnosisButton.setDisabled(selections.length === 0);
+        }
+        else if (store === 'Proceduresload') {
+            this.getReferences().removeMedicationButton.setDisabled(selections.length === 0);
+        }
+        else if (store === 'MedicationsPayload') {
+            this.getReferences().removeProcedureButton.setDisabled(selections.length === 0);
+        }
+
     },
 
 
@@ -843,7 +864,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             store,
             // bind grid store as source
             source = grid.store;
-
 
         store = Ext.getStore(source);
 
