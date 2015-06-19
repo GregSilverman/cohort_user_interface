@@ -899,10 +899,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
     },
 
-    // TODO: change to &
     onCriterionAnd: function (button) {
         var options = {
-                delimiter: ';'
+                delimiter: '&'
             };
 
         cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);

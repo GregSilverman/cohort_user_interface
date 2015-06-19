@@ -113,11 +113,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             molecule = '', // combination of boolean expression and other terms
             key = ''; // grab keys for boolean combined criteria
 
-        if (options.delimiter === ';'){
-            bool_delimiter = ';';
+        if (options.delimiter === '&'){
+            bool_delimiter = options.delimiter;
             bool_operator = 'AND';
         }
-        else if (options.delimiter === ';') {
+        else if (options.delimiter === '|') {
             bool_delimiter = options.delimiter;
             bool_operator = 'OR'
         }
@@ -131,7 +131,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         target = Ext.create('cardioCatalogQT.store.' + payload.storeId);
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('Test payload:')
+            console.log('Test payload:');
             console.log(payload);
             console.log('n: ' + n);
             console.log('storeId: ');
@@ -167,15 +167,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             // separate all query units by delimiter, except for the last
             if (i < n && options.delimiter !== '~') {
-                molecule = bool_delimiter +
-                    molecule;
+                molecule += bool_delimiter;
                 new_criteria += ' ' +
                     bool_operator +
                     ' ';
             }
             else if (i === 1 && options.delimiter === '~'){
-                molecule = bool_delimiter + molecule;
-                new_criteria = ' ' +  bool_operator +  ' ' + new_criteria;
+                molecule = bool_delimiter +
+                    molecule;
+                new_criteria = ' ' +  bool_operator +  ' ' +
+                    new_criteria;
             }
 
         });

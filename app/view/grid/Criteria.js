@@ -74,6 +74,12 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
             iconCls: 'remove',
             disabled: true,
             handler: 'onCriterionRemove'
+        },'-',{ // ClearFilter
+                reference: 'ClearFilter',
+                text: 'Clear',
+                tooltip: 'Clear the current filter',
+                iconCls: 'clear',
+                handler: 'onFilterClear'
         }]
     }],
 
