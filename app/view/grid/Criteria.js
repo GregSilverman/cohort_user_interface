@@ -62,6 +62,12 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
             iconCls: 'or',
             handler: 'onCriterionOr'
         },'-',{
+            reference: 'notButton',
+            text: 'NOT',
+            tooltip: 'Add the selected criteria as NOT',
+            iconCls: 'not',
+            handler: 'onCriterionNot'
+        },'-',{
             reference: 'removeButton',  // The referenceHolder can access this button by this name
             text: 'Remove',
             tooltip: 'Remove the selected item',

@@ -103,8 +103,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         return atomic_unit;
     },
 
-    // TODO: figure out why multiples are getting inserted after first boolean molecular assemblage
-    // TODO: How to have demo_test be more generic????
     make_molecule: function(payload, options) {
         var target, // target store for boolean combined statements
             bool_delimiter,
@@ -115,13 +113,18 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             molecule = '', // combination of boolean expression and other terms
             key = ''; // grab keys for boolean combined criteria
 
-        if (!options.delimiter || options.delimiter === ';'){
+        if (options.delimiter === ';'){
             bool_delimiter = ';';
             bool_operator = 'AND';
         }
-        else{
+        else if (options.delimiter === ';') {
             bool_delimiter = options.delimiter;
             bool_operator = 'OR'
+        }
+        else if (options.delimiter === '~') {
+            bool_delimiter = options.delimiter;
+            bool_operator = 'NOT'
+            console.log('!!!!')
         }
 
         // set target store to appropriate source
@@ -163,11 +166,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             i += 1;
 
             // separate all query units by delimiter, except for the last
-            if (i < n) {
-                molecule += bool_delimiter;
+            if (i < n && options.delimiter !== '~') {
+                molecule = bool_delimiter +
+                    molecule;
                 new_criteria += ' ' +
                     bool_operator +
                     ' ';
+            }
+            else if (i === 1 && options.delimiter === '~'){
+                molecule = bool_delimiter + molecule;
+                new_criteria = ' ' +  bool_operator +  ' ' + new_criteria;
             }
 
         });
@@ -533,7 +541,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         } else if (filter) {
             filters.remove(filter);
         }
-
     },
 
     assemble_boolean: function(button, options){
@@ -552,6 +559,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(selection);
             console.log('store');
             console.log(source);
+            console.log('storeId');
+            console.log(grid.store.storeId);
         }
 
         if (selection) {
@@ -575,7 +584,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
             ]);
 
-            cardioCatalogQT.service.UtilityService.make_molecule(source,options);
+            cardioCatalogQT.service.UtilityService.make_molecule(source, options);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('filtered store');
