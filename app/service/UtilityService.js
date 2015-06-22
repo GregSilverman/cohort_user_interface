@@ -35,7 +35,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             delimiter = ';',
             parent;
 
-
         parent = cardioCatalogQT.service.UtilityService.parent_hash(type);
 
         // section "a" of query
@@ -46,7 +45,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         if (key === 'blood_pressure_systolic' ||
             key === 'blood_pressure_diastolic' ||
-            type === 'lab') {
+            type === 'lab' ||
+            type === 'sex' ||
+            type === 'age') {
             atomic_unit += 'eq';
         }
         else {
@@ -60,6 +61,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             key === 'blood_pressure_diastolic') {
             atomic_unit += 'blood_pressure';
         }
+        else if (key === 'sex' ||
+                 key === 'age'){
+            atomic_unit += 'demographics';
+        }
         else if (type === 'lab') {
             atomic_unit += key;
         }
@@ -72,7 +77,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             seperator;
 
         if (key === 'blood_pressure_systolic' ||
-            key === 'blood_pressure_diastolic') {
+            key === 'blood_pressure_diastolic' ||
+            key === 'sex' ||
+            key === 'age') {
             atomic_unit += key;
         }
         else if (type === 'lab') {
@@ -291,8 +298,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         map.add('blood_pressure_systolic', 'blood_pressure');
         map.add('blood_pressure_diastolic', 'blood_pressure');
-        map.add('sex', 'sex');
-        map.add('age','age');
+        map.add('sex', 'demographics');
+        map.add('age', 'demographics');
         map.add('dx', 'dx_code');
         map.add('lab', 'test_code');
         map.add('px', 'proc_code');

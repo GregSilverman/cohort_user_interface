@@ -176,7 +176,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 // TODO: implement atomic_unit builder at time of model instance creation
 
                 payload.add({
-                    type: 'sex',
+                    type: 'Demographics',
                     key: 'sex',
                     comparator: 'eq',
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
@@ -232,7 +232,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 // TODO: implement atomic_unit builder at time of model instance creation
 
                 payload.add({
-                    type: 'age',
+                    type: 'Demographics',
                     key: 'age',
                     comparator: ageComparator,
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator),
