@@ -9,24 +9,29 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         this.initConfig(config);
     },
 
-    // assemble URL for Ajax call to API
-    // format is criterionA_part1;criterionA_part2
-    // part1 maintains information for either the bucket from which to pull (e.g., lab -> test_code bucket), or the single attribute bucket from which to pull (e.g., sex = m)
-    // part2 maintains information about the specific item and criterion by value to pul (e.g, labs -> result_value compared to desired result, or sex = m)
-    // each part has three delimited sections in the format type:key;comparator;value, where type gives the reference to
-    // a) type of data and key identifies the bucket name,
-    // b) comparator is the comparison operator and
-    // c) value is the criterion value
+    // Assemble URL payload for Ajax call to API
+    // format is atom_part1;atom_part2
+    // part1 maintains information for the bucket from which to pull (e.g., lab -> test_code bucket, sex -> demographics)
+    // part2 maintains information about the specific bucket attribute/item and criterion by value to pull
+    // (e.g, lab -> result_value with double_value = desired value, or demographics -> sex with string_value = m)
+    //
+    // Each part has three delimited sections (particles) in the format 'type:key;comparator;value', where
+    // a) 'type' gives the reference to the type of data and 'key' identifies the bucket name or the bucket attribute name (in API: pulled from the attribute table by attribute_value),
+    // b) 'comparator' is the comparison operator and (in API: operation to be performed)
+    // c) 'value' is the criterion value (in API: pull attribute name by attribute_value and query by string or double value)
     //
     // Date comparisons are appended to the criterion value
     // They are denoted by the character string DATE
-    // TODO: fix below -> in use so that string can be parsed as a date component on its own in the API
-    // Comparator operators are different than the standard
     //
+    // Comparator operators are different than the standard
     // mappings to actual attribute names are resolved via a hash lookup
     // comparators for static defaults are set in code below (e.g., blood_pressure/lab)
 
-    // TODO: handle creation of boolean combined atomic_units
+    // We use the idiom of atomic structure:
+    //
+    // An atom is comprised of a string of the form atom_part1;atom_part2 -> type:keyA;comparatorA;valueA;type:keyB;comparatorB;valueB
+    // where each ';' delimited unit is defined as an atomic particle,
+    // thus an atom is made up of 6 particles
 
     make_atom: function(type, key, comparator, value, dateComparator, dateValue) {
         var
@@ -110,6 +115,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         return atomic_unit;
     },
 
+    // Molecules are atoms concatenated by boolean AND or OR
     make_molecule: function(payload, options) {
         var target, // target store for boolean combined statements
             bool_delimiter,
