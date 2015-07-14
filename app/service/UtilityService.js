@@ -121,6 +121,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             bool_delimiter,
             n = payload.getCount(),
             i = 0,
+            j = 1,
             new_criteria = '',
             bool_operator,
             molecule = '', // combination of boolean expression and other terms
@@ -144,6 +145,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         target = Ext.create('cardioCatalogQT.store.' + payload.storeId);
 
         if (cardioCatalogQT.config.mode === 'test') {
+            console.log('count: ' + payload.getCount())
             console.log('Test payload:');
             console.log(payload);
             console.log('n: ' + n);
@@ -163,6 +165,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('criteria record:' + rec.data.criteria);
                 console.log('atom record:' + rec.data.atom);
+                console.log('j: ' + j);
             }
 
             molecule += rec.data.atom;
@@ -176,7 +179,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 key += ',' + payload.data.items[i].data.id;
             }
 
+
             i += 1;
+
+            // add parentheses
+            if (j>1) {
+                molecule = '(' + molecule + ')';
+            }
+
 
             // separate all query units by delimiter, except for the last
             if (i < n && options.delimiter !== '~') {
@@ -192,18 +202,18 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     new_criteria;
             }
 
+            j += 1
+
         });
 
         // insert boolean combination into store
         if (molecule && new_criteria) {
 
-            // add parentheses
-            molecule = '(' + molecule + ')';
             new_criteria = '(' + new_criteria + ')';
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('new criteria: ' + new_criteria);
-                console.log('new atom: ' + molecule);
+                console.log('new molecule: ' + molecule);
                 console.log('key: '  + key);
                 console.log('bool_op: ' + bool_operator);
             }

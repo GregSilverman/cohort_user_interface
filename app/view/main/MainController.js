@@ -182,7 +182,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                     value: sexValue,
                     criteria: criterion,
-                    atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue) + ')'
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue)
                 });
 
                 payload.sync();
@@ -238,7 +238,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator),
                     value: test_age,
                     criteria: criterion,
-                    atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age) + ')'
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age)
                 });
 
                 payload.sync();
@@ -410,7 +410,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                         dateValue: test_date,
                         criteria: criterion,
-                        atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', systolicComparator, test_systolic, whenComparator, test_date) + ')'
+                        atom: cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', systolicComparator, test_systolic, whenComparator, test_date)
                     });
 
                     payload.sync();
@@ -439,7 +439,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                         dateValue: test_date,
                         criteria: criterion,
-                        atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', diastolicComparator, test_diastolic, whenComparator, test_date) + ')'
+                        atom: cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', diastolicComparator, test_diastolic, whenComparator, test_date)
                     });
                     payload.sync();
                 }
@@ -557,7 +557,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         dateComparatorSymbol: date_comparator,
                         dateValue: test_date,
                         criteria: criterion,
-                        atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('lab', 'lab', labComparator, test_lab, whenComparator, test_date) + ')'
+                        atom: cardioCatalogQT.service.UtilityService.make_atom('lab', 'lab', labComparator, test_lab, whenComparator, test_date)
                     });
                     payload.sync();
                 }
@@ -643,7 +643,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: date_comparator,
                 dateValue: test_date,
                 criteria: criterion,
-                atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date) + ')'
+                atom: cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date)
             });
 
             payload.sync();
@@ -724,7 +724,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: date_comparator,
                 dateValue: test_date,
                 criteria: criterion,
-                atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date) + ')'
+                atom: cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date)
             });
 
             payload.sync();
@@ -803,7 +803,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                 dateValue: test_date,
                 criteria: criterion,
-                atom: '(' + cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date) + ')'
+                atom: cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date)
             });
 
             payload.sync();
