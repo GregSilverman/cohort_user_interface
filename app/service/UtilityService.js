@@ -194,10 +194,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 new_criteria += ' ' +
                     bool_operator +
                     ' ';
-            }
+            } // (A|~A)&~A = ~A
             else if (i === 1 && options.delimiter === '~'){
-                molecule = bool_delimiter +
+                molecule = '(' + molecule + '|' +
+                    bool_delimiter +
+                    molecule + ')'+ '&' +
+                    bool_delimiter +
                     molecule;
+
+
                 new_criteria = ' ' +  bool_operator +  ' ' +
                     new_criteria;
             }
