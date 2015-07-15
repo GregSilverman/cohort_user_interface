@@ -196,11 +196,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     ' ';
             } // (A|~A)&~A = ~A
             else if (i === 1 && options.delimiter === '~'){
-                molecule = '(' + molecule + '|' +
+                molecule = '((' + molecule + '|' +
                     bool_delimiter +
                     molecule + ')'+ '&' +
                     bool_delimiter +
-                    molecule;
+                    molecule + ')';
 
 
                 new_criteria = ' ' +  bool_operator +  ' ' +
@@ -628,7 +628,40 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    submit_query: function(button, url){
+    url: function(payload, button) {
+
+        var atom = []
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('payload: ');
+            console.log(payload);
+            console.log('atom:')
+            //console.log(button.data[1].items)
+        }
+
+        payload.each(function (rec) {
+
+            console.log('rec:');
+            console.log(rec.data.atom);
+
+            atom[1] = rec.data.atom
+
+        })
+
+        console.log('atom:')
+        console.log(atom[1])
+        var url = cardioCatalogQT.config.protocol;
+
+        url += cardioCatalogQT.config.host;
+        url += cardioCatalogQT.config.apiGetQ;
+
+        url += atom[1]
+
+        cardioCatalogQT.service.UtilityService.submit_query(payload, url, button);
+
+    },
+
+    submit_query: function(payload, url, button){
 
         var auth = sessionStorage.sessionToken + ':unknown',
             hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),

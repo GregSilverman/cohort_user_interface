@@ -22,15 +22,15 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             form = button.up('form');
 
         // construct URL and submit criteria to Query store
-        if (payload.getCount() > 0) {
-            url = cardioCatalogQT.service.UtilityService.url(payload, options);
-        }
+        //if (payload.getCount() > 0) {
+        cardioCatalogQT.service.UtilityService.url(payload, button);
+        //}
         // if no criteria have been selected then run the last generated query
-        else {
-            url = cardioCatalogQT.service.UtilityService.url_request();
-        }
+        //else {
+        //    url = cardioCatalogQT.service.UtilityService.url_request();
+        //}
 
-        cardioCatalogQT.service.UtilityService.submit_query(button, url);
+        //cardioCatalogQT.service.UtilityService.submit_query(button, url);
 
         form.up().down('#searchGrid').getStore().load();
     },
