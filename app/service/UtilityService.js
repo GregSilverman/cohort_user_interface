@@ -628,36 +628,79 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    url: function(payload, button) {
+    url: function(button) {
 
-        var atom = []
+        var atom = [],
+            grid = button.up('grid'),
+            selection = grid.getSelectionModel().getSelection(),
+            source, // source store to filter
+            filtered = []; // source ids that are filtered
+
+        // bind grid store as source
+        source = grid.store;
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('payload: ');
-            console.log(payload);
-            console.log('atom:')
-            //console.log(button.data[1].items)
+            console.log('grid');
+            console.log(grid);
+            console.log('selection');
+            console.log(selection);
+            console.log('store');
+            console.log(source);
+            console.log('storeId');
+            console.log(grid.store.storeId);
         }
 
-        payload.each(function (rec) {
+        if (selection) {
 
-            console.log('rec:');
-            console.log(rec.data.atom);
+            // array of elements on which to filter
+            Ext.Array.each(selection, function (item) {
+                filtered.push(item.data.id);
+            });
 
-            atom[1] = rec.data.atom
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered');
+                console.log(filtered);
+            }
 
-        })
+            source.clearFilter(true); // Clears old filters
+            source.filter([ // filter on selected array elements
+                {
+                    filterFn: function(rec) {
+                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
+                    }
+                }
+            ]);
 
-        console.log('atom:')
-        console.log(atom[1])
-        var url = cardioCatalogQT.config.protocol;
+            source.each(function (rec) {
 
-        url += cardioCatalogQT.config.host;
-        url += cardioCatalogQT.config.apiGetQ;
+                console.log('rec:');
+                console.log(rec.data.atom);
 
-        url += atom[1]
+                atom[1] = rec.data.atom
 
-        cardioCatalogQT.service.UtilityService.submit_query(payload, url, button);
+            });
+
+            console.log('atom:')
+            console.log(atom[1])
+            var url = cardioCatalogQT.config.protocol;
+
+            url += cardioCatalogQT.config.host;
+            url += cardioCatalogQT.config.apiGetQ;
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered store');
+                console.log(source);
+            }
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
+
+        url += atom[1];
+
+        cardioCatalogQT.service.UtilityService.submit_query(source, url, button);
 
     },
 

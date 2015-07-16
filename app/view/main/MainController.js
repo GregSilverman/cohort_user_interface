@@ -118,12 +118,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSearchClick: function (button) {
-        var url;
+        //var url;
 
         // get last submitted url
-        url = cardioCatalogQT.service.UtilityService.url_request();
+        cardioCatalogQT.service.UtilityService.url(button);
 
-        cardioCatalogQT.service.UtilityService.submit_query(button, url);
+        //cardioCatalogQT.service.UtilityService.submit_query(button, url);
     },
 
     onShowClick: function (button) {
