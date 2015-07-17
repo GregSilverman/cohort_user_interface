@@ -120,10 +120,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     onSearchClick: function (button) {
         //var url;
 
-        // get last submitted url
+        // create and submit url
         cardioCatalogQT.service.UtilityService.url(button);
 
-        //cardioCatalogQT.service.UtilityService.submit_query(button, url);
     },
 
     onShowClick: function (button) {
@@ -135,6 +134,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     onSubmitDemographics: function (button) {
         var payload = Ext.getStore('DemographicsPayload'),
+            atom,
             demo = [],
             form = button.up('grid'),
             sexValue = form.down('#sexValue').value,
@@ -187,7 +187,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 payload.sync();
 
-                console.log('atom:' + cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue))
+                console.log('atom:' + cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue));
+
+                atom = cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue);
+                cardioCatalogQT.service.UtilityService.url(button, atom);
             }
             else {
 
@@ -242,10 +245,14 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 });
 
                 payload.sync();
+
+                atom = cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age);
+                cardioCatalogQT.service.UtilityService.url(button, atom);
             }
             else{
                 // error conditions here
             }
+
 
 
         }
@@ -265,10 +272,15 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         // clear form
         //form.reset();
+
+        // create and submit url to get n in display
+        //cardioCatalogQT.service.UtilityService.url(button);
+
     },
 
     onSubmitVitals: function(button) {
         var payload = Ext.getStore('VitalsPayload'),
+            atom,
             vitals = [],
             form = button.up('grid'),
             systolicComparator = form.down('#systolicComparator').value,
@@ -346,7 +358,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
             }
 
-
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('test systolic : ' + test_systolic);
                 console.log('test diastolic: ' + test_diastolic);
@@ -414,6 +425,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     });
 
                     payload.sync();
+
+                    atom = cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', systolicComparator, test_systolic, whenComparator, test_date);
+                    cardioCatalogQT.service.UtilityService.url(button, atom);
                 }
 
                 if (diastolicValue) {
@@ -442,6 +456,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         atom: cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', diastolicComparator, test_diastolic, whenComparator, test_date)
                     });
                     payload.sync();
+
+                    atom = cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', diastolicComparator, test_diastolic, whenComparator, test_date);
+                    cardioCatalogQT.service.UtilityService.url(button, atom);
                 }
             }
             else {
@@ -467,6 +484,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     onSubmitLabs: function (button) {
         var payload = Ext.getStore('LabsPayload'),
+            atom,
             lab = [],
             form = button.up('grid'),
             labComparator = form.down('#labComparator').value,
@@ -560,6 +578,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         atom: cardioCatalogQT.service.UtilityService.make_atom('lab', 'lab', labComparator, test_lab, whenComparator, test_date)
                     });
                     payload.sync();
+
+                    atom = cardioCatalogQT.service.UtilityService.make_atom('lab', 'lab', labComparator, test_lab, whenComparator, test_date);
+                    cardioCatalogQT.service.UtilityService.url(button, atom);
                 }
                 else {
                     // error conditions here
@@ -588,6 +609,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     onSubmitDiagnoses: function(button) {
         var payload = Ext.getStore('DiagnosesPayload'),
+            atom,
             dx = [],
             form = button.up('grid'),
             diagnoses = form.down('#diagnosis').store.data.items,
@@ -655,6 +677,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(payload);
             }
 
+            atom = cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date);
+            cardioCatalogQT.service.UtilityService.url(button, atom);
+
         }); // each()
         // reload store on grid
         //form.up().down('#searchGrid').getStore().load();
@@ -668,6 +693,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     onSubmitProcedures: function(button) {
         var payload = Ext.getStore('ProceduresPayload'),
+            atom,
             px = [],
             form = button.up('grid'),
             procedures = form.down('#procedure').store.data.items,
@@ -736,6 +762,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(payload);
             }
 
+            atom = cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date);
+            cardioCatalogQT.service.UtilityService.url(button, atom);
+
         }); // each()
         // reload store on grid
         //form.up().down('#searchGrid').getStore().load();
@@ -748,6 +777,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     onSubmitMedications: function(button) {
         var payload = Ext.getStore('MedicationsPayload'),
+            atom,
             rx = [],
             form = button.up('grid'),
             medications = form.down('#medication').store.data.items,
@@ -814,6 +844,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(rx);
                 console.log(payload);
             }
+
+            atom = cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date);
+            cardioCatalogQT.service.UtilityService.url(button, atom);
 
         }); // each()
         // reload store on grid

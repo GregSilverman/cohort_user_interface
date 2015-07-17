@@ -628,13 +628,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    url: function(button) {
+    url: function(button, atom) {
 
-        var atom = [],
+        var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
             source, // source store to filter
             filtered = []; // source ids that are filtered
+
+        grid.getStore().load();
+
 
         // bind grid store as source
         source = grid.store;
@@ -648,9 +651,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(source);
             console.log('storeId');
             console.log(grid.store.storeId);
+            console.log('atom ' + atom)
         }
 
-        if (selection) {
+        /*if (selection) {
 
             // array of elements on which to filter
             Ext.Array.each(selection, function (item) {
@@ -698,13 +702,24 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             }
         }
 
-        url += atom[1];
+        source.each(function (rec) {
 
-        cardioCatalogQT.service.UtilityService.submit_query(source, url, button);
+            console.log('rec:');
+            console.log(rec.data.atom);
+
+            atom[1] = rec.data.atom
+
+        });*/
+
+        url += cardioCatalogQT.config.host;
+        url += cardioCatalogQT.config.apiGetQ;
+        url += atom;
+
+        cardioCatalogQT.service.UtilityService.submit_query(url, button, source, atom);
 
     },
 
-    submit_query: function(payload, url, button){
+    submit_query: function(url, button, source, atom){
 
         var auth = sessionStorage.sessionToken + ':unknown',
             hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
@@ -800,6 +815,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     store.add(records);
                     store.sync();
 
+
                     // reload store for grid display
                     //button.up().up().up().down('#gridTest').getStore().load();
 
@@ -807,9 +823,17 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         console.log(records);
                         console.log('store');
                         console.log(store);
+                        console.log('N');
+                        console.log(store.getCount())
                         console.log(button.up().up().up().down('#gridTest').getStore().load());
                     }
                 }
+
+                // update n in store for grid display
+                var update_record = source.findRecord('atom', atom);
+                update_record.set('n', store.getCount());
+                source.sync();
+
                 // render template
                 cardioCatalogQT.service.UtilityService.template(panel, store);
                 // clear criteria from store
