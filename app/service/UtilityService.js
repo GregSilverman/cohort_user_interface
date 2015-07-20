@@ -115,8 +115,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         return atomic_unit;
     },
 
-    // Molecules are atoms concatenated by boolean AND or OR
-    make_molecule: function(payload, options) {
+    // Molecules are atoms concatenated by boolean AND or OR, or preceeded by NOT
+    make_molecule: function(payload, options, button) {
         var target, // target store for boolean combined statements
             bool_delimiter,
             n = payload.getCount(),
@@ -179,14 +179,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 key += ',' + payload.data.items[i].data.id;
             }
 
-
             i += 1;
 
             // add parentheses
             if (j>1) {
                 molecule = '(' + molecule + ')';
             }
-
 
             // separate all query units by delimiter, except for the last
             if (i < n && options.delimiter !== '~') {
@@ -201,7 +199,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     molecule + ')'+ '&' +
                     bool_delimiter +
                     molecule + ')';
-
 
                 new_criteria = ' ' +  bool_operator +  ' ' +
                     new_criteria;
@@ -230,6 +227,17 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 atom: molecule
             });
             target.sync();
+
+            var grid = button.up('grid'),
+            // bind grid store as source
+                source = grid.store,
+                store = Ext.getStore(source);
+
+            store.clearFilter();
+            grid.getStore().load();
+
+            cardioCatalogQT.service.UtilityService.url(button, molecule);
+
         }
 
     },
@@ -298,20 +306,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         return criteria;
     },
 
-    // TODO: ensure payload exists, is clean and does not produce spurious results
-    url_request: function(){
-        var queries = Ext.getStore('Queries'),
-            url = queries.last().data.url;
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('submitted query:');
-            console.log(queries.last().data.url);
-        }
-
-        return url;
-
-    },
-
     // get parent element for pulling correct bucket
     parent_hash: function(type) {
 
@@ -358,6 +352,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
+    // use for grid display
     date_comparator_hash: function(type) {
 
         var map = new Ext.util.HashMap();
@@ -376,6 +371,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
+    // use for atomic payload construction
     date_hash: function(type) {
 
         var map = new Ext.util.HashMap();
@@ -396,9 +392,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     template: function(panel, store) {
         var tpl,
-            n = store.getCount(),
-            queries = Ext.getStore('Queries'),
-            criteria = queries.last().data.criteria;
+            n = store.getCount();
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('n: ' + n);
@@ -419,11 +413,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             '</table>'
         );
         // render template with store data to panel using HTML and remove mask from parent object
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('submitted criteria:');
-            console.log(criteria);
-        }
 
         panel.setHtml(n + ' patients met the given criteria:'
                             + '<br>'
@@ -613,7 +602,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
             ]);
 
-            cardioCatalogQT.service.UtilityService.make_molecule(source, options);
+            cardioCatalogQT.service.UtilityService.make_molecule(source, options, button);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('filtered store');
@@ -638,7 +627,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         grid.getStore().load();
 
-
         // bind grid store as source
         source = grid.store;
 
@@ -653,63 +641,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(grid.store.storeId);
             console.log('atom ' + atom)
         }
-
-        /*if (selection) {
-
-            // array of elements on which to filter
-            Ext.Array.each(selection, function (item) {
-                filtered.push(item.data.id);
-            });
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('filtered');
-                console.log(filtered);
-            }
-
-            source.clearFilter(true); // Clears old filters
-            source.filter([ // filter on selected array elements
-                {
-                    filterFn: function(rec) {
-                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
-                    }
-                }
-            ]);
-
-            source.each(function (rec) {
-
-                console.log('rec:');
-                console.log(rec.data.atom);
-
-                atom[1] = rec.data.atom
-
-            });
-
-            console.log('atom:')
-            console.log(atom[1])
-            var url = cardioCatalogQT.config.protocol;
-
-            url += cardioCatalogQT.config.host;
-            url += cardioCatalogQT.config.apiGetQ;
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('filtered store');
-                console.log(source);
-            }
-        }
-        else {
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('nada')
-            }
-        }
-
-        source.each(function (rec) {
-
-            console.log('rec:');
-            console.log(rec.data.atom);
-
-            atom[1] = rec.data.atom
-
-        });*/
 
         url += cardioCatalogQT.config.host;
         url += cardioCatalogQT.config.apiGetQ;
@@ -726,12 +657,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             panel = button.up().up().up().down('#results'),
             json = [],
             records = [],
-        //payload = Ext.getStore('Payload'),
-        //url,
             store =  Ext.create('cardioCatalogQT.store.Results');
-        /*options = {
-         delimiter: null
-         };*/
 
         //localStorage.clear();
         store.getProxy().clear();
@@ -745,16 +671,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log('component: ');
             console.log(panel);
         }
-
-        /*      // construct URL and submit criteria to Query store
-         // if no criteria have been selected then run the last generated query
-         if (payload.getCount() > 0) {
-         url = cardioCatalogQT.service.UtilityService.url(payload, options);
-         }
-         // get last submitted url
-         else {
-         url = cardioCatalogQT.service.UtilityService.url_request();
-         l     }*/
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
@@ -815,10 +731,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     store.add(records);
                     store.sync();
 
-
-                    // reload store for grid display
-                    //button.up().up().up().down('#gridTest').getStore().load();
-
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log(records);
                         console.log('store');
@@ -837,7 +749,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 // render template
                 cardioCatalogQT.service.UtilityService.template(panel, store);
                 // clear criteria from store
-                cardioCatalogQT.service.UtilityService.clear_all();
+                //cardioCatalogQT.service.UtilityService.clear_all();
             }
         });
     },
@@ -946,8 +858,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             }
         });
-
     }
-
 
 });

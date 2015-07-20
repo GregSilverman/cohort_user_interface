@@ -22,15 +22,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             form = button.up('form');
 
         // construct URL and submit criteria to Query store
-        //if (payload.getCount() > 0) {
         cardioCatalogQT.service.UtilityService.url(payload, button);
-        //}
-        // if no criteria have been selected then run the last generated query
-        //else {
-        //    url = cardioCatalogQT.service.UtilityService.url_request();
-        //}
-
-        //cardioCatalogQT.service.UtilityService.submit_query(button, url);
 
         form.up().down('#searchGrid').getStore().load();
     },
@@ -96,7 +88,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 comparatorSymbol: rec.data.comparatorSymbol,
                 value: rec.data.value,
                 description: rec.data.criteria,
-                //n: rec.data.n,
+                n: rec.data.n,
                 dateComparator: rec.data.dateComparator,
                 dateComparatorSymbol: rec.data.dateComparatorSymbol,
                 dateValue: rec.data.dateValue,
@@ -272,9 +264,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         // clear form
         //form.reset();
-
-        // create and submit url to get n in display
-        //cardioCatalogQT.service.UtilityService.url(button);
 
     },
 
@@ -922,7 +911,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
         }
     },
-
 
     onCriterionOr: function (button) {
         var options = {
