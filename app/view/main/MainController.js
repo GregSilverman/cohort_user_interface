@@ -564,11 +564,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         dateComparatorSymbol: date_comparator,
                         dateValue: test_date,
                         criteria: criterion,
-                        atom: cardioCatalogQT.service.UtilityService.make_atom('lab', 'lab', labComparator, test_lab, whenComparator, test_date)
+                        atom: cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date)
                     });
                     payload.sync();
 
-                    atom = cardioCatalogQT.service.UtilityService.make_atom('lab', 'lab', labComparator, test_lab, whenComparator, test_date);
+                    atom = cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date);
                     cardioCatalogQT.service.UtilityService.url(button, atom);
                 }
                 else {
