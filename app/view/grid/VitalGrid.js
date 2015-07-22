@@ -192,7 +192,38 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
                             button.up('grid').down('#showDiastolic').show();
                         }
                     }
-                }, { // Diastolic
+                }, { // Vitals
+                xtype: 'combo',
+                itemId: 'vitalStatus',
+                queryMode: 'local',
+                editable: false,
+                value: 'eq',
+                triggerAction: 'all',
+                forceSelection: true,
+                fieldLabel: 'Select vital status:',
+                displayField: 'name',
+                valueField: 'value',
+                store: {
+                    fields: ['name', 'value'],
+                    data: [
+                        {name: 'Systolic blood pressure', value: 'systolic'},
+                        {name: 'Diastolic blood pressure', value: 'diastolic'},
+                        {name: 'Heart rate', value: 'heart_rate'},
+                        {name: 'BMI', value: 'bmi'},
+                        {name: 'Temperature', value: 'temperature'},
+                        {name: 'Respiratory rate', value: 'respiratory_rate'},
+                        {name: 'Weight', value: 'weight'}
+                    ]
+                },
+                listeners: {
+
+                    change: function (combo, value) {
+                        // use component query to  toggle the hidden state of upper value
+                        combo.up('grid').down('#diastolicValue').setFieldLabel('Select ' + value + ' that is')
+                    }
+                }
+
+            },{ // Diastolic
                 xtype: 'combo',
                 itemId: 'diastolicComparator',
                 queryMode: 'local',
