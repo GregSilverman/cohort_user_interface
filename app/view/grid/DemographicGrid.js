@@ -88,7 +88,7 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
             height: 200,
             items: [{
                 xtype: 'button',
-                text: 'Constrain by sex',
+                text: 'Constrain sex',
                 itemId: 'showSex',
                 hidden: false,
                 listeners: {
