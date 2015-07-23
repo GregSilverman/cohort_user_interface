@@ -106,7 +106,10 @@ Ext.define('cardioCatalogQT.view.grid.VitalGridTest', {
                         {name: 'Deceased', value: 'm'}
                     ]
                 }
-            },{ // Vitals
+            }, {
+                xtype: 'tbspacer',
+                width: 50
+            }, { // Vitals
                 xtype: 'combo',
                 itemId: 'measureCode',
                 queryMode: 'local',
@@ -114,17 +117,35 @@ Ext.define('cardioCatalogQT.view.grid.VitalGridTest', {
                 value: 'eq',
                 triggerAction: 'all',
                 forceSelection: true,
-                fieldLabel: 'Select vital type',
+                fieldLabel: 'Select vital measure type',
                 displayField: 'name',
                 valueField: 'code',
                 store: {
                     fields: ['name', 'code'],
                     data: [
+                        {name: 'Select measure', code: 'select'},
                         {name: 'Systolic blood pressure', code: 'blood_pressure_systolic'},
                         {name: 'Diastolic blood pressure', code: 'blood_pressure_diastolic'}
                     ]
+                },
+
+                listeners: {
+                    change: function (combo, value) {
+                        // use component query to  toggle the hidden state of upper value
+                        if (value !== 'select') {
+                            combo.up('grid').down('#measureComparator').show();
+                            combo.up('grid').down('#measureValue').show();
+                        } else {
+                            combo.up('grid').down('#measureComparator').hide();
+                            combo.up('grid').down('#measureValue').hide();
+                            combo.up('grid').down('#upperMeasureValue').hide();
+                            combo.up('grid').down('#measureComparator').setValue('');
+                            combo.up('grid').down('#measureValue').setValue('');
+                            combo.up('grid').down('#upperMeasureValue').setValue('');
+                        }
+                    }
                 }
-            },{
+            }/*,{
                 xtype: 'button',
                 text: 'Constrain vital measure value',
                 itemId: 'showMeasure',
@@ -154,7 +175,7 @@ Ext.define('cardioCatalogQT.view.grid.VitalGridTest', {
                         button.up('grid').down('#showMeasure').show();
                     }
                 }
-            },
+            }*/,
             {
                 xtype: 'combo',
                 flex: 1,

@@ -537,7 +537,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log('when ' + whenValue);
                 console.log('whenComp' + whenComparator);
                 console.log('whenUpper' + upperWhenValue);
-
             }
 
             // insert only if exists
@@ -551,7 +550,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 (!measureValue)) {
 
-                criterion = measureCode +
+                criterion = measureCode.toUpperCase() +
                     ' ' +
                     cardioCatalogQT.service.UtilityService.comparator_hash(measureComparator) +
                     ' ' +
