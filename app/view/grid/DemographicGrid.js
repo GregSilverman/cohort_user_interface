@@ -88,7 +88,7 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
             height: 200,
             items: [{
                 xtype: 'button',
-                text: 'Constrain by sex',
+                text: 'Constrain sex',
                 itemId: 'showSex',
                 hidden: false,
                 listeners: {
@@ -132,7 +132,7 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 }
             }, {
                 xtype: 'button',
-                text: 'Constrain Age',
+                text: 'Constrain age',
                 itemId: 'showAge',
                 hidden: false,
                 listeners: {
@@ -205,9 +205,52 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 itemId: 'upperAgeValue',
                 fieldLabel: 'and',
                 hidden: true
+            },{
+                xtype: 'button',
+                text: 'Constrain race/ethnicity',
+                itemId: 'showRace',
+                hidden: false,
+                listeners: {
+                    click: function (button) {
+                        button.up('grid').down('#raceValue').show();
+                        button.up('grid').down('#hideRace').show();
+                        button.up('grid').down('#showRace').hide();
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: 'Hide race/ethnicity constraint',
+                itemId: 'hideRace',
+                hidden: true,
+                listeners: {
+                    click: function (button) {
+                        button.up('grid').down('#raceValue').hide();
+                        button.up('grid').down('#raceValue').setValue('');
+                        button.up('grid').down('#hideRace').hide();
+                        button.up('grid').down('#showRace').show();
+                    }
+                }
+            },{ // Race
+                xtype: 'combo',
+                itemId: 'raceValue',
+                queryMode: 'local',
+                editable: false,
+                value: 'eq',
+                triggerAction: 'all',
+                forceSelection: true,
+                fieldLabel: 'Select race',
+                displayField: 'name',
+                valueField: 'value',
+                hidden: true,
+                store: {
+                    fields: ['name', 'value'],
+                    data: [
+                        {name: 'female', value: 'f'},
+                        {name: 'male', value: 'm'}
+                    ]
+                }
             }]
         }],
-
 
         lbar:[{
             xtype: 'button',

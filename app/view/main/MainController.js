@@ -429,7 +429,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                     if (test_date){
                         criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
-                        + test_date;
+                            + test_date;
                     }
 
                     payload.add({
@@ -459,6 +459,136 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 vitals.push(systolicValue);
                 vitals.push(diastolicComparator);
                 vitals.push(diastolicValue);
+                console.log('vitals');
+                console.log(vitals);
+            }
+        }
+        // reload store on grid
+        form.up().down('#searchGrid').getStore().load();
+        form.up().down('#vitalGrid').getStore().load();
+
+        // clear form
+        //form.reset();
+    },
+
+    onSubmitVitalsTest: function(button) {
+        var payload = Ext.getStore('VitalsPayload'),
+            atom,
+            vitals = [],
+            form = button.up('grid'),
+            measureCode = form.down('#measureCode').value,
+            measureComparator = form.down('#measureComparator').value,
+            measureValue = form.down('#measureValue').value,
+            upperMeasureValue = form.down('#upperMeasureValue').value,
+            whenComparator = form.down('#whenComparator').value,
+            whenValue = form.down('#whenValue').value,
+            upperWhenValue = form.down('#upperWhenValue').value,
+            criterion,
+            date_comparator;
+
+        whenValue = Ext.Date.format(whenValue, 'Y-m-d');
+        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
+
+        date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('date comparator ');
+            console.log(date_comparator);
+            console.log('show object vitals');
+            console.log(measureCode);
+            console.log(measureComparator);
+            console.log(measureValue);
+            console.log(whenComparator);
+            console.log(whenValue);
+            console.log(upperWhenValue);
+        }
+
+        if (measureValue) {
+
+            var test_measure = measureValue,
+                test_date = whenValue;
+
+            if (whenComparator === 'bt') {
+
+                if (!upperWhenValue) {
+                    alert('Please enter max date to continue')
+                }
+                else {
+                    test_date += ',' + upperWhenValue;
+                }
+            }
+
+            if (measureComparator === 'bt') {
+
+                if (!upperMeasureValue) {
+                    alert('Please enter max measure to continue')
+                }
+                else {
+                    test_measure += ',' + upperMeasureValue ;
+                }
+            }
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('test measure : ' + test_measure);
+                console.log('test date: ' + test_date);
+                console.log('measure' + measureValue);
+                console.log('measureComp' + measureComparator);
+                console.log('measureUpper' + upperMeasureValue);
+                console.log('when ' + whenValue);
+                console.log('whenComp' + whenComparator);
+                console.log('whenUpper' + upperWhenValue);
+            }
+
+            // insert only if exists
+            if ((measureComparator === 'bt' &&
+                measureValue &&
+                upperMeasureValue) ||
+
+                (!upperMeasureValue &&
+                measureComparator !== 'bt' &&
+                measureValue) ||
+
+                (!measureValue)) {
+
+                criterion = measureCode.toUpperCase() +
+                    ' ' +
+                    cardioCatalogQT.service.UtilityService.comparator_hash(measureComparator) +
+                    ' ' +
+                    test_measure;
+
+
+                if (test_date){
+                    criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
+                        + test_date;
+                }
+
+                // TODO: implement atomic_unit builder at time of model instance creation
+                payload.add({
+                    type: measureCode,
+                    key: measureCode,
+                    comparator: measureComparator,
+                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(measureComparator),
+                    value: test_measure,
+                    dateComparator: whenComparator,
+                    dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
+                    dateValue: test_date,
+                    criteria: criterion,
+                    atom: cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date)
+                });
+
+                payload.sync();
+
+                atom = cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date);
+                cardioCatalogQT.service.UtilityService.url(button, atom);
+            }
+
+            else {
+                // error conditions here
+            }
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                vitals.push(measureComparator);
+                vitals.push(measureValue);
                 console.log('vitals');
                 console.log(vitals);
             }
