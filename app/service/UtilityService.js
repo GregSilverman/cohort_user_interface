@@ -473,7 +473,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     // get and store token
     http_auth: function() {
 
-        var url = cardioCatalogQT.config.protocol;
+        var url = cardioCatalogQT.config.protocol,
+            user = 'gms',
+            pw = 'python';
+
+        var token = user + ':' + pw;
+            hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(token);
 
         url += cardioCatalogQT.config.host;
         url += cardioCatalogQT.config.apiLogin;
@@ -483,20 +488,27 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log('url: ' + url);
         }
 
-        Ext.Ajax.on('beforerequest', (function(klass, request) {
+        /*Ext.Ajax.on('beforerequest', (function(klass, request) {
             if (request.failure) { // already have auth token: do nothing
+                console.log('WTF?!');
+                console.log(request);
                 return null;
             }
             else { // send auth token
-                return null; //request.headers.Authorization = hash;
+                request.headers.Authorization = hash;
+
             }
-        }), this);
+        }), this);*/
 
         Ext.Ajax.request({
             cors: true,
             type: 'GET',
             useDefaultXhrHeader: false,
+            //withCredentials: true,
             url: url,
+            headers: {
+                'Accept': 'application/json'
+            },
             disableCaching: false,
             success: function (response) {
 
@@ -684,17 +696,20 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         // send auth header before Ajax request to disable auth form
         Ext.Ajax.on('beforerequest', (function(klass, request) {
             if (request.failure) { // already have auth token: do nothing
+                console.log('WTF 2?!');
+                console.log(request);
                 return null;
             }
             else { // send auth token
-                return null; //request.headers.Authorization = hash;
+                console.log('Hmmmm!')
+                request.headers.Authorization = hash;
             }
         }), this);
 
         Ext.Ajax.request({
             cors: true,
             url: url,
-            useDefaultXhrHeader: false,
+            useDefaultXhrHeader: true,
             headers: {
                 'Accept': 'application/json'
             },
