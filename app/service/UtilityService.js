@@ -471,9 +471,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     },
 
     // get and store token
-    http_auth: function() {
+    http_auth: function(button) {
 
         var url = cardioCatalogQT.config.protocol,
+            panel = button.up().up().up(),
             user = 'gms',
             pw = 'python';
 
@@ -486,6 +487,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         if (cardioCatalogQT.config.mode === 'test') {
             console.log(url);
             console.log('url: ' + url);
+            console.log('panel');
+            console.log(panel);
         }
 
         /*Ext.Ajax.on('beforerequest', (function(klass, request) {
@@ -526,6 +529,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     sessionToken = loginResponse.token;
                     // TODO: write to sessionStorage
                     sessionStorage.sessionToken =  sessionToken;
+
+                    // enable views on success
+                    //panel.down('#resultsGrid').enable();
+                    panel.down('#searchGrid').enable();
+                    panel.down('#demographicGrid').enable();
+                    panel.down('#vitalGrid').enable();
+                    panel.down('#labGrid').enable();
+                    panel.down('#diagnosisGrid').enable();
+                    panel.down('#medicationGrid').enable();
+                    panel.down('#procedureGrid').enable();
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log(sessionToken);

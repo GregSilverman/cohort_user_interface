@@ -1,4 +1,4 @@
-Ext.define('cardioCatalogQT.view.grid.Criteria', {
+Ext.define('cardioCatalogQT.view.grid.Search', {
     extend: 'Ext.grid.Panel',
 
     xtype: 'framing-buttons',
@@ -86,7 +86,7 @@ Ext.define('cardioCatalogQT.view.grid.Criteria', {
     height: 300,
     frame: true,
     iconCls: 'icon-grid',
-    alias: 'widget.criteriaGrid',
+    alias: 'widget.searchGrid',
     title: 'Search',
 
     initComponent: function() {

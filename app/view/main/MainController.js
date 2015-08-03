@@ -122,6 +122,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             store = Ext.getStore('Payload');
         // render template
         cardioCatalogQT.service.UtilityService.criteria_template(panel, store);
+
     },
 
     onSubmitDemographics: function (button) {
@@ -1076,6 +1077,18 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         store.clearFilter();
         grid.getStore().load();
+    },
+
+    onShowTab : function() {
+        var mainView   = this.getMainView();
+        var resultView = this.getExportTab();
+
+
+        // enable the export view
+        resultView.enable();
+
+
+        mainView.setActiveItem(exportView);
     }
 
 });

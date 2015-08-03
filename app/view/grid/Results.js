@@ -2,7 +2,7 @@ Ext.define('cardioCatalogQT.view.grid.Results', {
     extend: 'Ext.container.Container',
 
     alias: 'widget.resultsGrid',
-    itemId: 'test',
+    itemId: 'resultsGrid',
     title: 'ExportData',
 
     requires: [
