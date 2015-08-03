@@ -114,7 +114,7 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
                 itemId: 'measureCode',
                 queryMode: 'local',
                 editable: false,
-                value: 'eq',
+                value: 'select',
                 triggerAction: 'all',
                 forceSelection: true,
                 fieldLabel: 'Select vital measure type',

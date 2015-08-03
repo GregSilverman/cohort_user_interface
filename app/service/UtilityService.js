@@ -679,7 +679,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         var auth = sessionStorage.sessionToken + ':unknown',
             hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
-            panel = button.up().up().up().down('#results'),
             json = [],
             records = [],
             store =  Ext.create('cardioCatalogQT.store.Results');
@@ -693,19 +692,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         //button.up().up().up().down('#gridTest').getStore().load();
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('component: ');
-            console.log(panel);
-        }
-
-        if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
         }
-
-        panel.setMasked({
-            xtype: 'loadmask',
-            message: 'Loading...'
-        });
-
         // send auth header before Ajax request to disable auth form
         Ext.Ajax.on('beforerequest', (function(klass, request) {
             if (request.failure) { // already have auth token: do nothing
@@ -764,8 +752,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         console.log('store');
                         console.log(store);
                         console.log('N');
-                        console.log(store.getCount())
-                        console.log(button.up().up().up().down('#gridTest').getStore().load());
+                        console.log(store.getCount());
                     }
                 }
 
