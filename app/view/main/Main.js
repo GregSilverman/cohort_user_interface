@@ -38,67 +38,49 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 height: 50,
                 width: 280
             },{
-                title: 'UI Sandbox'
+                title: 'Ad Hoc Sandbox for Cohort Discovery'
             }],
             lbar:[{
                 text: 'Login',
                 xtype: 'button',
 
-                handler: function(){
-                    cardioCatalogQT.service.UtilityService.http_auth();
+                handler: function(button){
+                    cardioCatalogQT.service.UtilityService.http_auth(button);
                 }
-            },{
-                text: 'Show Selected Criteria',
-                xtype: 'button',
-                itemId: 'show',
-                handler: 'onShowClick'
-            },
-            {
-                text: 'Execute Query',
-                xtype: 'button',
-                itemId: 'execute',
-                handler: 'onExecuteClick'
             }]
         },
         {
-            title:'Results',
-            region: 'central',
-            xtype: 'container',
-            flex: 1,
-            itemId: 'results'
+            xtype: 'resultsGrid',
+            disabled: true
         },
         {
-            xtype: 'resultsGrid'
+            xtype: 'searchGrid',
+            disabled: true
         },
         {
-            xtype: 'criteriaGrid'
-        },
-        // Tab elements:
-        // widget references to cardioCatalogQT.form
-        {
-            xtype: 'demographicGrid'
-        },
-
-        {
-            xtype: 'vitalGrid'
-        },
-
-        {
-            xtype: 'vitalGridTest'
-        },
-
-        {
-            xtype: 'labGrid'
+            xtype: 'demographicGrid',
+            disabled: true
         },
         {
-            xtype: 'diagnosisGrid'
+            xtype: 'vitalGrid',
+            disabled: true
+        },
+        {
+            xtype: 'labGrid',
+            disabled: true
+        },
+        {
+            xtype: 'diagnosisGrid',
+            disabled: true
 
         },
         {
-            xtype: 'medicationGrid'
+            xtype: 'medicationGrid',
+            disabled: true
         },
         {
-            xtype: 'procedureGrid'
+            xtype: 'procedureGrid',
+            disabled: true
         }
     ]
 });

@@ -471,9 +471,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     },
 
     // get and store token
-    http_auth: function() {
+    http_auth: function(button) {
 
-        var url = cardioCatalogQT.config.protocol;
+        var url = cardioCatalogQT.config.protocol,
+            panel = button.up().up().up(),
+            user = 'gms',
+            pw = 'python';
+
+        var token = user + ':' + pw;
+            hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(token);
 
         url += cardioCatalogQT.config.host;
         url += cardioCatalogQT.config.apiLogin;
@@ -481,22 +487,31 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         if (cardioCatalogQT.config.mode === 'test') {
             console.log(url);
             console.log('url: ' + url);
+            console.log('panel');
+            console.log(panel);
         }
 
-        Ext.Ajax.on('beforerequest', (function(klass, request) {
+        /*Ext.Ajax.on('beforerequest', (function(klass, request) {
             if (request.failure) { // already have auth token: do nothing
+                console.log('WTF?!');
+                console.log(request);
                 return null;
             }
             else { // send auth token
-                return null; //request.headers.Authorization = hash;
+                request.headers.Authorization = hash;
+
             }
-        }), this);
+        }), this);*/
 
         Ext.Ajax.request({
             cors: true,
             type: 'GET',
             useDefaultXhrHeader: false,
+            //withCredentials: true,
             url: url,
+            headers: {
+                'Accept': 'application/json'
+            },
             disableCaching: false,
             success: function (response) {
 
@@ -514,6 +529,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     sessionToken = loginResponse.token;
                     // TODO: write to sessionStorage
                     sessionStorage.sessionToken =  sessionToken;
+
+                    // enable views on success
+                    //panel.down('#resultsGrid').enable();
+                    panel.down('#searchGrid').enable();
+                    panel.down('#demographicGrid').enable();
+                    panel.down('#vitalGrid').enable();
+                    panel.down('#labGrid').enable();
+                    panel.down('#diagnosisGrid').enable();
+                    panel.down('#medicationGrid').enable();
+                    panel.down('#procedureGrid').enable();
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log(sessionToken);
@@ -654,7 +679,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         var auth = sessionStorage.sessionToken + ':unknown',
             hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
-            panel = button.up().up().up().down('#results'),
             json = [],
             records = [],
             store =  Ext.create('cardioCatalogQT.store.Results');
@@ -668,33 +692,25 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         //button.up().up().up().down('#gridTest').getStore().load();
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('component: ');
-            console.log(panel);
-        }
-
-        if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
         }
-
-        panel.setMasked({
-            xtype: 'loadmask',
-            message: 'Loading...'
-        });
-
         // send auth header before Ajax request to disable auth form
         Ext.Ajax.on('beforerequest', (function(klass, request) {
             if (request.failure) { // already have auth token: do nothing
+                console.log('WTF 2?!');
+                console.log(request);
                 return null;
             }
             else { // send auth token
-                return null; //request.headers.Authorization = hash;
+                console.log('Hmmmm!')
+                request.headers.Authorization = hash;
             }
         }), this);
 
         Ext.Ajax.request({
             cors: true,
             url: url,
-            useDefaultXhrHeader: false,
+            useDefaultXhrHeader: true,
             headers: {
                 'Accept': 'application/json'
             },
@@ -736,8 +752,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         console.log('store');
                         console.log(store);
                         console.log('N');
-                        console.log(store.getCount())
-                        console.log(button.up().up().up().down('#gridTest').getStore().load());
+                        console.log(store.getCount());
                     }
                 }
 
