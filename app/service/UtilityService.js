@@ -762,7 +762,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 source.sync();
 
                 // render template
-                cardioCatalogQT.service.UtilityService.template(panel, store);
                 // clear criteria from store
                 //cardioCatalogQT.service.UtilityService.clear_all();
             }
