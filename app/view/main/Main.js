@@ -39,7 +39,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 width: 280
             },{
                 title: 'Ad Hoc Sandbox for Cohort Discovery'
-            }],
+            }] /*,
             lbar:[{
                 text: 'Login',
                 xtype: 'button',
@@ -47,40 +47,40 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 handler: function(button){
                     cardioCatalogQT.service.UtilityService.http_auth(button);
                 }
-            }]
+            }]*/
         },
         {
-            xtype: 'resultsGrid',
-            disabled: true
+            xtype: 'resultsGrid'
+            //disabled: true
         },
         {
-            xtype: 'searchGrid',
-            disabled: true
+            xtype: 'searchGrid'
+            //disabled: true
         },
         {
-            xtype: 'demographicGrid',
-            disabled: true
+            xtype: 'demographicGrid'
+            //disabled: true
         },
         {
-            xtype: 'vitalGrid',
-            disabled: true
+            xtype: 'vitalGrid'
+            //disabled: true
         },
         {
-            xtype: 'labGrid',
-            disabled: true
+            xtype: 'labGrid'
+            //disabled: true
         },
         {
-            xtype: 'diagnosisGrid',
-            disabled: true
+            xtype: 'diagnosisGrid'
+            //disabled: true
 
         },
         {
-            xtype: 'medicationGrid',
-            disabled: true
+            xtype: 'medicationGrid'
+            //disabled: true
         },
         {
-            xtype: 'procedureGrid',
-            disabled: true
+            xtype: 'procedureGrid'
+            //disabled: true
         }
     ]
 });
