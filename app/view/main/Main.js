@@ -39,15 +39,17 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 width: 280
             },{
                 title: 'Ad Hoc Sandbox for Cohort Discovery'
-            }] /*,
+            }] ,
             lbar:[{
-                text: 'Login',
+                text: 'Initiate advance request',
                 xtype: 'button',
 
                 handler: function(button){
-                    cardioCatalogQT.service.UtilityService.http_auth(button);
+                    var url = 'https://redcap.ahc.umn.edu/surveys/?s=nfHAssJw96';
+                    //cardioCatalogQT.service.UtilityService.http_auth(button);
+                    window.open(url);
                 }
-            }]*/
+            }]
         },
         {
             xtype: 'resultsGrid'
