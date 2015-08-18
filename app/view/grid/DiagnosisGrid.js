@@ -94,7 +94,7 @@ Ext.define('cardioCatalogQT.view.main.DiagnosisGrid', {
                 xtype: 'multiselector',
                 title: 'Selected Dx',
                 itemId: 'diagnosis',
-                fieldName: 'code',
+                fieldName: 'description',
                 valueField: 'code',
                 viewConfig: {
                     deferEmptyText: false,

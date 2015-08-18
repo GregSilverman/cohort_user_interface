@@ -1000,11 +1000,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         else if (store === 'DiagnosesPayload') {
             this.getReferences().removeDiagnosisButton.setDisabled(selections.length === 0);
         }
-        else if (store === 'Proceduresload') {
-            this.getReferences().removeMedicationButton.setDisabled(selections.length === 0);
+        else if (store === 'ProceduresPayload') {
+            this.getReferences().removeProcedureButton.setDisabled(selections.length === 0);
         }
         else if (store === 'MedicationsPayload') {
-            this.getReferences().removeProcedureButton.setDisabled(selections.length === 0);
+            this.getReferences().removeMedicationButton.setDisabled(selections.length === 0);
         }
 
     },

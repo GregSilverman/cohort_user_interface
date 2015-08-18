@@ -99,8 +99,8 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                 forceSelection: true,
                 loading: true,
                 fieldLabel: 'Select lab type',
-                displayField: 'code',
-                fieldName: 'desription',
+                displayField: 'description',
+                fieldName: 'description',
                 valueField: 'code',
                 value: '13457-7',
                 store: 'Labs'

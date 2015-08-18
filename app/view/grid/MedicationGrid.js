@@ -94,7 +94,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 xtype: 'multiselector',
                 title: 'Selected Rx',
                 itemId: 'medication',
-                fieldName: 'code',
+                fieldName: 'description',
                 valueField:'code',
                 viewConfig: {
                     deferEmptyText: false,
@@ -102,7 +102,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 },
                 // TODO: fix ability to remove selected items when box is unchecked
                 search: {
-                    field: 'code',
+                    field: 'description',
                     store: 'Medications',
 
                     search: function (text) {
