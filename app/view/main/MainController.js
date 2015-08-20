@@ -1067,6 +1067,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
     },
 
+    onFilterSave: function (button) {
+
+        cardioCatalogQT.service.UtilityService.query_move(button);
+    },
+
+    onFilterRetrieve: function (button) {
+
+        cardioCatalogQT.service.UtilityService.query_get(button);
+    },
+
     // TODO: generalize this across all grids
     // clear filter and reload store into grid
     onFilterClear: function (button) {

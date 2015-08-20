@@ -40,13 +40,13 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
         layout: {
             pack: 'center'
         },
-        items: [{
+        /*items: [{
             minWidth: 80,
             text: 'Search on criteria',
             xtype: 'button',
             itemId: 'executeTest',
             handler: 'onSearchClick'
-        }]
+        }]*/
         }, {
         xtype: 'toolbar',
         items: [{
@@ -80,6 +80,19 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
                 tooltip: 'Clear the current filter',
                 iconCls: 'clear',
                 handler: 'onFilterClear'
+        },{ // SaveQuery
+            reference: 'SaveQuery',
+            text: 'Save',
+            tooltip: 'save the current filter',
+            iconCls: 'save',
+            handler: 'onFilterSave'
+        },
+        { // SaveQuery
+            reference: 'RetrieveQuery',
+            text: 'Get',
+            tooltip: 'retrieve saved',
+            iconCls: 'get',
+            handler: 'onFilterRetrieve'
         }]
     }],
 

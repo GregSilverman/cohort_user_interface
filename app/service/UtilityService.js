@@ -642,6 +642,171 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
+    query_get: function(button){
+        var grid = button.up('grid'),
+            source, // source store to filter
+            url,
+            query = []; // source ids that are filtered
+
+        // bind grid store as source
+        source = grid.store;
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('grid');
+            console.log(grid);
+            console.log(source);
+        }
+
+
+        url = 'http://127.0.0.1:5000/remote_query_get'
+
+        Ext.Ajax.request({
+            cors: true,
+            useDefaultXhrHeader: false,
+            url: url,
+            headers: {
+                'Accept': 'application/json'
+            },
+            disableCaching: false,
+            success: function (response) {
+
+                if (response.status === 200) {
+
+                    console.log('happiness')
+                    json = Ext.response(response.responseText);
+                    console.log(json)
+
+                    // see http://edspencer.net/2009/07/23/ext-js-iterator-functions/
+                    for (key in json){
+                        var value = json[key];
+
+                        console.log(value.length)
+
+                        for (var i=0; i < value.length; i++) {
+                            var query = value[i];
+                            console.log(query.molecule)
+                        };
+                    }
+
+                } else {
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('bad http response');
+                    }
+                }
+            },
+            failure: function (response) {
+                //me.sessionToken = null;
+                //me.signInFailure('Login failed. Please try again later.');
+            }
+        });
+
+
+    },
+
+    query_move: function(button){
+        var grid = button.up('grid'),
+            selection = grid.getSelectionModel().getSelection(),
+            source, // source store to filter
+            filtered = [],
+            url,
+            obj, // object to pass to endpoint
+            query = []; // source ids that are filtered
+
+        // bind grid store as source
+        source = grid.store;
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('grid');
+            console.log(grid);
+            console.log('selection');
+            console.log(selection);
+            console.log('store');
+            console.log(source);
+            console.log('storeId');
+            console.log(grid.store.storeId);
+        }
+
+        if (selection) {
+
+
+            // array of elements on which to filter
+            Ext.Array.each(selection, function (item) {
+                filtered.push(item.data.id);
+
+                obj = {
+                    query: {
+                        molecule: item.data.atom
+                    }
+
+                };
+
+                console.log('TEST')
+                console.log(item.data.atom)
+                console.log('JSON')
+                console.log(obj)
+
+                query.push(item.data.atom);
+
+                url = 'http://127.0.0.1:5000/remote_query_put'
+
+                Ext.Ajax.request({
+                    cors: true,
+                    useDefaultXhrHeader: false,
+                    url: url,
+                    jsonData: obj,
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    disableCaching: false,
+                    success: function (response) {
+
+                        if (response.status === 200) {
+
+                            console.log('happiness')
+
+                        } else {
+                            if (cardioCatalogQT.config.mode === 'test') {
+                                console.log('bad http response');
+                            }
+                        }
+                    },
+                    failure: function (response) {
+                        //me.sessionToken = null;
+                        //me.signInFailure('Login failed. Please try again later.');
+                    }
+                });
+
+            });
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered');
+                console.log(filtered);
+                console.log('QUERY')
+                console.log(query)
+            }
+
+            source.clearFilter(true); // Clears old filters
+            source.filter([ // filter on selected array elements
+                {
+                    filterFn: function(rec) {
+                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
+                    }
+                }
+            ]);
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered store');
+                console.log(source);
+            }
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
+
+    },
+
     url: function(button, atom) {
 
         var url = cardioCatalogQT.config.protocol,
