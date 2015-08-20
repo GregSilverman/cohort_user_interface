@@ -8,7 +8,8 @@ Ext.define('cardioCatalogQT.store.Medications', {
 
         proxy: {
             type: 'rest',
-            url: 'http://imagelibrary.ahc.umn.edu/api/menu/medications',
+            url: 'http://cc.cardio.umn.edu/api/menu/medications',
+
             reader: {
                 type: 'json',
                 rootProperty: 'menu'

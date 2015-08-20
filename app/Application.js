@@ -58,13 +58,13 @@ Ext.define('cardioCatalogQT.Application', {
 
             mode: 'test', // switch to control use of staging or production server
             protocol: 'http://',
-            //host: 'cc.cardio.umn.edu',
-            host: '127.0.0.1:5000',
+            host: 'cc.cardio.umn.edu',
+            //host: '127.0.0.1:5000',
             //apiLogin: '/token',
             apiLogin: '/api/token',
             apiFactor: '/api/factor',
-            apiGetQ: '/get_query/',
-            //apiGetQ: '/api/get_query/',
+            //apiGetQ: '/get_query/',
+            apiGetQ: '/api/get_query/',
             remove: 'none'
         };
 
