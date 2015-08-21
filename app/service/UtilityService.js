@@ -646,6 +646,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         var grid = button.up('grid'),
             source, // source store to filter
             url,
+            records = [],
+            store =  Ext.create('cardioCatalogQT.store.Payload'),
             query = []; // source ids that are filtered
 
         // bind grid store as source
@@ -673,7 +675,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 if (response.status === 200) {
 
                     console.log('happiness')
-                    json = Ext.response(response.responseText);
+                    json = Ext.decode(response.responseText);
                     console.log(json)
 
                     // see http://edspencer.net/2009/07/23/ext-js-iterator-functions/
@@ -684,9 +686,29 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                         for (var i=0; i < value.length; i++) {
                             var query = value[i];
+                            console.log('query object')
+                            console.log(query)
                             console.log(query.molecule)
+                            console.log(query.criteria);
+
+
+
+                            records.push({
+                                atom: query.molecule,
+                                criteria: query.criteria,
+                                type: 'Test',
+                                key: 'Test'
+
+                            });
+
+
                         };
                     }
+
+                    //update store with data
+                    store.add(records);
+                    store.sync();
+
 
                 } else {
                     if (cardioCatalogQT.config.mode === 'test') {
@@ -700,7 +722,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             }
         });
 
-
+        grid.up().down('#searchGrid').getStore().load();
     },
 
     query_move: function(button){
@@ -709,6 +731,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             source, // source store to filter
             filtered = [],
             url,
+            test =  Ext.getStore('Queries'),
             obj, // object to pass to endpoint
             query = []; // source ids that are filtered
 
@@ -735,19 +758,39 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                 obj = {
                     query: {
-                        molecule: item.data.atom
+                        molecule: item.data.atom,
+                        criteria: item.data.criteria
+
                     }
 
                 };
 
-                console.log('TEST')
-                console.log(item.data.atom)
-                console.log('JSON')
-                console.log(obj)
+                console.log('TEST');
+                console.log(item.data.atom);
+                console.log(item.data.criteria);
+                console.log('JSON');
+                console.log(obj);
+
+                var recordIndex = test.findBy(
+                    function(record, id){
+                        if(record.get('molecule') === item.data.atom &&
+                            record.get('criteria') === item.data.criteria){
+                            return true;  // a record with this data exists
+                        }
+
+                        return false;  // there is no record in the store with this data
+
+                    }
+                );
+
+                if(recordIndex != -1){
+                    console.log("We have a duplicate, abort!");
+                }
 
                 query.push(item.data.atom);
+                query.push(item.data.criteria);
 
-                url = 'http://127.0.0.1:5000/remote_query_put'
+                url = 'http://127.0.0.1:5000/remote_query_put';
 
                 Ext.Ajax.request({
                     cors: true,
@@ -783,6 +826,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log(filtered);
                 console.log('QUERY')
                 console.log(query)
+
+                console.log('updated store')
+                console.log(test)
             }
 
             source.clearFilter(true); // Clears old filters
