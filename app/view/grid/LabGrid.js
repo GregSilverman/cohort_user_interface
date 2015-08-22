@@ -6,7 +6,7 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.labGrid',
     itemId: 'labGrid',
-    store: 'LabsPayload',
+    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
@@ -67,6 +67,12 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                 iconCls: 'or',
                 handler: 'onCriterionOr'
             },'-',{
+                reference: 'notButton',
+                text: 'NOT',
+                tooltip: 'Add the selected criteria as NOT',
+                iconCls: 'not',
+                handler: 'onCriterionNot'
+            },'-',{
                 reference: 'removeLabButton',  // The referenceHolder can access this button by this name
                 text: 'Remove',
                 tooltip: 'Remove the selected item',
@@ -84,7 +90,7 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                 text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
-                handler: 'onAddSearchGridClick'
+                handler: 'onSubmitLabs'
             }]
         }, {
             itemId: 'labs',

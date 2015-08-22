@@ -6,7 +6,7 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.demographicGrid',
     itemId: 'demographicGrid',
-    store: 'DemographicsPayload',
+    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
@@ -64,7 +64,13 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 iconCls: 'or',
                 handler: 'onCriterionOr'
             },'-',{
-                reference: 'removeDemographicButton',  // The referenceHolder can access this button by this name
+                reference: 'notButton',
+                text: 'NOT',
+                tooltip: 'Add the selected criteria as NOT',
+                iconCls: 'not',
+                handler: 'onCriterionNot'
+            },'-',{
+                reference: 'removeButton',  // The referenceHolder can access this button by this name
                 text: 'Remove',
                 tooltip: 'Remove the selected item',
                 iconCls: 'remove',
@@ -81,7 +87,7 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
-                handler: 'onAddSearchGridClick'
+                handler: 'onSubmitDemographics'
             }]
         }, {
             xtype: 'toolbar',

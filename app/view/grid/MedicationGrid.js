@@ -6,7 +6,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.medicationGrid',
     itemId: 'medicationGrid',
-    store: 'MedicationsPayload',
+    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
@@ -67,6 +67,12 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 iconCls: 'or',
                 handler: 'onCriterionOr'
             },'-',{
+                reference: 'notButton',
+                text: 'NOT',
+                tooltip: 'Add the selected criteria as NOT',
+                iconCls: 'not',
+                handler: 'onCriterionNot'
+            },'-',{
                 reference: 'removeMedicationButton',  // The referenceHolder can access this button by this name
                 text: 'Remove',
                 tooltip: 'Remove the selected item',
@@ -84,7 +90,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
-                handler: 'onAddSearchGridClick'
+                handler: 'onSubmitMedications'
             }]
         }, {
             itemId: 'medications',

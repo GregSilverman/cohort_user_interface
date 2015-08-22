@@ -126,7 +126,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSubmitDemographics: function (button) {
-        var payload = Ext.getStore('DemographicsPayload'),
+        var payload = Ext.getStore('Payload'),
             atom,
             demo = [],
             form = button.up('grid'),
@@ -269,211 +269,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSubmitVitals: function(button) {
-        var payload = Ext.getStore('VitalsPayload'),
-            atom,
-            vitals = [],
-            form = button.up('grid'),
-            systolicComparator = form.down('#systolicComparator').value,
-            systolicValue = form.down('#systolicValue').value,
-            upperSystolicValue = form.down('#upperSystolicValue').value,
-            diastolicComparator = form.down('#diastolicComparator').value,
-            diastolicValue = form.down('#diastolicValue').value,
-            upperDiastolicValue = form.down('#upperDiastolicValue').value,
-            whenComparator = form.down('#whenComparator').value,
-            whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value,
-            criterion,
-            date_comparator;
-
-        whenValue = Ext.Date.format(whenValue, 'Y-m-d');
-        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
-
-        date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('query comparator ');
-            console.log(systolicComparator);
-            console.log('date comparator ');
-            console.log(date_comparator);
-
-        }
-
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('show object vitals');
-            console.log(systolicComparator);
-            console.log(systolicValue);
-            console.log(diastolicComparator);
-            console.log(diastolicValue);
-            console.log(whenComparator);
-            console.log(whenValue);
-            console.log(upperWhenValue);
-        }
-
-        if (systolicValue || diastolicValue) {
-
-            var test_systolic = systolicValue,
-                test_diastolic = diastolicValue,
-                test_date = whenValue;
-
-
-            if (whenComparator === 'bt') {
-
-                if (!upperWhenValue) {
-                    alert('Please enter max date to continue')
-                }
-                else {
-                    test_date += ',' + upperWhenValue;
-                }
-            }
-
-
-            if (systolicComparator === 'bt') {
-
-                if (!upperSystolicValue) {
-                    alert('Please enter max systolic to continue')
-                }
-                else {
-                    test_systolic += ',' + upperSystolicValue ;
-                }
-            }
-
-            if (diastolicComparator === 'bt') {
-
-                if (!upperDiastolicValue) {
-                    alert('Please enter max diastolic to continue')
-                }
-                else {
-                    test_diastolic += ',' + upperDiastolicValue;
-                }
-            }
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('test systolic : ' + test_systolic);
-                console.log('test diastolic: ' + test_diastolic);
-                console.log('test date: ' + test_date);
-                console.log('systolic' + systolicValue);
-                console.log('systolicComp' + systolicComparator);
-                console.log('systolicUpper' + upperSystolicValue);
-                console.log('diastolic' + systolicValue);
-                console.log('diastolicComp' + systolicComparator);
-                console.log('diastolicUpper' + upperSystolicValue);
-                console.log('when ' + whenValue);
-                console.log('whenComp' + whenComparator);
-                console.log('whenUpper' + upperWhenValue);
-
-            }
-
-            // insert only if exists
-            if (((systolicComparator === 'bt' &&
-                systolicValue &&
-                upperSystolicValue) ||
-
-                (!upperSystolicValue &&
-                systolicComparator !== 'bt' &&
-                systolicValue) ||
-
-                (!systolicValue)) &&
-
-                ((diastolicComparator === 'bt' &&
-                diastolicValue &&
-                upperDiastolicValue) ||
-
-                (!upperDiastolicValue &&
-                diastolicComparator !== 'bt' &&
-                diastolicValue) ||
-
-                (!diastolicValue))) {
-
-                if (systolicValue) {
-
-                    // TODO: implement citerion builder independent of all data in stores
-                    criterion = 'BLOOD_PRESSURE_SYSTOLIC' +
-                        ' ' +
-                        cardioCatalogQT.service.UtilityService.comparator_hash(systolicComparator) +
-                        ' ' +
-                        test_systolic;
-
-
-                    if (test_date){
-                        criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
-                            + test_date;
-                    }
-
-                    // TODO: implement atomic_unit builder at time of model instance creation
-                    payload.add({
-                        type: 'blood_pressure_systolic',
-                        key: 'blood_pressure_systolic',
-                        comparator: systolicComparator,
-                        comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(systolicComparator),
-                        value: test_systolic,
-                        dateComparator: whenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                        dateValue: test_date,
-                        criteria: criterion,
-                        atom: cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', systolicComparator, test_systolic, whenComparator, test_date)
-                    });
-
-                    payload.sync();
-
-                    atom = cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', systolicComparator, test_systolic, whenComparator, test_date);
-                    cardioCatalogQT.service.UtilityService.url(button, atom);
-                }
-
-                if (diastolicValue) {
-
-                    criterion = 'BLOOD_PRESSURE_DIASTOLIC' +
-                        ' ' +
-                        cardioCatalogQT.service.UtilityService.comparator_hash(diastolicComparator) +
-                        ' ' +
-                        test_diastolic;
-
-                    if (test_date){
-                        criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
-                            + test_date;
-                    }
-
-                    payload.add({
-                        type: 'blood_pressure_diastolic',
-                        key: 'blood_pressure_diastolic',
-                        comparator: diastolicComparator,
-                        comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(diastolicComparator),
-                        value: test_diastolic,
-                        dateComparator: whenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                        dateValue: test_date,
-                        criteria: criterion,
-                        atom: cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', diastolicComparator, test_diastolic, whenComparator, test_date)
-                    });
-                    payload.sync();
-
-                    atom = cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', diastolicComparator, test_diastolic, whenComparator, test_date);
-                    cardioCatalogQT.service.UtilityService.url(button, atom);
-                }
-            }
-            else {
-                // error conditions here
-            }
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                vitals.push(systolicComparator);
-                vitals.push(systolicValue);
-                vitals.push(diastolicComparator);
-                vitals.push(diastolicValue);
-                console.log('vitals');
-                console.log(vitals);
-            }
-        }
-        // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
-        form.up().down('#vitalGrid').getStore().load();
-
-        // clear form
-        //form.reset();
-    },
-
-    onSubmitVitalsTest: function(button) {
-        var payload = Ext.getStore('VitalsPayload'),
+        var payload = Ext.getStore('Payload'),
             atom,
             vitals = [],
             form = button.up('grid'),
@@ -603,7 +399,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSubmitLabs: function (button) {
-        var payload = Ext.getStore('LabsPayload'),
+        var payload = Ext.getStore('Payload'),
             atom,
             lab = [],
             form = button.up('grid'),
@@ -728,7 +524,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSubmitDiagnoses: function(button) {
-        var payload = Ext.getStore('DiagnosesPayload'),
+        var payload = Ext.getStore('Payload'),
             atom,
             dx = [],
             form = button.up('grid'),
@@ -812,7 +608,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSubmitProcedures: function(button) {
-        var payload = Ext.getStore('ProceduresPayload'),
+        var payload = Ext.getStore('Payload'),
             atom,
             px = [],
             form = button.up('grid'),
@@ -896,7 +692,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSubmitMedications: function(button) {
-        var payload = Ext.getStore('MedicationsPayload'),
+        var payload = Ext.getStore('Payload'),
             atom,
             rx = [],
             form = button.up('grid'),

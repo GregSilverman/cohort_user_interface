@@ -6,7 +6,7 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.vitalGrid',
     itemId: 'vitalGrid',
-    store: 'VitalsPayload',
+    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
@@ -67,7 +67,13 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
                 iconCls: 'or',
                 handler: 'onCriterionOr'
             },'-',{
-                reference: 'removeVitalButton',  // The referenceHolder can access this button by this name
+                reference: 'notButton',
+                text: 'NOT',
+                tooltip: 'Add the selected criteria as NOT',
+                iconCls: 'not',
+                handler: 'onCriterionNot'
+            },'-',{
+                reference: 'removeButton',  // The referenceHolder can access this button by this name
                 text: 'Remove',
                 tooltip: 'Remove the selected item',
                 iconCls: 'remove',
@@ -84,7 +90,7 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
                 text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
-                handler: 'onAddSearchGridClick'
+                handler: 'onSubmitVitals'
             }]
         }, {
             itemId: 'vitals',
@@ -315,7 +321,7 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
             itemId: 'button',
             html: 'Toolbar here',
             text: 'Add',
-            handler: 'onSubmitVitalsTest'
+            handler: 'onSubmitVitals'
         }] // end demographics
     }
 

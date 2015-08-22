@@ -41,7 +41,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 title: 'Ad Hoc Sandbox for Cohort Discovery'
             }] ,
             lbar:[{
-                text: 'Initiate advance request',
+                text: 'Initiate advanced request',
                 xtype: 'button',
 
                 handler: function(button){
@@ -55,10 +55,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             xtype: 'resultsGrid'
             //disabled: true
         },
-        {
+       /* {
             xtype: 'searchGrid'
             //disabled: true
-        },
+        },*/
         {
             xtype: 'demographicGrid'
             //disabled: true
