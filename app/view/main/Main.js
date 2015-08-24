@@ -55,7 +55,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             xtype: 'resultsGrid'
             //disabled: true
         },
-       /* {
+        /*{
             xtype: 'searchGrid'
             //disabled: true
         },*/

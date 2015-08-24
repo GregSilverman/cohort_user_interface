@@ -12,7 +12,11 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
         'cardioCatalogQT.view.main.MainController'
     ],
 
-    columns: [
+
+    //disabled: true
+
+
+   /* columns: [
         {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
         {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
         {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
@@ -29,12 +33,15 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
 
     // When true, this view acts as the default listener scope for listeners declared within it.
     // For example the selectionModel's selectionchange listener resolves to this.
-    defaultListenerScope: false,
+    defaultListenerScope: false,*/
 
     config: {
         variableHeights: false,
         title: 'Demographics',
         xtype: 'form',
+
+    //disabled: true
+
         width: 200,
         bodyPadding: 10,
         defaults: {
@@ -42,8 +49,9 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
             labelWidth: 100
         },
 
+
         // inline buttons
-        dockedItems: [{
+        dockedItems: [/*{
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'footer',
@@ -88,10 +96,11 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 xtype: 'button',
                 itemId: 'searchClick',
                 handler: 'onSubmitDemographics'
-            }]
-        }, {
+            }
+                ]
+        }*/, {
             xtype: 'toolbar',
-            height: 200,
+            height: 100,
             items: [{
                 xtype: 'button',
                 text: 'Constrain sex',
@@ -255,16 +264,27 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                         {name: 'male', value: 'm'}
                     ]
                 }
+            },{
+                //minWidth: 80,
+                text: 'Add to search',
+                xtype: 'button',
+                itemId: 'searchClick',
+                handler: 'onSubmitDemographics'
             }]
-        }],
+        },
+            {
+                xtype:'searchGrid'
+            }
+        ]
 
-        lbar:[{
-            xtype: 'button',
-            itemId: 'button',
-            html: 'Toolbar here',
-            text: 'Add',
-            handler: 'onSubmitDemographics'
-        }] // end demographics
+        //lbar:[{
+        //    xtype: 'searchGrid',
+        //    itemId: 'button',
+        //    html: 'Toolbar here',
+        //    text: 'Add',
+        //    handler: 'onSubmitDemographics'
+        //}]
+        // end demographics
     }
 
 

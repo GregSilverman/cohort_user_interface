@@ -39,64 +39,63 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
         ui: 'footer',
         layout: {
             pack: 'center'
-        },
-        /*items: [{
-            minWidth: 80,
-            text: 'Search on criteria',
-            xtype: 'button',
-            itemId: 'executeTest',
-            handler: 'onSearchClick'
-        }]*/
-        }, {
+        }
+    }, {
         xtype: 'toolbar',
         items: [{
-            reference: 'andButton',
+            //reference: 'andButton',
             text: 'AND',
+            itemId: 'andButton',
             tooltip: 'Add the selected criteria as AND',
             iconCls: 'and',
             handler: 'onCriterionAnd'
         },'-',{
-            reference: 'orButton',
+            //reference: 'orButton',
             text: 'OR',
+            itemId: 'orButton',
             tooltip: 'Add the selected criteria as OR',
             iconCls: 'or',
             handler: 'onCriterionOr'
         },'-',{
-            reference: 'notButton',
+            //reference: 'notButton',
             text: 'NOT',
+            itemId: 'notButton',
             tooltip: 'Add the selected criteria as NOT',
             iconCls: 'not',
             handler: 'onCriterionNot'
         },'-',{
-            reference: 'removeButton',  // The referenceHolder can access this button by this name
+            //reference: 'removeButton',  // The referenceHolder can access this button by this name
+            itemId: 'removeButton',
             text: 'Remove',
             tooltip: 'Remove the selected item',
             iconCls: 'remove',
             disabled: true,
             handler: 'onCriterionRemove'
         },'-',{ // ClearFilter
-                reference: 'ClearFilter',
-                text: 'Clear',
-                tooltip: 'Clear the current filter',
-                iconCls: 'clear',
-                handler: 'onFilterClear'
+            //reference: 'ClearFilter',
+            text: 'Clear',
+            itemId: 'clearFilter',
+            tooltip: 'Clear the current filter',
+            iconCls: 'clear',
+            handler: 'onFilterClear'
         },{ // SaveQuery
-            reference: 'SaveQuery',
+            //reference: 'SaveQuery',
             text: 'Save',
+            itemId: 'saveQuery',
             tooltip: 'save the current filter',
             iconCls: 'save',
             handler: 'onFilterSave'
-        },
-        { // SaveQuery
-            reference: 'RetrieveQuery',
+        },{ // SaveQuery
+            //reference: 'RetrieveQuery',
             text: 'Get',
+            itemId: 'retrieveQuery',
             tooltip: 'retrieve saved',
             iconCls: 'get',
             handler: 'onFilterRetrieve'
         }]
     }],
 
-    height: 300,
+    height: 1000,
     frame: true,
     iconCls: 'icon-grid',
     alias: 'widget.searchGrid',

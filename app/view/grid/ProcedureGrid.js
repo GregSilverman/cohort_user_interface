@@ -12,7 +12,7 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
         'cardioCatalogQT.view.main.MainController'
     ],
 
-    columns: [
+    /*columns: [
         {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
         {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
         {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
@@ -32,7 +32,7 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
 
     // When true, this view acts as the default listener scope for listeners declared within it.
     // For example the selectionModel's selectionchange listener resolves to this.
-    defaultListenerScope: false,
+    defaultListenerScope: false,*/
 
     config: {
         variableHeights: false,
@@ -46,7 +46,7 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
         },
 
         // inline buttons
-        dockedItems: [{
+        dockedItems: [/*{
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'footer',
@@ -92,7 +92,7 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
                 itemId: 'searchClick',
                 handler: 'onSubmitProcedures'
             }]
-        }, {
+        },*/ {
             itemId: 'procedures',
             items: [{
                 width: 300,
@@ -197,17 +197,27 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
                 fieldLabel: 'and',
                 hidden: true,
                 hideTrigger:true
+            },{
+                //minWidth: 80,
+                text: 'Add to search',
+                xtype: 'button',
+                itemId: 'searchClick',
+                handler: 'onSubmitProcedures'
             }]
-        }],
+        },
+            {
+                xtype:'searchGrid'
+            }
+        ]
 
 
-        lbar:[{
+        /*lbar:[{
             xtype: 'button',
             itemId: 'button',
             html: 'Toolbar here',
             text: 'Add',
             handler: 'onSubmitProcedures'
-        }] // end demographics
+        }]*/ // end demographics
     }
 
 

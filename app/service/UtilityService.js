@@ -290,7 +290,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
             i += 1;
 
-            // separate all query units by appropriate boolean operater
+            // separate all query units by appropriate boolean operator
             if (i < n){
                 criteria += bool;
             }

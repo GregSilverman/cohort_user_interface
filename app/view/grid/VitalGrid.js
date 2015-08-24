@@ -12,7 +12,7 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
         'cardioCatalogQT.view.main.MainController'
     ],
 
-    columns: [
+    /*columns: [
         {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
         {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
         {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
@@ -32,21 +32,21 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
 
     // When true, this view acts as the default listener scope for listeners declared within it.
     // For example the selectionModel's selectionchange listener resolves to this.
-    defaultListenerScope: false,
+    defaultListenerScope: false,*/
 
     config: {
         variableHeights: false,
         title: 'Vitals',
         xtype: 'form',
-        width: 200,
+        width: 500,
         bodyPadding: 10,
         defaults: {
-            anchor: '100%',
+            //anchor: '100%',
             labelWidth: 100
         },
 
         // inline buttons
-        dockedItems: [{
+        dockedItems: [/*{
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'footer',
@@ -92,7 +92,7 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
                 itemId: 'searchClick',
                 handler: 'onSubmitVitals'
             }]
-        }, {
+        },*/ {
             itemId: 'vitals',
             items: [{ // Vitals
                 xtype: 'combo',
@@ -312,17 +312,27 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
                 fieldLabel: 'and',
                 hidden: true,
                 hideTrigger:true
+            },{
+                //minWidth: 80,
+                text: 'Add to search',
+                xtype: 'button',
+                itemId: 'searchClick',
+                handler: 'onSubmitVitals'
             }]
-        }],
+        },
+            {
+                xtype: 'searchGrid'
+            }
+        ]
 
 
-        lbar:[{
-            xtype: 'button',
-            itemId: 'button',
+       // bbar:[{
+            //xtype: 'searchGrid',
+            /*itemId: 'button',
             html: 'Toolbar here',
             text: 'Add',
-            handler: 'onSubmitVitals'
-        }] // end demographics
+            handler: 'onSubmitVitals'*/
+        //}] // end demographics
     }
 
 

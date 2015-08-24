@@ -774,35 +774,23 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         //form.reset();
     },
 
-    onSelectionChange: function(sm, selections) {
-        var store = sm.store.storeId;
+    //onSelectionChange: function(sm, selections) {
+    onSelectionChange: function(selections, sm) {
+        //var grid = button.up('grid');
 
         console.log('sm:');
-        console.log(sm);
-        console.log(sm.store.storeId);
+        //console.log(sm);
+        //console.log(sm.store.storeId);
+        console.log(selections)
+        console.log(Ext.ComponentQuery.query('#removeButton').length)
 
-        if (store === 'Payload') {
-            this.getReferences().removeButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'DemographicsPayload') {
-            this.getReferences().removeDemographicButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'VitalsPayload') {
-            this.getReferences().removeVitalButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'LabsPayload') {
-            this.getReferences().removeLabButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'DiagnosesPayload') {
-            this.getReferences().removeDiagnosisButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'ProceduresPayload') {
-            this.getReferences().removeProcedureButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'MedicationsPayload') {
-            this.getReferences().removeMedicationButton.setDisabled(selections.length === 0);
+        for (i = 0, len = Ext.ComponentQuery.query('#removeButton').length; i < len; i++) {
+            Ext.ComponentQuery.query('#removeButton')[i].setDisabled()
+            //break;
         }
 
+        //this.getReferences().removeButton.setDisabled //(selections.length === 0);
+        //Ext.ComponentQuery.query('#removeButton').setDisabled(selections.length === 0);
     },
 
     // TODO: generalize this across all grids

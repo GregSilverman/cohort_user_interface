@@ -6,13 +6,13 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.medicationGrid',
     itemId: 'medicationGrid',
-    store: 'Payload',
+    //store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
     ],
 
-    columns: [
+    /*columns: [
         {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
         {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
         {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
@@ -32,7 +32,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
 
     // When true, this view acts as the default listener scope for listeners declared within it.
     // For example the selectionModel's selectionchange listener resolves to this.
-    defaultListenerScope: false,
+    defaultListenerScope: false, */
 
     config: {
         variableHeights: false,
@@ -46,7 +46,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
         },
 
         // inline buttons
-        dockedItems: [{
+        dockedItems: [/*{
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'footer',
@@ -92,7 +92,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 itemId: 'searchClick',
                 handler: 'onSubmitMedications'
             }]
-        }, {
+        }, */{
             itemId: 'medications',
             items: [{
                 width: 300,
@@ -197,17 +197,27 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
                 fieldLabel: 'and',
                 hidden: true,
                 hideTrigger:true
+            },{
+                //minWidth: 80,
+                text: 'Add to search',
+                xtype: 'button',
+                itemId: 'searchClick',
+                handler: 'onSubmitMedications'
             }]
-        }],
+        },
+            {
+                xtype:'searchGrid'
+            }
+        ]
 
 
-        lbar:[{
+        /*lbar:[{
             xtype: 'button',
             itemId: 'button',
             html: 'Toolbar here',
             text: 'Add',
             handler: 'onSubmitMedications'
-        }] // end demographics
+        }] */// end demographics
     }
 
 
