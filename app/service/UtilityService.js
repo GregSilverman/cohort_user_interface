@@ -659,7 +659,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(source);
         }
 
-
         url = 'http://127.0.0.1:5000/remote_query_get'
 
         Ext.Ajax.request({
@@ -674,24 +673,28 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                 if (response.status === 200) {
 
-                    console.log('happiness')
                     json = Ext.decode(response.responseText);
-                    console.log(json)
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(json);
+                    }
 
                     // see http://edspencer.net/2009/07/23/ext-js-iterator-functions/
                     for (key in json){
                         var value = json[key];
-
-                        console.log(value.length)
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log(value.length);
+                        }
 
                         for (var i=0; i < value.length; i++) {
                             var query = value[i];
-                            console.log('query object')
-                            console.log(query)
-                            console.log(query.molecule)
-                            console.log(query.criteria);
 
-
+                            if (cardioCatalogQT.config.mode === 'test') {
+                                console.log('query object');
+                                console.log(query);
+                                console.log(query.molecule);
+                                console.log(query.criteria);
+                            }
 
                             records.push({
                                 atom: query.molecule,
@@ -700,7 +703,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                                 key: 'Test'
 
                             });
-
 
                         };
                     }
@@ -765,11 +767,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                 };
 
+            if (cardioCatalogQT.config.mode === 'test') {
                 console.log('TEST');
                 console.log(item.data.atom);
                 console.log(item.data.criteria);
                 console.log('JSON');
                 console.log(obj);
+            }
 
                 var recordIndex = test.findBy(
                     function(record, id){
@@ -786,40 +790,43 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 if(recordIndex != -1){
                     console.log("We have a duplicate, abort!");
                 }
+                else {
 
-                query.push(item.data.atom);
-                query.push(item.data.criteria);
+                    query.push(item.data.atom);
+                    query.push(item.data.criteria);
 
-                url = 'http://127.0.0.1:5000/remote_query_put';
+                    url = 'http://127.0.0.1:5000/remote_query_put';
 
-                Ext.Ajax.request({
-                    cors: true,
-                    useDefaultXhrHeader: false,
-                    url: url,
-                    jsonData: obj,
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    disableCaching: false,
-                    success: function (response) {
+                    Ext.Ajax.request({
+                        cors: true,
+                        useDefaultXhrHeader: false,
+                        url: url,
+                        jsonData: obj,
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+                        disableCaching: false,
+                        success: function (response) {
 
-                        if (response.status === 200) {
+                            if (response.status === 200) {
 
-                            console.log('happiness')
+                                console.log('happiness')
 
-                        } else {
-                            if (cardioCatalogQT.config.mode === 'test') {
-                                console.log('bad http response');
+                            } else {
+                                if (cardioCatalogQT.config.mode === 'test') {
+                                    console.log('bad http response');
+                                }
                             }
+                        },
+                        failure: function (response) {
+                            //me.sessionToken = null;
+                            //me.signInFailure('Login failed. Please try again later.');
                         }
-                    },
-                    failure: function (response) {
-                        //me.sessionToken = null;
-                        //me.signInFailure('Login failed. Please try again later.');
-                    }
-                });
+                    });
+                }
 
             });
+
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('filtered');
