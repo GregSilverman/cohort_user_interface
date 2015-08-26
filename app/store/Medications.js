@@ -11,7 +11,7 @@ Ext.define('cardioCatalogQT.store.Medications', {
             url: 'http://127.0.0.1:5000/menu/medications',
             reader: {
                 type: 'json',
-                rootProperty: 'menu'
+                rootProperty: 'menu_test'
             }
         }
     }

@@ -108,7 +108,7 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
                 },
                 // TODO: fix ability to remove selected items when box is unchecked
                 search: {
-                    field: 'description',
+                    field: 'code_description',
                     store: 'Procedures',
 
                     search: function (text) {

@@ -48,6 +48,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             itemId: 'andButton',
             tooltip: 'Add the selected criteria as AND',
             iconCls: 'and',
+            disabled: true,
             handler: 'onCriterionAnd'
         },'-',{
             //reference: 'orButton',
@@ -55,6 +56,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             itemId: 'orButton',
             tooltip: 'Add the selected criteria as OR',
             iconCls: 'or',
+            disabled: true,
             handler: 'onCriterionOr'
         },'-',{
             //reference: 'notButton',
@@ -62,6 +64,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             itemId: 'notButton',
             tooltip: 'Add the selected criteria as NOT',
             iconCls: 'not',
+            disabled: true,
             handler: 'onCriterionNot'
         },'-',{
             //reference: 'removeButton',  // The referenceHolder can access this button by this name
@@ -77,6 +80,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             itemId: 'clearFilter',
             tooltip: 'Clear the current filter',
             iconCls: 'clear',
+            disabled: true,
             handler: 'onFilterClear'
         },{ // SaveQuery
             //reference: 'SaveQuery',

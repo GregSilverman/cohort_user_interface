@@ -108,7 +108,7 @@ Ext.define('cardioCatalogQT.view.main.DiagnosisGrid', {
                 },
                 // TODO: fix ability to remove selected items when box is unchecked
                 search: {
-                    field: 'description',
+                    field: 'code_description',
                     store: 'Diagnoses',
 
                     search: function (text) {
