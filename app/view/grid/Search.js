@@ -68,8 +68,8 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             handler: 'onCriterionNot'
         },'-',{
             //reference: 'removeButton',  // The referenceHolder can access this button by this name
-            itemId: 'removeButton',
             text: 'Remove',
+            itemId: 'removeButton',
             tooltip: 'Remove the selected item',
             iconCls: 'remove',
             disabled: true,
@@ -80,7 +80,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             itemId: 'clearFilter',
             tooltip: 'Clear the current filter',
             iconCls: 'clear',
-            disabled: true,
+            //disabled: true,
             handler: 'onFilterClear'
         },{ // SaveQuery
             //reference: 'SaveQuery',

@@ -787,12 +787,32 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(Ext.ComponentQuery.query('#notButton').length);
         }
 
+        for (var i = 0, max = 6 /*Ext.ComponentQuery.query('#removeButton').length*/; i < max; i++) {
+
+            if (/*Ext.ComponentQuery.query('#removeButton')[i].disabled === true ||*/
+                Ext.ComponentQuery.query('#andButton')[i].disabled === true ||
+                Ext.ComponentQuery.query('#orButton')[i].disabled === true ||
+                Ext.ComponentQuery.query('#notButton')[i].disabled === true ) {
+                console.log('e:')
+                Ext.ComponentQuery.query('#andButton')[i].enable();
+                Ext.ComponentQuery.query('#orButton')[i].enable();
+                Ext.ComponentQuery.query('#notButton')[i].enable();
+                Ext.ComponentQuery.query('#removeButton')[i].enable();
+            }
+            else {
+                console.log('d:')
+                Ext.ComponentQuery.query('#andButton')[i].disable();
+                Ext.ComponentQuery.query('#orButton')[i].disable();
+                Ext.ComponentQuery.query('#notButton')[i].disable();
+                Ext.ComponentQuery.query('#removeButton')[i].disable();
+            }
+
+        }
+
         for (i = 0, len = Ext.ComponentQuery.query('#removeButton').length; i < len; i++) {
 
             Ext.ComponentQuery.query('#removeButton')[i].setDisabled();
-            Ext.ComponentQuery.query('#andButton')[i].setDisabled();
-            Ext.ComponentQuery.query('#orButton')[i].setDisabled();
-            Ext.ComponentQuery.query('#notButton')[i].setDisabled();
+
             //break;
         }
 
