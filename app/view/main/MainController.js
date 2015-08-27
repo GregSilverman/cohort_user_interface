@@ -792,16 +792,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 Ext.ComponentQuery.query('#orButton')[i].disabled === true ||
                 Ext.ComponentQuery.query('#notButton')[i].disabled === true ) {
 
-                console.log('e:');
-
                 Ext.ComponentQuery.query('#andButton')[i].enable();
                 Ext.ComponentQuery.query('#orButton')[i].enable();
                 Ext.ComponentQuery.query('#notButton')[i].enable();
                 Ext.ComponentQuery.query('#removeButton')[i].enable();
             }
             else {
-                console.log('d:');
-                console.log(selections.selected.length)
 
                 if (selections.selected.length === 0) {
                     Ext.ComponentQuery.query('#andButton')[i].disable();
