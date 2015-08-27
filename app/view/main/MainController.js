@@ -791,18 +791,24 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 Ext.ComponentQuery.query('#andButton')[i].disabled === true ||
                 Ext.ComponentQuery.query('#orButton')[i].disabled === true ||
                 Ext.ComponentQuery.query('#notButton')[i].disabled === true ) {
-                console.log('e:')
+
+                console.log('e:');
+
                 Ext.ComponentQuery.query('#andButton')[i].enable();
                 Ext.ComponentQuery.query('#orButton')[i].enable();
                 Ext.ComponentQuery.query('#notButton')[i].enable();
                 Ext.ComponentQuery.query('#removeButton')[i].enable();
             }
             else {
-                console.log('d:')
-                Ext.ComponentQuery.query('#andButton')[i].disable();
-                Ext.ComponentQuery.query('#orButton')[i].disable();
-                Ext.ComponentQuery.query('#notButton')[i].disable();
-                Ext.ComponentQuery.query('#removeButton')[i].disable();
+                console.log('d:');
+                console.log(selections.selected.length)
+
+                if (selections.selected.length === 0) {
+                    Ext.ComponentQuery.query('#andButton')[i].disable();
+                    Ext.ComponentQuery.query('#orButton')[i].disable();
+                    Ext.ComponentQuery.query('#notButton')[i].disable();
+                    Ext.ComponentQuery.query('#removeButton')[i].disable();
+                }
             }
 
         }
@@ -863,8 +869,20 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         var options = {
                 delimiter: '~'
             };
+        console.log('????');
+        console.log(button);
 
-        cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
+        var grid = button.up('grid'),
+            selection = grid.getSelectionModel().getSelection();
+
+        console.log(selection.length);
+
+        if (selection.length === 1) {
+            cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
+        }
+        else {
+            alert('You can only exclude 1 expression at a time!')
+        }
     },
 
     onFilterSave: function (button) {
