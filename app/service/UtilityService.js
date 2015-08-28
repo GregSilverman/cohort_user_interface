@@ -223,7 +223,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             target.add({
                 key: key,
                 type: bool_operator,
-                criteria: key, //new_criteria,
+                description: key,
+                criteria: new_criteria,
                 atom: molecule
             });
             target.sync();

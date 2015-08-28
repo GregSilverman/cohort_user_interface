@@ -12,6 +12,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
     columns: [
         {text: "ID", width: 50, sortable: true, dataIndex: 'id'},
         {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
+        {text: "Key", flex: 1, sortable: true, dataIndex: 'key'},
         {text: "Criteria", flex: 1, sortable: true, dataIndex: 'criteria'},
         {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
         {text: "When", flex: 1, sortable: true, dataIndex: 'dateValue'},
@@ -81,7 +82,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             itemId: 'clearFilter',
             tooltip: 'Clear the current filter',
             iconCls: 'clear',
-            //disabled: true,
+            disabled: true,
             handler: 'onFilterClear'
         },{ // SaveQuery
             //reference: 'SaveQuery',
@@ -89,6 +90,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             itemId: 'saveQuery',
             tooltip: 'save the current filter',
             iconCls: 'save',
+            disabled: true,
             handler: 'onFilterSave'
         }/*,{ // SaveQuery
             //reference: 'RetrieveQuery',
