@@ -10,6 +10,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
     ],
 
     columns: [
+        {text: "ID", width: 20, sortable: true, dataIndex: 'id'},
         {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
         {text: "Criteria", flex: 1, sortable: true, dataIndex: 'criteria'},
         {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
