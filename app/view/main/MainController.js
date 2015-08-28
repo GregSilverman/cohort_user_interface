@@ -848,27 +848,38 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     onCriterionOr: function (button) {
         var options = {
                     delimiter: '|'
-            };
+            },
+            grid = button.up('grid'),
+            selection = grid.getSelectionModel().getSelection();
 
-        cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
+        if (selection.length > 1) {
+            cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
+        }
+        else {
+            alert('You need more than 1 expression!')
+        }
     },
 
     onCriterionAnd: function (button) {
         var options = {
                 delimiter: '&'
-            };
+            },
+            grid = button.up('grid'),
+            selection = grid.getSelectionModel().getSelection();
 
-        cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
+        if (selection.length > 1) {
+            cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
+        }
+        else {
+            alert('You need more than 1 expression!')
+        }
     },
 
     onCriterionNot: function (button) {
         var options = {
                 delimiter: '~'
-            };
-        console.log('????');
-        console.log(button);
-
-        var grid = button.up('grid'),
+            },
+            grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection();
 
         console.log(selection.length);
