@@ -3,6 +3,8 @@ Ext.define('cardioCatalogQT.model.Query', {
     
     fields: [
         { name: 'query_name', type: 'string' },
-        { name: 'molecule', type: 'string' }
+        { name: 'molecule', type: 'string' },
+        { name: 'remote_user', type: 'string'},
+        { name: 'criteria', type: 'string'}
     ]
 });

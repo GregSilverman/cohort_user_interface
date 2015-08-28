@@ -51,10 +51,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 }
             }]
         },
-        {
+        /*{
             xtype: 'resultsGrid'
             //disabled: true
-        },
+        },*/
         /*{
             xtype: 'searchGrid'
             //disabled: true
@@ -82,6 +82,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },
         {
             xtype: 'procedureGrid'
+            //disabled: true
+        },
+        {
+            xtype: 'queryGrid'
             //disabled: true
         }
     ]

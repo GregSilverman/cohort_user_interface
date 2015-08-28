@@ -1,21 +1,18 @@
-Ext.define('cardioCatalogQT.view.grid.Search', {
+Ext.define('cardioCatalogQT.view.grid.Queries', {
     extend: 'Ext.grid.Panel',
 
     xtype: 'framing-buttons',
-    store: 'Payload',
-    itemId: 'searchGrid',
+    store: 'Queries',
+    itemId: 'queryGrid',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
     ],
 
     columns: [
-        {text: "ID", width: 50, sortable: true, dataIndex: 'id'},
-        {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
+        {text: "Query", width: 120, sortable: true, dataIndex: 'molecule'},
         {text: "Criteria", flex: 1, sortable: true, dataIndex: 'criteria'},
-        {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
-        {text: "When", flex: 1, sortable: true, dataIndex: 'dateValue'},
-        {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
+        {text: "User", flex: 1, sortable: true, dataIndex: 'remote_user'}
     ],
     columnLines: true,
     selModel: {
@@ -43,7 +40,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
         }
     }, {
         xtype: 'toolbar',
-        items: [{
+        items: [/*{
             //reference: 'andButton',
             text: 'AND',
             itemId: 'andButton',
@@ -90,7 +87,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             tooltip: 'save the current filter',
             iconCls: 'save',
             handler: 'onFilterSave'
-        }/*,{ // SaveQuery
+        },{ // SaveQuery
             //reference: 'RetrieveQuery',
             text: 'Get',
             itemId: 'retrieveQuery',
@@ -103,8 +100,8 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
     height: 1000,
     frame: true,
     iconCls: 'icon-grid',
-    alias: 'widget.searchGrid',
-    title: 'Search',
+    alias: 'widget.queryGrid',
+    title: 'PastQueries',
 
     initComponent: function() {
         this.width = 750;
