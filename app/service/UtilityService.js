@@ -868,19 +868,27 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         });
     },
 
-    url: function(button, atom) {
+    url: function(button, atom, from) {
 
         var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
-            source, // = Ext.getStore('Payload'), // source store to filter
-            filtered = []; // source ids that are filtered
+            source; // = Ext.getStore('Payload'), // source store to filter
 
         grid.getStore().load();
 
+        console.log('from:')
+        console.log(from);
+
+
         // bind grid store as source
-       // source = grid.store;
-        source = button.up('grid').up().down('#demographicGrid').store
+
+        if (from == 'submitSaved') {
+            source = button.up('grid').up().down('#demographicGrid').store
+        }
+        else {
+            source = grid.store;
+        }
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('grid');

@@ -837,7 +837,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             payload.sync();
 
-            cardioCatalogQT.service.UtilityService.url(button, atom);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved');
 
         }); // each()
 
