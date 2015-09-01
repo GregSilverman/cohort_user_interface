@@ -752,113 +752,120 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(grid.store.storeId);
         }
 
-        if (selection) {
+        Ext.Msg.prompt('Name', 'Please enter name to save query as:', function(btn, text) {
+            if (btn == 'ok') {
+                // process text value and close...
 
+                console.log('query name:')
+                console.log(text);
 
-            // array of elements on which to filter
-            Ext.Array.each(selection, function (item) {
-                filtered.push(item.data.id);
+                if (selection) {
 
-                obj = {
-                    query: {
-                        molecule: item.data.atom,
-                        criteria: item.data.criteria
+                    console.log('A' + text);
+                    // array of elements on which to filter
+                    Ext.Array.each(selection, function (item) {
+                        filtered.push(item.data.id);
 
-                    }
+                        obj = {
+                            query: {
+                                molecule: item.data.atom,
+                                criteria: item.data.criteria,
+                                query_name: text
+                            }
+                        };
 
-                };
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('TEST');
-                console.log(item.data.atom);
-                console.log(item.data.criteria);
-                console.log('JSON');
-                console.log(obj);
-            }
-
-                var recordIndex = test.findBy(
-                    function(record, id){
-                        if(record.get('molecule') === item.data.atom &&
-                            record.get('criteria') === item.data.criteria){
-                            return true;  // a record with this data exists
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log('TEST');
+                            console.log(item.data.atom);
+                            console.log(item.data.criteria);
+                            console.log('JSON');
+                            console.log(obj);
                         }
 
-                        return false;  // there is no record in the store with this data
+                        var recordIndex = test.findBy(
+                            function (record, id) {
+                                if (record.get('molecule') === item.data.atom &&
+                                    record.get('criteria') === item.data.criteria) {
+                                    return true;  // a record with this data exists
+                                }
 
+                                return false;  // there is no record in the store with this data
+
+                            }
+                        );
+
+                        if (recordIndex != -1) {
+                            console.log("We have a duplicate, abort!");
+                        }
+                        else {
+
+                            query.push(item.data.atom);
+                            query.push(item.data.criteria);
+
+                            url = 'http://127.0.0.1:5000/remote_query_put';
+
+                            Ext.Ajax.request({
+                                cors: true,
+                                useDefaultXhrHeader: false,
+                                url: url,
+                                jsonData: obj,
+                                headers: {
+                                    'Accept': 'application/json'
+                                },
+                                disableCaching: false,
+                                success: function (response) {
+
+                                    if (response.status === 200) {
+
+                                        console.log('happiness')
+
+                                    } else {
+                                        if (cardioCatalogQT.config.mode === 'test') {
+                                            console.log('bad http response');
+                                        }
+                                    }
+                                },
+                                failure: function (response) {
+                                    //me.sessionToken = null;
+                                    //me.signInFailure('Login failed. Please try again later.');
+                                }
+                            });
+                        }
+
+                    });
+
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('filtered');
+                        console.log(filtered);
+                        console.log('QUERY')
+                        console.log(query)
+
+                        console.log('updated store')
+                        console.log(test)
                     }
-                );
 
-                if(recordIndex != -1){
-                    console.log("We have a duplicate, abort!");
+                    source.clearFilter(true); // Clears old filters
+                    source.filter([ // filter on selected array elements
+                        {
+                            filterFn: function (rec) {
+                                return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
+                            }
+                        }
+                    ]);
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('filtered store');
+                        console.log(source);
+                    }
                 }
                 else {
-
-                    query.push(item.data.atom);
-                    query.push(item.data.criteria);
-
-                    url = 'http://127.0.0.1:5000/remote_query_put';
-
-                    Ext.Ajax.request({
-                        cors: true,
-                        useDefaultXhrHeader: false,
-                        url: url,
-                        jsonData: obj,
-                        headers: {
-                            'Accept': 'application/json'
-                        },
-                        disableCaching: false,
-                        success: function (response) {
-
-                            if (response.status === 200) {
-
-                                console.log('happiness')
-
-                            } else {
-                                if (cardioCatalogQT.config.mode === 'test') {
-                                    console.log('bad http response');
-                                }
-                            }
-                        },
-                        failure: function (response) {
-                            //me.sessionToken = null;
-                            //me.signInFailure('Login failed. Please try again later.');
-                        }
-                    });
-                }
-
-            });
-
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('filtered');
-                console.log(filtered);
-                console.log('QUERY')
-                console.log(query)
-
-                console.log('updated store')
-                console.log(test)
-            }
-
-            source.clearFilter(true); // Clears old filters
-            source.filter([ // filter on selected array elements
-                {
-                    filterFn: function(rec) {
-                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('nada')
                     }
                 }
-            ]);
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('filtered store');
-                console.log(source);
             }
-        }
-        else {
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('nada')
-            }
-        }
-
+        });
     },
 
     url: function(button, atom) {
@@ -866,13 +873,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
-            source, // source store to filter
+            source, // = Ext.getStore('Payload'), // source store to filter
             filtered = []; // source ids that are filtered
 
         grid.getStore().load();
 
         // bind grid store as source
-        source = grid.store;
+       // source = grid.store;
+        source = button.up('grid').up().down('#demographicGrid').store
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('grid');
@@ -914,7 +922,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log('call to make url: ' + url);
         }
         // send auth header before Ajax request to disable auth form
-        Ext.Ajax.on('beforerequest', (function(klass, request) {
+        /*Ext.Ajax.on('beforerequest', (function(klass, request) {
             if (request.failure) { // already have auth token: do nothing
                 console.log('WTF 2?!');
                 console.log(request);
@@ -924,7 +932,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('Hmmmm!')
                 request.headers.Authorization = hash;
             }
-        }), this);
+        }), this);*/
 
         Ext.Ajax.request({
             cors: true,
@@ -952,13 +960,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                                 sid: tuple[0].sid,
                                 source: tuple[0].source
                             });
-                            if (cardioCatalogQT.config.mode === 'test') {
+                            /*if (cardioCatalogQT.config.mode === 'test') {
                                 console.log(tuple[0].source
                                     + 'N ' + tuple[0].N
                                     + 'attribute ' + tuple[0].attribute
                                     + 'sid ' + tuple[0].sid
                                     + 'value ' + tuple[0].value);
-                            }
+                            }*/
                         });
                     });
 

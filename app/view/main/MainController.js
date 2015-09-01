@@ -780,109 +780,146 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             payload = Ext.getStore('Payload'),
             atom,
             filtered = [],
-            source = grid.store,
-            query_name;
+            source = grid.store;
 
-        Ext.Msg.prompt('Name', 'Please enter name to save query as:', function(btn, text) {
-            if (btn == 'ok') {
-                // process text value and close...
 
-                console.log(text);
+        if (selection) {
 
-                if (selection) {
+            // array of elements on which to filter
+            Ext.Array.each(selection, function (item) {
+                filtered.push(item.data.id);
+            });
 
-                    // array of elements on which to filter
-                    Ext.Array.each(selection, function (item) {
-                        filtered.push(item.data.id);
-                    });
-
-                    source.clearFilter(true); // Clears old filters
-                    source.filter([ // filter on selected array elements
-                        {
-                            filterFn: function (rec) {
-                                return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
-                            }
-                        }
-                    ]);
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('filtered store id:');
-                        console.log(filtered);
+            source.clearFilter(true); // Clears old filters
+            source.filter([ // filter on selected array elements
+                {
+                    filterFn: function (rec) {
+                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
                     }
                 }
-                else {
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('nada')
-                    }
-                }
+            ]);
 
-                source.each(function (rec) {
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(rec)
-                    }
-
-                    // TODO: ensure record does not already exist
-                    payload.add({
-                        type: 'saved',
-                        key: 'saved',
-                        description: rec.data.criteria,
-                        criteria: rec.data.criteria,
-                        atom: rec.data.molecule
-                    });
-
-                    atom = rec.data.molecule;
-
-                    payload.sync();
-
-                    cardioCatalogQT.service.UtilityService.url(button, atom);
-
-                }); // each()
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered store id:');
+                console.log(filtered);
             }
-        });
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
 
+        console.log(Ext.ComponentQuery.query('#demographicGrid')[0].store);
+        console.log(button.up('grid').up().down('#demographicGrid').store.storeId)
+
+        //grid.getStore().load();
+
+        // bind grid store as source
+        //source = grid.store;
+
+
+        source.each(function (rec) {
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log(rec)
+            }
+
+            payload.add({
+                type: 'saved',
+                key: rec.data.query_name,
+                description: rec.data.criteria,
+                criteria: rec.data.criteria,
+                atom: rec.data.molecule
+            });
+
+            atom = rec.data.molecule;
+
+            payload.sync();
+
+            cardioCatalogQT.service.UtilityService.url(button, atom);
+
+        }); // each()
+
+        //grid.getStore().reload();
 
     },
 
+    // custom control of toggling disabled status of form buttons
+    // control which buttons being toggled by looking at store to which selected object is bound
     onSelectionChange: function(selections, sm) {
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('sm:');
             console.log(selections);
+            console.log(selections.selected.items);
             console.log(Ext.ComponentQuery.query('#removeButton').length);
             console.log(Ext.ComponentQuery.query('#andButton').length);
             console.log(Ext.ComponentQuery.query('#orButton').length);
             console.log(Ext.ComponentQuery.query('#notButton').length);
+            console.log(Ext.ComponentQuery.query('#searchSelected'));
+
         }
 
-        for (var i = 0, max = Ext.ComponentQuery.query('#removeButton').length; i < max; i++) {
+        // control for disabling button on SavedQueries;
+        if (selections.store.id.indexOf('queries') > -1) {
+            if (Ext.ComponentQuery.query('#searchSelected')[0].disabled === true) {
 
-            if (Ext.ComponentQuery.query('#removeButton')[i].disabled === true ||
-                Ext.ComponentQuery.query('#andButton')[i].disabled === true ||
-                Ext.ComponentQuery.query('#orButton')[i].disabled === true ||
-                Ext.ComponentQuery.query('#notButton')[i].disabled === true ||
-                Ext.ComponentQuery.query('#clearFilter')[i].disabled === true ||
-                Ext.ComponentQuery.query('#saveQuery')[i].disabled === true) {
-
-                Ext.ComponentQuery.query('#andButton')[i].enable();
-                Ext.ComponentQuery.query('#orButton')[i].enable();
-                Ext.ComponentQuery.query('#notButton')[i].enable();
-                Ext.ComponentQuery.query('#removeButton')[i].enable();
-                Ext.ComponentQuery.query('#clearFilter')[i].enable();
-                Ext.ComponentQuery.query('#saveQuery')[i].enable();
+                Ext.ComponentQuery.query('#searchSelected')[0].enable();
             }
-            else {
+            if (selections.selected.length === 0) {
 
-                if (selections.selected.length === 0) {
+                Ext.ComponentQuery.query('#searchSelected')[0].disable();
+            }
+        }
+
+        // control for disabling buttons on category tab grids
+        else {
+
+            for (var i = 0, max = Ext.ComponentQuery.query('#removeButton').length; i < max; i++) {
+
+                // Activate controls
+                if (Ext.ComponentQuery.query('#removeButton')[i].disabled === true &&
+                    Ext.ComponentQuery.query('#clearFilter')[i].disabled === true &&
+                    Ext.ComponentQuery.query('#saveQuery')[i].disabled === true &&
+                    selections.selected.length > 0) {
+
+                    Ext.ComponentQuery.query('#removeButton')[i].enable();
+                    Ext.ComponentQuery.query('#clearFilter')[i].enable();
+                    Ext.ComponentQuery.query('#saveQuery')[i].enable();
+
+                }
+                if (Ext.ComponentQuery.query('#andButton')[i].disabled === true &&
+                    Ext.ComponentQuery.query('#orButton')[i].disabled === true &&
+                    selections.selected.length > 1) {
+
+                    Ext.ComponentQuery.query('#andButton')[i].enable();
+                    Ext.ComponentQuery.query('#orButton')[i].enable();
+                }
+                if (Ext.ComponentQuery.query('#notButton')[i].disabled === true &&
+                    selections.selected.length === 1) {
+
+                    Ext.ComponentQuery.query('#notButton')[i].enable();
+                }
+
+                // Deactivate controls
+                if (selections.selected.length > 1 || selections.selected.length === 0) {
+
+                    Ext.ComponentQuery.query('#notButton')[i].disable();
+                }
+                if (selections.selected.length < 2) {
+
                     Ext.ComponentQuery.query('#andButton')[i].disable();
                     Ext.ComponentQuery.query('#orButton')[i].disable();
-                    Ext.ComponentQuery.query('#notButton')[i].disable();
+                }
+                if (selections.selected.length === 0) {
+
                     Ext.ComponentQuery.query('#removeButton')[i].disable();
                     Ext.ComponentQuery.query('#clearFilter')[i].disable();
                     Ext.ComponentQuery.query('#saveQuery')[i].disable();
                 }
-            }
 
+            }
         }
     },
 

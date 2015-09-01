@@ -6,7 +6,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.medicationGrid',
     itemId: 'medicationGrid',
-    //store: 'Payload',
+    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
