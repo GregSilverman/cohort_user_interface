@@ -810,9 +810,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
         }
 
-        console.log(Ext.ComponentQuery.query('#demographicGrid')[0].store);
-        console.log(button.up('grid').up().down('#demographicGrid').store.storeId)
-
         //grid.getStore().load();
 
         // bind grid store as source

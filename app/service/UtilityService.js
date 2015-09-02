@@ -643,91 +643,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    query_get: function(button){
-        var grid = button.up('grid'),
-            source, // source store to filter
-            url,
-            records = [],
-            store =  Ext.create('cardioCatalogQT.store.Payload'),
-            query = []; // source ids that are filtered
-
-        // bind grid store as source
-        source = grid.store;
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('grid');
-            console.log(grid);
-            console.log(source);
-        }
-
-        url = 'http://127.0.0.1:5000/remote_query_get'
-
-        Ext.Ajax.request({
-            cors: true,
-            useDefaultXhrHeader: false,
-            url: url,
-            headers: {
-                'Accept': 'application/json'
-            },
-            disableCaching: false,
-            success: function (response) {
-
-                if (response.status === 200) {
-
-                    json = Ext.decode(response.responseText);
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(json);
-                    }
-
-                    // see http://edspencer.net/2009/07/23/ext-js-iterator-functions/
-                    for (key in json){
-                        var value = json[key];
-                        if (cardioCatalogQT.config.mode === 'test') {
-                            console.log(value.length);
-                        }
-
-                        for (var i=0; i < value.length; i++) {
-                            var query = value[i];
-
-                            if (cardioCatalogQT.config.mode === 'test') {
-                                console.log('query object');
-                                console.log(query);
-                                console.log(query.molecule);
-                                console.log(query.criteria);
-                            }
-
-                            records.push({
-                                atom: query.molecule,
-                                criteria: query.criteria,
-                                type: 'Test',
-                                key: 'Test'
-
-                            });
-
-                        };
-                    }
-
-                    //update store with data
-                    store.add(records);
-                    store.sync();
-
-
-                } else {
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('bad http response');
-                    }
-                }
-            },
-            failure: function (response) {
-                //me.sessionToken = null;
-                //me.signInFailure('Login failed. Please try again later.');
-            }
-        });
-
-        grid.up().down('#searchGrid').getStore().load();
-    },
-
     query_move: function(button){
         var grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
@@ -877,20 +792,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         grid.getStore().load();
 
-        console.log('from:')
-        console.log(from);
-
-
-        // bind grid store as source
-
-        if (from == 'submitSaved') {
-            source = button.up('grid').up().down('#demographicGrid').store
-        }
-        else {
-            source = grid.store;
-        }
-
         if (cardioCatalogQT.config.mode === 'test') {
+            console.log('from:');
+            console.log(from);
             console.log('grid');
             console.log(grid);
             console.log('selection');
@@ -900,6 +804,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log('storeId');
             console.log(grid.store.storeId);
             console.log('atom ' + atom)
+        }
+
+        // bind grid store as source
+
+        if (from == 'submitSaved') {
+            source = button.up('grid').up().down('#demographicGrid').store
+        }
+        else {
+            source = grid.store;
         }
 
         url += cardioCatalogQT.config.host;
@@ -996,115 +909,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 update_record.set('n', store.getCount());
                 source.sync();
 
+                //grid.getStore().load();
                 // render template
                 // clear criteria from store
                 //cardioCatalogQT.service.UtilityService.clear_all();
-            }
-        });
-    },
-
-    query_test: function(button, url, id){
-
-        var auth = sessionStorage.sessionToken + ':unknown',
-            hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
-            json = [],
-            panel = button.up().up().up().down('#results'),
-            records = [],
-            n,
-            store =  Ext.create('cardioCatalogQT.store.Results'),
-            test = Ext.getStore('DemographicsPayload');
-
-        //localStorage.clear();
-        store.getProxy().clear();
-        store.data.clear();
-        store.sync();
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('component: ');
-            console.log(panel);
-        }
-
-        // Make sure current store contents are displayed on grid
-        //button.up().up().up().down('#gridTest').getStore().load();
-
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('call to make url: ' + url);
-        }
-
-        // send auth header before Ajax request to disable auth form
-        Ext.Ajax.on('beforerequest', (function(klass, request) {
-            if (request.failure) { // already have auth token: do nothing
-                return null;
-            }
-            else { // send auth token
-                return null; //request.headers.Authorization = hash;
-            }
-        }), this);
-
-        Ext.Ajax.request({
-            cors: true,
-            url: url,
-            useDefaultXhrHeader: false,
-            headers: {
-                'Accept': 'application/json'
-            },
-            disableCaching: false,
-            success: function(response) {
-                json = Ext.decode(response.responseText);
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('json' + json);
-                }
-
-                if(json !== null &&  typeof (json) !==  'undefined'){
-
-                    // custom JSON reader as per
-                    // http://stackoverflow.com/questions/11159480/sencha-touch-store-json-file-containing-array
-                    Ext.each(json, function(entry) {
-                        Ext.each(json.items || [], function(tuple) {
-
-                            records.push({
-                                N: tuple[0].N,
-                                sid: tuple[0].sid,
-                                source: tuple[0].source
-                            });
-                            if (cardioCatalogQT.config.mode === 'test') {
-                                console.log(tuple[0].source
-                                    + 'N ' + tuple[0].N
-                                    + 'attribute ' + tuple[0].attribute
-                                    + 'sid ' + tuple[0].sid
-                                    + 'value ' + tuple[0].value);
-                            }
-                        });
-                    });
-
-                    //update store with data
-                    store.add(records);
-                    store.sync();
-
-                    // reload store for grid display
-                    //button.up().up().up().down('#gridTest').getStore().load();
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(records);
-                        console.log('store');
-                        console.log(store);
-                        console.log(store.getCount());
-                    }
-
-                }
-
-                // get n for update of store attribute
-                n = cardioCatalogQT.service.UtilityService.template(panel, store);
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('n is -> ' + n);
-                }
-
-                var update_record = test.findRecord('id', id);
-                update_record.set('n', n);
-                test.sync();
-
             }
         });
     }
