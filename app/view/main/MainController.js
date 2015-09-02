@@ -168,7 +168,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
-                payload.add({
+                var test = {
+                    //payload.add({
                     type: 'Demographics',
                     key: 'sex',
                     comparator: 'eq',
@@ -176,14 +177,15 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     value: sexValue,
                     criteria: criterion,
                     atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue)
-                });
+                    //});
+                };
 
-                payload.sync();
+                //payload.sync();
 
                 console.log('atom:' + cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue));
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue);
-                cardioCatalogQT.service.UtilityService.url(button, atom);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
             }
             else {
 
@@ -227,7 +229,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
-                payload.add({
+                var test  = {
+                    //payload.add({
                     type: 'Demographics',
                     key: 'age',
                     comparator: ageComparator,
@@ -235,12 +238,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     value: test_age,
                     criteria: criterion,
                     atom: cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age)
-                });
+                    //});
+                };
 
-                payload.sync();
+                //payload.sync();
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age);
-                cardioCatalogQT.service.UtilityService.url(button, atom);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
             }
             else{
                 // error conditions here
@@ -360,7 +364,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
 
                 // TODO: implement atomic_unit builder at time of model instance creation
-                payload.add({
+                //payload.add({
+                var test = {
                     type: measureCode,
                     key: measureCode,
                     comparator: measureComparator,
@@ -371,12 +376,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     dateValue: test_date,
                     criteria: criterion,
                     atom: cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date)
-                });
-
-                payload.sync();
+                    //});
+                };
+                //payload.sync();
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date);
-                cardioCatalogQT.service.UtilityService.url(button, atom);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
             }
 
             else {
@@ -480,7 +485,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         + test_date;
                 }
                 if (labValue) {
-                    payload.add({
+                    //payload.add({
+                    var test = {
                         type: 'lab',
                         key: labCode,
                         value: test_lab,
@@ -492,11 +498,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         dateValue: test_date,
                         criteria: criterion,
                         atom: cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date)
-                    });
-                    payload.sync();
+                        //});
+                        //payload.sync();
+                    };
 
                     atom = cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date);
-                    cardioCatalogQT.service.UtilityService.url(button, atom);
+                    cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
                 }
                 else {
                     // error conditions here
@@ -570,7 +577,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 + test_date;
             }
             // TODO: ensure record does not already exist
-            payload.add({
+            var test = {
+                //payload.add({
                 type: 'dx',
                 key: 'dx_code',
                 comparator: 'eq',
@@ -581,10 +589,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: date_comparator,
                 dateValue: test_date,
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date)
-            });
+                atom: cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq', item.data.code, whenComparator, test_date)
+                //});
+            };
 
-            payload.sync();
+            //payload.sync();
 
             if (cardioCatalogQT.config.mode === 'test') {
                 dx.push(item.data.code,item.data.description);
@@ -594,7 +603,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
 
         }); // each()
         // reload store on grid
@@ -655,7 +664,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             // TODO: ensure record does not already exist
-            payload.add({
+
+            var test = {
+                //payload.add({
                 type: 'px',
                 key: 'px_code',
                 comparator: 'eq',
@@ -666,10 +677,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: date_comparator,
                 dateValue: test_date,
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date)
-            });
+                atom: cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq', item.data.code, whenComparator, test_date)
+                //});
+            };
 
-            payload.sync();
+            //payload.sync();
 
             if (cardioCatalogQT.config.mode === 'test') {
                 px.push(item.data.code,item.data.description);
@@ -679,7 +691,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
 
         }); // each()
         // reload store on grid
@@ -738,7 +750,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 + test_date;
             }
             // TODO: ensure record does not already exist
-            payload.add({
+            var test = {
+                //payload.add({
                 type: 'rx',
                 key: 'rx_code',
                 comparator: 'eq',
@@ -749,10 +762,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                 dateValue: test_date,
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date)
-            });
+                atom: cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq', item.data.code, whenComparator, test_date)
+                //});
+            };
 
-            payload.sync();
+            //payload.sync();
 
             if (cardioCatalogQT.config.mode === 'test') {
                 rx.push(item.data.code,item.data.description);
@@ -762,7 +776,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
 
         }); // each()
         // reload store on grid
@@ -822,21 +836,34 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(rec)
             }
 
-            payload.add({
+            var test = {
+                //payload.add({
                 type: 'saved',
                 key: rec.data.query_name,
                 description: rec.data.criteria,
                 criteria: rec.data.criteria,
                 atom: rec.data.molecule
-            });
+                //});
+            };
+
+            console.log('test')
+            console.log(test)
 
             atom = rec.data.molecule;
 
             payload.sync();
 
-            cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved');
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved', test);
 
         }); // each()
+
+        var grid = button.up('grid'),
+        // bind grid store as source
+            source = grid.store,
+            store = Ext.getStore(source);
+
+        store.clearFilter();
+        grid.getStore().load();
 
         //grid.getStore().reload();
 
@@ -877,12 +904,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // Activate controls
                 if (Ext.ComponentQuery.query('#removeButton')[i].disabled === true &&
-                    Ext.ComponentQuery.query('#clearFilter')[i].disabled === true &&
                     Ext.ComponentQuery.query('#saveQuery')[i].disabled === true &&
                     selections.selected.length > 0) {
 
                     Ext.ComponentQuery.query('#removeButton')[i].enable();
-                    Ext.ComponentQuery.query('#clearFilter')[i].enable();
                     Ext.ComponentQuery.query('#saveQuery')[i].enable();
 
                 }
@@ -912,7 +937,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 if (selections.selected.length === 0) {
 
                     Ext.ComponentQuery.query('#removeButton')[i].disable();
-                    Ext.ComponentQuery.query('#clearFilter')[i].disable();
                     Ext.ComponentQuery.query('#saveQuery')[i].disable();
                 }
 

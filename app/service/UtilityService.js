@@ -220,14 +220,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('bool_op: ' + bool_operator);
             }
 
-            target.add({
+            var test = {
+            //target.add({
                 key: key,
                 type: bool_operator,
                 description: key,
                 criteria: new_criteria,
                 atom: molecule
-            });
-            target.sync();
+            //});
+            //target.sync();
+            };
 
             var grid = button.up('grid'),
             // bind grid store as source
@@ -237,7 +239,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             store.clearFilter();
             grid.getStore().load();
 
-            cardioCatalogQT.service.UtilityService.url(button, molecule);
+            cardioCatalogQT.service.UtilityService.url(button, molecule, 'NULL', test);
 
         }
 
@@ -780,17 +782,24 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     }
                 }
             }
+
+            var source = grid.store,
+                store = Ext.getStore(source);
+
+            store.clearFilter();
+            grid.getStore().load();
         });
+
     },
 
-    url: function(button, atom, from) {
+    url: function(button, atom, from, test){
 
         var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
             source; // = Ext.getStore('Payload'), // source store to filter
 
-        grid.getStore().load();
+        //grid.getStore().load();
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('from:');
@@ -819,11 +828,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         url += cardioCatalogQT.config.apiGetQ;
         url += atom;
 
-        cardioCatalogQT.service.UtilityService.submit_query(url, button, source, atom);
+        cardioCatalogQT.service.UtilityService.submit_query(url, button, source, atom, test);
 
     },
 
-    submit_query: function(url, button, source, atom){
+    submit_query: function(url, button, source, atom, test){
 
         var auth = sessionStorage.sessionToken + ':unknown',
             hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
@@ -905,8 +914,18 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
 
                 // update n in store for grid display
-                var update_record = source.findRecord('atom', atom);
-                update_record.set('n', store.getCount());
+                //var update_record = source.findRecord('atom', atom);
+                //update_record.set('n', store.getCount());
+                //source.sync();
+
+                source.add({
+                    key: test.key,
+                    type: test.type,
+                    description: test.description,
+                    criteria: test.criteria,
+                    atom: test.atom,
+                    n:  store.getCount()
+                });
                 source.sync();
 
                 //grid.getStore().load();

@@ -76,7 +76,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             iconCls: 'remove',
             disabled: true,
             handler: 'onCriterionRemove'
-        },'-',{ // ClearFilter
+        },'-',/*{ // ClearFilter
             //reference: 'ClearFilter',
             text: 'Clear',
             itemId: 'clearFilter',
@@ -84,7 +84,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             iconCls: 'clear',
             disabled: true,
             handler: 'onFilterClear'
-        },{ // SaveQuery
+        },*/{ // SaveQuery
             //reference: 'SaveQuery',
             text: 'Save',
             itemId: 'saveQuery',
