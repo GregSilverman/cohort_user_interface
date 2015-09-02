@@ -783,7 +783,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
             }
 
-            var source = grid.store,
+            var //source = grid.store,
                 store = Ext.getStore(source);
 
             store.clearFilter();
