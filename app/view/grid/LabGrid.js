@@ -279,7 +279,7 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
             }]
         },
             {
-                xtype:'searchGrid'
+           //     xtype:'searchGrid'
             }
         ]
 

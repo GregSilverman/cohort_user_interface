@@ -42,10 +42,10 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
 
     //disabled: true
 
-        width: 200,
+        width: 500,
         bodyPadding: 10,
         defaults: {
-            anchor: '100%',
+            //anchor: '100%',
             labelWidth: 100
         },
 
@@ -99,8 +99,7 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
             }
                 ]
         }*/, {
-            xtype: 'toolbar',
-            height: 100,
+            itemId: 'demographics',
             items: [{
                 xtype: 'button',
                 text: 'Constrain sex',
@@ -273,7 +272,7 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
             }]
         },
             {
-                xtype:'searchGrid'
+                //xtype:'searchGrid'
             }
         ]
 

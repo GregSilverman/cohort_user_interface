@@ -6,7 +6,7 @@
  */
 
 Ext.define('cardioCatalogQT.view.main.Main', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.Container',
     xtype: 'main-view',
     controller: 'main-view',
     requires: [
@@ -21,26 +21,41 @@ Ext.define('cardioCatalogQT.view.main.Main', {
     width: '100%',
     height: 400,
 
-    layout: 'vbox',
+    layout: 'border',
     defaults: {
         bodyPadding: 5
     },
     items: [{
-            title:'Main',
-            region: 'south',
-            xtype: 'form',
-            itemId: 'Ajax',
-            flex: 1,
-            styleHtmlContent: true,
+            //title:'Main',
+            region: 'north',
+            xtype: 'tabpanel',
             items:[{
-                xtype: 'image',
-                src: 'resources/images/R3D3.png',
-                height: 50,
-                width: 280
+                xtype: 'demographicGrid'
+                //disabled: true
+
+                //xtype: 'image',
+                //src: 'resources/images/R3D3.png',
+                //height: 50,
+                //width: 280
             },{
-                title: 'Ad Hoc Sandbox for Cohort Discovery'
-            }] ,
-            lbar:[{
+                xtype: 'vitalGrid'//title: 'Ad Hoc Sandbox for Cohort Discovery'
+            }, {
+                xtype: 'labGrid'
+                //disabled: true
+            }, {
+                xtype: 'diagnosisGrid'
+                //disabled: true
+            }, {
+                xtype: 'medicationGrid'
+                //disabled: true
+            }, {
+                xtype: 'procedureGrid'
+                //disabled: true
+            }, {
+                xtype: 'queryGrid'
+                //disabled: true
+            }]
+            /*lbar:[{
                 text: 'Initiate advanced request',
                 xtype: 'button',
 
@@ -49,8 +64,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                     //cardioCatalogQT.service.UtilityService.http_auth(button);
                     window.open(url);
                 }
-            }]
+            }]*/
         },
+        {
+            xtype:'searchGrid',
+            region:'center'
+        }
         /*{
             xtype: 'resultsGrid'
             //disabled: true
@@ -59,7 +78,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             xtype: 'searchGrid'
             //disabled: true
         },*/
-        {
+        /*{
             xtype: 'demographicGrid'
             //disabled: true
         },
@@ -87,7 +106,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         {
             xtype: 'queryGrid'
             //disabled: true
-        }
+        }*/
     ]
 });
 

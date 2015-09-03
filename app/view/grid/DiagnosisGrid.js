@@ -204,10 +204,10 @@ Ext.define('cardioCatalogQT.view.main.DiagnosisGrid', {
                 itemId: 'searchClick',
                 handler: 'onSubmitDiagnoses'
             }]
-        },
+        }/*,
             {
                 xtype:'searchGrid'
-            }
+            }*/
         ]
 
 

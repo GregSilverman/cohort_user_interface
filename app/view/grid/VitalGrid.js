@@ -321,7 +321,7 @@ Ext.define('cardioCatalogQT.view.grid.VitalGrid', {
             }]
         },
             {
-                xtype: 'searchGrid'
+                //xtype: 'searchGrid'
             }
         ]
 

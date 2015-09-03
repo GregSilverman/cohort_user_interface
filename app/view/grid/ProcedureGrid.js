@@ -206,7 +206,7 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
             }]
         },
             {
-                xtype:'searchGrid'
+            //    xtype:'searchGrid'
             }
         ]
 

@@ -206,7 +206,7 @@ Ext.define('cardioCatalogQT.view.grid.MedicationGrid', {
             }]
         },
             {
-                xtype:'searchGrid'
+           //     xtype:'searchGrid'
             }
         ]
 
