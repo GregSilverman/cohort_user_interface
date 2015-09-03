@@ -26,17 +26,16 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         bodyPadding: 5
     },
     items: [{
-            //title:'Main',
             region: 'north',
             xtype: 'tabpanel',
             items:[{
+                title:'Main',
+                xtype: 'image',
+                src: 'resources/images/R3D3.png',
+                height: 150,
+                width: 50
+            },{
                 xtype: 'demographicGrid'
-                //disabled: true
-
-                //xtype: 'image',
-                //src: 'resources/images/R3D3.png',
-                //height: 50,
-                //width: 280
             },{
                 xtype: 'vitalGrid'//title: 'Ad Hoc Sandbox for Cohort Discovery'
             }, {
