@@ -2,46 +2,19 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
-    extend: 'Ext.grid.Panel',
+Ext.define('cardioCatalogQT.view.form.DemographicForm', {
+    extend: 'Ext.form.Panel',
     alias: 'widget.demographicGrid',
     itemId: 'demographicGrid',
-    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
     ],
 
-
-    //disabled: true
-
-
-   /* columns: [
-        {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
-        {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
-        {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
-        {text: "Combined", flex: 1, sortable: true, dataIndex: 'criteria'},
-        {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
-    ],
-    columnLines: true,
-    selModel: {
-        type: 'checkboxmodel',
-        listeners: {
-            selectionchange: 'onSelectionChange'
-        }
-    },
-
-    // When true, this view acts as the default listener scope for listeners declared within it.
-    // For example the selectionModel's selectionchange listener resolves to this.
-    defaultListenerScope: false,*/
-
     config: {
         variableHeights: false,
         title: 'Demographics',
         xtype: 'form',
-
-    //disabled: true
-
         width: 500,
         bodyPadding: 10,
         defaults: {
@@ -49,56 +22,8 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
             labelWidth: 100
         },
 
-
         // inline buttons
-        dockedItems: [/*{
-            xtype: 'toolbar',
-            dock: 'bottom',
-            ui: 'footer',
-            layout: {
-                pack: 'center'
-            },
-            items: [
-                { // Combine checked items with AND
-                reference: 'andButton',
-                text: 'AND',
-                tooltip: 'Add the selected criteria as AND',
-                iconCls: 'and',
-                handler: 'onCriterionAnd'
-            },'-',{ // Combine checked items with OR
-                reference: 'orButton',
-                text: 'OR',
-                tooltip: 'Add the selected criteria as OR',
-                iconCls: 'or',
-                handler: 'onCriterionOr'
-            },'-',{
-                reference: 'notButton',
-                text: 'NOT',
-                tooltip: 'Add the selected criteria as NOT',
-                iconCls: 'not',
-                handler: 'onCriterionNot'
-            },'-',{
-                reference: 'removeButton',  // The referenceHolder can access this button by this name
-                text: 'Remove',
-                tooltip: 'Remove the selected item',
-                iconCls: 'remove',
-                disabled: true,
-                handler: 'onCriterionRemove'
-            },'-',{ // ClearFilter
-                reference: 'ClearFilter',
-                text: 'Clear',
-                tooltip: 'Clear the current filter',
-                iconCls: 'clear',
-                handler: 'onFilterClear'
-            },{
-                minWidth: 80,
-                text: 'Add to search',
-                xtype: 'button',
-                itemId: 'searchClick',
-                handler: 'onSubmitDemographics'
-            }
-                ]
-        }*/, {
+        dockedItems: [{
             itemId: 'demographics',
             items: [{
                 xtype: 'button',
@@ -107,9 +32,9 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#sexValue').show();
-                        button.up('grid').down('#hideSex').show();
-                        button.up('grid').down('#showSex').hide();
+                        button.up('form').down('#sexValue').show();
+                        button.up('form').down('#hideSex').show();
+                        button.up('form').down('#showSex').hide();
                     }
                 }
             }, {
@@ -119,10 +44,10 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#sexValue').hide();
-                        button.up('grid').down('#sexValue').setValue('');
-                        button.up('grid').down('#hideSex').hide();
-                        button.up('grid').down('#showSex').show();
+                        button.up('form').down('#sexValue').hide();
+                        button.up('form').down('#sexValue').setValue('');
+                        button.up('form').down('#hideSex').hide();
+                        button.up('form').down('#showSex').show();
                     }
                 }
             },{ // Sex
@@ -151,10 +76,10 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#ageComparator').show();
-                        button.up('grid').down('#ageValue').show();
-                        button.up('grid').down('#hideAge').show();
-                        button.up('grid').down('#showAge').hide();
+                        button.up('form').down('#ageComparator').show();
+                        button.up('form').down('#ageValue').show();
+                        button.up('form').down('#hideAge').show();
+                        button.up('form').down('#showAge').hide();
                     }
                 }
             }, {
@@ -164,14 +89,14 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#ageComparator').hide();
-                        button.up('grid').down('#ageValue').hide();
-                        button.up('grid').down('#upperAgeValue').hide();
-                        button.up('grid').down('#ageComparator').setValue('');
-                        button.up('grid').down('#ageValue').setValue('');
-                        button.up('grid').down('#upperAgeValue').setValue('');
-                        button.up('grid').down('#hideAge').hide();
-                        button.up('grid').down('#showAge').show();
+                        button.up('form').down('#ageComparator').hide();
+                        button.up('form').down('#ageValue').hide();
+                        button.up('form').down('#upperAgeValue').hide();
+                        button.up('form').down('#ageComparator').setValue('');
+                        button.up('form').down('#ageValue').setValue('');
+                        button.up('form').down('#upperAgeValue').setValue('');
+                        button.up('form').down('#hideAge').hide();
+                        button.up('form').down('#showAge').show();
                     }
                 }
             }, { // Age
@@ -202,9 +127,9 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                     change: function(combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('grid').down('#upperAgeValue').show();
+                            combo.up('form').down('#upperAgeValue').show();
                         } else {
-                            combo.up('grid').down('#upperAgeValue').hide();
+                            combo.up('form').down('#upperAgeValue').hide();
                         }
                     }
                 }
@@ -226,9 +151,9 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#raceValue').show();
-                        button.up('grid').down('#hideRace').show();
-                        button.up('grid').down('#showRace').hide();
+                        button.up('form').down('#raceValue').show();
+                        button.up('form').down('#hideRace').show();
+                        button.up('form').down('#showRace').hide();
                     }
                 }
             }, {
@@ -238,10 +163,10 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#raceValue').hide();
-                        button.up('grid').down('#raceValue').setValue('');
-                        button.up('grid').down('#hideRace').hide();
-                        button.up('grid').down('#showRace').show();
+                        button.up('form').down('#raceValue').hide();
+                        button.up('form').down('#raceValue').setValue('');
+                        button.up('form').down('#hideRace').hide();
+                        button.up('form').down('#showRace').show();
                     }
                 }
             },{ // Race
@@ -270,20 +195,7 @@ Ext.define('cardioCatalogQT.view.grid.DemographicGrid', {
                 itemId: 'searchClick',
                 handler: 'onSubmitDemographics'
             }]
-        },
-            {
-                //xtype:'searchGrid'
-            }
-        ]
-
-        //lbar:[{
-        //    xtype: 'searchGrid',
-        //    itemId: 'button',
-        //    html: 'Toolbar here',
-        //    text: 'Add',
-        //    handler: 'onSubmitDemographics'
-        //}]
-        // end demographics
+        }] // end demographics
     }
 
 

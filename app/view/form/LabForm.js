@@ -2,37 +2,14 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.grid.LabGrid', {
-    extend: 'Ext.grid.Panel',
+Ext.define('cardioCatalogQT.view.form.LabForm', {
+    extend: 'Ext.form.Panel',
     alias: 'widget.labGrid',
     itemId: 'labGrid',
-    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
     ],
-
-    /*columns: [
-        {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
-        {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
-        {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
-        {text: "Combined", flex: 1, sortable: true, dataIndex: 'criteria'},
-        {text: "Description", flex: 1, sortable: true, dataIndex: 'description'},
-        {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
-        {text: "When", flex: 1, sortable: true, dataIndex: 'dateValue'},
-        {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
-    ],
-    columnLines: true,
-    selModel: {
-        type: 'checkboxmodel',
-        listeners: {
-            selectionchange: 'onSelectionChange'
-        }
-    },
-
-    // When true, this view acts as the default listener scope for listeners declared within it.
-    // For example the selectionModel's selectionchange listener resolves to this.
-    defaultListenerScope: false,*/
 
     config: {
         variableHeights: false,
@@ -46,53 +23,7 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
         },
 
         // inline buttons
-        dockedItems: [/*{
-            xtype: 'toolbar',
-            dock: 'bottom',
-            ui: 'footer',
-            layout: {
-                pack: 'center'
-            },
-            items: [
-                { // Combine checked items with AND
-                reference: 'andButton',
-                text: 'AND',
-                tooltip: 'Add the selected criteria as AND',
-                iconCls: 'and',
-                handler: 'onCriterionAnd'
-            },'-',{ // Combine checked items with OR
-                reference: 'orButton',
-                text: 'OR',
-                tooltip: 'Add the selected criteria as OR',
-                iconCls: 'or',
-                handler: 'onCriterionOr'
-            },'-',{
-                reference: 'notButton',
-                text: 'NOT',
-                tooltip: 'Add the selected criteria as NOT',
-                iconCls: 'not',
-                handler: 'onCriterionNot'
-            },'-',{
-                reference: 'removeLabButton',  // The referenceHolder can access this button by this name
-                text: 'Remove',
-                tooltip: 'Remove the selected item',
-                iconCls: 'remove',
-                disabled: true,
-                handler: 'onCriterionRemove'
-            },'-',{ // ClearFilter
-                reference: 'ClearFilter',
-                text: 'Clear',
-                tooltip: 'Clear the current filter',
-                iconCls: 'clear',
-                handler: 'onFilterClear'
-            },{
-                minWidth: 80,
-                text: 'Add to search',
-                xtype: 'button',
-                itemId: 'searchClick',
-                handler: 'onSubmitLabs'
-            }]
-        }, */{
+        dockedItems: [{
             itemId: 'labs',
             items: [{
                 xtype: 'combo',
@@ -117,10 +48,10 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#labComparator').show();
-                        button.up('grid').down('#labValue').show();
-                        button.up('grid').down('#hideLab').show();
-                        button.up('grid').down('#showLab').hide();
+                        button.up('form').down('#labComparator').show();
+                        button.up('form').down('#labValue').show();
+                        button.up('form').down('#hideLab').show();
+                        button.up('form').down('#showLab').hide();
                     }
                 }
             }, {
@@ -130,14 +61,14 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('grid').down('#labComparator').hide();
-                        button.up('grid').down('#labValue').hide();
-                        button.up('grid').down('#upperLabValue').hide();
-                        button.up('grid').down('#labComparator').setValue('');
-                        button.up('grid').down('#labValue').setValue('');
-                        button.up('grid').down('#upperLabValue').setValue('');
-                        button.up('grid').down('#hideLab').hide();
-                        button.up('grid').down('#showLab').show();
+                        button.up('form').down('#labComparator').hide();
+                        button.up('form').down('#labValue').hide();
+                        button.up('form').down('#upperLabValue').hide();
+                        button.up('form').down('#labComparator').setValue('');
+                        button.up('form').down('#labValue').setValue('');
+                        button.up('form').down('#upperLabValue').setValue('');
+                        button.up('form').down('#hideLab').hide();
+                        button.up('form').down('#showLab').show();
                     }
                 }
             },
@@ -169,9 +100,9 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('grid').down('#upperLabValue').show();
+                            combo.up('form').down('#upperLabValue').show();
                         } else {
-                            combo.up('grid').down('#upperLabValue').hide();
+                            combo.up('form').down('#upperLabValue').hide();
                         }
                     }
                 }
@@ -201,10 +132,10 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                     hidden: false,
                     listeners: {
                         click: function (button) {
-                            button.up('grid').down('#whenComparator').show();
-                            button.up('grid').down('#whenValue').show();
-                            button.up('grid').down('#hideWhen').show();
-                            button.up('grid').down('#showWhen').hide();
+                            button.up('form').down('#whenComparator').show();
+                            button.up('form').down('#whenValue').show();
+                            button.up('form').down('#hideWhen').show();
+                            button.up('form').down('#showWhen').hide();
                         }
                     }
             }, {
@@ -214,14 +145,14 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                     hidden: true,
                     listeners: {
                         click: function (button) {
-                            button.up('grid').down('#whenComparator').hide();
-                            button.up('grid').down('#whenValue').hide();
-                            button.up('grid').down('#upperWhenValue').hide();
-                            button.up('grid').down('#whenComparator').setValue('');
-                            button.up('grid').down('#whenValue').setValue('');
-                            button.up('grid').down('#upperWhenValue').setValue('');
-                            button.up('grid').down('#hideWhen').hide();
-                            button.up('grid').down('#showWhen').show();
+                            button.up('form').down('#whenComparator').hide();
+                            button.up('form').down('#whenValue').hide();
+                            button.up('form').down('#upperWhenValue').hide();
+                            button.up('form').down('#whenComparator').setValue('');
+                            button.up('form').down('#whenValue').setValue('');
+                            button.up('form').down('#upperWhenValue').setValue('');
+                            button.up('form').down('#hideWhen').hide();
+                            button.up('form').down('#showWhen').show();
                         }
                     }
             },{ // When
@@ -250,9 +181,9 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('grid').down('#upperWhenValue').show();
+                            combo.up('form').down('#upperWhenValue').show();
                         } else {
-                            combo.up('grid').down('#upperWhenValue').hide();
+                            combo.up('form').down('#upperWhenValue').hide();
                         }
                     }
                 }
@@ -277,21 +208,7 @@ Ext.define('cardioCatalogQT.view.grid.LabGrid', {
                 itemId: 'searchClick',
                 handler: 'onSubmitLabs'
             }]
-        },
-            {
-           //     xtype:'searchGrid'
-            }
-        ]
-
-
-        /*lbar:[{
-            xtype: 'button',
-            itemId: 'button',
-            html: 'Toolbar here',
-            text: 'Add',
-            handler: 'onSubmitLabs'
-        }] */// end demographics
+        }]
     }
-
 
 });

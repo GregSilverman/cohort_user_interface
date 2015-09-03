@@ -2,41 +2,18 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
-    extend: 'Ext.grid.Panel',
-    alias: 'widget.procedureGrid',
-    itemId: 'procedureGrid',
-    store: 'Payload',
+Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
+    extend: 'Ext.form.Panel',
+    alias: 'widget.diagnosisGrid',
+    itemId: 'diagnosisGrid',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
     ],
 
-    /*columns: [
-        {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
-        {text: "Operator", width: 120, sortable: true, dataIndex: 'comparatorSymbol'},
-        {text: "Value", width: 120, sortable: true, dataIndex: 'value'},
-        {text: "Combined", flex: 1, sortable: true, dataIndex: 'criteria'},
-        {text: "Description", flex: 1, sortable: true, dataIndex: 'description'},
-        {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
-        {text: "When", flex: 1, sortable: true, dataIndex: 'dateValue'},
-        {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
-    ],
-    columnLines: true,
-    selModel: {
-        type: 'checkboxmodel',
-        listeners: {
-            selectionchange: 'onSelectionChange'
-        }
-    },
-
-    // When true, this view acts as the default listener scope for listeners declared within it.
-    // For example the selectionModel's selectionchange listener resolves to this.
-    defaultListenerScope: false,*/
-
     config: {
         variableHeights: false,
-        title: 'Procedures',
+        title: 'Diagnoses',
         xtype: 'form',
         width: 500,
         bodyPadding: 10,
@@ -46,79 +23,33 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
         },
 
         // inline buttons
-        dockedItems: [/*{
-            xtype: 'toolbar',
-            dock: 'bottom',
-            ui: 'footer',
-            layout: {
-                pack: 'center'
-            },
-            items: [
-                { // Combine checked items with AND
-                reference: 'andButton',
-                text: 'AND',
-                tooltip: 'Add the selected criteria as AND',
-                iconCls: 'and',
-                handler: 'onCriterionAnd'
-            },'-',{ // Combine checked items with OR
-                reference: 'orButton',
-                text: 'OR',
-                tooltip: 'Add the selected criteria as OR',
-                iconCls: 'or',
-                handler: 'onCriterionOr'
-            },'-',{
-                reference: 'notButton',
-                text: 'NOT',
-                tooltip: 'Add the selected criteria as NOT',
-                iconCls: 'not',
-                handler: 'onCriterionNot'
-            },'-',{
-                reference: 'removeProcedureButton',  // The referenceHolder can access this button by this name
-                text: 'Remove',
-                tooltip: 'Remove the selected item',
-                iconCls: 'remove',
-                disabled: true,
-                handler: 'onCriterionRemove'
-            },'-',{ // ClearFilter
-                reference: 'ClearFilter',
-                text: 'Clear',
-                tooltip: 'Clear the current filter',
-                iconCls: 'clear',
-                handler: 'onFilterClear'
-            },{
-                minWidth: 80,
-                text: 'Add to search',
-                xtype: 'button',
-                itemId: 'searchClick',
-                handler: 'onSubmitProcedures'
-            }]
-        },*/ {
-            itemId: 'procedures',
-            items: [{
+        dockedItems: [ {
+            itemId: 'diagnoses',
+            items: [{ //Dx
                 width: 300,
                 anchor: '25%',
                 xtype: 'multiselector',
-                title: 'Selected Px',
-                itemId: 'procedure',
+                title: 'Selected Dx',
+                itemId: 'diagnosis',
                 fieldName: 'description',
-                valueField:'code',
+                valueField: 'code',
                 viewConfig: {
                     deferEmptyText: false,
-                    emptyText: 'No Px selected'
+                    emptyText: 'No Dx selected'
                 },
                 // TODO: fix ability to remove selected items when box is unchecked
                 search: {
                     field: 'code_description',
-                    store: 'Procedures',
+                    store: 'Diagnoses',
 
                     search: function (text) {
-                        cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
+                        cardioCatalogQT.service.UtilityService.multi_select_search(text, this);
                     }
                 }
             },{
                 xtype: 'tbspacer',
                 height:25
-            },{ //TODO: Add hide control
+            }, {
                 xtype: 'button',
                 text: 'Constrain search by date range',
                 itemId: 'showWhen',
@@ -158,10 +89,10 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
                 value: 'eq',
                 triggerAction: 'all',
                 forceSelection: true,
-                fieldLabel: 'Select procedure date that is',
+                fieldLabel: 'Select diagnosis date that is',
                 displayField: 'name',
-                valueField: 'value',
                 hidden: true,
+                valueField: 'value',
                 store: {
                     fields: ['name', 'value'],
                     data: [
@@ -202,23 +133,10 @@ Ext.define('cardioCatalogQT.view.grid.ProcedureGrid', {
                 text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
-                handler: 'onSubmitProcedures'
+                handler: 'onSubmitDiagnoses'
             }]
-        },
-            {
-            //    xtype:'searchGrid'
-            }
-        ]
+        }]
 
-
-        /*lbar:[{
-            xtype: 'button',
-            itemId: 'button',
-            html: 'Toolbar here',
-            text: 'Add',
-            handler: 'onSubmitProcedures'
-        }]*/ // end demographics
     }
-
 
 });
