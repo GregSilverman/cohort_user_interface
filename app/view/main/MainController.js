@@ -13,19 +13,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         'Ext.window.MessageBox'
     ],
 
-    onExecuteClick: function (button) {
-        var options = {
-            delimiter: null
-        },
-            payload = Ext.getStore('Payload'),
-            url,
-            form = button.up('form');
-
-        // construct URL and submit criteria to Query store
-        cardioCatalogQT.service.UtilityService.url(payload, button);
-
-        form.up().down('#searchGrid').getStore().load();
-    },
 
     onAddSearchGridClick: function (button) {
         var grid = button.up('grid'),
@@ -109,22 +96,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         grid.up().down('#searchGrid').getStore().load();
     },
 
-    onSearchClick: function (button) {
-        //var url;
-
-        // create and submit url
-        cardioCatalogQT.service.UtilityService.url(button);
-
-    },
-
-    onShowClick: function (button) {
-        var panel = button.up('form').up().down('#results'),
-            store = Ext.getStore('Payload');
-        // render template
-        cardioCatalogQT.service.UtilityService.criteria_template(panel, store);
-
-    },
-
     onSubmitDemographics: function (button) {
         var payload = Ext.getStore('Payload'),
             atom,
@@ -169,7 +140,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 // TODO: implement atomic_unit builder at time of model instance creation
 
                 var test = {
-                    //payload.add({
                     type: 'Demographics',
                     key: 'sex',
                     comparator: 'eq',
@@ -177,10 +147,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     value: sexValue,
                     criteria: criterion,
                     atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue)
-                    //});
                 };
-
-                //payload.sync();
 
                 console.log('atom:' + cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue));
 
@@ -230,7 +197,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 // TODO: implement atomic_unit builder at time of model instance creation
 
                 var test  = {
-                    //payload.add({
                     type: 'Demographics',
                     key: 'age',
                     comparator: ageComparator,
@@ -238,10 +204,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     value: test_age,
                     criteria: criterion,
                     atom: cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age)
-                    //});
                 };
 
-                //payload.sync();
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
@@ -249,8 +213,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             else{
                 // error conditions here
             }
-
-
 
         }
 
@@ -264,11 +226,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
 
         // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
         form.up().down('#demographicGrid').getStore().load();
-
-        // clear form
-        //form.reset();
 
     },
 
@@ -364,7 +322,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
 
                 // TODO: implement atomic_unit builder at time of model instance creation
-                //payload.add({
                 var test = {
                     type: measureCode,
                     key: measureCode,
@@ -376,9 +333,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     dateValue: test_date,
                     criteria: criterion,
                     atom: cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date)
-                    //});
                 };
-                //payload.sync();
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
@@ -396,11 +351,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
         }
      // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
         form.up().down('#vitalGrid').getStore().load();
 
-        // clear form
-        //form.reset();
     },
 
     onSubmitLabs: function (button) {
@@ -435,7 +387,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         // insert only if exists
         if (labValue) {
-
 
             var test_lab = labValue,
                 test_date = whenValue;
@@ -485,7 +436,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         + test_date;
                 }
                 if (labValue) {
-                    //payload.add({
                     var test = {
                         type: 'lab',
                         key: labCode,
@@ -498,8 +448,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         dateValue: test_date,
                         criteria: criterion,
                         atom: cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date)
-                        //});
-                        //payload.sync();
                     };
 
                     atom = cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date);
@@ -521,13 +469,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         }
         // reload store on grid
-        //form.up().down('#searchGrid').getStore().load();
-
-        // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
         form.up().down('#labGrid').getStore().load();
-        // clear form
-        //form.reset();
     },
 
     onSubmitDiagnoses: function(button) {
@@ -578,7 +520,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
             // TODO: ensure record does not already exist
             var test = {
-                //payload.add({
                 type: 'dx',
                 key: 'dx_code',
                 comparator: 'eq',
@@ -590,10 +531,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateValue: test_date,
                 criteria: criterion,
                 atom: cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq', item.data.code, whenComparator, test_date)
-                //});
             };
-
-            //payload.sync();
 
             if (cardioCatalogQT.config.mode === 'test') {
                 dx.push(item.data.code,item.data.description);
@@ -606,14 +544,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
 
         }); // each()
-        // reload store on grid
-        //form.up().down('#searchGrid').getStore().load();
 
         // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
         form.up().down('#diagnosisGrid').getStore().load();
-        // clear form
-        //form.reset();
     },
 
     onSubmitProcedures: function(button) {
@@ -632,7 +565,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
             date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
 
-        // begin test Rx
+        // begin test Px
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show submitted Dx:');
             console.log(procedures);
@@ -666,7 +599,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             // TODO: ensure record does not already exist
 
             var test = {
-                //payload.add({
                 type: 'px',
                 key: 'px_code',
                 comparator: 'eq',
@@ -678,10 +610,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateValue: test_date,
                 criteria: criterion,
                 atom: cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq', item.data.code, whenComparator, test_date)
-                //});
             };
 
-            //payload.sync();
 
             if (cardioCatalogQT.config.mode === 'test') {
                 px.push(item.data.code,item.data.description);
@@ -695,12 +625,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         }); // each()
         // reload store on grid
-        //form.up().down('#searchGrid').getStore().load();
-
         form.up().down('#procedureGrid').getStore().load();
-        form.up().down('#diagnosisGrid').getStore().load();
-        // clear form
-        //form.reset();
     },
 
     onSubmitMedications: function(button) {
@@ -751,7 +676,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
             // TODO: ensure record does not already exist
             var test = {
-                //payload.add({
                 type: 'rx',
                 key: 'rx_code',
                 comparator: 'eq',
@@ -763,10 +687,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateValue: test_date,
                 criteria: criterion,
                 atom: cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq', item.data.code, whenComparator, test_date)
-                //});
             };
-
-            //payload.sync();
 
             if (cardioCatalogQT.config.mode === 'test') {
                 rx.push(item.data.code,item.data.description);
@@ -780,12 +701,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         }); // each()
         // reload store on grid
-        //form.up().down('#searchGrid').getStore().load();
-
         form.up().down('#medicationGrid').getStore().load();
-        form.up().down('#diagnosisGrid').getStore().load();
-        // clear form
-        //form.reset();
     },
 
     onSubmitSaved: function(button) {
@@ -795,7 +711,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             atom,
             filtered = [],
             source = grid.store;
-
 
         if (selection) {
 
@@ -824,12 +739,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
         }
 
-        //grid.getStore().load();
-
-        // bind grid store as source
-        //source = grid.store;
-
-
         source.each(function (rec) {
 
             if (cardioCatalogQT.config.mode === 'test') {
@@ -837,21 +746,17 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             var test = {
-                //payload.add({
                 type: 'saved',
                 key: rec.data.query_name,
                 description: rec.data.criteria,
                 criteria: rec.data.criteria,
                 atom: rec.data.molecule
-                //});
             };
 
             console.log('test')
             console.log(test)
 
             atom = rec.data.molecule;
-
-            payload.sync();
 
             cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved', test);
 
@@ -865,7 +770,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         store.clearFilter();
         grid.getStore().load();
 
-        //grid.getStore().reload();
 
     },
 
@@ -877,12 +781,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log('sm:');
             console.log(selections);
             console.log(selections.selected.items);
-            console.log(Ext.ComponentQuery.query('#removeButton').length);
-            console.log(Ext.ComponentQuery.query('#andButton').length);
-            console.log(Ext.ComponentQuery.query('#orButton').length);
-            console.log(Ext.ComponentQuery.query('#notButton').length);
             console.log(Ext.ComponentQuery.query('#searchSelected'));
-
         }
 
         // control for disabling button on SavedQueries;
@@ -900,47 +799,44 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         // control for disabling buttons on category tab grids
         else {
 
-            for (var i = 0, max = Ext.ComponentQuery.query('#removeButton').length; i < max; i++) {
+            // Activate controls
+            if (Ext.ComponentQuery.query('#removeButton')[0].disabled === true &&
+                Ext.ComponentQuery.query('#saveQuery')[0].disabled === true &&
+                selections.selected.length > 0) {
 
-                // Activate controls
-                if (Ext.ComponentQuery.query('#removeButton')[i].disabled === true &&
-                    Ext.ComponentQuery.query('#saveQuery')[i].disabled === true &&
-                    selections.selected.length > 0) {
-
-                    Ext.ComponentQuery.query('#removeButton')[i].enable();
-                    Ext.ComponentQuery.query('#saveQuery')[i].enable();
-
-                }
-                if (Ext.ComponentQuery.query('#andButton')[i].disabled === true &&
-                    Ext.ComponentQuery.query('#orButton')[i].disabled === true &&
-                    selections.selected.length > 1) {
-
-                    Ext.ComponentQuery.query('#andButton')[i].enable();
-                    Ext.ComponentQuery.query('#orButton')[i].enable();
-                }
-                if (Ext.ComponentQuery.query('#notButton')[i].disabled === true &&
-                    selections.selected.length === 1) {
-
-                    Ext.ComponentQuery.query('#notButton')[i].enable();
-                }
-
-                // Deactivate controls
-                if (selections.selected.length > 1 || selections.selected.length === 0) {
-
-                    Ext.ComponentQuery.query('#notButton')[i].disable();
-                }
-                if (selections.selected.length < 2) {
-
-                    Ext.ComponentQuery.query('#andButton')[i].disable();
-                    Ext.ComponentQuery.query('#orButton')[i].disable();
-                }
-                if (selections.selected.length === 0) {
-
-                    Ext.ComponentQuery.query('#removeButton')[i].disable();
-                    Ext.ComponentQuery.query('#saveQuery')[i].disable();
-                }
+                Ext.ComponentQuery.query('#removeButton')[0].enable();
+                Ext.ComponentQuery.query('#saveQuery')[0].enable();
 
             }
+            if (Ext.ComponentQuery.query('#andButton')[0].disabled === true &&
+                Ext.ComponentQuery.query('#orButton')[0].disabled === true &&
+                selections.selected.length > 1) {
+
+                Ext.ComponentQuery.query('#andButton')[0].enable();
+                Ext.ComponentQuery.query('#orButton')[0].enable();
+            }
+            if (Ext.ComponentQuery.query('#notButton')[0].disabled === true &&
+                selections.selected.length === 1) {
+
+                Ext.ComponentQuery.query('#notButton')[0].enable();
+            }
+
+            // Deactivate controls
+            if (selections.selected.length > 1 || selections.selected.length === 0) {
+
+                Ext.ComponentQuery.query('#notButton')[0].disable();
+            }
+            if (selections.selected.length < 2) {
+
+                Ext.ComponentQuery.query('#andButton')[0].disable();
+                Ext.ComponentQuery.query('#orButton')[0].disable();
+            }
+            if (selections.selected.length === 0) {
+
+                Ext.ComponentQuery.query('#removeButton')[0].disable();
+                Ext.ComponentQuery.query('#saveQuery')[0].disable();
+            }
+
         }
     },
 

@@ -3,9 +3,10 @@
  */
 
 Ext.define('cardioCatalogQT.view.form.LabForm', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.grid.Panel',
     alias: 'widget.labGrid',
     itemId: 'labGrid',
+    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
@@ -48,10 +49,10 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#labComparator').show();
-                        button.up('form').down('#labValue').show();
-                        button.up('form').down('#hideLab').show();
-                        button.up('form').down('#showLab').hide();
+                        button.up('grid').down('#labComparator').show();
+                        button.up('grid').down('#labValue').show();
+                        button.up('grid').down('#hideLab').show();
+                        button.up('grid').down('#showLab').hide();
                     }
                 }
             }, {
@@ -61,14 +62,14 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#labComparator').hide();
-                        button.up('form').down('#labValue').hide();
-                        button.up('form').down('#upperLabValue').hide();
-                        button.up('form').down('#labComparator').setValue('');
-                        button.up('form').down('#labValue').setValue('');
-                        button.up('form').down('#upperLabValue').setValue('');
-                        button.up('form').down('#hideLab').hide();
-                        button.up('form').down('#showLab').show();
+                        button.up('grid').down('#labComparator').hide();
+                        button.up('grid').down('#labValue').hide();
+                        button.up('grid').down('#upperLabValue').hide();
+                        button.up('grid').down('#labComparator').setValue('');
+                        button.up('grid').down('#labValue').setValue('');
+                        button.up('grid').down('#upperLabValue').setValue('');
+                        button.up('grid').down('#hideLab').hide();
+                        button.up('grid').down('#showLab').show();
                     }
                 }
             },
@@ -100,9 +101,9 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperLabValue').show();
+                            combo.up('grid').down('#upperLabValue').show();
                         } else {
-                            combo.up('form').down('#upperLabValue').hide();
+                            combo.up('grid').down('#upperLabValue').hide();
                         }
                     }
                 }
@@ -132,10 +133,10 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                     hidden: false,
                     listeners: {
                         click: function (button) {
-                            button.up('form').down('#whenComparator').show();
-                            button.up('form').down('#whenValue').show();
-                            button.up('form').down('#hideWhen').show();
-                            button.up('form').down('#showWhen').hide();
+                            button.up('grid').down('#whenComparator').show();
+                            button.up('grid').down('#whenValue').show();
+                            button.up('grid').down('#hideWhen').show();
+                            button.up('grid').down('#showWhen').hide();
                         }
                     }
             }, {
@@ -145,14 +146,14 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                     hidden: true,
                     listeners: {
                         click: function (button) {
-                            button.up('form').down('#whenComparator').hide();
-                            button.up('form').down('#whenValue').hide();
-                            button.up('form').down('#upperWhenValue').hide();
-                            button.up('form').down('#whenComparator').setValue('');
-                            button.up('form').down('#whenValue').setValue('');
-                            button.up('form').down('#upperWhenValue').setValue('');
-                            button.up('form').down('#hideWhen').hide();
-                            button.up('form').down('#showWhen').show();
+                            button.up('grid').down('#whenComparator').hide();
+                            button.up('grid').down('#whenValue').hide();
+                            button.up('grid').down('#upperWhenValue').hide();
+                            button.up('grid').down('#whenComparator').setValue('');
+                            button.up('grid').down('#whenValue').setValue('');
+                            button.up('grid').down('#upperWhenValue').setValue('');
+                            button.up('grid').down('#hideWhen').hide();
+                            button.up('grid').down('#showWhen').show();
                         }
                     }
             },{ // When
@@ -181,9 +182,9 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperWhenValue').show();
+                            combo.up('grid').down('#upperWhenValue').show();
                         } else {
-                            combo.up('form').down('#upperWhenValue').hide();
+                            combo.up('grid').down('#upperWhenValue').hide();
                         }
                     }
                 }

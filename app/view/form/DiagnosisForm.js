@@ -3,9 +3,10 @@
  */
 
 Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.grid.Panel',
     alias: 'widget.diagnosisGrid',
     itemId: 'diagnosisGrid',
+    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
@@ -56,10 +57,10 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#whenComparator').show();
-                        button.up('form').down('#whenValue').show();
-                        button.up('form').down('#hideWhen').show();
-                        button.up('form').down('#showWhen').hide();
+                        button.up('grid').down('#whenComparator').show();
+                        button.up('grid').down('#whenValue').show();
+                        button.up('grid').down('#hideWhen').show();
+                        button.up('grid').down('#showWhen').hide();
                     }
                 }
             },{
@@ -69,14 +70,14 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#whenComparator').hide();
-                        button.up('form').down('#whenValue').hide();
-                        button.up('form').down('#upperWhenValue').hide();
-                        button.up('form').down('#whenComparator').setValue('');
-                        button.up('form').down('#whenValue').setValue('');
-                        button.up('form').down('#upperWhenValue').setValue('');
-                        button.up('form').down('#hideWhen').hide();
-                        button.up('form').down('#showWhen').show();
+                        button.up('grid').down('#whenComparator').hide();
+                        button.up('grid').down('#whenValue').hide();
+                        button.up('grid').down('#upperWhenValue').hide();
+                        button.up('grid').down('#whenComparator').setValue('');
+                        button.up('grid').down('#whenValue').setValue('');
+                        button.up('grid').down('#upperWhenValue').setValue('');
+                        button.up('grid').down('#hideWhen').hide();
+                        button.up('grid').down('#showWhen').show();
                     }
                 }
             },{ // When
@@ -106,9 +107,9 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperWhenValue').show();
+                            combo.up('grid').down('#upperWhenValue').show();
                         } else {
-                            combo.up('form').down('#upperWhenValue').hide();
+                            combo.up('grid').down('#upperWhenValue').hide();
                         }
                     }
                 }

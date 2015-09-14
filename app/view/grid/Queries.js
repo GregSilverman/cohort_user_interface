@@ -41,11 +41,11 @@ Ext.define('cardioCatalogQT.view.grid.Queries', {
     }, {
         xtype: 'toolbar',
         items: [{
-            //minWidth: 80,
             text: 'Add to search',
             xtype: 'button',
             itemId: 'searchSelected',
-            handler: 'onSubmitSaved'
+            handler: 'onSubmitSaved',
+            disabled: true
         }]
     }],
 

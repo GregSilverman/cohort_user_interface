@@ -3,9 +3,10 @@
  */
 
 Ext.define('cardioCatalogQT.view.form.DemographicForm', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.grid.Panel',
     alias: 'widget.demographicGrid',
     itemId: 'demographicGrid',
+    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
@@ -32,9 +33,9 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#sexValue').show();
-                        button.up('form').down('#hideSex').show();
-                        button.up('form').down('#showSex').hide();
+                        button.up('grid').down('#sexValue').show();
+                        button.up('grid').down('#hideSex').show();
+                        button.up('grid').down('#showSex').hide();
                     }
                 }
             }, {
@@ -44,10 +45,10 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#sexValue').hide();
-                        button.up('form').down('#sexValue').setValue('');
-                        button.up('form').down('#hideSex').hide();
-                        button.up('form').down('#showSex').show();
+                        button.up('grid').down('#sexValue').hide();
+                        button.up('grid').down('#sexValue').setValue('');
+                        button.up('grid').down('#hideSex').hide();
+                        button.up('grid').down('#showSex').show();
                     }
                 }
             },{ // Sex
@@ -76,10 +77,10 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#ageComparator').show();
-                        button.up('form').down('#ageValue').show();
-                        button.up('form').down('#hideAge').show();
-                        button.up('form').down('#showAge').hide();
+                        button.up('grid').down('#ageComparator').show();
+                        button.up('grid').down('#ageValue').show();
+                        button.up('grid').down('#hideAge').show();
+                        button.up('grid').down('#showAge').hide();
                     }
                 }
             }, {
@@ -89,14 +90,14 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#ageComparator').hide();
-                        button.up('form').down('#ageValue').hide();
-                        button.up('form').down('#upperAgeValue').hide();
-                        button.up('form').down('#ageComparator').setValue('');
-                        button.up('form').down('#ageValue').setValue('');
-                        button.up('form').down('#upperAgeValue').setValue('');
-                        button.up('form').down('#hideAge').hide();
-                        button.up('form').down('#showAge').show();
+                        button.up('grid').down('#ageComparator').hide();
+                        button.up('grid').down('#ageValue').hide();
+                        button.up('grid').down('#upperAgeValue').hide();
+                        button.up('grid').down('#ageComparator').setValue('');
+                        button.up('grid').down('#ageValue').setValue('');
+                        button.up('grid').down('#upperAgeValue').setValue('');
+                        button.up('grid').down('#hideAge').hide();
+                        button.up('grid').down('#showAge').show();
                     }
                 }
             }, { // Age
@@ -127,9 +128,9 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                     change: function(combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperAgeValue').show();
+                            combo.up('grid').down('#upperAgeValue').show();
                         } else {
-                            combo.up('form').down('#upperAgeValue').hide();
+                            combo.up('grid').down('#upperAgeValue').hide();
                         }
                     }
                 }
@@ -151,9 +152,9 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#raceValue').show();
-                        button.up('form').down('#hideRace').show();
-                        button.up('form').down('#showRace').hide();
+                        button.up('grid').down('#raceValue').show();
+                        button.up('grid').down('#hideRace').show();
+                        button.up('grid').down('#showRace').hide();
                     }
                 }
             }, {
@@ -163,10 +164,10 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#raceValue').hide();
-                        button.up('form').down('#raceValue').setValue('');
-                        button.up('form').down('#hideRace').hide();
-                        button.up('form').down('#showRace').show();
+                        button.up('grid').down('#raceValue').hide();
+                        button.up('grid').down('#raceValue').setValue('');
+                        button.up('grid').down('#hideRace').hide();
+                        button.up('grid').down('#showRace').show();
                     }
                 }
             },{ // Race

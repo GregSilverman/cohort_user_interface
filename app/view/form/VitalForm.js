@@ -3,9 +3,10 @@
  */
 
 Ext.define('cardioCatalogQT.view.form.VitalForm', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.grid.Panel',
     alias: 'widget.vitalGrid',
     itemId: 'vitalGrid',
+    store: 'Payload',
 
     requires: [
         'cardioCatalogQT.view.main.MainController'
@@ -70,15 +71,15 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value !== 'select') {
-                            combo.up('form').down('#measureComparator').show();
-                            combo.up('form').down('#measureValue').show();
+                            combo.up('grid').down('#measureComparator').show();
+                            combo.up('grid').down('#measureValue').show();
                         } else {
-                            combo.up('form').down('#measureComparator').hide();
-                            combo.up('form').down('#measureValue').hide();
-                            combo.up('form').down('#upperMeasureValue').hide();
-                            combo.up('form').down('#measureComparator').setValue('');
-                            combo.up('form').down('#measureValue').setValue('');
-                            combo.up('form').down('#upperMeasureValue').setValue('');
+                            combo.up('grid').down('#measureComparator').hide();
+                            combo.up('grid').down('#measureValue').hide();
+                            combo.up('grid').down('#upperMeasureValue').hide();
+                            combo.up('grid').down('#measureComparator').setValue('');
+                            combo.up('grid').down('#measureValue').setValue('');
+                            combo.up('grid').down('#upperMeasureValue').setValue('');
                         }
                     }
                 }
@@ -111,9 +112,9 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperMeasureValue').show();
+                            combo.up('grid').down('#upperMeasureValue').show();
                         } else {
-                            combo.up('form').down('#upperMeasureValue').hide();
+                            combo.up('grid').down('#upperMeasureValue').hide();
                         }
                     }
                 }
@@ -143,10 +144,10 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                 hidden: false,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#whenComparator').show();
-                        button.up('form').down('#whenValue').show();
-                        button.up('form').down('#hideWhen').show();
-                        button.up('form').down('#showWhen').hide();
+                        button.up('grid').down('#whenComparator').show();
+                        button.up('grid').down('#whenValue').show();
+                        button.up('grid').down('#hideWhen').show();
+                        button.up('grid').down('#showWhen').hide();
                     }
                 }
             },  {
@@ -156,14 +157,14 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                 hidden: true,
                 listeners: {
                     click: function (button) {
-                        button.up('form').down('#whenComparator').hide();
-                        button.up('form').down('#whenValue').hide();
-                        button.up('form').down('#upperWhenValue').hide();
-                        button.up('form').down('#whenComparator').setValue('');
-                        button.up('form').down('#whenValue').setValue('');
-                        button.up('form').down('#upperWhenValue').setValue('');
-                        button.up('form').down('#hideWhen').hide();
-                        button.up('form').down('#showWhen').show();
+                        button.up('grid').down('#whenComparator').hide();
+                        button.up('grid').down('#whenValue').hide();
+                        button.up('grid').down('#upperWhenValue').hide();
+                        button.up('grid').down('#whenComparator').setValue('');
+                        button.up('grid').down('#whenValue').setValue('');
+                        button.up('grid').down('#upperWhenValue').setValue('');
+                        button.up('grid').down('#hideWhen').hide();
+                        button.up('grid').down('#showWhen').show();
                     }
                 }
             },{ // When
@@ -192,9 +193,9 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('form').down('#upperWhenValue').show();
+                            combo.up('grid').down('#upperWhenValue').show();
                         } else {
-                            combo.up('form').down('#upperWhenValue').hide();
+                            combo.up('grid').down('#upperWhenValue').hide();
                         }
                     }
                 }
