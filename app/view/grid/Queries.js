@@ -17,9 +17,9 @@ Ext.define('cardioCatalogQT.view.grid.Queries', {
     columnLines: true,
     selModel: {
         type: 'checkboxmodel',
-        listeners: {
-            selectionchange: 'onSelectionChange'
-        }
+        //listeners: {
+        //    selectionchange: 'onSelectionChange'
+        //}
     },
 
     // When true, this view acts as the default listener scope for listeners declared within it.

@@ -13,92 +13,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         'Ext.window.MessageBox'
     ],
 
-
-    onAddSearchGridClick: function (button) {
-        var grid = button.up('grid'),
-            selection = grid.getSelectionModel().getSelection(),
-            target = Ext.create('cardioCatalogQT.store.Payload'), // target store
-            source, // source store
-            filtered = []; // array of filtered source id elements
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('DEMO grid: ');
-            console.log(grid);
-            console.log(grid.store);
-            console.log(grid.store.storeId); // use for control of inserting boolean combined statements
-        }
-
-        // bind grid store as source
-        source = grid.store;
-
-        // filter selected items from grid
-        if (selection) {
-
-            // array of elements on which to filter
-            Ext.Array.each(selection, function (item) {
-                filtered.push(item.data.id);
-            });
-
-            source.clearFilter(true); // Clears old filters
-            source.filter([ // filter on selected array elements
-                {
-                    filterFn: function(rec) {
-                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
-                    }
-                }
-            ]);
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('filtered store id:');
-                console.log(filtered);
-            }
-        }
-        else {
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('nada')
-            }
-        }
-
-        // add filtered source -> target
-        source.each(function(rec) {
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('record:');
-                console.log(rec);
-            }
-
-            // move selected criteria to main payload: TODO create single class to handle payload
-            target.add({
-                type: rec.data.type,
-                key: rec.data.key,
-                comparator: rec.data.comparator,
-                comparatorSymbol: rec.data.comparatorSymbol,
-                value: rec.data.value,
-                description: rec.data.criteria,
-                n: rec.data.n,
-                dateComparator: rec.data.dateComparator,
-                dateComparatorSymbol: rec.data.dateComparatorSymbol,
-                dateValue: rec.data.dateValue,
-                atom: rec.data.atom,
-                criteria: rec.data.criteria
-            });
-
-            target.sync();
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('target rec');
-                console.log(rec);
-            }
-
-        });
-
-        // refresh grid
-        grid.up().down('#searchGrid').getStore().load();
-    },
-
     onSubmitDemographics: function (button) {
-        var payload = Ext.getStore('Payload'),
-            atom,
+        var atom,
             demo = [],
             form = button.up('grid'),
             sexValue = form.down('#sexValue').value,
@@ -222,17 +138,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             demo.push(ageValue);
             demo.push(upperAgeValue);
             console.log('demographics:');
-            console.log(demo);
+            console.log(Ext.ComponentQuery.query('#searchGrid')[0].getStore())
         }
-
-        // reload store on grid
-        form.up().down('#demographicGrid').getStore().load();
 
     },
 
     onSubmitVitals: function(button) {
-        var payload = Ext.getStore('Payload'),
-            atom,
+        var atom,
             vitals = [],
             form = button.up('grid'),
             measureCode = form.down('#measureCode').value,
@@ -315,7 +227,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     ' ' +
                     test_measure;
 
-
                 if (test_date){
                     criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
                         + test_date;
@@ -350,14 +261,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(vitals);
             }
         }
-     // reload store on grid
-        form.up().down('#vitalGrid').getStore().load();
 
     },
 
     onSubmitLabs: function (button) {
-        var payload = Ext.getStore('Payload'),
-            atom,
+        var atom,
             lab = [],
             form = button.up('grid'),
             labComparator = form.down('#labComparator').value,
@@ -468,13 +376,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
         }
-        // reload store on grid
-        form.up().down('#labGrid').getStore().load();
     },
 
     onSubmitDiagnoses: function(button) {
-        var payload = Ext.getStore('Payload'),
-            atom,
+        var atom,
             dx = [],
             form = button.up('grid'),
             diagnoses = form.down('#diagnosis').store.data.items,
@@ -537,21 +442,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dx.push(item.data.code,item.data.description);
                 console.log('dx');
                 console.log(dx);
-                console.log(payload);
             }
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
 
         }); // each()
-
-        // reload store on grid
-        form.up().down('#diagnosisGrid').getStore().load();
     },
 
     onSubmitProcedures: function(button) {
-        var payload = Ext.getStore('Payload'),
-            atom,
+        var atom,
             px = [],
             form = button.up('grid'),
             procedures = form.down('#procedure').store.data.items,
@@ -617,20 +517,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 px.push(item.data.code,item.data.description);
                 console.log('px');
                 console.log(px);
-                console.log(payload);
             }
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
 
         }); // each()
-        // reload store on grid
-        form.up().down('#procedureGrid').getStore().load();
     },
 
     onSubmitMedications: function(button) {
-        var payload = Ext.getStore('Payload'),
-            atom,
+        var atom,
             rx = [],
             form = button.up('grid'),
             medications = form.down('#medication').store.data.items,
@@ -674,7 +570,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
                 + test_date;
             }
-            // TODO: ensure record does not already exist
             var test = {
                 type: 'rx',
                 key: 'rx_code',
@@ -693,21 +588,17 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 rx.push(item.data.code,item.data.description);
                 console.log('rx');
                 console.log(rx);
-                console.log(payload);
             }
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
 
         }); // each()
-        // reload store on grid
-        form.up().down('#medicationGrid').getStore().load();
     },
 
     onSubmitSaved: function(button) {
         var grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
-            payload = Ext.getStore('Payload'),
             atom,
             filtered = [],
             source = grid.store;
@@ -763,7 +654,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }); // each()
 
         var grid = button.up('grid'),
-        // bind grid store as source
+            // bind grid store as source
             source = grid.store,
             store = Ext.getStore(source);
 

@@ -221,18 +221,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             }
 
             var test = {
-            //target.add({
                 key: key,
                 type: bool_operator,
                 description: key,
                 criteria: new_criteria,
                 atom: molecule
-            //});
-            //target.sync();
             };
 
             var grid = button.up('grid'),
-            // bind grid store as source
+                // bind grid store as source
                 source = grid.store,
                 store = Ext.getStore(source);
 
@@ -473,94 +470,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         }
     },
 
-    // get and store token
-    http_auth: function(button) {
-
-        var url = cardioCatalogQT.config.protocol,
-            panel = button.up().up().up(),
-            user = 'gms',
-            pw = 'python';
-
-        var token = user + ':' + pw;
-            hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(token);
-
-        url += cardioCatalogQT.config.host;
-        url += cardioCatalogQT.config.apiLogin;
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log(url);
-            console.log('url: ' + url);
-            console.log('panel');
-            console.log(panel);
-        }
-
-        /*Ext.Ajax.on('beforerequest', (function(klass, request) {
-            if (request.failure) { // already have auth token: do nothing
-                console.log('WTF?!');
-                console.log(request);
-                return null;
-            }
-            else { // send auth token
-                request.headers.Authorization = hash;
-
-            }
-        }), this);*/
-
-        Ext.Ajax.request({
-            cors: true,
-            type: 'GET',
-            useDefaultXhrHeader: false,
-            //withCredentials: true,
-            url: url,
-            headers: {
-                'Accept': 'application/json'
-            },
-            disableCaching: false,
-            success: function (response) {
-
-                var loginResponse = Ext.JSON.decode(response.responseText),
-                    sessionToken;
-
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log(loginResponse.token);
-                }
-
-                sessionStorage.sessionToken = loginResponse.token;
-
-                if (response.status === 200) {
-                    // The server will send a token that can be used throughout the app to confirm that the user is authenticated.
-                    sessionToken = loginResponse.token;
-                    // TODO: write to sessionStorage
-                    sessionStorage.sessionToken =  sessionToken;
-
-                    // enable views on success
-                    //panel.down('#resultsGrid').enable();
-                    panel.down('#searchGrid').enable();
-                    panel.down('#demographicGrid').enable();
-                    panel.down('#vitalGrid').enable();
-                    panel.down('#labGrid').enable();
-                    panel.down('#diagnosisGrid').enable();
-                    panel.down('#medicationGrid').enable();
-                    panel.down('#procedureGrid').enable();
-
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(sessionToken);
-                    }
-                } else {
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log('bad http response');
-                        console.log(loginResponse.message);
-                    }
-                }
-            },
-            failure: function (response) {
-                //me.sessionToken = null;
-                //me.signInFailure('Login failed. Please try again later.');
-            }
-        });
-
-    },
-
     // customized search, as per http://stackoverflow.com/questions/28974034/multiselect-search-whole-string
     multi_select_search: function(text,me) {
 
@@ -751,7 +660,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                     });
 
-
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('filtered');
                         console.log(filtered);
@@ -797,9 +705,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
-            source; // = Ext.getStore('Payload'), // source store to filter
-
-        //grid.getStore().load();
+            source = Ext.create('cardioCatalogQT.store.Payload');
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('from:');
@@ -812,16 +718,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(source);
             console.log('storeId');
             console.log(grid.store.storeId);
-            console.log('atom ' + atom)
-        }
-
-        // bind grid store as source
-
-        if (from == 'submitSaved') {
-            source = button.up('grid').up().down('#demographicGrid').store
-        }
-        else {
-            source = grid.store;
+            console.log('atom ' + atom);
         }
 
         url += cardioCatalogQT.config.host;
@@ -834,35 +731,17 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     submit_query: function(url, button, source, atom, test){
 
-        var auth = sessionStorage.sessionToken + ':unknown',
-            hash = 'Basic ' + cardioCatalogQT.service.Base64.encode(auth),
-            json = [],
+        var json = [],
             records = [],
             store =  Ext.create('cardioCatalogQT.store.Results');
 
-        //localStorage.clear();
         store.getProxy().clear();
         store.data.clear();
         store.sync();
 
-        // Make sure current store contents are displayed on grid
-        //button.up().up().up().down('#gridTest').getStore().load();
-
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
         }
-        // send auth header before Ajax request to disable auth form
-        /*Ext.Ajax.on('beforerequest', (function(klass, request) {
-            if (request.failure) { // already have auth token: do nothing
-                console.log('WTF 2?!');
-                console.log(request);
-                return null;
-            }
-            else { // send auth token
-                console.log('Hmmmm!')
-                request.headers.Authorization = hash;
-            }
-        }), this);*/
 
         Ext.Ajax.request({
             cors: true,
@@ -890,13 +769,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                                 sid: tuple[0].sid,
                                 source: tuple[0].source
                             });
-                            /*if (cardioCatalogQT.config.mode === 'test') {
-                                console.log(tuple[0].source
-                                    + 'N ' + tuple[0].N
-                                    + 'attribute ' + tuple[0].attribute
-                                    + 'sid ' + tuple[0].sid
-                                    + 'value ' + tuple[0].value);
-                            }*/
                         });
                     });
 
@@ -913,11 +785,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     }
                 }
 
-                // update n in store for grid display
-                //var update_record = source.findRecord('atom', atom);
-                //update_record.set('n', store.getCount());
-                //source.sync();
-
                 source.add({
                     key: test.key,
                     type: test.type,
@@ -928,10 +795,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 });
                 source.sync();
 
-                //grid.getStore().load();
-                // render template
-                // clear criteria from store
-                //cardioCatalogQT.service.UtilityService.clear_all();
+                // update grid store content
+                Ext.StoreMgr.get('Payload').load();
+                Ext.ComponentQuery.query('#searchGrid')[0].getStore().load()
+
             }
         });
     }
