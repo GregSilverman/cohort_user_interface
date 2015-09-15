@@ -55,7 +55,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
-                var test = {
+                var payload = {
                     type: 'Demographics',
                     key: 'sex',
                     comparator: 'eq',
@@ -65,10 +65,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue)
                 };
 
-                console.log('atom:' + cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue));
-
                 atom = cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue);
-                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
             else {
 
@@ -112,7 +110,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
-                var test  = {
+                var payload  = {
                     type: 'Demographics',
                     key: 'age',
                     comparator: ageComparator,
@@ -124,7 +122,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age);
-                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
             else{
                 // error conditions here
@@ -233,7 +231,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
 
                 // TODO: implement atomic_unit builder at time of model instance creation
-                var test = {
+                var payload = {
                     type: measureCode,
                     key: measureCode,
                     comparator: measureComparator,
@@ -247,7 +245,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 };
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date);
-                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
 
             else {
@@ -344,7 +342,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         + test_date;
                 }
                 if (labValue) {
-                    var test = {
+                    var payload = {
                         type: 'lab',
                         key: labCode,
                         value: test_lab,
@@ -359,7 +357,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     };
 
                     atom = cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date);
-                    cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
+                    cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
                 }
                 else {
                     // error conditions here
@@ -424,7 +422,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 + test_date;
             }
             // TODO: ensure record does not already exist
-            var test = {
+            var payload = {
                 type: 'dx',
                 key: 'dx_code',
                 comparator: 'eq',
@@ -445,7 +443,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
         }); // each()
     },
@@ -498,7 +496,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             // TODO: ensure record does not already exist
 
-            var test = {
+            var payload = {
                 type: 'px',
                 key: 'px_code',
                 comparator: 'eq',
@@ -520,7 +518,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
         }); // each()
     },
@@ -570,7 +568,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
                 + test_date;
             }
-            var test = {
+            var payload = {
                 type: 'rx',
                 key: 'rx_code',
                 comparator: 'eq',
@@ -591,7 +589,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', test);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
         }); // each()
     },
@@ -601,7 +599,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             selection = grid.getSelectionModel().getSelection(),
             atom,
             filtered = [],
-            source = grid.store;
+            source = grid.store,
+            store = Ext.getStore(source);
 
         if (selection) {
 
@@ -636,7 +635,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(rec)
             }
 
-            var test = {
+            var payload = {
                 type: 'saved',
                 key: rec.data.query_name,
                 description: rec.data.criteria,
@@ -644,19 +643,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 atom: rec.data.molecule
             };
 
-            console.log('test')
-            console.log(test)
-
             atom = rec.data.molecule;
 
-            cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved', test);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved', payload);
 
         }); // each()
-
-        var grid = button.up('grid'),
-            // bind grid store as source
-            source = grid.store,
-            store = Ext.getStore(source);
 
         store.clearFilter();
         grid.getStore().load();
@@ -754,13 +745,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             store.remove(selection);
             store.sync();
             if (cardioCatalogQT.config.mode === 'test') {
-                console.log('removed')
-                console.log(store)
+                console.log('removed');
+                console.log(store);
             }
         }
         else {
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('nada')
+            if (cardioCatalogQT.config.mode === 'payload') {
+                console.log('nada');
             }
         }
     },
@@ -768,48 +759,25 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     onCriterionOr: function (button) {
         var options = {
                     delimiter: '|'
-            },
-            grid = button.up('grid'),
-            selection = grid.getSelectionModel().getSelection();
+            };
 
-        if (selection.length > 1) {
-            cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
-        }
-        else {
-            alert('You need more than 1 expression!')
-        }
+        cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
     },
 
     onCriterionAnd: function (button) {
         var options = {
                 delimiter: '&'
-            },
-            grid = button.up('grid'),
-            selection = grid.getSelectionModel().getSelection();
+            };
 
-        if (selection.length > 1) {
-            cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
-        }
-        else {
-            alert('You need more than 1 expression!')
-        }
+        cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
     },
 
     onCriterionNot: function (button) {
         var options = {
                 delimiter: '~'
-            },
-            grid = button.up('grid'),
-            selection = grid.getSelectionModel().getSelection();
+            };
 
-        console.log(selection.length);
-
-        if (selection.length === 1) {
-            cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
-        }
-        else {
-            alert('You can only exclude 1 expression at a time!')
-        }
+        cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
     },
 
     onFilterSave: function (button) {
@@ -817,33 +785,14 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         cardioCatalogQT.service.UtilityService.query_move(button);
     },
 
-    onFilterRetrieve: function (button) {
-
-        cardioCatalogQT.service.UtilityService.query_get(button);
-    },
-
-    // TODO: generalize this across all grids
     // clear filter and reload store into grid
     onFilterClear: function (button) {
         var grid = button.up('grid'),
-        // bind grid store as source
             source = grid.store,
             store = Ext.getStore(source);
 
         store.clearFilter();
         grid.getStore().load();
-    },
-
-    onShowTab : function() {
-        var mainView   = this.getMainView();
-        var resultView = this.getExportTab();
-
-
-        // enable the export view
-        resultView.enable();
-
-
-        mainView.setActiveItem(exportView);
     }
 
 });

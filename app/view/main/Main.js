@@ -30,40 +30,45 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             xtype: 'tabpanel',
             items:[{
                 title:'Main',
-                xtype: 'image',
-                src: 'resources/images/R3D3.png',
-                height: 150,
-                width: 50
+                //xtype: 'image',
+                //mode : 'image',
+                //src: 'resources/images/R3D3.png',
+                //height: 50,
+                //width: 280
             },{
                 xtype: 'demographicGrid'
             },{
-                xtype: 'vitalGrid'//title: 'Ad Hoc Sandbox for Cohort Discovery'
-            }, {
+                xtype: 'vitalGrid'
+            },{
                 xtype: 'labGrid'
-                //disabled: true
-            }, {
+            },{
                 xtype: 'diagnosisGrid'
-                //disabled: true
-            }, {
+            },{
                 xtype: 'medicationGrid'
-                //disabled: true
-            }, {
+            },{
                 xtype: 'procedureGrid'
-                //disabled: true
-            }, {
+            },{
                 xtype: 'queryGrid'
-                //disabled: true
             }]
-            /*lbar:[{
+        },
+        {
+            xtype: 'toolbar',
+            region: 'west',
+            vertical: true,
+
+            items: [{
+                xtype: 'image',
+                src: 'resources/images/R3D3.png',
+                height: 50,
+                width: 280
+            },'-',{
                 text: 'Initiate advanced request',
                 xtype: 'button',
 
                 handler: function(button){
                     var url = 'https://redcap.ahc.umn.edu/surveys/?s=nfHAssJw96';
-                    //cardioCatalogQT.service.UtilityService.http_auth(button);
                     window.open(url);
-                }
-            }]*/
+            }}]
         },
         {
             xtype:'searchGrid',
@@ -77,35 +82,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             xtype: 'searchGrid'
             //disabled: true
         },*/
-        /*{
-            xtype: 'demographicGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'vitalGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'labGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'diagnosisGrid'
-            //disabled: true
-
-        },
-        {
-            xtype: 'medicationGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'procedureGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'queryGrid'
-            //disabled: true
-        }*/
     ]
 });
 

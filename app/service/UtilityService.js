@@ -220,7 +220,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('bool_op: ' + bool_operator);
             }
 
-            var test = {
+            var payload = {
                 key: key,
                 type: bool_operator,
                 description: key,
@@ -236,7 +236,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             store.clearFilter();
             grid.getStore().load();
 
-            cardioCatalogQT.service.UtilityService.url(button, molecule, 'NULL', test);
+            cardioCatalogQT.service.UtilityService.url(button, molecule, 'NULL', payload);
 
         }
 
@@ -700,12 +700,21 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    url: function(button, atom, from, test){
+    url: function(button, atom, from, payload){
 
         var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
-            source = Ext.create('cardioCatalogQT.store.Payload');
+            source;
+
+        console.log(Ext.ComponentQuery.query('#searchGrid')[0].getStore());
+
+        if (from == 'submitSaved') {
+            source = Ext.ComponentQuery.query('#searchGrid')[0].getStore();
+        }
+        else {
+            source = grid.store;
+        }
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('from:');
@@ -725,11 +734,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         url += cardioCatalogQT.config.apiGetQ;
         url += atom;
 
-        cardioCatalogQT.service.UtilityService.submit_query(url, button, source, atom, test);
+        cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload);
 
     },
 
-    submit_query: function(url, button, source, atom, test){
+    submit_query: function(url, source, atom, test){
 
         var json = [],
             records = [],
@@ -782,18 +791,21 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         console.log(store);
                         console.log('N');
                         console.log(store.getCount());
+                        console.log(test.atom);
                     }
+
+
+                    source.add({
+                        key: test.key,
+                        type: test.type,
+                        description: test.description,
+                        criteria: test.criteria,
+                        atom: test.atom,
+                        n:  store.getCount()
+                    });
+                    source.sync();
                 }
 
-                source.add({
-                    key: test.key,
-                    type: test.type,
-                    description: test.description,
-                    criteria: test.criteria,
-                    atom: test.atom,
-                    n:  store.getCount()
-                });
-                source.sync();
 
                 // update grid store content
                 Ext.StoreMgr.get('Payload').load();
