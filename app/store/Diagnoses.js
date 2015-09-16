@@ -5,7 +5,6 @@ Ext.define('cardioCatalogQT.store.Diagnoses', {
         model: 'cardioCatalogQT.model.Diagnosis',
         storeId: 'Diagnoses',
         autoLoad: true,
-        sorters: 'string_value',
 
         proxy: {
             type: 'rest',

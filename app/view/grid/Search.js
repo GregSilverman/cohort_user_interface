@@ -76,15 +76,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             iconCls: 'remove',
             disabled: true,
             handler: 'onCriterionRemove'
-        },'-',/*{ // ClearFilter
-            //reference: 'ClearFilter',
-            text: 'Clear',
-            itemId: 'clearFilter',
-            tooltip: 'Clear the current filter',
-            iconCls: 'clear',
-            disabled: true,
-            handler: 'onFilterClear'
-        },*/{ // SaveQuery
+        },'-',{ // SaveQuery
             //reference: 'SaveQuery',
             text: 'Save',
             itemId: 'saveQuery',
@@ -92,17 +84,10 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
             iconCls: 'save',
             disabled: true,
             handler: 'onFilterSave'
-        }/*,{ // SaveQuery
-            //reference: 'RetrieveQuery',
-            text: 'Get',
-            itemId: 'retrieveQuery',
-            tooltip: 'retrieve saved',
-            iconCls: 'get',
-            handler: 'onFilterRetrieve'
-        }*/]
+        }]
     }],
 
-    height: 1000,
+    height: 500,
     frame: true,
     iconCls: 'icon-grid',
     alias: 'widget.searchGrid',
