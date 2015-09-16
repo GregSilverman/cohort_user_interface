@@ -29,7 +29,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             region: 'north',
             xtype: 'tabpanel',
             items:[{
-                title:'Main',
+                title:'Main'
                 //xtype: 'image',
                 //mode : 'image',
                 //src: 'resources/images/R3D3.png',

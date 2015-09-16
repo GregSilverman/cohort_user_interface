@@ -121,12 +121,6 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 fieldLabel: 'and',
                 hidden: true
             }, {
-                xtype: 'tbspacer',
-                width: 50
-            }, {
-                xtype: 'tbspacer',
-                height:25
-            }, {
                     xtype: 'button',
                     text: 'Constrain search by date range',
                     itemId: 'showWhen',
