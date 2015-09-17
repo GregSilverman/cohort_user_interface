@@ -67,7 +67,7 @@ Ext.define('cardioCatalogQT.Application', {
 
             // https://www.sencha.com/forum/showthread.php?295764-CheckboxModel-selectionchange-doesn-t-fire-when-unselect-rows
 
-            /*Ext.define('Ext.overrides.selection.CheckboxModel', {
+            Ext.define('Ext.overrides.selection.CheckboxModel', {
                 override: 'Ext.selection.CheckboxModel',
                 compatibility: '5.1.0',
                 privates: {
@@ -85,7 +85,7 @@ Ext.define('cardioCatalogQT.Application', {
                         }
                     }
                 }
-            });*/
+            });
 
         });
     }
