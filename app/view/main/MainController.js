@@ -683,11 +683,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             // Activate controls
             if (Ext.ComponentQuery.query('#removeButton')[0].disabled === true &&
-                Ext.ComponentQuery.query('#saveQuery')[0].disabled === true &&
                 selections.selected.length > 0) {
 
                 Ext.ComponentQuery.query('#removeButton')[0].enable();
-                Ext.ComponentQuery.query('#saveQuery')[0].enable();
 
             }
             if (Ext.ComponentQuery.query('#andButton')[0].disabled === true &&
@@ -698,15 +696,18 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 Ext.ComponentQuery.query('#orButton')[0].enable();
             }
             if (Ext.ComponentQuery.query('#notButton')[0].disabled === true &&
+                Ext.ComponentQuery.query('#saveQuery')[0].disabled === true &&
                 selections.selected.length === 1) {
 
                 Ext.ComponentQuery.query('#notButton')[0].enable();
+                Ext.ComponentQuery.query('#saveQuery')[0].enable();
             }
 
             // Deactivate controls
             if (selections.selected.length > 1 || selections.selected.length === 0) {
 
                 Ext.ComponentQuery.query('#notButton')[0].disable();
+                Ext.ComponentQuery.query('#saveQuery')[0].disable();
             }
             if (selections.selected.length < 2) {
 
@@ -716,7 +717,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (selections.selected.length === 0) {
 
                 Ext.ComponentQuery.query('#removeButton')[0].disable();
-                Ext.ComponentQuery.query('#saveQuery')[0].disable();
             }
 
         }
