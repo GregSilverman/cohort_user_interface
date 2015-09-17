@@ -8,7 +8,8 @@
 Ext.Loader.setConfig({
     enabled: true,
     paths: {
-        'Ext.ux.exporter': 'exporter'
+        'Ext.ux.exporter': 'exporter',
+        'Overrides': 'overrides'
     }
 });
 
@@ -35,7 +36,8 @@ Ext.define('cardioCatalogQT.Application', {
         'Ext.form.Panel',
         'Ext.ux.form.MultiSelect',
         'Ext.ux.form.ItemSelector',
-        'cardioCatalogQT.*'
+        'cardioCatalogQT.*',
+        'Ext.overrides.selection.CheckboxModel'
     ],
 
     init: function() {
@@ -65,27 +67,8 @@ Ext.define('cardioCatalogQT.Application', {
 
         Ext.onReady(function () {
 
-            // https://www.sencha.com/forum/showthread.php?295764-CheckboxModel-selectionchange-doesn-t-fire-when-unselect-rows
 
-            Ext.define('Ext.overrides.selection.CheckboxModel', {
-                override: 'Ext.selection.CheckboxModel',
-                compatibility: '5.1.0',
-                privates: {
-                    selectWithEventMulti: function(record, e, isSelected) {
-                        var me = this;
 
-                        if (!e.shiftKey && !e.ctrlKey && e.getTarget(me.checkSelector)) {
-                            if (isSelected) {
-                                me.doDeselect(record); // Second param here is suppress event, not "keep selection"
-                            } else {
-                                me.doSelect(record, true);
-                            }
-                        } else {
-                            me.callParent([record, e, isSelected]);
-                        }
-                    }
-                }
-            });
 
         });
     }
