@@ -628,7 +628,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                             query.push(item.data.atom);
                             query.push(item.data.criteria);
 
-                            url = 'http://127.0.0.1:5000/remote_query_put';
+                            url = 'http://cc.cardio.umn.edu/api/remote_query_put';
 
                             Ext.Ajax.request({
                                 cors: true,
@@ -698,6 +698,91 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             grid.getStore().load();
         });
 
+    },
+
+    query_get: function(button){
+        var grid = button.up('grid'),
+            source, // source store to filter
+            url,
+            records = [],
+            //store =  Ext.create('cardioCatalogQT.store.Payload'),
+            query = []; // source ids that are filtered
+
+        // bind grid store as source
+        source = grid.store;
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('grid');
+            console.log(grid);
+            console.log(source);
+        }
+
+        url = 'http://cc.cardio.umn.edu/api/remote_query_get';
+
+        Ext.Ajax.request({
+            cors: true,
+            useDefaultXhrHeader: false,
+            url: url,
+            headers: {
+                'Accept': 'application/json'
+            },
+            disableCaching: false,
+            success: function (response) {
+
+                if (response.status === 200) {
+
+                    json = Ext.decode(response.responseText);
+
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(json);
+                    }
+
+                    // see http://edspencer.net/2009/07/23/ext-js-iterator-functions/
+                    for (key in json){
+                        var value = json[key];
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log(value.length);
+                        }
+
+                        for (var i=0; i < value.length; i++) {
+                            var query = value[i];
+
+                            if (cardioCatalogQT.config.mode === 'test') {
+                                console.log('query object');
+                                console.log(query);
+                                console.log(query.molecule);
+                                console.log(query.criteria);
+                            }
+
+                            records.push({
+                                atom: query.molecule,
+                                criteria: query.criteria,
+                                type: 'Test',
+                                key: 'Test'
+
+                            });
+
+                        };
+                    }
+
+                    //update store with data
+                    store.add(records);
+                    store.sync();
+
+
+                } else {
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log('bad http response');
+                    }
+                }
+            },
+            failure: function (response) {
+                //me.sessionToken = null;
+                //me.signInFailure('Login failed. Please try again later.');
+            }
+        });
+
+        //grid.up().down('#searchGrid').getStore().load();
     },
 
     url: function(button, atom, from, payload){
