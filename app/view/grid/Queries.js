@@ -46,14 +46,7 @@ Ext.define('cardioCatalogQT.view.grid.Queries', {
             itemId: 'searchSelected',
             handler: 'onSubmitSaved',
             disabled: true
-        }/*,{ // SaveQuery
-            //reference: 'RetrieveQuery',
-            text: 'Get',
-            itemId: 'retrieveQuery',
-            tooltip: 'retrieve saved',
-            iconCls: 'get',
-            handler: 'onFilterRetrieve'
-        }*/]
+        }]
     }],
 
     height: 400,

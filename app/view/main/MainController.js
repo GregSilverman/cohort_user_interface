@@ -756,11 +756,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
     },
 
-    onFilterRetrieve: function (button) {
-
-        cardioCatalogQT.service.UtilityService.query_get(button);
-    },
-
     onCriterionOr: function (button) {
         var options = {
                     delimiter: '|'

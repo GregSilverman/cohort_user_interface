@@ -60,6 +60,8 @@ Ext.define('cardioCatalogQT.Application', {
             //apiFactor: '/api/factor',
             //apiGetQ: '/get_query/',
             apiGetQ: '/api/get_query/',
+            apiWriteQ: '/api/remote_query_put',
+            apiReadQ: 'api/remote_query_get',
             remove: 'none'
         };
 
