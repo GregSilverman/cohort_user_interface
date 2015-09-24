@@ -48,6 +48,7 @@ Ext.define('cardioCatalogQT.view.grid.Queries', {
             disabled: true
         }]
     }],
+    // TODO: add delete button
 
     height: 400,
     frame: true,
