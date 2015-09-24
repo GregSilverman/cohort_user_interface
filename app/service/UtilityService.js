@@ -568,7 +568,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         source = grid.store;
 
         url += cardioCatalogQT.config.host;
-        url += cardioCatalogQT.config.apiPutQ;
+        url += cardioCatalogQT.config.apiWriteQ;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('grid');
@@ -581,6 +581,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(grid.store.storeId);
         }
 
+        // TODO: add comments
         Ext.Msg.prompt('Name', 'Please enter name to save query as:', function(btn, text) {
             if (btn == 'ok') {
                 // process text value and close...
@@ -623,6 +624,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                             }
                         );
 
+                        // TODO: give option to add as update
                         if (recordIndex != -1) {
                             console.log("We have a duplicate, abort!");
                         }
@@ -630,8 +632,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                             query.push(item.data.atom);
                             query.push(item.data.criteria);
-
-                            url = 'http://cc.cardio.umn.edu/api/remote_query_put';
 
                             Ext.Ajax.request({
                                 cors: true,
