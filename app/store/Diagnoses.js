@@ -8,7 +8,7 @@ Ext.define('cardioCatalogQT.store.Diagnoses', {
 
         proxy: {
             type: 'rest',
-            url: 'http://cc.cardio.umn.edu/api/menu/diagnoses',
+            url: 'https://cc.cardio.umn.edu/api/menu/diagnoses',
             reader: {
                 type: 'json',
                 rootProperty: 'menu_test'

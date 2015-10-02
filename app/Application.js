@@ -52,7 +52,7 @@ Ext.define('cardioCatalogQT.Application', {
         cardioCatalogQT.config = {
 
             mode: 'test', // switch to control use of staging or production server
-            protocol: 'http://',
+            protocol: 'https://',
             host: 'cc.cardio.umn.edu',
             //host: '127.0.0.1:5000',
             //apiLogin: '/token',

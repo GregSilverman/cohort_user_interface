@@ -8,7 +8,7 @@ Ext.define('cardioCatalogQT.store.Procedures', {
 
         proxy: {
             type: 'rest',
-            url: 'http://cc.cardio.umn.edu/api/menu/procedures',
+            url: 'https://cc.cardio.umn.edu/api/menu/procedures',
             reader: {
                 type: 'json',
                 rootProperty: 'menu_test'
