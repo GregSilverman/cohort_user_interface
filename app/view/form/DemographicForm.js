@@ -67,7 +67,8 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                     fields: ['name', 'value'],
                     data: [
                         {name: 'female', value: 'f'},
-                        {name: 'male', value: 'm'}
+                        {name: 'male', value: 'm'},
+                        {name: 'any', value: 'pr'}
                     ]
                 }
             }, {
@@ -115,8 +116,8 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
+                        {name: 'all', value: 'pr'},
                         {name: '=', value: 'eq'},
-                        {name: '<', value: 'lt'},
                         {name: '<=', value: 'le'},
                         {name: '>', value: 'gt'},
                         {name: '>=', value: 'ge'},
@@ -131,6 +132,11 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                             combo.up('grid').down('#upperAgeValue').show();
                         } else {
                             combo.up('grid').down('#upperAgeValue').hide();
+                        }
+                        if (value === 'pr') {
+                            combo.up('grid').down('#ageValue').hide();
+                        } else {
+                            combo.up('grid').down('#ageValue').show();
                         }
                     }
                 }

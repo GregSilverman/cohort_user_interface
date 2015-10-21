@@ -341,6 +341,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         map.add('gt', '>');
         map.add('ge', '>=');
         map.add('bt', 'between');
+        map.add('pr', 'all');
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('parent');
