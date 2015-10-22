@@ -100,7 +100,7 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        {name: 'all', value: 'pr'},
+                        {name: 'all', value: 'prn'},
                         {name: '=', value: 'eq'},
                         {name: '<', value: 'lt'},
                         {name: '<=', value: 'le'},
@@ -113,14 +113,14 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                     change: function(combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('grid').down('#upperAgeValue').show();
+                            combo.up('grid').down('#upperMeasureValue').show();
                         } else {
-                            combo.up('grid').down('#upperAgeValue').hide();
+                            combo.up('grid').down('#upperMeasureValue').hide();
                         }
-                        if (value === 'pr') {
-                            combo.up('grid').down('#ageValue').hide();
+                        if (value === 'prn') {
+                            combo.up('grid').down('#measureValue').hide();
                         } else {
-                            combo.up('grid').down('#ageValue').show();
+                            combo.up('grid').down('#measureValue').show();
                         }
                     }
                 }

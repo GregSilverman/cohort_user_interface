@@ -89,6 +89,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
+                        {name: 'all', value: 'prn'},
                         {name: '=', value: 'eq'},
                         {name: '<', value: 'lt'},
                         {name: '<=', value: 'le'},
@@ -104,6 +105,11 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                             combo.up('grid').down('#upperLabValue').show();
                         } else {
                             combo.up('grid').down('#upperLabValue').hide();
+                        }
+                        if (value === 'prn') {
+                            combo.up('grid').down('#labValue').hide();
+                        } else {
+                            combo.up('grid').down('#labValue').show();
                         }
                     }
                 }
@@ -166,7 +172,6 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        {name: 'all', value: 'pr'},
                         {name: '<=', value: 'le'},
                         {name: '>=', value: 'ge'},
                         {name: 'between', value: 'bt'}
@@ -177,14 +182,9 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                     change: function(combo, value) {
                         // use component query to  toggle the hidden state of upper value
                         if (value === 'bt') {
-                            combo.up('grid').down('#upperAgeValue').show();
+                            combo.up('grid').down('#upperWhenValue').show();
                         } else {
-                            combo.up('grid').down('#upperAgeValue').hide();
-                        }
-                        if (value === 'pr') {
-                            combo.up('grid').down('#ageValue').hide();
-                        } else {
-                            combo.up('grid').down('#ageValue').show();
+                            combo.up('grid').down('#upperWhenValue').hide();
                         }
                     }
                 }
