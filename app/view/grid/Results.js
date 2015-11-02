@@ -23,10 +23,25 @@ Ext.define('cardioCatalogQT.view.grid.Results', {
         autoScroll:true,
         autoHeight: true,
         maxHeight: 500,
-        columns: [{
-            text: 'sid',
-            dataIndex: 'sid'
-        }]
+        columns: [
+            {
+                text: 'sid',
+                dataIndex: 'sid'
+            },
+            {
+                text: 'attribute',
+                dataIndex: 'attribute'
+            },
+            {
+                text: 'string',
+                dataIndex: 'string'
+            },
+            {
+                text: 'number',
+                dataIndex: 'number'
+            }
+
+        ]
 
     }]
 

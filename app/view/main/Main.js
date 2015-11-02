@@ -49,7 +49,12 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 xtype: 'procedureGrid'
             },{
                 xtype: 'queryGrid'
-            }]
+            },
+                {
+                    xtype: 'resultsGrid'
+                    //disabled: true
+                }
+            ]
         },
         {
             xtype: 'toolbar',
@@ -74,10 +79,6 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             xtype:'searchGrid',
             region:'center'
         }
-        /*{
-            xtype: 'resultsGrid'
-            //disabled: true
-        },*/
     ]
 });
 

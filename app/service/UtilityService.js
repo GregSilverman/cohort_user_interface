@@ -768,26 +768,29 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 json = Ext.decode(response.responseText);
                 if (cardioCatalogQT.config.mode === 'test') {
                     console.log('json' + json);
+                    //console.log(json);
+                    //console.log(response.responseText)
                 }
 
                 if(json !== null &&  typeof (json) !==  'undefined'){
 
                     // custom JSON reader as per
                     // http://stackoverflow.com/questions/11159480/sencha-touch-store-json-file-containing-array
-                    Ext.each(json, function(entry) {
-                        Ext.each(json.items || [], function(tuple) {
+                    for (i = 0, max = json.items.length; i < max; i += 1) {
 
-                            records.push({
-                                N: tuple[0].N,
-                                sid: tuple[0].sid,
-                                source: tuple[0].source
-                            });
+                        records.push({
+                            sid: json.items[i].sid,
+                            attribute: json.items[i].attribute,
+                            string: json.items[i].value_s,
+                            number: json.items[i].value_d
                         });
-                    });
+
+                    }
 
                     //update store with data
                     store.add(records);
                     store.sync();
+
 
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log(records);
