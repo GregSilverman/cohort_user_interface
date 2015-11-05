@@ -120,7 +120,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     atom: cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age)
                 };
 
-
                 atom = cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
@@ -651,7 +650,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         store.clearFilter();
         grid.getStore().load();
-
 
     },
 

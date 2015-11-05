@@ -798,6 +798,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         console.log(store);
                         console.log('N');
                         console.log(store.getCount());
+                        console.log(store.collect('sid').length)
                         console.log(test.atom);
                     }
 
@@ -808,7 +809,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         description: test.description,
                         criteria: test.criteria,
                         atom: test.atom,
-                        n:  store.getCount()
+                        n: store.collect('sid').length // get length of array for unique sids
+
                     });
                     source.sync();
                 }
