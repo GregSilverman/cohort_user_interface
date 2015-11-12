@@ -56,8 +56,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
+                // set value if ALL values desired for return
                 if (sexValue === 'prn') {
-                   comparatorValue = 'prn';
+                   comparatorValue = sexValue;
                 }
 
                 var payload = {
