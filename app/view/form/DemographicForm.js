@@ -68,7 +68,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                     data: [
                         {name: 'female', value: 'f'},
                         {name: 'male', value: 'm'},
-                        {name: 'any', value: 'pr'}
+                        {name: 'any', value: 'prn'}
                     ]
                 }
             }, {
@@ -116,7 +116,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        {name: 'all', value: 'pr'},
+                        {name: 'all', value: 'prn'},
                         {name: '=', value: 'eq'},
                         {name: '<=', value: 'le'},
                         {name: '>', value: 'gt'},

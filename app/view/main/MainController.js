@@ -21,7 +21,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             ageComparator = form.down('#ageComparator').value,
             ageValue = form.down('#ageValue').value,
             upperAgeValue = form.down('#upperAgeValue').value,
-            criterion;
+            criterion,
+            comparatorValue = 'eq';
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object demographics');
@@ -49,23 +50,27 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 // TODO: implement citerion builder independent of all data in stores
                 criterion = 'SEX' +
                     ' ' +
-                    cardioCatalogQT.service.UtilityService.comparator_hash('eq') +
+                    cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue) +
                     ' ' +
                     sexValue;
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
+                if (sexValue === 'prn') {
+                   comparatorValue = 'prn';
+                }
+
                 var payload = {
                     type: 'Demographics',
                     key: 'sex',
                     comparator: 'eq',
-                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
+                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
                     value: sexValue,
                     criteria: criterion,
-                    atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue)
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', comparatorValue, sexValue)
                 };
 
-                atom = cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue);
+                atom = cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', comparatorValue, sexValue);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
             else {
