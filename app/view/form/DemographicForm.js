@@ -133,7 +133,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                         } else {
                             combo.up('grid').down('#upperAgeValue').hide();
                         }
-                        if (value === 'pr') {
+                        if (value === 'prn') {
                             combo.up('grid').down('#ageValue').hide();
                         } else {
                             combo.up('grid').down('#ageValue').show();
