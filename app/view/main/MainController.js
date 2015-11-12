@@ -59,6 +59,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 // set value if ALL values desired for return
                 if (sexValue === 'prn') {
                    comparatorValue = sexValue;
+                   sexValue = 'all'
                 }
 
                 var payload = {
@@ -81,7 +82,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
 
         // insert only if exists
-        if (ageValue) {
+        if (ageValue || ageComparator === 'prn') {
 
             var test_age = ageValue;
 
@@ -99,13 +100,18 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log('test age: ' + test_age);
             }
 
+            // set value if ALL values desired for return
+            if (ageComparator === 'prn') {
+                test_age = 'all'
+            }
+
             if ((ageComparator === 'bt' &&
                 ageValue &&
                 upperAgeValue) ||
 
                 (!upperAgeValue &&
-                ageComparator !== 'bt' &&
-                ageValue)) {
+                (ageComparator !== 'bt') &&
+                (ageValue || ageComparator === 'prn'))) {
 
                 // TODO: implement citerion builder independent of all data in stores
                 criterion = 'Age' +
@@ -177,7 +183,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(upperWhenValue);
         }
 
-        if (measureValue) {
+
+        if (measureValue || measureComparator === 'prn') {
 
             var test_measure = measureValue,
                 test_date = whenValue;
@@ -202,6 +209,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
             }
 
+            // set value if ALL values desired for return
+            if (measureComparator === 'prn') {
+                test_measure = 'all'
+            }
+
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('test measure : ' + test_measure);
                 console.log('test date: ' + test_date);
@@ -220,7 +232,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 (!upperMeasureValue &&
                 measureComparator !== 'bt' &&
-                measureValue) ||
+                (measureValue || measureComparator === 'prn')) ||
 
                 (!measureValue)) {
 
@@ -297,7 +309,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
 
         // insert only if exists
-        if (labValue) {
+        if (labValue || labComparator === 'prn') {
 
             var test_lab = labValue,
                 test_date = whenValue;
@@ -326,13 +338,18 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log('test lab : ' + test_lab);
             }
 
+            // set value if ALL values desired for return
+            if (labComparator === 'prn') {
+                test_lab = 'all'
+            }
+
             if (((labComparator === 'bt' &&
                 labValue &&
                 upperLabValue) ||
 
                 (!upperLabValue &&
                 labComparator !== 'bt' &&
-                labValue))) {
+                (labValue || labComparator === 'prn')))) {
 
                 // TODO: implement citerion builder independent of all data in stores
                 criterion =  labCode +
@@ -346,7 +363,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
                         + test_date;
                 }
-                if (labValue) {
+                if (labValue || labComparator === 'prn') {
                     var payload = {
                         type: 'lab',
                         key: labCode,
