@@ -63,7 +63,15 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                     data: [
                         {name: 'Select measure', code: 'select'},
                         {name: 'Systolic blood pressure', code: 'blood_pressure_systolic'},
-                        {name: 'Diastolic blood pressure', code: 'blood_pressure_diastolic'}
+                        {name: 'Diastolic blood pressure', code: 'blood_pressure_diastolic'},
+                        {name: 'Respiratory rate', code: 'respiratory_rate'},
+                        {name: 'Pulse', code: 'pulse'},
+                        {name: 'Temperature', code: 'body_temperature'},
+                        {name: 'Height', code: 'height'},
+                        {name: 'Weight', code: 'weight'},
+                        {name: 'BMI', code: 'bmi'},
+                        {name: 'Pulse Oxymetry', code: 'pulse_oxymetry'}
+
                     ]
                 },
 

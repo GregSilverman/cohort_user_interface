@@ -193,6 +193,22 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                     data: [
                         {name: 'female', value: 'f'},
                         {name: 'male', value: 'm'}
+
+                        //TODO: make dropdown menu items in db
+                        /*'American Indian or Alaska Native'
+                        'American Indian or Alaska Native, Black or African American'
+                        'American Indian or Alaska Native, White'
+                        'Asian'
+                        'Asian, White'
+                        'Black or African American'
+                        'Black or African American, White'
+                        'Declined / Unknown'
+                        'Declined / Unknown, White'
+                        'Hispanic or Latino'
+                        'Native Hawaiian or Other Pacific Islander'
+                        'Not Hispanic or Latino'
+                        'White'*/
+
                     ]
                 }
             },{
