@@ -808,16 +808,19 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         console.log(payload.atom);
                     }
 
-                    source.add({
-                        key: payload.key,
-                        type: payload.type,
-                        description: payload.description,
-                        criteria: payload.criteria,
-                        atom: payload.atom,
-                        n: store.collect('sid').length // get length of array for unique sids
+                    // only add to store if adding to search grid
+                    if (!print_all) {
+                        source.add({
+                            key: payload.key,
+                            type: payload.type,
+                            description: payload.description,
+                            criteria: payload.criteria,
+                            atom: payload.atom,
+                            n: store.collect('sid').length // get length of array for unique sids
 
-                    });
-                    source.sync();
+                        });
+                        source.sync();
+                    }
                 }
 
 
