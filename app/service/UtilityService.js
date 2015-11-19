@@ -791,7 +791,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     store.add(records);
                     store.sync();
 
-
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log(records);
                         console.log('store');

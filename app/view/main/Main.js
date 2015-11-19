@@ -49,12 +49,10 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 xtype: 'procedureGrid'
             },{
                 xtype: 'queryGrid'
-            },
-                {
-                    xtype: 'resultsGrid'
-                    //disabled: true
-                }
-            ]
+            },{
+                xtype: 'resultsGrid'
+                //disabled: true
+            }]
         },
         {
             xtype: 'toolbar',

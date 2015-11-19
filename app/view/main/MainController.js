@@ -47,6 +47,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 !ageValue &&
                 !upperAgeValue)) {
 
+                // set value if ALL values desired for return
+                if (sexValue === 'prn') {
+                    comparatorValue = sexValue;
+                    sexValue = 'all'
+                }
                 // TODO: implement citerion builder independent of all data in stores
                 criterion = 'SEX' +
                     ' ' +
@@ -56,11 +61,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
-                // set value if ALL values desired for return
-                if (sexValue === 'prn') {
-                   comparatorValue = sexValue;
-                   sexValue = 'all'
-                }
+                console.log('print: value')
+                console.log(cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue))
 
                 var payload = {
                     type: 'Demographics',
@@ -718,10 +720,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
             if (Ext.ComponentQuery.query('#notButton')[0].disabled === true &&
                 Ext.ComponentQuery.query('#saveQuery')[0].disabled === true &&
+                Ext.ComponentQuery.query('#showResults')[0].disabled === true &&
                 selections.selected.length === 1) {
 
                 Ext.ComponentQuery.query('#notButton')[0].enable();
                 Ext.ComponentQuery.query('#saveQuery')[0].enable();
+                Ext.ComponentQuery.query('#showResults')[0].enable();
             }
 
             // Deactivate controls
@@ -729,6 +733,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 Ext.ComponentQuery.query('#notButton')[0].disable();
                 Ext.ComponentQuery.query('#saveQuery')[0].disable();
+                Ext.ComponentQuery.query('#showResults')[0].disable();
             }
             if (selections.selected.length < 2) {
 
