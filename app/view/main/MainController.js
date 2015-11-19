@@ -819,8 +819,17 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         store.clearFilter();
         grid.getStore().load();
+    },
+
+    // grab query for display of all data
+    onShowResults: function (button) {
+        var grid = button.up('grid'),
+            source = grid.store,
+            store = Ext.getStore(source),
+            print_all = true;
+
+        console.log('ATOM HERE:');
+        console.log(store.data.items[0].data.atom);
     }
-
-
 
 });

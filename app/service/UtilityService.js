@@ -742,11 +742,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    submit_query: function(url, source, atom, test){
+    submit_query: function(url, source, atom, payload){
 
         var json = [],
             records = [],
-            store =  Ext.create('cardioCatalogQT.store.Results');
+            store =  Ext.create('cardioCatalogQT.store.Results'),
+            i,
+            max,
+            print_all = false;
 
         store.getProxy().clear();
         store.data.clear();
@@ -768,22 +771,26 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 json = Ext.decode(response.responseText);
                 if (cardioCatalogQT.config.mode === 'test') {
                     console.log('json' + json);
-                    //console.log(json);
-                    //console.log(response.responseText)
                 }
 
                 if(json !== null &&  typeof (json) !==  'undefined'){
 
-                    // custom JSON reader as per
-                    // http://stackoverflow.com/questions/11159480/sencha-touch-store-json-file-containing-array
                     for (i = 0, max = json.items.length; i < max; i += 1) {
 
-                        records.push({
-                            sid: json.items[i].sid,
-                            attribute: json.items[i].attribute,
-                            string: json.items[i].value_s,
-                            number: json.items[i].value_d
-                        });
+                        if (print_all) {
+                            records.push({
+                                sid: json.items[i].sid,
+                                attribute: json.items[i].attribute,
+                                string: json.items[i].value_s,
+                                number: json.items[i].value_d
+                            });
+                        }
+                        else {
+
+                            records.push({
+                                sid: json.items[i].sid,
+                            })
+                        }
 
                     }
 
@@ -798,16 +805,15 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         console.log('N');
                         console.log(store.getCount());
                         console.log(store.collect('sid').length)
-                        console.log(test.atom);
+                        console.log(payload.atom);
                     }
 
-
                     source.add({
-                        key: test.key,
-                        type: test.type,
-                        description: test.description,
-                        criteria: test.criteria,
-                        atom: test.atom,
+                        key: payload.key,
+                        type: payload.type,
+                        description: payload.description,
+                        criteria: payload.criteria,
+                        atom: payload.atom,
                         n: store.collect('sid').length // get length of array for unique sids
 
                     });
