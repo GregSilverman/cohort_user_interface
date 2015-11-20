@@ -870,6 +870,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         url += cardioCatalogQT.config.apiGetQ;
         url += atom;
 
+        console.log(grid.up())
+
+        Ext.ComponentQuery.query('#resultsGrid')[0].enable();
+
+
         cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload, print_all);
 
         store.clearFilter();
