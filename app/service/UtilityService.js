@@ -709,7 +709,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
-            source;
+            source,
+            print_all = false;
 
         console.log(Ext.ComponentQuery.query('#searchGrid')[0].getStore());
 
@@ -738,18 +739,17 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         url += cardioCatalogQT.config.apiGetQ;
         url += atom;
 
-        cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload);
+        cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload, print_all);
 
     },
 
-    submit_query: function(url, source, atom, payload){
+    submit_query: function(url, source, atom, payload, print_all){
 
         var json = [],
             records = [],
             store =  Ext.create('cardioCatalogQT.store.Results'),
             i,
-            max,
-            print_all = false;
+            max;
 
         store.getProxy().clear();
         store.data.clear();

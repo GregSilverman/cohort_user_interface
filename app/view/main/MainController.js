@@ -826,10 +826,54 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         var grid = button.up('grid'),
             source = grid.store,
             store = Ext.getStore(source),
-            print_all = true;
+            print_all = true,
+            selection = grid.getView().getSelectionModel().getSelection(),
+            url = cardioCatalogQT.config.protocol,
+            atom,
+            filtered = [],
+            payload = store;
 
-        console.log('ATOM HERE:');
-        console.log(store.data.items[0].data.atom);
+        if (selection) {
+
+            // array of elements on which to filter
+            Ext.Array.each(selection, function (item) {
+                filtered.push(item.data.id);
+            });
+
+            source.clearFilter(true); // Clears old filters
+            source.filter([ // filter on selected array elements
+                {
+                    filterFn: function (rec) {
+                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
+                    }
+                }
+            ]);
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered store id:');
+                console.log(filtered);
+            }
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
+
+        atom = store.data.items[0].data.atom;
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('ATOM HERE:');
+            console.log(atom);
+        }
+
+        url += cardioCatalogQT.config.host;
+        url += cardioCatalogQT.config.apiGetQ;
+        url += atom;
+
+        cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload, print_all);
+
+        store.clearFilter();
+        grid.getStore().load();
     }
 
 });
