@@ -166,7 +166,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             whenValue = form.down('#whenValue').value,
             upperWhenValue = form.down('#upperWhenValue').value,
             criterion,
-            date_comparator;
+            date_comparator,
+            vitalValue = form.down('#vitalStatus').value,
+            comparatorValue = 'eq';
 
         whenValue = Ext.Date.format(whenValue, 'Y-m-d');
         upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
@@ -183,10 +185,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(whenComparator);
             console.log(whenValue);
             console.log(upperWhenValue);
+            console.log(vitalValue);
         }
 
 
-        if (measureValue || measureComparator === 'prn') {
+        if (measureValue || measureComparator === 'prn' || vitalValue) {
 
             var test_measure = measureValue,
                 test_date = whenValue;
@@ -264,6 +267,34 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 };
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+            }
+
+            if (vitalValue){
+
+                // set value if ALL values desired for return
+                if (vitalValue === 'prn') {
+                    comparatorValue = vitalValue;
+                    vitalValue = 'all'
+                }
+
+                criterion = 'vital_status' +
+                    ' ' +
+                    cardioCatalogQT.service.UtilityService.comparator_hash('eq') +
+                    ' ' +
+                    vitalValue;
+
+                var payload = {
+                    type: 'vital_status',
+                    key: 'vital_status',
+                    comparator: 'eq',
+                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
+                    value: vitalValue,
+                    criteria: criterion,
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('vital_status', 'vital_status', comparatorValue, vitalValue)
+                };
+
+                atom = cardioCatalogQT.service.UtilityService.make_atom('vital_status', 'vital_status', comparatorValue, vitalValue);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
 

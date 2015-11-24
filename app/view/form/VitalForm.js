@@ -40,8 +40,9 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        {name: 'Alive', value: 'f'},
-                        {name: 'Deceased', value: 'm'}
+                        {name: 'Alive', value: 'l'},
+                        {name: 'Deceased', value: 'd'},
+                        {name: 'any', value: 'prn'}
                     ]
                 }
             }, {
