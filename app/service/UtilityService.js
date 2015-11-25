@@ -112,6 +112,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('atomic_unit');
             console.log(atomic_unit);
+
         }
 
         return atomic_unit;
