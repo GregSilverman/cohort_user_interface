@@ -67,6 +67,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             atomic_unit += 'blood_pressure';
         }
         else if (key === 'sex' ||
+                 key === 'vital_status' ||
                  key === 'age'){
             atomic_unit += 'demographics';
         }
@@ -84,6 +85,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         if (key === 'blood_pressure_systolic' ||
             key === 'blood_pressure_diastolic' ||
             key === 'sex' ||
+            key === 'vital_status' ||
             key === 'age') {
             atomic_unit += key;
         }
