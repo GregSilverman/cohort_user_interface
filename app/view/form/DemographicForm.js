@@ -40,7 +40,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 }
             }, {
                 xtype: 'button',
-                text: 'Hide sex constraint',
+                text: 'Hide sex',
                 itemId: 'hideSex',
                 hidden: true,
                 listeners: {
@@ -68,6 +68,51 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                     data: [
                         {name: 'female', value: 'f'},
                         {name: 'male', value: 'm'},
+                        {name: 'any', value: 'prn'}
+                    ]
+                }
+            }, {
+                xtype: 'button',
+                text: 'Constrain vital status',
+                itemId: 'showVital',
+                hidden: false,
+                listeners: {
+                    click: function (button) {
+                        button.up('grid').down('#vitalStatus').show();
+                        button.up('grid').down('#hideVital').show();
+                        button.up('grid').down('#showVital').hide();
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: 'Hide vital status',
+                itemId: 'hideVital',
+                hidden: true,
+                listeners: {
+                    click: function (button) {
+                        button.up('grid').down('#vitalStatus').hide();
+                        button.up('grid').down('#vitalStatus').setValue('');
+                        button.up('grid').down('#hideVital').hide();
+                        button.up('grid').down('#showVital').show();
+                    }
+                }
+            },{ // Vitals
+                xtype: 'combo',
+                itemId: 'vitalStatus',
+                queryMode: 'local',
+                editable: false,
+                value: 'eq',
+                triggerAction: 'all',
+                forceSelection: true,
+                fieldLabel: 'Select vital status',
+                displayField: 'name',
+                valueField: 'value',
+                hidden: true,
+                store: {
+                    fields: ['name', 'value'],
+                    data: [
+                        {name: 'Alive', value: 'l'},
+                        {name: 'Deceased', value: 'd'},
                         {name: 'any', value: 'prn'}
                     ]
                 }
@@ -165,7 +210,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 }
             }, {
                 xtype: 'button',
-                text: 'Hide race/ethnicity constraint',
+                text: 'Hide race/ethnicity',
                 itemId: 'hideRace',
                 hidden: true,
                 listeners: {

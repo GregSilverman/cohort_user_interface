@@ -26,29 +26,7 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
         // inline buttons
         dockedItems: [ {
             itemId: 'vitals',
-            items: [{ // Vitals
-                xtype: 'combo',
-                itemId: 'vitalStatus',
-                queryMode: 'local',
-                editable: false,
-                value: 'eq',
-                triggerAction: 'all',
-                forceSelection: true,
-                fieldLabel: 'Select vital status',
-                displayField: 'name',
-                valueField: 'value',
-                store: {
-                    fields: ['name', 'value'],
-                    data: [
-                        {name: 'Alive', value: 'l'},
-                        {name: 'Deceased', value: 'd'},
-                        {name: 'any', value: 'prn'}
-                    ]
-                }
-            }, {
-                xtype: 'tbspacer',
-                width: 50
-            }, { // Vitals
+            items: [ { // Vitals
                 xtype: 'combo',
                 itemId: 'measureCode',
                 queryMode: 'local',

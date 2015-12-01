@@ -22,6 +22,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             ageValue = form.down('#ageValue').value,
             upperAgeValue = form.down('#upperAgeValue').value,
             criterion,
+            vitalValue = form.down('#vitalStatus').value,
             comparatorValue = 'eq';
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -81,6 +82,45 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // error conditionals here
             }
+        }
+        // insert vitalStatus only if exists
+        if (vitalValue){
+
+            // set value if ALL values desired for return
+            if (vitalValue === 'prn') {
+                comparatorValue = vitalValue;
+                vitalValue = 'all'
+            }
+
+            criterion = 'vital_status' +
+                ' ' +
+                cardioCatalogQT.service.UtilityService.comparator_hash('eq') +
+                ' ' +
+                vitalValue;
+
+            var payload = {
+                type: 'demographics',
+                key: 'vital_status',
+                comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
+                value: vitalValue,
+                criteria: criterion,
+                atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue)
+            };
+
+            atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+        }
+
+        else {
+            // error conditions here
+        }
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            vitals.push(measureComparator);
+            vitals.push(measureValue);
+            console.log('vitals');
+            console.log(vitals);
         }
 
         // insert only if exists
@@ -166,9 +206,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             whenValue = form.down('#whenValue').value,
             upperWhenValue = form.down('#upperWhenValue').value,
             criterion,
-            date_comparator,
-            vitalValue = form.down('#vitalStatus').value,
-            comparatorValue = 'eq';
+            date_comparator;
 
         whenValue = Ext.Date.format(whenValue, 'Y-m-d');
         upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
@@ -185,11 +223,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(whenComparator);
             console.log(whenValue);
             console.log(upperWhenValue);
-            console.log(vitalValue);
         }
 
 
-        if (measureValue || measureComparator === 'prn' || vitalValue) {
+        if (measureValue || measureComparator === 'prn') {
 
             var test_measure = measureValue,
                 test_date = whenValue;
@@ -270,44 +307,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
 
-            if (vitalValue){
-
-                // set value if ALL values desired for return
-                if (vitalValue === 'prn') {
-                    comparatorValue = vitalValue;
-                    vitalValue = 'all'
-                }
-
-                criterion = 'vital_status' +
-                    ' ' +
-                    cardioCatalogQT.service.UtilityService.comparator_hash('eq') +
-                    ' ' +
-                    vitalValue;
-
-                var payload = {
-                    type: 'demographics',
-                    key: 'vital_status',
-                    comparator: 'eq',
-                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
-                    value: vitalValue,
-                    criteria: criterion,
-                    atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue)
-                };
-
-                atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue);
-                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
-            }
-
-            else {
-                // error conditions here
-            }
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                vitals.push(measureComparator);
-                vitals.push(measureValue);
-                console.log('vitals');
-                console.log(vitals);
-            }
         }
 
     },
