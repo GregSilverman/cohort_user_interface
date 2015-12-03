@@ -116,12 +116,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             // error conditions here
         }
 
-        if (cardioCatalogQT.config.mode === 'test') {
-            vitals.push(measureComparator);
-            vitals.push(measureValue);
-            console.log('vitals');
-            console.log(vitals);
-        }
 
         // insert only if exists
         if (ageValue || ageComparator === 'prn') {
@@ -305,6 +299,14 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+            }
+
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                vitals.push(measureComparator);
+                vitals.push(measureValue);
+                console.log('vitals');
+                console.log(vitals);
             }
 
         }
