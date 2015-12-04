@@ -1,23 +1,24 @@
-Ext.define('cardioCatalogQT.store.TestResult', {
+Ext.define('cardioCatalogQT.store.TestResults', {
     extend: 'Ext.data.Store',
-    alias: 'store.Results',
+    alias: 'store.TestResults',
 
     config:{
-        idProperty: 'id',
+        /*idProperty: 'id',
         fields: [
             {name: 'attribute', type: 'string'},
             {name: 'sid', type: 'string'},
-            {name: 'string', type: 'string'},
-            {name: 'number', type: 'string'}
-        ],
+            {name: 'value_s', type: 'string'},
+            {name: 'value_d', type: 'string'}
+        ],*/
+        model: 'cardioCatalogQT.model.TestResult',
 
-        storeId: 'Results',
+        storeId: 'TestResults',
         autoLoad: true,
         pageSize: undefined,
 
         proxy: {
             //type: 'localstorage',
-            url: 'http://127.0.0.1/remote_results_put',
+            url: 'http://127.0.0.1:5000/remote_results_get',
             //type: 'localstorage',
             type: 'rest',
             reader: {

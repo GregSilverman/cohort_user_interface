@@ -790,7 +790,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         else {
 
                             records.push({
-                                sid: json.items[i].sid,
+                                sid: json.items[i].sid
                             })
                         }
 
@@ -808,6 +808,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         console.log(store.getCount());
                         console.log(store.collect('sid').length)
                         console.log(payload.atom);
+                        console.log('TEST STORE HERE');
+                        test_store =  Ext.getStore('TestResults');
+                        console.log(test_store);
+                        console.log(test_store.collect('sid').length)
                     }
 
                     // only add to store if adding to search grid

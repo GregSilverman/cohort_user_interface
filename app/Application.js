@@ -25,7 +25,8 @@ Ext.define('cardioCatalogQT.Application', {
         'Procedures',
         'Payload',
         'Queries',
-        'Results'
+        'Results',
+        'TestResults'
     ],
     requires: [
         'Ext.app.*',
