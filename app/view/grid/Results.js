@@ -18,7 +18,7 @@ Ext.define('cardioCatalogQT.view.grid.Results', {
         height: 10
     },{
         xtype: 'gridpanel',
-        store: 'Results',
+        store: 'TestResults',
         itemId:'gridTest',
         autoScroll:true,
         autoHeight: true,
@@ -34,11 +34,11 @@ Ext.define('cardioCatalogQT.view.grid.Results', {
             },
             {
                 text: 'string',
-                dataIndex: 'string'
+                dataIndex: 'value_s'
             },
             {
                 text: 'number',
-                dataIndex: 'number'
+                dataIndex: 'value_d'
             }
 
         ]

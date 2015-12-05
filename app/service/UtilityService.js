@@ -749,13 +749,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         var json = [],
             records = [],
-            store =  Ext.create('cardioCatalogQT.store.Results'),
+            //store = Ext.create('cardioCatalogQT.store.TestResults'),
+            store = Ext.getStore('TestResults'),
             i,
             max;
 
-        store.getProxy().clear();
-        store.data.clear();
-        store.sync();
+        //store.getProxy().clear();
+        //store.data.clear();
+        //store.sync();
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
@@ -775,46 +776,39 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     console.log('json' + json);
                 }
 
-                if(json !== null &&  typeof (json) !==  'undefined'){
+                if (print_all) {
+                    if (json !== null && typeof (json) !== 'undefined') {
 
-                    for (i = 0, max = json.items.length; i < max; i += 1) {
+                        for (i = 0, max = json.items.length; i < max; i += 1) {
 
-                        if (print_all) {
                             records.push({
                                 sid: json.items[i].sid,
                                 attribute: json.items[i].attribute,
                                 string: json.items[i].value_s,
                                 number: json.items[i].value_d
                             });
-                        }
-                        else {
 
-                            records.push({
-                                sid: json.items[i].sid
-                            })
+
+                        }
+
+                        if (cardioCatalogQT.config.mode === 'test') {
+                            console.log(records);
+                            console.log('store');
+                            console.log(store);
+                            console.log('N');
+                            console.log(store.getCount());
+                            console.log(store.collect('sid').length)
+                            console.log(payload.atom);
                         }
 
                     }
+                }
 
-                    //update store with data
-                    store.add(records);
-                    store.sync();
+                store.load(function() {
+                    console.log('ON LOAD')
+                    console.log(store.collect('sid').length)
 
-                    if (cardioCatalogQT.config.mode === 'test') {
-                        console.log(records);
-                        console.log('store');
-                        console.log(store);
-                        console.log('N');
-                        console.log(store.getCount());
-                        console.log(store.collect('sid').length)
-                        console.log(payload.atom);
-                        console.log('TEST STORE HERE');
-                        test_store =  Ext.getStore('TestResults');
-                        console.log(test_store);
-                        console.log(test_store.collect('sid').length)
-                    }
-
-                    // only add to store if adding to search grid
+                    // only add to grid if not showing results
                     if (!print_all) {
                         source.add({
                             key: payload.key,
@@ -823,16 +817,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                             criteria: payload.criteria,
                             atom: payload.atom,
                             n: store.collect('sid').length // get length of array for unique sids
-
                         });
                         source.sync();
                     }
-                }
+                    // update grid store content
+                    Ext.StoreMgr.get('Payload').load();
+                    Ext.ComponentQuery.query('#searchGrid')[0].getStore().load();
+                });
 
-
-                // update grid store content
-                Ext.StoreMgr.get('Payload').load();
-                Ext.ComponentQuery.query('#searchGrid')[0].getStore().load()
 
             }
         });
