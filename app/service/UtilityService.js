@@ -38,9 +38,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             atomic_unit, // = '' each specific item to be queried
             seperator = ':',
             delimiter = ';',
-            parent;
-
-        parent = cardioCatalogQT.service.UtilityService.parent_hash(type);
+            parent = cardioCatalogQT.service.UtilityService.parent_hash(type);
 
         // section "a" of query
         atomic_unit = type +
@@ -50,9 +48,17 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         if (key === 'blood_pressure_systolic' ||
             key === 'blood_pressure_diastolic' ||
+            key === 'bmi' ||
+            key === 'respiratory_rate' ||
+            key === 'pulse' ||
+            key === 'body_temperature' ||
+            key === 'height' ||
+            key === 'weight' ||
+            key === 'pulse_oxymetry' ||
             type === 'lab' ||
             type === 'sex' ||
-            type === 'age') {
+            type === 'age' ||
+            type === 'vital_status') {
             atomic_unit += 'eq';
         }
         else {
@@ -65,6 +71,16 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         if (key === 'blood_pressure_systolic' ||
             key === 'blood_pressure_diastolic') {
             atomic_unit += 'blood_pressure';
+        }
+        // other vital measures
+        else if (key === 'bmi' ||
+                 key === 'respiratory_rate' ||
+                 key === 'pulse' ||
+                 key === 'body_temperature' ||
+                 key === 'height' ||
+                 key === 'weight' ||
+                 key === 'pulse_oxymetry') {
+            atomic_unit += 'basic_vitals';
         }
         else if (key === 'sex' ||
                  key === 'vital_status' ||
@@ -85,6 +101,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         if (key === 'blood_pressure_systolic' ||
             key === 'blood_pressure_diastolic' ||
             key === 'sex' ||
+            key === 'bmi' ||
+            key === 'respiratory_rate' ||
+            key === 'pulse' ||
+            key === 'body_temperature' ||
+            key === 'height' ||
+            key === 'weight' ||
+            key === 'pulse_oxymetry' ||
             key === 'vital_status' ||
             key === 'age') {
             atomic_unit += key;
@@ -315,6 +338,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         map.add('blood_pressure_systolic', 'blood_pressure');
         map.add('blood_pressure_diastolic', 'blood_pressure');
+        map.add('bmi', 'basic_vitals');
+        map.add('respiratory_rate', 'basic_vitals');
+        map.add('pulse', 'basic_vitals');
+        map.add('body_temperature', 'basic_vitals');
+        map.add('height', 'basic_vitals');
+        map.add('weight', 'basic_vitals');
+        map.add('pulse_oxymetry', 'basic_vitals');
+        map.add('vital_status', 'demographics');
         map.add('sex', 'demographics');
         map.add('age', 'demographics');
         map.add('dx', 'dx_code');

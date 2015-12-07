@@ -59,7 +59,6 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                         // use component query to  toggle the hidden state of upper value
                         if (value !== 'select') {
                             combo.up('grid').down('#measureComparator').show();
-                            combo.up('grid').down('#measureValue').show();
                         } else {
                             combo.up('grid').down('#measureComparator').hide();
                             combo.up('grid').down('#measureValue').hide();

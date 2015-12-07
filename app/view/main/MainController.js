@@ -99,16 +99,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 vitalValue;
 
             var payload = {
-                type: 'demographics',
+                type: 'vital_status',
                 key: 'vital_status',
                 comparator: 'eq',
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
                 value: vitalValue,
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue)
+                atom: cardioCatalogQT.service.UtilityService.make_atom('vital_status', 'vital_status', comparatorValue, vitalValue)
             };
 
-            atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue);
+            atom = cardioCatalogQT.service.UtilityService.make_atom('vital_status', 'vital_status', comparatorValue, vitalValue);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
         }
 
