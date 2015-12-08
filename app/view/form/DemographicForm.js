@@ -204,6 +204,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 listeners: {
                     click: function (button) {
                         button.up('grid').down('#raceValue').show();
+                        button.up('grid').down('#ethnicValue').show();
                         button.up('grid').down('#hideRace').show();
                         button.up('grid').down('#showRace').hide();
                     }
@@ -217,6 +218,8 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                     click: function (button) {
                         button.up('grid').down('#raceValue').hide();
                         button.up('grid').down('#raceValue').setValue('');
+                        button.up('grid').down('#ethnicValue').hide();
+                        button.up('grid').down('#ethnicValue').setValue('');
                         button.up('grid').down('#hideRace').hide();
                         button.up('grid').down('#showRace').show();
                     }
@@ -230,32 +233,26 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 triggerAction: 'all',
                 forceSelection: true,
                 fieldLabel: 'Select race',
-                displayField: 'name',
-                valueField: 'value',
+                displayField: 'description',
+                fieldName: 'description',
+                valueField: 'code',
                 hidden: true,
-                store: {
-                    fields: ['name', 'value'],
-                    data: [
-                        {name: 'female', value: 'f'},
-                        {name: 'male', value: 'm'}
-
-                        //TODO: make dropdown menu items in db
-                        /*'American Indian or Alaska Native'
-                        'American Indian or Alaska Native, Black or African American'
-                        'American Indian or Alaska Native, White'
-                        'Asian'
-                        'Asian, White'
-                        'Black or African American'
-                        'Black or African American, White'
-                        'Declined / Unknown'
-                        'Declined / Unknown, White'
-                        'Hispanic or Latino'
-                        'Native Hawaiian or Other Pacific Islander'
-                        'Not Hispanic or Latino'
-                        'White'*/
-
-                    ]
-                }
+                store: 'Races'
+            },{ // Ethnicity
+                xtype: 'combo',
+                itemId: 'ethnicValue',
+                queryMode: 'local',
+                editable: false,
+                value: 'eq',
+                triggerAction: 'all',
+                forceSelection: true,
+                fieldLabel: 'Select ethnicity',
+                displayField: 'description',
+                fieldName: 'description',
+                valueField: 'code',
+                hidden: true,
+                store: 'Ethnicities'
+            },{
             },{
                 //minWidth: 80,
                 text: 'Add to search',
