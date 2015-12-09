@@ -32,7 +32,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 width: 400,
                 itemId: 'labCode',
                 queryMode: 'local',
-                editable: false,
+                //editable: false,
                 triggerAction: 'all',
                 forceSelection: true,
                 loading: true,
@@ -40,7 +40,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 displayField: 'description',
                 fieldName: 'description',
                 valueField: 'code',
-                value: '13457-7',
+                value: '',//'13457-7',
                 store: 'Labs'
             },{
                 xtype: 'button',
