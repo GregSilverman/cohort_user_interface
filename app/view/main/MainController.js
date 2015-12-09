@@ -99,7 +99,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 vitalValue;
 
             var payload = {
-                type: 'vital_status',
+                type: 'Demographics',
                 key: 'vital_status',
                 comparator: 'eq',
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),

@@ -680,7 +680,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                                     if (response.status === 200) {
 
-                                        console.log('happiness')
+                                        // TODO: test that this works
+                                        test.load(function() {
+                                            // reload grid
+                                            Ext.ComponentQuery.query('#queryGrid')[0].getStore().load();
+                                        });
 
                                     } else {
                                         if (cardioCatalogQT.config.mode === 'test') {
