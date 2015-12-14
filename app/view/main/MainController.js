@@ -710,6 +710,36 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     },
 
+    onMedSelectionChange: function(selections, sm) {
+
+        var rx = []
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('meds:');
+            console.log(selections);
+            console.log(selections.selected.items);
+            //console.log(Ext.ComponentQuery.query('#medTree'))
+        }
+
+        test = selections.selected.items
+
+        Ext.each(test, function (items) {
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('YESH')
+                console.log(items)
+                console.log(items.data.code + items.data.name)
+                rx.push(items.data.code,items.data.name);
+                console.log('rx');
+                console.log(rx);
+            }
+
+        }); // each()
+
+
+
+    },
+
     // custom control of toggling disabled status of form buttons
     // control which buttons being toggled by looking at store to which selected object is bound
     onSelectionChange: function(selections, sm) {
@@ -719,6 +749,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(selections);
             console.log(selections.selected.items);
             console.log(Ext.ComponentQuery.query('#searchSelected'));
+
         }
 
         // control for disabling button on SavedQueries;
@@ -813,6 +844,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
         }
     },
+
 
     onCriterionOr: function (button) {
         var options = {

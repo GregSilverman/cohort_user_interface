@@ -1,0 +1,212 @@
+{
+  "text": ".",
+  "children": [
+    {
+      "name": "Cardioselective",
+      //"code": '13.25,
+      "type": "Therapeutic class",
+      "iconCls": "task-folder",
+      "expanded": true,
+      "children": [
+        {
+          "name": "Beta blockers",
+          /* 'Timolol 5 MG/ML Ophthalmic Solution'
+          'Propranolol Hydrochloride 20 MG Oral Tablet'
+          'Metoprolol Tartrate 50 MG Oral Tablet'
+          'Metoprolol Tartrate 25 MG Oral Tablet'
+          'Metoprolol Tartrate 100 MG Oral Tablet'
+          'Metoprolol Tartrate 1 MG/ML Injectable Solution'
+          'Esmolol hydrochloride 20 MG/ML Injectable Solution'
+          'Esmolol hydrochloride 10 MG/ML Injectable Solution'
+          'Brimonidine tartrate 2 MG/ML / Timolol 5 MG/ML Ophthalmic Solution'
+          'Atenolol 50 MG Oral Tablet'
+          'Atenolol 25 MG Oral Tablet'
+          'Atenolol 100 MG Oral Tablet'
+          '24 HR metoprolol succinate 50 MG Extended Release Oral Tablet'
+          '24 HR metoprolol succinate 25 MG Extended Release Oral Tablet'
+          '24 HR metoprolol succinate 200 MG Extended Release Oral Tablet'
+          '24 HR metoprolol succinate 100 MG Extended Release Oral Tablet'*/
+
+
+          //"code": 1.25,
+          "type": "Pharma class",
+          "iconCls": "task-folder",
+          "children": [
+            {
+              "name": "Atenolol",
+              "code": '0.25',
+              "type": "Drug",
+              "leaf": true,
+              "iconCls": "task"
+            }, {
+              "name": "Esmolol",
+              "code": '0.4',
+              "type": "Drug",
+              "leaf": true,
+              "iconCls": "task",
+              "done": true
+            }, {
+              "name": "Metoprolol",
+              "code": '0.4',
+              "type": "Drug",
+              "leaf": true,
+              "iconCls": "task"
+            }, {
+              "name": "Propranolol",
+              "code": '0.2',
+              "type": "Drug",
+              "leaf": true,
+              "iconCls": "task"
+            }
+          ]
+        }, {
+          "name": "Pharma 2",
+          //"code": '12',
+          "type": "Pharma class",
+          "iconCls": "task-folder",
+          "expanded": true,
+          "children": [
+            {
+              "name": "Pharma sub 1",
+              //"code": '2.75',
+              "type": "Pharma subclass",
+              "iconCls": "task-folder",
+              "children": [
+                {
+                  "name": "Drug 5",
+                  "code": '1.25',
+                  "type": "Drug",
+                  "iconCls": "task",
+                  "leaf": true
+                }, {
+                  "name": "Drug 6",
+                  "code": '1.5',
+                  "type": "Drug",
+                  "iconCls": "task",
+                  "leaf": true
+                }
+              ]
+            },
+            {
+              "name": "Pharma sub 2",
+              //"code": '2.75',
+              "type": "Pharma subclass",
+              "iconCls": "task-folder",
+              "children": [
+                {
+                  "name": "Drug 7",
+                  "code": '2.75',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task",
+                  "done": true
+                },
+                {
+                  "name": "Drug 8",
+                  "code": '0.75',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task",
+                  "done": true
+                },
+                {
+                  "name": "Drug 9",
+                  "code": '2',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }, /*{
+      "task": "Project: Testing",
+      "code": 2,
+      "type": "Core Team",
+      "iconCls": "task-folder",
+      "children": [
+        {
+          "task": "Mac OSX",
+          "code": 0.75,
+          "type": "Tommy Maintz",
+          "iconCls": "task-folder",
+          "children": [
+            {
+              "task": "FireFox",
+              "code": 0.25,
+              "type": "Tommy Maintz",
+              "iconCls": "task",
+              "leaf": true
+            }, {
+              "task": "Safari",
+              "code": 0.25,
+              "type": "Tommy Maintz",
+              "iconCls": "task",
+              "leaf": true
+            }, {
+              "task": "Chrome",
+              "code": 0.25,
+              "type": "Tommy Maintz",
+              "iconCls": "task",
+              "leaf": true
+            }
+          ]
+        }, {
+          "task": "Windows",
+          "code": 3.75,
+          "type": "Darrell Meyer",
+          "iconCls": "task-folder",
+          "children": [
+            {
+              "task": "FireFox",
+              "code": 0.25,
+              "type": "Darrell Meyer",
+              "iconCls": "task",
+              "leaf": true
+            }, {
+              "task": "Safari",
+              "code": 0.25,
+              "type": "Darrell Meyer",
+              "iconCls": "task",
+              "leaf": true
+            }, {
+              "task": "Chrome",
+              "code": 0.25,
+              "type": "Darrell Meyer",
+              "iconCls": "task",
+              "leaf": true
+            }, {
+              "task": "Internet Explorer",
+              "code": 3,
+              "type": "Darrell Meyer",
+              "iconCls": "task",
+              "leaf": true
+            }
+          ]
+        }, {
+          "task": "Linux",
+          "code": 0.5,
+          "type": "Aaron Conran",
+          "iconCls": "task-folder",
+          "children": [
+            {
+              "task": "FireFox",
+              "code": 0.25,
+              "type": "Aaron Conran",
+              "iconCls": "task",
+              "leaf": true
+            }, {
+              "task": "Chrome",
+              "code": 0.25,
+              "type": "Aaron Conran",
+              "iconCls": "task",
+              "leaf": true
+            }
+          ]
+        }
+      ]
+    }*/
+  ]
+}

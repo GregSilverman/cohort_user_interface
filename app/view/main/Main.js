@@ -48,6 +48,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             },{
                 xtype: 'procedureGrid'
             },{
+               xtype: 'tree-grid'
+            },
+            {
                 xtype: 'queryGrid'
             },{
                 xtype: 'resultsGrid',
