@@ -10,24 +10,6 @@
       "children": [
         {
           "name": "Beta blockers",
-          /* 'Timolol 5 MG/ML Ophthalmic Solution'
-          'Propranolol Hydrochloride 20 MG Oral Tablet'
-          'Metoprolol Tartrate 50 MG Oral Tablet'
-          'Metoprolol Tartrate 25 MG Oral Tablet'
-          'Metoprolol Tartrate 100 MG Oral Tablet'
-          'Metoprolol Tartrate 1 MG/ML Injectable Solution'
-          'Esmolol hydrochloride 20 MG/ML Injectable Solution'
-          'Esmolol hydrochloride 10 MG/ML Injectable Solution'
-          'Brimonidine tartrate 2 MG/ML / Timolol 5 MG/ML Ophthalmic Solution'
-          'Atenolol 50 MG Oral Tablet'
-          'Atenolol 25 MG Oral Tablet'
-          'Atenolol 100 MG Oral Tablet'
-          '24 HR metoprolol succinate 50 MG Extended Release Oral Tablet'
-          '24 HR metoprolol succinate 25 MG Extended Release Oral Tablet'
-          '24 HR metoprolol succinate 200 MG Extended Release Oral Tablet'
-          '24 HR metoprolol succinate 100 MG Extended Release Oral Tablet'*/
-
-
           //"code": 1.25,
           "type": "Pharma class",
           "iconCls": "task-folder",
@@ -36,27 +18,152 @@
               "name": "Atenolol",
               "code": '0.25',
               "type": "Drug",
-              "leaf": true,
-              "iconCls": "task"
+              //"leaf": true,
+              "iconCls": "task-folder",
+              "children": [
+                {
+                  "name": "Atenolol 50 MG Oral Tablet",
+                  "code": '0.25',
+                  "type": "Drug with dosage",
+                  "leaf": true,
+                  "iconCls": "task"
+                },
+                {
+                  "name": "Atenolol 25 MG Oral Tablet",
+                  "code": '0.25',
+                  "type": "Drug with dosage",
+                  "leaf": true,
+                  "iconCls": "task"
+                },
+                {
+                  "name": "Atenolol 100 MG Oral Tablet",
+                  "code": '0.25',
+                  "type": "Drug with dosage",
+                  "leaf": true,
+                  "iconCls": "task"
+                }],
+
             }, {
               "name": "Esmolol",
               "code": '0.4',
               "type": "Drug",
-              "leaf": true,
+              //"leaf": true,
               "iconCls": "task",
-              "done": true
+              "done": true,
+              "children": [
+                {
+                  "name": "Esmolol hydrochloride 20 MG/ML Injectable Solution",
+                  "code": '0.4',
+                  "type": "Drug with dosage",
+                  "leaf": true,
+                  "iconCls": "task",
+                  "done": true,
+                },
+                {
+                  "name": "Esmolol hydrochloride 10 MG/ML Injectable Solution'",
+                  "code": '0.4',
+                  "type": "Drug with dosage",
+                  "leaf": true,
+                  "iconCls": "task",
+                  "done": true,
+                }
+              ]
             }, {
               "name": "Metoprolol",
               "code": '0.4',
               "type": "Drug",
-              "leaf": true,
-              "iconCls": "task"
-            }, {
+              //"leaf": true,
+              "iconCls": "task-folder",
+              "children": [
+                {
+                  "name": "Metoprolol Tartrate 50 MG Oral Tablet",
+                  "code": '0.4',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                },
+                {
+                  "name": "Metoprolol Tartrate 25 MG Oral Tablet",
+                  "code": '0.4',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                },
+                {
+                  "name": "Metoprolol Tartrate 100 MG Oral Tablet'",
+                  "code": '0.4',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                },
+                {
+                  "name": "Metoprolol Tartrate 50 MG Oral Tablet",
+                  "code": '0.4',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                },
+                {
+                  "name": "Metoprolol Tartrate 25 MG Oral Tablet'",
+                  "code": '0.4',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                },
+                {
+                  "name": "Metoprolol Tartrate 100 MG Oral Tablet'",
+                  "code": '0.4',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                },
+                {
+                  "name": "Metoprolol Tartrate 1 MG/ML Injectable Solution",
+                  "code": '0.4',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                }
+              ]
+            },
+            {
               "name": "Propranolol",
               "code": '0.2',
               "type": "Drug",
-              "leaf": true,
-              "iconCls": "task"
+              //"leaf": true,
+              //"iconCls": "task-folder",
+              "children": [
+                {
+                  "name": "Propranolol Hydrochloride 20 MG Oral Tablet",
+                  "code": '0.2',
+                  "type": "Drug with dosage",
+                  "leaf": true,
+                  "iconCls": "task"
+                }
+              ]
+            },
+            {
+              "name": "Timolol",
+              "code": '0.2',
+              "type": "Drug",
+              //"leaf": true,
+              "iconCls": "task",
+              "children": [
+                {
+                  "name": "Timolol 5 MG/ML Ophthalmic Solution",
+                  "code": '0.2',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                },
+                {
+                  "name": "Brimonidine tartrate 2 MG/ML / Timolol 5 MG/ML Ophthalmic Solution",
+                  "code": '0.2',
+                  "type": "Drug",
+                  "leaf": true,
+                  "iconCls": "task"
+                }
+              ]
             }
           ]
         }, {
