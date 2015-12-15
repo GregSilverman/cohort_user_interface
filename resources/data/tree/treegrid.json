@@ -78,49 +78,49 @@
                 {
                   "name": "Metoprolol Tartrate 50 MG Oral Tablet",
                   "code": '0.4',
-                  "type": "Drug",
+                  "type": "Drug with dosage",
                   "leaf": true,
                   "iconCls": "task"
                 },
                 {
                   "name": "Metoprolol Tartrate 25 MG Oral Tablet",
                   "code": '0.4',
-                  "type": "Drug",
+                  "type": "Drug with dosage",
                   "leaf": true,
                   "iconCls": "task"
                 },
                 {
                   "name": "Metoprolol Tartrate 100 MG Oral Tablet'",
                   "code": '0.4',
-                  "type": "Drug",
+                  "type": "Drug with dosage",
                   "leaf": true,
                   "iconCls": "task"
                 },
                 {
                   "name": "Metoprolol Tartrate 50 MG Oral Tablet",
                   "code": '0.4',
-                  "type": "Drug",
+                  "type": "Drug with dosage",
                   "leaf": true,
                   "iconCls": "task"
                 },
                 {
                   "name": "Metoprolol Tartrate 25 MG Oral Tablet'",
                   "code": '0.4',
-                  "type": "Drug",
+                  "type": "Drug with dosage",
                   "leaf": true,
                   "iconCls": "task"
                 },
                 {
                   "name": "Metoprolol Tartrate 100 MG Oral Tablet'",
                   "code": '0.4',
-                  "type": "Drug",
+                  "type": "Drug with dosage",
                   "leaf": true,
                   "iconCls": "task"
                 },
                 {
                   "name": "Metoprolol Tartrate 1 MG/ML Injectable Solution",
                   "code": '0.4',
-                  "type": "Drug",
+                  "type": "Drug with dosage",
                   "leaf": true,
                   "iconCls": "task"
                 }
@@ -152,14 +152,14 @@
                 {
                   "name": "Timolol 5 MG/ML Ophthalmic Solution",
                   "code": '0.2',
-                  "type": "Drug",
+                  "type": "Drug with dosage",
                   "leaf": true,
                   "iconCls": "task"
                 },
                 {
                   "name": "Brimonidine tartrate 2 MG/ML / Timolol 5 MG/ML Ophthalmic Solution",
                   "code": '0.2',
-                  "type": "Drug",
+                  "type": "Drug with dosage",
                   "leaf": true,
                   "iconCls": "task"
                 }
