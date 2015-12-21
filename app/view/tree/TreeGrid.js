@@ -40,7 +40,7 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                 model: cardioCatalogQT.model.tree.Task,
                 proxy: {
                     type: 'ajax',
-                    url: 'resources/data/tree/treegrid.json'
+                    url: 'resources/data/tree/test.json'
                 },
                 folderSort: true
             }),dockedItems: [{
