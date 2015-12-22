@@ -1,4 +1,4 @@
-Ext.define('cardioCatalogQT.model.tree.Task', {
+Ext.define('cardioCatalogQT.model.tree.MedsMenu', {
     extend: 'cardioCatalogQT.model.tree.Base',
     fields: [{
         name: 'name', // task
@@ -9,8 +9,5 @@ Ext.define('cardioCatalogQT.model.tree.Task', {
     }, {
         name: 'code', // duration
         type: 'string' // float
-    }, {
-        name: 'done',
-        type: 'boolean'
     }]
 });

@@ -18,9 +18,10 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
         'Ext.grid.*',
         'Ext.tree.*',
         'Ext.ux.CheckColumn',
-        'cardioCatalogQT.model.tree.Task'
+        'cardioCatalogQT.model.tree.MedsMenu'
     ],
-    xtype: 'tree-grid',
+    //xtype: 'tree-grid',
+    xtype: 'form',
     itemId: 'medTree',
 
     reserveScrollbar: true,
@@ -37,10 +38,11 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
 
         Ext.apply(this, {
             store: new Ext.data.TreeStore({
-                model: cardioCatalogQT.model.tree.Task,
+                model: cardioCatalogQT.model.tree.MedsMenu,
                 proxy: {
                     type: 'ajax',
-                    url: 'resources/data/tree/test.json'
+                    //url: 'resources/data/tree/test.json'
+                    url: 'http://127.0.0.1:5000/meds'
                 },
                 folderSort: true
             }),dockedItems: [{
@@ -63,11 +65,11 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                 },'-',{
                     //reference: 'orButton',
                     text: 'Add to search',
-                    itemId: 'orButton',
+                    itemId: 'submitButton',
                     tooltip: 'Add the selected criteria as OR',
-                    iconCls: 'or',
-                    disabled: true,
-                    handler: 'onCriterionOr'
+                    iconCls: 'add',
+                    disabled: false,
+                    handler: 'onSubmitMedicationsTest'
                 },{
                     labelWidth: 130,
                     xtype: 'triggerfield',

@@ -650,6 +650,31 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }); // each()
     },
 
+    onSubmitMedicationsTest: function(button) {
+        var rx = [],
+            form = button.up('form'),
+            selections = form.getSelectionModel().getSelection();
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('selection:');
+            console.log(form);
+            console.log(selections);
+        }
+
+        Ext.each(selections, function (items) {
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('YESH')
+                console.log(items)
+                console.log(items.data.type + items.data.name)
+                rx.push(items.data.type,items.data.name);
+                console.log('rx');
+                console.log(rx);
+            }
+
+        }); // each()
+    },
+
     onSubmitSaved: function(button) {
         var grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
@@ -712,7 +737,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
     onMedSelectionChange: function(selections, sm) {
 
-        var rx = []
+        var rx = [];
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('meds:');
@@ -728,8 +753,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('YESH')
                 console.log(items)
-                console.log(items.data.code + items.data.name)
-                rx.push(items.data.code,items.data.name);
+                console.log(items.data.type + items.data.name)
+                rx.push(items.data.type,items.data.name);
                 console.log('rx');
                 console.log(rx);
             }

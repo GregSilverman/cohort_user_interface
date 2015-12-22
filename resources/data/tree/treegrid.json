@@ -2,16 +2,16 @@
   "text": ".",
   "children": [
     {
-      "name": "Cardioselective",
+      "name": "Beta Blocker",
       //"code": '13.25,
-      "type": "Therapeutic class",
+      "type": "Pharma class",
       "iconCls": "task-folder",
       "expanded": true,
       "children": [
         {
-          "name": "Beta blockers",
+          "name": "Cardioselective",
           //"code": 1.25,
-          "type": "Pharma class",
+          "type": "Pharma subclass",
           "iconCls": "task-folder",
           "children": [
             {
@@ -126,7 +126,7 @@
                 }
               ]
             },
-            {
+           /* {
               "name": "Propranolol",
               "code": '0.2',
               "type": "Drug",
@@ -141,7 +141,7 @@
                   "iconCls": "task"
                 }
               ]
-            },
+            },*/
             {
               "name": "Timolol",
               "code": '0.2',

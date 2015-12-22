@@ -64,16 +64,16 @@ Ext.define('cardioCatalogQT.Application', {
             //apiFactor: '/api/factor',
             apiGetQ: '/get_query/',
             //apiGetQ: '/api/get_query/',
-            //apiWriteQ: '/api/remote_query_put',
-            apiReadQ: 'api/remote_query_get',
+            apiWriteQ: '/api/remote_query_put',
+            apiReadQ: '/api/remote_query_get',
+            //apiMedsMenu: '/api/meds',
+            //apiMedsMenu: '/meds',
             remove: 'none'
         };
 
         // TODO - Launch the application
 
         Ext.onReady(function () {
-
-
 
 
         });
