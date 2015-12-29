@@ -40,6 +40,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             delimiter = ';',
             parent = cardioCatalogQT.service.UtilityService.parent_hash(type);
 
+        if (type === 'rx'){
+            parent = key;
+        }
+
         // section "a" of query
         atomic_unit = type +
             seperator +
@@ -351,7 +355,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         map.add('dx', 'dx_code');
         map.add('lab', 'test_code');
         map.add('px', 'proc_code');
-        map.add('rx', 'drug_code');
+        //map.add('rx', 'drug_code');
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('parent');

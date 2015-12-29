@@ -22,6 +22,7 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
     ],
     //xtype: 'tree-grid',
     xtype: 'form',
+    alias: 'widget.medTree',
     itemId: 'medTree',
 
     reserveScrollbar: true,
@@ -57,11 +58,11 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                 items: [{
                     //reference: 'andButton',
                     text: 'Constrain by date',
-                    itemId: 'andButton',
+                    itemId: 'testButton',
                     tooltip: 'Add the selected criteria as AND',
-                    iconCls: 'and',
+                    iconCls: 'test',
                     disabled: true,
-                    handler: 'onCriterionAnd'
+                    handler: 'onCriterionTest'
                 },'-',{
                     //reference: 'orButton',
                     text: 'Add to search',
@@ -161,39 +162,16 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                 flex: 2,
                 sortable: true,
                 dataIndex: 'name'
-            },/*{
-                //we must use the templateheader component so we can use a custom tpl
-                text: 'Code',
-                flex: 1,
-                sortable: true,
-                dataIndex: 'code',
-                //align: 'center',
-                //add in the custom tpl for the rows
-                //tpl: Ext.create('Ext.XTemplate', '{duration:this.formatHours}', {
-                //    formatHours: function(v) {
-                //        if (v < 1) {
-                //            return Math.round(v * 60) + ' mins';
-                //        } else if (Math.floor(v) !== v) {
-                //            var min = v - Math.floor(v);
-                //            return Math.floor(v) + 'h ' + Math.round(min * 60) + 'm';
-                //        } else {
-                //            return v + ' hour' + (v === 1 ? '' : 's');
-                //        }
-                //    }
-                //})
-            },*/{
+            },{
                 text: 'Type',
                 flex: 1,
                 dataIndex: 'type',
                 sortable: true
-            }/*, {
-                xtype: 'checkcolumn',
-                header: 'Done',
-                dataIndex: 'done',
+            }, {
+                dataIndex: 'drug_code',
                 width: 55,
-                stopSelection: false,
-                menuDisabled: true
-            },{
+                hidden: false
+            }/*,{
                 text: 'Add to search',
                 width: 55,
                 menuDisabled: true,

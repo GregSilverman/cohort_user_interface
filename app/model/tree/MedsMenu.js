@@ -7,7 +7,7 @@ Ext.define('cardioCatalogQT.model.tree.MedsMenu', {
         name: 'type', // user
         type: 'string'
     }, {
-        name: 'code', // duration
+        name: 'drug_code', // duration
         type: 'string' // float
     }]
 });

@@ -653,7 +653,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     onSubmitMedicationsTest: function(button) {
         var rx = [],
             form = button.up('form'),
-            selections = form.getSelectionModel().getSelection();
+            selections = form.getSelectionModel().getSelection(),
+            criterion,
+            drug_key,
+            drug_value,
+            atom;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('selection:');
@@ -663,13 +667,42 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         Ext.each(selections, function (items) {
 
+            criterion = items.data.type + ' ' + items.data.name;
+
+            if (items.data.type !== 'BRAND_NAME') {
+                drug_key = items.data.type;
+                drug_value = items.data.name;
+                drug_value = drug_value.replace(' ','_'); // deal with spaces in URL
+                console.log(drug_key)
+            }
+            else{
+                drug_key = 'drug_code';
+                drug_value = items.data.drug_code;
+                console.log('!!!!!!');
+            }
+
+            var payload = {
+                type: 'rx',
+                key: drug_key,
+                comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
+                value: drug_value,
+                description: items.data.name.toUpperCase(),
+                criteria: criterion,
+                atom: cardioCatalogQT.service.UtilityService.make_atom('rx', drug_key, 'eq', drug_value)
+            };
+
+            atom = cardioCatalogQT.service.UtilityService.make_atom('rx', drug_key, 'eq', drug_value);
+            //cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('YESH')
                 console.log(items)
-                console.log(items.data.type + items.data.name)
-                rx.push(items.data.type,items.data.name);
+                console.log(items.data.type + items.data.name + items.data.drug_code)
+                rx.push(items.data.type,items.data.name,items.data.drug_code);
                 console.log('rx');
                 console.log(rx);
+                console.log(atom)
             }
 
         }); // each()
@@ -760,8 +793,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
         }); // each()
-
-
 
     },
 
