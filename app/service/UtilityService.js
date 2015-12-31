@@ -801,8 +801,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log('call to make url: ' + url);
         }
 
+        // show loadMask during request
+        Ext.getBody().mask("Computing...");
+
         Ext.Ajax.request({
             cors: true,
+            timeout: 60000, //default is 30 seconds
             url: url,
             useDefaultXhrHeader: true,
             headers: {
@@ -843,6 +847,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     }
                 }
 
+                // stop loadMask
+                Ext.getBody().unmask();
                 store.load(function() {
                     console.log('ON LOAD')
                     console.log(store.collect('sid').length)
