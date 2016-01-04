@@ -55,14 +55,11 @@ Ext.define('cardioCatalogQT.Application', {
         cardioCatalogQT.config = {
 
             mode: 'test', // switch to control use of staging or production server
-            //protocol: 'https://',
-            protocol: 'http://',
+            protocol: 'https://',
+            //protocol: 'http://',
             //host: 'cc.cardio.umn.edu',
-            host: '127.0.0.1',
+            //host: '127.0.0.1',
 				//:5000',
-            //apiLogin: '/token',
-            //apiLogin: '/api/token',
-            //apiFactor: '/api/factor',
             //apiGetQ: '/get_query/',
             apiGetQ: '/api/get_query/',
             apiWriteQ: '/api/remote_query_put',

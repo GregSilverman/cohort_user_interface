@@ -8,7 +8,8 @@ Ext.define('cardioCatalogQT.store.Procedures', {
 
         proxy: {
             type: 'rest',
-            url: 'http://127.0.0.1:5000/menu/procedures',
+            //url: 'http://127.0.0.1:5000/menu/procedures',
+            url: 'https://vein.ahc.umn.edu/api/menu/procedures',
             reader: {
                 type: 'json',
                 rootProperty: 'menu_test'

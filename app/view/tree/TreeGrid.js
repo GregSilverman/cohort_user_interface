@@ -43,7 +43,8 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                 proxy: {
                     type: 'ajax',
                     //url: 'resources/data/tree/test.json'
-                    url: 'http://127.0.0.1:5000/meds'
+                    //url: 'http://127.0.0.1:5000/meds'
+                    url: 'https://vein.ahc.umn.edu/api/meds'
                 },
                 folderSort: true
             }),dockedItems: [{
