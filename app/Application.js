@@ -58,6 +58,7 @@ Ext.define('cardioCatalogQT.Application', {
             protocol: 'https://',
             //protocol: 'http://',
             //host: 'cc.cardio.umn.edu',
+            host: 'vein.ahc.umn.edu',
             //host: '127.0.0.1',
 				//:5000',
             //apiGetQ: '/get_query/',
