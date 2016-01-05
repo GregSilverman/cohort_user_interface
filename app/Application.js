@@ -21,7 +21,6 @@ Ext.define('cardioCatalogQT.Application', {
     stores: [
         'Diagnoses',
         'Labs',
-        'Medications',
         'Procedures',
         'Payload',
         'Queries',
@@ -55,14 +54,13 @@ Ext.define('cardioCatalogQT.Application', {
         cardioCatalogQT.config = {
 
             mode: 'test', // switch to control use of staging or production server
-            protocol: 'https://',
-            //protocol: 'http://',
+            //protocol: 'https://',
+            protocol: 'http://',
             //host: 'cc.cardio.umn.edu',
-            host: 'vein.ahc.umn.edu',
-            //host: '127.0.0.1',
-				//:5000',
-            //apiGetQ: '/get_query/',
-            apiGetQ: '/api/get_query/',
+            //host: 'vein.ahc.umn.edu',
+            host: '127.0.0.1:5000',
+            apiGetQ: '/get_query/',
+            //apiGetQ: '/api/get_query/',
             apiWriteQ: '/api/remote_query_put',
             apiReadQ: '/api/remote_query_get',
             //apiMedsMenu: '/api/meds',

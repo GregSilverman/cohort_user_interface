@@ -7,7 +7,7 @@ Ext.define('cardioCatalogQT.view.grid.Results', {
 
     requires: [
         'cardioCatalogQT.view.main.MainController',
-        'Ext.ux.exporter.Exporter',
+        'Ext.ux.exporter.Exporter'
     ],
     items: [{
         xtype: 'exporterbutton',

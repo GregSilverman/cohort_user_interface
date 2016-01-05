@@ -806,7 +806,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         Ext.Ajax.request({
             cors: true,
-            timeout: 60000, //default is 30 seconds
+            timeout: 240000, //default is 30 seconds
             url: url,
             useDefaultXhrHeader: true,
             headers: {
