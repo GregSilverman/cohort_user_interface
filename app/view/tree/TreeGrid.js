@@ -42,8 +42,8 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                 model: cardioCatalogQT.model.tree.MedsMenu,
                 proxy: {
                     type: 'ajax',
-                    //url: 'resources/data/tree/test.json'
-                    url: 'http://127.0.0.1:5000/meds'
+                    url: 'resources/data/tree/meds_menu.json'
+                    //url: 'http://127.0.0.1:5000/meds'
                 },
                 folderSort: true
             }),dockedItems: [{
