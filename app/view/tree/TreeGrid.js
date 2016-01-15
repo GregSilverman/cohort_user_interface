@@ -27,7 +27,7 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
 
     reserveScrollbar: true,
 
-    title: 'Medications Test',
+    title: 'Meds',
     height: 370,
     useArrows: true,
     rootVisible: false,
@@ -44,6 +44,8 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                     type: 'ajax',
                     url: 'resources/data/tree/meds_menu.json'
                     //url: 'http://127.0.0.1:5000/meds'
+                    //url: 'resources/data/tree/test.json'
+                    //url: 'https://vein.ahc.umn.edu/api/meds'
                 },
                 folderSort: true
             }),dockedItems: [{

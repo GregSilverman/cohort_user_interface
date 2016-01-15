@@ -9,6 +9,7 @@ Ext.define('cardioCatalogQT.store.Ethnicities', {
         proxy: {
             type: 'rest',
             url: 'http://127.0.0.1:5000/menu/ethnicity',
+            //url: 'https://vein.ahc.umn.edu/api/menu/ethnicity',
             reader: {
                 type: 'json',
                 rootProperty: 'menu_test'

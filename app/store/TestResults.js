@@ -18,7 +18,9 @@ Ext.define('cardioCatalogQT.store.TestResults', {
 
         proxy: {
             //type: 'localstorage',
+            //url: 'http://127.0.0.1/api/remote_results_get',
             url: 'http://127.0.0.1:5000/remote_results_get',
+            //url: 'https://vein.ahc.umn.edu/api/remote_results_get',
             //type: 'localstorage',
             type: 'rest',
             reader: {
