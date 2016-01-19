@@ -160,16 +160,17 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
             },
             columns: [{
                 xtype: 'treecolumn', //this is so we know which column will show the tree
-                text: 'Drug Tree',
+                text: 'Medications',
                 flex: 2,
                 sortable: true,
                 dataIndex: 'name'
-            },{
-                text: 'Type',
-                flex: 1,
-                dataIndex: 'type',
-                sortable: true
-            }, {
+            },//{
+              //  text: 'Type',
+              //  flex: 1,
+              //  dataIndex: 'type',
+              //  sortable: true
+            //},
+            {
                 dataIndex: 'drug_code',
                 width: 55,
                 hidden: false
