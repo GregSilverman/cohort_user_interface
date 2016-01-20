@@ -624,6 +624,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
                 + test_date;
             }
+
+
             var payload = {
                 type: 'rx',
                 key: 'rx_code',
@@ -657,6 +659,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             criterion,
             drug_key,
             drug_value,
+            type,
             atom;
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -665,11 +668,19 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(selections);
         }
 
+        /*map.add('rx_code', 'drug_code');
+        map.add('rx_therapeutic_class', 'THERAPEUTIC_CLASS_ORIG');
+        map.add('rx_pharmaceutical_class', 'PHARMACEUTICAL_CLASS_ORIG');
+        map.add('rx_pharmaceutical_subclass', 'PHARMACEUTICAL_SUBCLASS_ORIG');*/
+
         Ext.each(selections, function (items) {
+
+
+            drug_key = items.data.type
 
             criterion = items.data.type + ' ' + items.data.name;
 
-            if (items.data.type !== 'BRAND_NAME') {
+            if (!items.data.drug_code) {
                 drug_key = items.data.type;
                 drug_value = items.data.name;
                 drug_value = drug_value.replace(' ','_'); // deal with spaces in URL

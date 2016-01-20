@@ -47,6 +47,10 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                     //url: 'resources/data/tree/test.json'
                     //url: 'https://vein.ahc.umn.edu/api/meds'
                 },
+                sorters: [{
+                    property: 'name',
+                    direction: 'ASC'
+                }],
                 folderSort: true
             }),dockedItems: [{
                 xtype: 'toolbar',

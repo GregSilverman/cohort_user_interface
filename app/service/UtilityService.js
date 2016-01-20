@@ -355,6 +355,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         map.add('dx', 'dx_code');
         map.add('lab', 'test_code');
         map.add('px', 'proc_code');
+        /*map.add('rx_code', 'drug_code');
+        map.add('rx_therapeutic_class', 'THERAPEUTIC_CLASS_ORIG');
+        map.add('rx_pharmaceutical_class', 'PHARMACEUTICAL_CLASS_ORIG');
+        map.add('rx_pharmaceutical_subclass', 'PHARMACEUTICAL_SUBCLASS_ORIG');*/
+
         //map.add('rx', 'drug_code');
 
         if (cardioCatalogQT.config.mode === 'test') {
