@@ -668,28 +668,21 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(selections);
         }
 
-        /*map.add('rx_code', 'drug_code');
-        map.add('rx_therapeutic_class', 'THERAPEUTIC_CLASS_ORIG');
-        map.add('rx_pharmaceutical_class', 'PHARMACEUTICAL_CLASS_ORIG');
-        map.add('rx_pharmaceutical_subclass', 'PHARMACEUTICAL_SUBCLASS_ORIG');*/
-
         Ext.each(selections, function (items) {
 
 
-            drug_key = items.data.type
+            drug_key = items.data.type;
 
             criterion = items.data.type + ' ' + items.data.name;
 
             if (!items.data.drug_code) {
                 drug_key = items.data.type;
                 drug_value = items.data.name;
-                drug_value = drug_value.replace(' ','_'); // deal with spaces in URL
-                console.log(drug_key)
+                drug_value = drug_value.replace(new RegExp(' ', 'gi'),'_'); // RegEx to deal with spaces in URL
             }
             else{
                 drug_key = 'drug_code';
                 drug_value = items.data.drug_code;
-                console.log('!!!!!!');
             }
 
             var payload = {
@@ -707,13 +700,14 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             //cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
             if (cardioCatalogQT.config.mode === 'test') {
-                console.log('YESH')
-                console.log(items)
+                console.log(drug_key);
+                console.log('YESH');
+                console.log(items);
                 console.log(items.data.type + items.data.name + items.data.drug_code)
                 rx.push(items.data.type,items.data.name,items.data.drug_code);
                 console.log('rx');
                 console.log(rx);
-                console.log(atom)
+                console.log(atom);
             }
 
         }); // each()
