@@ -169,7 +169,6 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                         {name: 'between', value: 'bt'}
                     ]
                 },
-
                 listeners: {
                     change: function(combo, value) {
                         // use component query to  toggle the hidden state of upper value
@@ -180,7 +179,8 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                         }
                         if (value === 'prn') {
                             combo.up('grid').down('#ageValue').hide();
-                        } else {
+                        }
+                        if (value !== 'prn' && value !== 'bt' && value !== null){
                             combo.up('grid').down('#ageValue').show();
                         }
                     }
@@ -189,7 +189,6 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 xtype: 'numberfield',
                 itemId: 'ageValue',
                 fieldLabel: 'value of',
-                value: '',
                 hidden: true
             },{
                 xtype: 'numberfield',

@@ -5,6 +5,10 @@
  *
  * TODO - Replace this content of this view to suite the needs of your application.
  */
+
+
+// TODO: clear controls after submitting query
+
 Ext.define('cardioCatalogQT.view.main.MainController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.main-view',
@@ -844,12 +848,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
             if (Ext.ComponentQuery.query('#notButton')[0].disabled === true &&
                 Ext.ComponentQuery.query('#saveQuery')[0].disabled === true &&
-                Ext.ComponentQuery.query('#showResults')[0].disabled === true &&
+                //Ext.ComponentQuery.query('#showResults')[0].disabled === true &&
                 selections.selected.length === 1) {
 
                 Ext.ComponentQuery.query('#notButton')[0].enable();
                 Ext.ComponentQuery.query('#saveQuery')[0].enable();
-                Ext.ComponentQuery.query('#showResults')[0].enable();
+                //Ext.ComponentQuery.query('#showResults')[0].enable();
             }
 
             // Deactivate controls
@@ -857,7 +861,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 Ext.ComponentQuery.query('#notButton')[0].disable();
                 Ext.ComponentQuery.query('#saveQuery')[0].disable();
-                Ext.ComponentQuery.query('#showResults')[0].disable();
+                //Ext.ComponentQuery.query('#showResults')[0].disable();
             }
             if (selections.selected.length < 2) {
 
