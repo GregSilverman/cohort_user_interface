@@ -97,8 +97,8 @@ Ext.define('cardioCatalogQT.view.form.MedicationForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        {name: '<=', value: 'le'},
-                        {name: '>=', value: 'ge'},
+                        {name: '<=', value: 'lss'},
+                        {name: '>=', value: 'grt'},
                         {name: 'between', value: 'bt'}
                     ]
                 },

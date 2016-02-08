@@ -133,7 +133,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         if (dateValue){
             atomic_unit += ',DATE,' +
                 cardioCatalogQT.service.UtilityService.date_hash(dateComparator) + ',' +
-                dateValue
+                dateValue;
         }
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -379,9 +379,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         map.add('eq', '=');
         map.add('lt', '<');
-        map.add('le', '<=');
+        map.add('lste', '<=');
         map.add('gt', '>');
-        map.add('ge', '>=');
+        map.add('grte', '>=');
         map.add('bt', 'between');
         map.add('prn', 'all');
 
@@ -419,8 +419,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         var map = new Ext.util.HashMap();
 
-        map.add('le', 'less');
-        map.add('ge', 'greater');
+        map.add('le', 'lss');
+        map.add('ge', 'grt');
         map.add('bt', 'between');
 
         if (cardioCatalogQT.config.mode === 'test') {

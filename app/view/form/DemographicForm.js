@@ -163,9 +163,10 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                     data: [
                         {name: 'all', value: 'prn'},
                         {name: '=', value: 'eq'},
-                        {name: '<=', value: 'le'},
+                        {name: '<', value: 'lt'},
+                        {name: '<=', value: 'lste'},
                         {name: '>', value: 'gt'},
-                        {name: '>=', value: 'ge'},
+                        {name: '>=', value: 'grte'},
                         {name: 'between', value: 'bt'}
                     ]
                 },
