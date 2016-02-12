@@ -629,12 +629,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             if (btn == 'ok') {
                 // process text value and close...
 
-                console.log('query name:')
-                console.log(text);
+                //console.log('query name:');
+                //console.log(text);
 
                 if (selection) {
 
-                    console.log('A' + text);
+                    //console.log('A' + text);
                     // array of elements on which to filter
                     Ext.Array.each(selection, function (item) {
                         filtered.push(item.data.id);

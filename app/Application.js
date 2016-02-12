@@ -18,6 +18,20 @@ Ext.define('cardioCatalogQT.Application', {
     
     name: 'cardioCatalogQT',
 
+    requires: [
+        'Ext.app.*',
+        'cardioCatalogQT.config.Config',
+        'Ext.ux.exporter.Exporter',
+        'Ext.state.CookieProvider',
+        'Ext.window.MessageBox',
+        'Ext.tip.QuickTipManager',
+        'Ext.form.Panel',
+        'Ext.ux.form.MultiSelect',
+        'Ext.ux.form.ItemSelector',
+        'cardioCatalogQT.*',
+        'Ext.overrides.selection.CheckboxModel'
+    ],
+
     stores: [
         'Diagnoses',
         'Labs',
@@ -28,18 +42,6 @@ Ext.define('cardioCatalogQT.Application', {
         'TestResults',
         'Races',
         'Ethnicities'
-    ],
-    requires: [
-        'Ext.app.*',
-        'Ext.ux.exporter.Exporter',
-        'Ext.state.CookieProvider',
-        'Ext.window.MessageBox',
-        'Ext.tip.QuickTipManager',
-        'Ext.form.Panel',
-        'Ext.ux.form.MultiSelect',
-        'Ext.ux.form.ItemSelector',
-        'cardioCatalogQT.*',
-        'Ext.overrides.selection.CheckboxModel'
     ],
 
     init: function() {
@@ -61,8 +63,8 @@ Ext.define('cardioCatalogQT.Application', {
             host: '127.0.0.1:5000',
             apiGetQ: '/get_query/',
             //apiGetQ: '/api/get_query/',
-            apiWriteQ: '/api/remote_query_put',
-            apiReadQ: '/api/remote_query_get',
+            apiWriteQ: '/remote_query_put',
+            apiReadQ: '/remote_query_get',
             //apiMedsMenu: '/api/meds',
             //apiMedsMenu: '/meds',
             remove: 'none'

@@ -9,8 +9,9 @@ Ext.define('cardioCatalogQT.store.Queries', {
 
             proxy: {
             type: 'rest',
-                //url: 'https://cc.cardio.umn.edu/api/remote_query_get',
-                url: 'https://vein.ahc.umn.edu/api/remote_query_get',
+                url: cardioCatalogQT.config.protocol +
+                     cardioCatalogQT.config.host +
+                     cardioCatalogQT.config.apiQueryGet,
                 reader: {
                 type: 'json',
                     rootProperty: 'cc_query'
