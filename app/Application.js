@@ -61,12 +61,9 @@ Ext.define('cardioCatalogQT.Application', {
             //host: 'cc.cardio.umn.edu',
             //host: 'vein.ahc.umn.edu',
             host: '127.0.0.1:5000',
-            apiGetQ: '/get_query/',
-            //apiGetQ: '/api/get_query/',
+            apiGetQ: '/submit_query/',
             apiWriteQ: '/remote_query_put',
             apiReadQ: '/remote_query_get',
-            //apiMedsMenu: '/api/meds',
-            //apiMedsMenu: '/meds',
             remove: 'none'
         };
 
