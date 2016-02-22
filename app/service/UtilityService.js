@@ -883,7 +883,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         Ext.getBody().mask("Computing...");
         obj = {
             query: {
-                payload: url,
+                payload: atom
             }
         };
 
