@@ -881,16 +881,35 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         // show loadMask during request
         Ext.getBody().mask("Computing...");
+        obj = {
+            query: {
+                payload: url,
+            }
+        };
+
 
         Ext.Ajax.request({
-            cors: true,
+
+            // GET
+            /*cors: true,
             timeout: 600000, //default is 30 seconds
             url: url,
             useDefaultXhrHeader: true,
             headers: {
                 'Accept': 'application/json'
             },
+            disableCaching: false,*/
+
+            // test for POST
+            cors: true,
+            useDefaultXhrHeader: false,
+            url: 'http://127.0.0.1:5000/test_post',
+            jsonData: obj,
+            headers: {
+                'Accept': 'application/json'
+            },
             disableCaching: false,
+
             success: function(response) {
                 json = Ext.decode(response.responseText);
                 if (cardioCatalogQT.config.mode === 'test') {
