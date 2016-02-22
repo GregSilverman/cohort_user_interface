@@ -856,7 +856,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         url += cardioCatalogQT.config.host;
         url += cardioCatalogQT.config.apiGetQ;
-        url += atom;
+        //url += atom;
 
         cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload, print_all);
 
@@ -865,6 +865,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     submit_query: function(url, source, atom, payload, print_all){
 
         var json = [],
+            obj,
             records = [],
             //store = Ext.create('cardioCatalogQT.store.TestResults'),
             store = Ext.getStore('TestResults'),
@@ -889,21 +890,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
 
         Ext.Ajax.request({
-
-            // GET
-            /*cors: true,
-            timeout: 600000, //default is 30 seconds
-            url: url,
-            useDefaultXhrHeader: true,
-            headers: {
-                'Accept': 'application/json'
-            },
-            disableCaching: false,*/
-
-            // test for POST
             cors: true,
             useDefaultXhrHeader: false,
-            url: 'http://127.0.0.1:5000/test_post',
+            url: url,
             jsonData: obj,
             headers: {
                 'Accept': 'application/json'
