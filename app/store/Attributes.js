@@ -2,7 +2,7 @@ Ext.define('cardioCatalogQT.store.Attributes', {
     extend: 'Ext.data.Store',
     alias: 'store.Races',
     config:{
-        model: 'cardioCatalogQT.model.Attributes',
+        model: 'cardioCatalogQT.model.Attribute',
         storeId: 'Attributes',
         autoLoad: true,
 
