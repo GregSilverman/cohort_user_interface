@@ -1,4 +1,4 @@
-Ext.define('cardioCatalogQT.store.Races', {
+Ext.define('cardioCatalogQT.store.Attributes', {
     extend: 'Ext.data.Store',
     alias: 'store.Races',
     config:{
