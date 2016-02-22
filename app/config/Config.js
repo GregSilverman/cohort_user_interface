@@ -11,7 +11,8 @@ Ext.define("cardioCatalogQT.config.Config", {
         host: '127.0.0.1:5000',
         apiMenu: '/menu/',
         apiResultsGet: '/remote_results_get',
-        apiQueryGet: '/remote_query_get'
+        apiQueryGet: '/remote_query_get',
+        apiAttributeGet: '/attribute'
 
     },
 

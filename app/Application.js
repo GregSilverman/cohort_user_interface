@@ -33,6 +33,7 @@ Ext.define('cardioCatalogQT.Application', {
     ],
 
     stores: [
+        'Attribute',
         'Diagnoses',
         'Labs',
         'Procedures',
