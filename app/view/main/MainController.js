@@ -590,7 +590,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             criterion,
             drug_key,
             drug_value,
-            i = 0,
             atom;
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -600,9 +599,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
 
         Ext.each(selections, function (items) {
-
-            console.log('i:')
-            console.log(i);
 
             drug_key = items.data.type;
 
@@ -646,8 +642,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(rx);
                 console.log(atom);
             }
-
-            i += i;
 
         }); // each()
     },
