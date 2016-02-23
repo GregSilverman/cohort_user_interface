@@ -703,8 +703,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 atom: cardioCatalogQT.service.UtilityService.make_atom('rx', drug_key, 'eq', drug_value)
             };
 
+            console.log('button')
+            console.log(button);
+
             atom = cardioCatalogQT.service.UtilityService.make_atom('rx', drug_key, 'eq', drug_value);
-            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved', payload);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log(drug_key);

@@ -827,10 +827,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
-            selection = grid.getSelectionModel().getSelection(),
+            //selection = grid.getSelectionModel().getSelection(),
             source,
             print_all = false;
 
+        console.log('in url:')
         console.log(Ext.ComponentQuery.query('#searchGrid')[0].getStore());
 
         if (from == 'submitSaved') {
@@ -845,17 +846,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             console.log(from);
             console.log('grid');
             console.log(grid);
-            console.log('selection');
-            console.log(selection);
             console.log('store');
             console.log(source);
-            console.log('storeId');
-            console.log(grid.store.storeId);
             console.log('atom ' + atom);
         }
 
         url += cardioCatalogQT.config.host;
         url += cardioCatalogQT.config.apiGetQ;
+        // only needed for http GET request
         //url += atom;
 
         cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload, print_all);
