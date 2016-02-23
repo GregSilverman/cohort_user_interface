@@ -680,9 +680,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             criterion = items.data.type + ' ' + items.data.name;
 
             if (!items.data.drug_code) {
+
                 drug_key = items.data.type;
                 drug_value = items.data.name;
-                drug_value = drug_value.replace(new RegExp(' ', 'gi'),'_'); // RegEx to deal with spaces in URL
+                drug_value = drug_value.replace(new RegExp(' ', 'gi'),'_').
+                    replace(new RegExp(Ext.String.escapeRegex('('), 'gi'),'{').
+                    replace(new RegExp(Ext.String.escapeRegex(')'), 'gi'),'}'); // RegEx to deal with special characters
             }
             else{
                 drug_key = 'drug_code';
@@ -701,7 +704,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             };
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('rx', drug_key, 'eq', drug_value);
-            //cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log(drug_key);
