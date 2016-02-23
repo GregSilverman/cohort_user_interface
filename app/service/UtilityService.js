@@ -928,7 +928,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     console.log(store);
                     console.log('N');
                     console.log(store.getCount());
-                    console.log(store.collect('sid').length)
+                    console.log(store.collect('sid').length);
                     console.log(payload.atom);
                 }
 
@@ -936,7 +936,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 Ext.getBody().unmask();
                 store.load(function() {
                     console.log('ON LOAD')
-                    console.log(store.collect('sid').length)
+                    console.log(store.collect('sid').length);
 
                     // only add to grid if not showing results
                     if (!print_all) {

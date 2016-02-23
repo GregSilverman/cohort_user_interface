@@ -584,79 +584,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onSubmitMedications: function(button) {
-        var atom,
-            rx = [],
-            form = button.up('grid'),
-            medications = form.down('#medication').store.data.items,
-            whenComparator = form.down('#whenComparator').value,
-            whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value,
-            criterion,
-            date_comparator;
-
-            whenValue = Ext.Date.format(whenValue, 'Y-m-d');
-            upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
-            date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('show submitted Rx:');
-            console.log(medications);
-        }
-
-        Ext.Array.each(medications, function (item) {
-
-            var test_date = whenValue;
-
-            if (whenComparator === 'bt') {
-
-                if (!upperWhenValue) {
-                    alert('Please enter max date to continue')
-                }
-                else {
-                    test_date += ',' + upperWhenValue;
-                }
-            }
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log(item)
-            }
-
-            // TODO: implement citerion builder independent of all data in stores
-            criterion =  item.data.description;
-
-            if (test_date){
-                criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
-                + test_date;
-            }
-
-
-            var payload = {
-                type: 'rx',
-                key: 'rx_code',
-                comparator: 'eq',
-                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
-                value: item.data.code,
-                description: item.data.description.toUpperCase(),
-                dateComparator: whenComparator,
-                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                dateValue: test_date,
-                criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq', item.data.code, whenComparator, test_date)
-            };
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                rx.push(item.data.code,item.data.description);
-                console.log('rx');
-                console.log(rx);
-            }
-
-            atom = cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
-
-        }); // each()
-    },
-
-    onSubmitMedicationsTest: function(button) {
         var rx = [],
             form = button.up('form'),
             selections = form.getSelectionModel().getSelection(),
@@ -673,7 +600,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
 
         Ext.each(selections, function (items) {
-
 
             drug_key = items.data.type;
 
@@ -703,9 +629,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 criteria: criterion,
                 atom: cardioCatalogQT.service.UtilityService.make_atom('rx', drug_key, 'eq', drug_value)
             };
-
-            console.log('button')
-            console.log(button);
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('rx', drug_key, 'eq', drug_value);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved', payload);
