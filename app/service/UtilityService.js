@@ -918,17 +918,18 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                         }
 
-                        if (cardioCatalogQT.config.mode === 'test') {
-                            console.log(records);
-                            console.log('store');
-                            console.log(store);
-                            console.log('N');
-                            console.log(store.getCount());
-                            console.log(store.collect('sid').length)
-                            console.log(payload.atom);
-                        }
 
                     }
+                }
+
+                if (cardioCatalogQT.config.mode === 'test') {
+                    console.log(records);
+                    console.log('store');
+                    console.log(store);
+                    console.log('N');
+                    console.log(store.getCount());
+                    console.log(store.collect('sid').length)
+                    console.log(payload.atom);
                 }
 
                 // stop loadMask
