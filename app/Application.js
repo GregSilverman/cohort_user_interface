@@ -4,6 +4,13 @@
  * details.
  */
 
+// TODO:
+//  -> submit multiples from multiselect/tree
+//  -> do not allow empty submit
+//  -> lab units
+//  -> vital units
+//  -> 'cache' attribute
+
 // See https://github.com/yogeshpandey009/Ext.ux.Exporter/
 Ext.Loader.setConfig({
     enabled: true,
