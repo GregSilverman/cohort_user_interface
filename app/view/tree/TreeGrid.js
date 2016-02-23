@@ -73,7 +73,7 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                     //reference: 'orButton',
                     text: 'Add to search',
                     itemId: 'submitButton',
-                    tooltip: 'Add the selected criteria as OR',
+                    tooltip: 'Add the selected criteria',
                     iconCls: 'add',
                     disabled: false,
                     handler: 'onSubmitMedications'
