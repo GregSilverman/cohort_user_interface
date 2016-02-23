@@ -685,7 +685,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 drug_value = items.data.name;
                 drug_value = drug_value.replace(new RegExp(' ', 'gi'),'_').
                     replace(new RegExp(Ext.String.escapeRegex('('), 'gi'),'{').
-                    replace(new RegExp(Ext.String.escapeRegex(')'), 'gi'),'}'); // RegEx to deal with special characters
+                    replace(new RegExp(Ext.String.escapeRegex(')'), 'gi'),'}').
+                    replace(new RegExp(Ext.String.escapeRegex('&'), 'gi'),'and'); // RegEx to deal with special characters
             }
             else{
                 drug_key = 'drug_code';
