@@ -133,6 +133,7 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                 //minWidth: 80,
                 text: 'Add to search',
                 xtype: 'button',
+                disabled: true,
                 itemId: 'searchClick',
                 handler: 'onSubmitDiagnoses'
             }]

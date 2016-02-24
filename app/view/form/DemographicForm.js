@@ -70,6 +70,16 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                         {name: 'male', value: 'm'},
                         {name: 'any', value: 'prn'}
                     ]
+                },
+                listeners: {
+                    change: function(combo, value) {
+                        // use component query to  toggle the hidden state of upper value
+                        if (value) {
+                            combo.up('grid').down('#searchClick').enable();
+                        } else if (!value){
+                            combo.up('grid').down('#searchClick').disable();
+                        }
+                    }
                 }
             }, {
                 xtype: 'button',
@@ -115,6 +125,16 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                         {name: 'Deceased', value: 'd'},
                         {name: 'any', value: 'prn'}
                     ]
+                },
+                listeners: {
+                    change: function(combo, value) {
+                        // use component query to  toggle the hidden state of upper value
+                        if (value) {
+                            combo.up('grid').down('#searchClick').enable();
+                        } else if (!value){
+                            combo.up('grid').down('#searchClick').disable();
+                        }
+                    }
                 }
             }, {
                 xtype: 'button',
@@ -190,7 +210,18 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 xtype: 'numberfield',
                 itemId: 'ageValue',
                 fieldLabel: 'value of',
-                hidden: true
+                hidden: true,
+                listeners: {
+                    change: function (fld, newValue, oldValue, opts) {
+                        // only enable if a value is being submitted
+                        if (newValue) {
+                            fld.up('grid').down('#searchClick').enable();
+                        }
+                        else if (!newValue){
+                            fld.up('grid').down('#searchClick').disable();
+                        }
+                    }
+                }
             },{
                 xtype: 'numberfield',
                 itemId: 'upperAgeValue',

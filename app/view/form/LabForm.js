@@ -206,6 +206,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 //minWidth: 80,
                 text: 'Add to search',
                 xtype: 'button',
+                disabled: true,
                 itemId: 'searchClick',
                 handler: 'onSubmitLabs'
             }]
