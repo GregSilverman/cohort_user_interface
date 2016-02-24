@@ -714,7 +714,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log('meds:');
             console.log(selections);
             console.log(selections.selected.items);
-            //console.log(Ext.ComponentQuery.query('#medTree'))
         }
 
         test = selections.selected.items
@@ -884,7 +883,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         var grid = button.up('grid'),
             source = grid.store,
             store = Ext.getStore(source),
-            print_all = true,
             selection = grid.getView().getSelectionModel().getSelection(),
             url = cardioCatalogQT.config.protocol,
             atom,
@@ -922,18 +920,15 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('ATOM HERE:');
             console.log(atom);
+            console.log(grid.up());
         }
 
         url += cardioCatalogQT.config.host;
         url += cardioCatalogQT.config.apiGetQ;
-        url += atom;
-
-        console.log(grid.up())
 
         Ext.ComponentQuery.query('#resultsGrid')[0].enable();
 
-
-        cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload, print_all);
+        cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload);
 
         store.clearFilter();
         grid.getStore().load();

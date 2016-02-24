@@ -702,13 +702,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             if (btn == 'ok') {
                 // process text value and close...
 
-                //console.log('query name:');
-                //console.log(text);
-
                 if (selection) {
 
-                    //console.log('A' + text);
-                    // array of elements on which to filter
                     Ext.Array.each(selection, function (item) {
                         filtered.push(item.data.id);
 
@@ -734,9 +729,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                                     record.get('criteria') === item.data.criteria) {
                                     return true;  // a record with this data exists
                                 }
-
                                 return false;  // there is no record in the store with this data
-
                             }
                         );
 
@@ -775,8 +768,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                                     }
                                 },
                                 failure: function (response) {
-                                    //me.sessionToken = null;
-                                    //me.signInFailure('Login failed. Please try again later.');
+
+                                    // error message here
                                 }
                             });
                         }
@@ -827,12 +820,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
-            //selection = grid.getSelectionModel().getSelection(),
-            source,
-            print_all = false;
+            source;
 
-        console.log('in url:')
-        console.log(Ext.ComponentQuery.query('#searchGrid')[0].getStore());
 
         if (from == 'submitSaved') {
             source = Ext.ComponentQuery.query('#searchGrid')[0].getStore();
@@ -853,26 +842,18 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         url += cardioCatalogQT.config.host;
         url += cardioCatalogQT.config.apiGetQ;
-        // only needed for http GET request
-        //url += atom;
 
-        cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload, print_all);
+        cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload);
 
     },
 
-    submit_query: function(url, source, atom, payload, print_all){
+    submit_query: function(url, source, atom, payload){
 
         var json = [],
             obj,
             records = [],
-            //store = Ext.create('cardioCatalogQT.store.TestResults'),
             store = Ext.getStore('TestResults'),
-            i,
-            max;
-
-        //store.getProxy().clear();
-        //store.data.clear();
-        //store.sync();
+            n;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
@@ -880,15 +861,17 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         // show loadMask during request
         Ext.getBody().mask("Computing...");
+
+        // payload for POST
         obj = {
             query: {
                 payload: atom
             }
         };
 
-
         Ext.Ajax.request({
             cors: true,
+            timeout: 600000, //default is 30 seconds
             useDefaultXhrHeader: false,
             url: url,
             jsonData: obj,
@@ -900,61 +883,42 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             success: function(response) {
                 json = Ext.decode(response.responseText);
                 if (cardioCatalogQT.config.mode === 'test') {
-                    console.log('json' + json);
+                    console.log('json');
+                    console.log(json);
                 }
 
-                if (print_all) {
-                    if (json !== null && typeof (json) !== 'undefined') {
+                // count returned from http response
+                n = json.items;
 
-                        for (i = 0, max = json.items.length; i < max; i += 1) {
+                if (json !== null && typeof (json) !== 'undefined') {
 
-                            records.push({
-                                sid: json.items[i].sid,
-                                attribute: json.items[i].attribute,
-                                string: json.items[i].value_s,
-                                number: json.items[i].value_d
-                            });
-
-
-                        }
-
-
+                    if (cardioCatalogQT.config.mode === 'test') {
+                        console.log(records);
+                        console.log('store');
+                        console.log(store);
+                        console.log('N');
+                        console.log(json.items);
+                        console.log(payload.atom);
                     }
-                }
 
-                if (cardioCatalogQT.config.mode === 'test') {
-                    console.log(records);
-                    console.log('store');
-                    console.log(store);
-                    console.log('N');
-                    console.log(store.getCount());
-                    console.log(store.collect('sid').length);
-                    console.log(payload.atom);
-                }
+                    source.add({
+                        key: payload.key,
+                        type: payload.type,
+                        description: payload.description,
+                        criteria: payload.criteria,
+                        atom: payload.atom,
+                        n: n
+                    });
+                    source.sync();
 
-                // stop loadMask
-                Ext.getBody().unmask();
-                store.load(function() {
-                    console.log('ON LOAD')
-                    console.log(store.collect('sid').length);
-
-                    // only add to grid if not showing results
-                    if (!print_all) {
-                        source.add({
-                            key: payload.key,
-                            type: payload.type,
-                            description: payload.description,
-                            criteria: payload.criteria,
-                            atom: payload.atom,
-                            n: store.collect('sid').length // get length of array for unique sids
-                        });
-                        source.sync();
-                    }
                     // update grid store content
                     Ext.StoreMgr.get('Payload').load();
                     Ext.ComponentQuery.query('#searchGrid')[0].getStore().load();
-                });
 
+
+                    // stop loadMask
+                    Ext.getBody().unmask();
+                }
 
             }
         });

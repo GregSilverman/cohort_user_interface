@@ -116,7 +116,18 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                 itemId: 'measureValue',
                 fieldLabel: 'Min value',
                 hidden: true,
-                value: ''
+                value: '',
+                listeners: {
+                    change: function (fld, newValue, oldValue, opts) {
+                        // only enable if a value is being submitted
+                        if (newValue) {
+                            fld.up('grid').down('#searchClick').enable();
+                        }
+                        else if (!newValue){
+                            fld.up('grid').down('#searchClick').disable();
+                        }
+                    }
+                }
             },
             {
                 xtype: 'numberfield',
@@ -209,6 +220,7 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                 //minWidth: 80,
                 text: 'Add to search',
                 xtype: 'button',
+                disabled: true,
                 itemId: 'searchClick',
                 handler: 'onSubmitVitals'
             }]
