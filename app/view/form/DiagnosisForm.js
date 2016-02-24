@@ -45,8 +45,12 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
 
                     search: function (text) {
                         cardioCatalogQT.service.UtilityService.multi_select_search(text, this);
+                    },
+                    onSelect : function() {
+                        Ext.Msg.alert('Change', 'MultiSelect has changed');
                     }
-                }
+                },
+
             },{
                 xtype: 'tbspacer',
                 height:25
