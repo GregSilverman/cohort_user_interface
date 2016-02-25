@@ -32,7 +32,6 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 width: 400,
                 itemId: 'labCode',
                 queryMode: 'local',
-                //editable: false,
                 triggerAction: 'all',
                 forceSelection: true,
                 loading: true,
@@ -41,35 +40,17 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 fieldName: 'description',
                 valueField: 'code',
                 value: '',//'13457-7',
-                store: 'Labs'
-            },{
-                xtype: 'button',
-                text: 'Constrain lab value',
-                itemId: 'showLab',
-                hidden: false,
+                store: 'Labs',
+                // set label with units
                 listeners: {
-                    click: function (button) {
-                        button.up('grid').down('#labComparator').show();
-                        button.up('grid').down('#labValue').show();
-                        button.up('grid').down('#hideLab').show();
-                        button.up('grid').down('#showLab').hide();
-                    }
-                }
-            }, {
-                xtype: 'button',
-                text: 'Hide lab constraint',
-                itemId: 'hideLab',
-                hidden: true,
-                listeners: {
-                    click: function (button) {
-                        button.up('grid').down('#labComparator').hide();
-                        button.up('grid').down('#labValue').hide();
-                        button.up('grid').down('#upperLabValue').hide();
-                        button.up('grid').down('#labComparator').setValue('');
-                        button.up('grid').down('#labValue').setValue('');
-                        button.up('grid').down('#upperLabValue').setValue('');
-                        button.up('grid').down('#hideLab').hide();
-                        button.up('grid').down('#showLab').show();
+                    change: function(combo, value) {
+                        if (value) {
+                            record = this.getSelectedRecord();
+                            console.log(record.raw.units);
+                            units = record.raw.units;
+                            console.log(combo.up('grid').down('#labValue'))
+                            combo.up('grid').down('#labValue').setFieldLabel('value (' + units + ')');
+                        }
                     }
                 }
             },
@@ -85,11 +66,11 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 fieldLabel: 'that is',
                 displayField: 'name',
                 valueField: 'value',
-                hidden: true,
+                //hidden: true,
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        {name: 'all', value: 'prn'},
+                       // {name: 'all', value: 'prn'},
                         {name: '=', value: 'eq'},
                         {name: '<', value: 'lt'},
                         {name: '<=', value: 'lste'},
@@ -117,8 +98,6 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
             {
                 xtype: 'textfield',
                 itemId: 'labValue',
-                fieldLabel: 'Min value',
-                hidden: true,
                 value: ''
             },
             {
@@ -206,7 +185,6 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 //minWidth: 80,
                 text: 'Add to search',
                 xtype: 'button',
-                disabled: true,
                 itemId: 'searchClick',
                 handler: 'onSubmitLabs'
             }]

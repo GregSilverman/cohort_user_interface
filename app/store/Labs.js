@@ -10,11 +10,10 @@ Ext.define('cardioCatalogQT.store.Labs', {
             type: 'rest',
             url: cardioCatalogQT.config.protocol +
                  cardioCatalogQT.config.host +
-                 cardioCatalogQT.config.apiMenu +
-                 'labs',
+                 cardioCatalogQT.config.apiLabs,
             reader: {
                 type: 'json',
-                rootProperty: 'menu_test'
+                rootProperty: 'lab_units'
             }
         }
     }

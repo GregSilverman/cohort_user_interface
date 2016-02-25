@@ -3,7 +3,8 @@ Ext.define('cardioCatalogQT.model.Lab', {
     
     fields: [
         { name: 'code', type: 'string' },
-        { name: 'description', type: 'string' }
+        { name: 'description', type: 'string' },
+        { name: 'units', type: 'string' }
 
     ]
 });

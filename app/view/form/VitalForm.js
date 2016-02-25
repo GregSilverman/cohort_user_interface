@@ -23,37 +23,40 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
             labelWidth: 100
         },
 
+        /*  xtype: 'combo',
+         flex: 1,
+         width: 400,
+         itemId: 'labCode',
+         queryMode: 'local',
+         //editable: false,
+         triggerAction: 'all',
+         forceSelection: true,
+         loading: true,
+         fieldLabel: 'Select lab type',
+         displayField: 'description',
+         fieldName: 'description',
+         valueField: 'code',
+         value: '',//'13457-7',
+         store: 'Labs',*/
+
         // inline buttons
         dockedItems: [ {
             itemId: 'vitals',
             items: [ { // Vitals
                 xtype: 'combo',
+                flex: 1,
+                width: 400,
                 itemId: 'measureCode',
                 queryMode: 'local',
                 editable: false,
                 value: 'select',
                 triggerAction: 'all',
                 forceSelection: true,
+                loading: true,
                 fieldLabel: 'Select vital measure type',
-                displayField: 'name',
-                valueField: 'code',
-                store: {
-                    fields: ['name', 'code'],
-                    data: [
-                        {name: 'Select measure', code: 'select'},
-                        {name: 'Systolic blood pressure', code: 'blood_pressure_systolic'},
-                        {name: 'Diastolic blood pressure', code: 'blood_pressure_diastolic'},
-                        {name: 'Respiratory rate', code: 'respiratory_rate'},
-                        {name: 'Pulse', code: 'pulse'},
-                        {name: 'Temperature', code: 'body_temperature'},
-                        {name: 'Height', code: 'height'},
-                        {name: 'Weight', code: 'weight'},
-                        {name: 'BMI', code: 'bmi'},
-                        {name: 'Pulse Oxymetry', code: 'pulse_oxymetry'}
-
-                    ]
-                },
-
+                displayField: 'measure',
+                valueField: 'field_name',
+                store: 'BasicVitals',
                 listeners: {
                     change: function (combo, value) {
                         // use component query to  toggle the hidden state of upper value
@@ -66,6 +69,19 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                             combo.up('grid').down('#measureComparator').setValue('');
                             combo.up('grid').down('#measureValue').setValue('');
                             combo.up('grid').down('#upperMeasureValue').setValue('');
+                        }
+                        // set label with units
+                        if (value) {
+                            record = this.getSelectedRecord();
+                            console.log(record.raw.units);
+                            units = record.raw.units;
+                            console.log(combo.up('grid').down('#measureValue'))
+                            if (record.raw.units) {
+                                combo.up('grid').down('#measureValue').setFieldLabel('min value in ' + Ext.util.Format.lowercase(units));
+                            }
+                            else {
+                                combo.up('grid').down('#measureValue').setFieldLabel('min value:');
+                            }
                         }
                     }
                 }
@@ -86,10 +102,10 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        {name: 'all', value: 'prn'},
+                        //{name: 'all', value: 'prn'},
                         {name: '=', value: 'eq'},
                         {name: '<', value: 'lt'},
-                        {name: '<=', value: 'lste'},
+                        {name: '<=', value: 'lete'},
                         {name: '>', value: 'gt'},
                         {name: '>=', value: 'grte'},
                         {name: 'between', value: 'bt'}
@@ -110,11 +126,15 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                         }
                     }
                 }
+            },{
+                xtype: 'label',
+                itemId: 'measureUnits'
             },
+
             {
                 xtype: 'textfield',
                 itemId: 'measureValue',
-                fieldLabel: 'Min value',
+                //fieldLabel: 'Min value',
                 hidden: true,
                 value: '',
                 listeners: {
