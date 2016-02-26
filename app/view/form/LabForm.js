@@ -70,7 +70,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                       // {name: 'all', value: 'prn'},
+                        {name: 'all', value: 'prn'},
                         {name: '=', value: 'eq'},
                         {name: '<', value: 'lt'},
                         {name: '<=', value: 'lste'},

@@ -68,7 +68,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                     data: [
                         {name: 'female', value: 'f'},
                         {name: 'male', value: 'm'},
-                       // {name: 'any', value: 'prn'}
+                        {name: 'any', value: 'prn'}
                     ]
                 },
                 listeners: {
@@ -123,7 +123,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                     data: [
                         {name: 'Alive', value: 'l'},
                         {name: 'Deceased', value: 'd'},
-                        //{name: 'any', value: 'prn'}
+                        {name: 'any', value: 'prn'}
                     ]
                 },
                 listeners: {
@@ -181,7 +181,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        //{name: 'all', value: 'prn'},
+                        {name: 'all', value: 'prn'},
                         {name: '=', value: 'eq'},
                         {name: '<', value: 'lt'},
                         {name: '<=', value: 'lete'},

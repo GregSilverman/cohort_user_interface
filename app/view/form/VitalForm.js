@@ -102,7 +102,7 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                 store: {
                     fields: ['name', 'value'],
                     data: [
-                        //{name: 'all', value: 'prn'},
+                        {name: 'all', value: 'prn'},
                         {name: '=', value: 'eq'},
                         {name: '<', value: 'lt'},
                         {name: '<=', value: 'lete'},
@@ -121,8 +121,10 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                         }
                         if (value === 'prn') {
                             combo.up('grid').down('#measureValue').hide();
+                            combo.up('grid').down('#searchClick').enable();
                         } else {
                             combo.up('grid').down('#measureValue').show();
+                            combo.up('grid').down('#searchClick').disable();
                         }
                     }
                 }

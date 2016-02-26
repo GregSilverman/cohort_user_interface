@@ -26,7 +26,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         bodyPadding: 5
     },
     items: [{
-            region: 'north',
+            region: 'center',
             xtype: 'tabpanel',
             items:[{
                 title:'Main'
@@ -57,7 +57,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
         },
         {
             xtype: 'toolbar',
-            region: 'west',
+            region: 'north',
             vertical: true,
 
             items: [{
@@ -65,18 +65,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 src: 'resources/images/R3D3.png',
                 height: 50,
                 width: 280
-            },'-',{
-                text: 'Initiate advanced request',
-                xtype: 'button',
-
-                handler: function(button){
-                    var url = 'https://redcap.ahc.umn.edu/surveys/?s=nfHAssJw96';
-                    window.open(url);
-            }}]
+            }]
         },
         {
             xtype:'searchGrid',
-            region:'center'
+            region:'south'
         }
     ]
 });

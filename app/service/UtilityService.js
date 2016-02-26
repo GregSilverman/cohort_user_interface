@@ -452,7 +452,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         map.add('eq', '=');
         map.add('lt', '<');
-        map.add('lste', '<=');
+        map.add('lete', '<=');
         map.add('gt', '>');
         map.add('grte', '>=');
         map.add('bt', 'between');
