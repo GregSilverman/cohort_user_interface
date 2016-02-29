@@ -26,7 +26,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
         // inline buttons
         dockedItems: [{
             itemId: 'labs',
-            items: [ {
+            items: [{
                 width: 600,
                 text: 'Click here to search on the selected criteria',
                 xtype: 'button',
@@ -143,14 +143,24 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                             hidden: true
                         }]
                     }]
-                }, /*{
+                },{
+                    xtype: 'fieldset',
+                    defaults: {
+                        labelWidth: 89,
+                        anchor: '100%',
+                        layout: {
+                            type: 'vbox',
+                            defaultMargins: {top: 0, right: 5, bottom: 0, left: 0}
+                        }
+                    },
+                    items: [{
                     xtype: 'button',
                     text: 'Constrain search by date range',
                     itemId: 'showWhen',
                     hidden: false,
                     listeners: {
                         click: function (button) {
-                            button.up('grid').down('#whenComparator').show();
+                            button.up('grid').down('#whenId').show();
                             button.up('grid').down('#whenValue').show();
                             button.up('grid').down('#hideWhen').show();
                             button.up('grid').down('#showWhen').hide();
@@ -163,7 +173,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                     hidden: true,
                     listeners: {
                         click: function (button) {
-                            button.up('grid').down('#whenComparator').hide();
+                            button.up('grid').down('#whenId').hide();
                             button.up('grid').down('#whenValue').hide();
                             button.up('grid').down('#upperWhenValue').hide();
                             button.up('grid').down('#whenComparator').setValue('');
@@ -173,9 +183,12 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                             button.up('grid').down('#showWhen').show();
                         }
                     }
-            },*/ {
+            },
+                        {
                     xtype: 'fieldset',
                     title: 'Constrain by date',
+                    hidden: true,
+                    itemId: 'whenId',
                     defaults: {
                         labelWidth: 89,
                         anchor: '100%',
@@ -236,7 +249,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                                 hidden: true,
                                 hideTrigger:true
                         }]
-                    }]
+                    }]}]
                 }]
             }]
         }]

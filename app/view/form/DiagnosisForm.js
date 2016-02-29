@@ -72,107 +72,114 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                 },{
                     xtype: 'tbspacer',
                     height:25
-                },/*{
-                    xtype: 'button',
-                    text: 'Constrain search by date range',
-                    itemId: 'showWhen',
-                    hidden: false,
-                    listeners: {
-                        click: function (button) {
-                            button.up('grid').down('#whenComparator').show();
-                            button.up('grid').down('#whenValue').show();
-                            button.up('grid').down('#hideWhen').show();
-                            button.up('grid').down('#dateRange').show();
-                            button.up('grid').down('#showWhen').hide();
-                        }
-                    }
-                },{
-                    xtype: 'button',
-                    text: 'Hide date range',
-                    itemId: 'hideWhen',
-                    hidden: true,
-                    listeners: {
-                        click: function (button) {
-                            button.up('grid').down('#whenComparator').hide();
-                            button.up('grid').down('#whenValue').hide();
-                            button.up('grid').down('#upperWhenValue').hide();
-                            button.up('grid').down('#whenComparator').setValue('');
-                            button.up('grid').down('#whenValue').setValue('');
-                            button.up('grid').down('#upperWhenValue').setValue('');
-                            button.up('grid').down('#hideWhen').hide();
-                            button.up('grid').down('#showWhen').show();
-                        }
-                    }
-                },*/{
+                }, {
                     xtype: 'fieldset',
-                    title: 'Constrain by date',
                     collapsible: false,
                     defaults: {
                         labelWidth: 89,
                         anchor: '100%',
                         layout: {
-                            type: 'hbox',
+                            type: 'vbox',
                             defaultMargins: {top: 0, right: 5, bottom: 0, left: 0}
                         }
                     },
-                    items: [{ // When
-                        xtype: 'combo',
-                        width: 200,
-                        anchor: '20%',
-                        itemId: 'whenComparator',
-                        queryMode: 'local',
-                        editable: false,
-                        value: 'eq',
-                        triggerAction: 'all',
-                        forceSelection: true,
-                        fieldLabel: 'Select diagnosis date that is',
-                        displayField: 'name',
-                        valueField: 'value',
-                        store: {
-                            fields: ['name', 'value'],
-                            data: [
-                                {name: '<=', value: 'le'},
-                                {name: '>=', value: 'ge'},
-                                {name: 'between', value: 'bt'}
-                            ]
-                        },
-
+                    items: [{
+                        xtype: 'button',
+                        text: 'Constrain search by date range',
+                        itemId: 'showWhen',
+                        hidden: false,
                         listeners: {
-                            change: function (combo, value) {
-                                // use component query to  toggle the hidden state of upper value
-                                if (value === 'bt') {
-                                    combo.up('grid').down('#upperWhenValue').show();
-                                } else {
-                                    combo.up('grid').down('#upperWhenValue').hide();
-                                }
+                            click: function (button) {
+                                button.up('grid').down('#whenId').show();
+                                button.up('grid').down('#whenValue').show();
+                                button.up('grid').down('#hideWhen').show();
+                                button.up('grid').down('#showWhen').hide();
                             }
                         }
-                    },{
-                        xtype: 'fieldcontainer',
-                        combineErrors: true,
-                        msgTarget : 'side',
-                        defaults: {
-                            flex: 1,
-                            hideLabel: true
-                        },
-                        items: [{
-                            xtype: 'datefield',
-                            width: 100,
-                            //anchor: '20%',
-                            margin: '0 5 0 0',
-                            itemId: 'whenValue',
-                            fieldLabel: 'value of',
-                            hideTrigger:true
-                        },{
-                            xtype: 'datefield',
-                            width: 100,
-                            anchor: '20%',
-                            itemId: 'upperWhenValue',
-                            fieldLabel: 'and',
+                    }, {
+                        xtype: 'button',
+                        text: 'Hide date range',
+                        itemId: 'hideWhen',
+                        hidden: true,
+                        listeners: {
+                            click: function (button) {
+                                button.up('grid').down('#whenId').hide();
+                                button.up('grid').down('#whenValue').hide();
+                                button.up('grid').down('#upperWhenValue').hide();
+                                button.up('grid').down('#whenComparator').setValue('');
+                                button.up('grid').down('#whenValue').setValue('');
+                                button.up('grid').down('#upperWhenValue').setValue('');
+                                button.up('grid').down('#hideWhen').hide();
+                                button.up('grid').down('#showWhen').show();
+                            }
+                        }
+                    },
+                        {
+                            xtype: 'fieldset',
+                            title: 'Constrain by date',
                             hidden: true,
-                            hideTrigger:true
-                        }]
-                    }]
+                            itemId: 'whenId',
+                            defaults: {
+                                labelWidth: 89,
+                                anchor: '100%',
+                                layout: {
+                                    type: 'hbox',
+                                    defaultMargins: {top: 0, right: 5, bottom: 0, left: 0}
+                                }
+                            },
+                            items: [{ // When
+                                xtype: 'combo',
+                                width: 200,
+                                itemId: 'whenComparator',
+                                queryMode: 'local',
+                                editable: false,
+                                value: '',
+                                triggerAction: 'all',
+                                forceSelection: true,
+                                fieldLabel: 'Select lab date that is',
+                                displayField: 'name',
+                                valueField: 'value',
+                                store: {
+                                    fields: ['name', 'value'],
+                                    data: [
+                                        {name: '<=', value: 'le'},
+                                        {name: '>=', value: 'ge'},
+                                        {name: 'between', value: 'bt'}
+                                    ]
+                                },
+
+                                listeners: {
+                                    change: function(combo, value) {
+                                        // use component query to  toggle the hidden state of upper value
+                                        if (value === 'bt') {
+                                            combo.up('grid').down('#upperWhenValue').show();
+                                        } else {
+                                            combo.up('grid').down('#upperWhenValue').hide();
+                                        }
+                                    }
+                                }
+                            },{
+                                xtype: 'fieldcontainer',
+                                combineErrors: true,
+                                msgTarget : 'side',
+                                defaults: {
+                                    hideLabel: true
+                                },
+                                items: [ {
+                                    xtype: 'datefield',
+                                    width: 200,
+                                    itemId: 'whenValue',
+                                    fieldLabel: 'value of',
+                                    hideTrigger:true
+                                },{
+                                    xtype: 'datefield',
+                                    width: 200,
+                                    itemId: 'upperWhenValue',
+                                    fieldLabel: 'and',
+                                    hidden: true,
+                                    hideTrigger:true
+                                }]
+                            }]}]
                 }]
             }]
         }]
