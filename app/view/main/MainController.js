@@ -646,6 +646,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }); // each()
     },
 
+    // TODO: last run date and count
     onSubmitSaved: function(button) {
         var grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),

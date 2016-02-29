@@ -13,7 +13,6 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
     ],
 
     config: {
-        variableHeights: false,
         title: 'Vitals',
         xtype: 'form',
         width: 500,
@@ -23,26 +22,19 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
             labelWidth: 100
         },
 
-        /*  xtype: 'combo',
-         flex: 1,
-         width: 400,
-         itemId: 'labCode',
-         queryMode: 'local',
-         //editable: false,
-         triggerAction: 'all',
-         forceSelection: true,
-         loading: true,
-         fieldLabel: 'Select lab type',
-         displayField: 'description',
-         fieldName: 'description',
-         valueField: 'code',
-         value: '',//'13457-7',
-         store: 'Labs',*/
-
         // inline buttons
-        dockedItems: [ {
-            itemId: 'vitals',
-            items: [ { // Vitals
+        dockedItems: [{
+            itemId: 'labs',
+            items: [ {
+                width: 600,
+                text: 'Click here to search on the selected criteria',
+                xtype: 'button',
+                itemId: 'searchClick',
+                handler: 'onSubmitVitals'
+            },{
+                xtype: 'tbspacer',
+                height:5
+            },{ // Vitals
                 xtype: 'combo',
                 flex: 1,
                 width: 400,
@@ -85,169 +77,183 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                         }
                     }
                 }
-            }, {
-                xtype: 'combo',
-                flex: 1,
-                itemId: 'measureComparator',
-                queryMode: 'local',
-                editable: false,
-                value: '',
-                triggerAction: 'all',
-                forceSelection: true,
-                fieldValue: 'that is',
-                fieldLabel: 'that is',
-                displayField: 'name',
-                valueField: 'value',
-                hidden: true,
-                store: {
-                    fields: ['name', 'value'],
-                    data: [
-                        {name: 'all', value: 'prn'},
-                        {name: '=', value: 'eq'},
-                        {name: '<', value: 'lt'},
-                        {name: '<=', value: 'lete'},
-                        {name: '>', value: 'gt'},
-                        {name: '>=', value: 'grte'},
-                        {name: 'between', value: 'bt'}
-                    ]
-                },
-                listeners: {
-                    change: function(combo, value) {
-                        // use component query to  toggle the hidden state of upper value
-                        if (value === 'bt') {
-                            combo.up('grid').down('#upperMeasureValue').show();
-                        } else {
-                            combo.up('grid').down('#upperMeasureValue').hide();
-                        }
-                        if (value === 'prn') {
-                            combo.up('grid').down('#measureValue').hide();
-                            combo.up('grid').down('#searchClick').enable();
-                        } else {
-                            combo.up('grid').down('#measureValue').show();
-                            combo.up('grid').down('#searchClick').disable();
-                        }
-                    }
-                }
             },{
-                xtype: 'label',
-                itemId: 'measureUnits'
-            },
-
-            {
-                xtype: 'textfield',
-                itemId: 'measureValue',
-                //fieldLabel: 'Min value',
-                hidden: true,
-                value: '',
-                listeners: {
-                    change: function (fld, newValue, oldValue, opts) {
-                        // only enable if a value is being submitted
-                        if (newValue) {
-                            fld.up('grid').down('#searchClick').enable();
-                        }
-                        else if (!newValue){
-                            fld.up('grid').down('#searchClick').disable();
-                        }
-                    }
-                }
-            },
-            {
-                xtype: 'numberfield',
-                itemId: 'upperMeasureValue',
-                fieldLabel: 'and',
-                hidden: true
-            }, {
-                xtype: 'tbspacer',
-                width: 50
-            }, {
-                xtype: 'tbspacer',
-                height:25
-            }, {
-                xtype: 'button',
-                text: 'Constrain search by date range',
-                itemId: 'showWhen',
-                hidden: false,
-                listeners: {
-                    click: function (button) {
-                        button.up('grid').down('#whenComparator').show();
-                        button.up('grid').down('#whenValue').show();
-                        button.up('grid').down('#hideWhen').show();
-                        button.up('grid').down('#showWhen').hide();
-                    }
-                }
-            },  {
-                xtype: 'button',
-                text: 'Hide date range',
-                itemId: 'hideWhen',
-                hidden: true,
-                listeners: {
-                    click: function (button) {
-                        button.up('grid').down('#whenComparator').hide();
-                        button.up('grid').down('#whenValue').hide();
-                        button.up('grid').down('#upperWhenValue').hide();
-                        button.up('grid').down('#whenComparator').setValue('');
-                        button.up('grid').down('#whenValue').setValue('');
-                        button.up('grid').down('#upperWhenValue').setValue('');
-                        button.up('grid').down('#hideWhen').hide();
-                        button.up('grid').down('#showWhen').show();
-                    }
-                }
-            },{ // When
-                xtype: 'combo',
-                width: 200,
-                itemId: 'whenComparator',
-                queryMode: 'local',
-                editable: false,
-                value: '',
-                triggerAction: 'all',
-                forceSelection: true,
-                fieldLabel: 'Select vital measure date that is',
-                displayField: 'name',
-                valueField: 'value',
-                hidden: true,
-                store: {
-                    fields: ['name', 'value'],
-                    data: [
-                        {name: '<=', value: 'le'},
-                        {name: '>=', value: 'ge'},
-                        {name: 'between', value: 'bt'}
-                    ]
+                xtype: 'fieldcontainer',
+                margin: '0 5 0 0',
+                combineErrors: true,
+                msgTarget : 'side',
+                layout: 'hbox',
+                defaults: {
+                    flex: 1,
+                    hideLabel: true
                 },
-
-                listeners: {
-                    change: function (combo, value) {
-                        // use component query to  toggle the hidden state of upper value
-                        if (value === 'bt') {
-                            combo.up('grid').down('#upperWhenValue').show();
-                        } else {
-                            combo.up('grid').down('#upperWhenValue').hide();
+                items: [{
+                    xtype: 'fieldset',
+                    title: 'Constrain measure value',
+                    defaults: {
+                        labelWidth: 89,
+                        anchor: '100%',
+                        layout: {
+                            type: 'hbox',
+                            defaultMargins: {top: 0, right: 5, bottom: 0, left: 0}
                         }
-                    }
-                }
-            }, {
-                xtype: 'datefield',
-                width: 200,
-                itemId: 'whenValue',
-                fieldLabel: 'value of',
-                hidden: true,
-                hideTrigger:true
-            }, {
-                xtype: 'datefield',
-                width: 200,
-                itemId: 'upperWhenValue',
-                fieldLabel: 'and',
-                hidden: true,
-                hideTrigger:true
-            },{
-                //minWidth: 80,
-                text: 'Add to search',
-                xtype: 'button',
-                disabled: true,
-                itemId: 'searchClick',
-                handler: 'onSubmitVitals'
+                    },
+                    items: [{
+                        xtype: 'combo',
+                        flex: 1,
+                        itemId: 'measureComparator',
+                        queryMode: 'local',
+                        editable: false,
+                        value: '',
+                        triggerAction: 'all',
+                        forceSelection: true,
+                        fieldLabel: 'that is',
+                        displayField: 'name',
+                        valueField: 'value',
+                        //hidden: true,
+                        store: {
+                            fields: ['name', 'value'],
+                            data: [
+                                {name: 'all', value: 'prn'},
+                                {name: '=', value: 'eq'},
+                                {name: '<', value: 'lt'},
+                                {name: '<=', value: 'lste'},
+                                {name: '>', value: 'gt'},
+                                {name: '>=', value: 'grte'},
+                                {name: 'between', value: 'bt'}
+                            ]
+                        },
+                        listeners: {
+                            change: function (combo, value) {
+                                // use component query to  toggle the hidden state of upper value
+                                if (value === 'bt') {
+                                    combo.up('grid').down('#upperMeasureValue').show();
+                                } else {
+                                    combo.up('grid').down('#upperMeasureValue').hide();
+                                }
+                                if (value === 'prn') {
+                                    combo.up('grid').down('#measureValue').hide();
+                                } else {
+                                    combo.up('grid').down('#measureValue').show();
+                                }
+                            }
+                        }
+                    },{
+                        xtype: 'fieldcontainer',
+                        combineErrors: true,
+                        msgTarget : 'side',
+                        defaults: {
+                            flex: 1,
+                            hideLabel: true
+                        },
+                        items: [{
+                            xtype: 'textfield',
+                            itemId: 'measureValue',
+                            value: ''
+                        },
+                            {
+                                xtype: 'numberfield',
+                                itemId: 'upperMeasureValue',
+                                fieldLabel: 'and',
+                                hidden: true
+                            }]
+                    }]
+                }, /*{
+                 xtype: 'button',
+                 text: 'Constrain search by date range',
+                 itemId: 'showWhen',
+                 hidden: false,
+                 listeners: {
+                 click: function (button) {
+                 button.up('grid').down('#whenComparator').show();
+                 button.up('grid').down('#whenValue').show();
+                 button.up('grid').down('#hideWhen').show();
+                 button.up('grid').down('#showWhen').hide();
+                 }
+                 }
+                 }, {
+                 xtype: 'button',
+                 text: 'Hide date range',
+                 itemId: 'hideWhen',
+                 hidden: true,
+                 listeners: {
+                 click: function (button) {
+                 button.up('grid').down('#whenComparator').hide();
+                 button.up('grid').down('#whenValue').hide();
+                 button.up('grid').down('#upperWhenValue').hide();
+                 button.up('grid').down('#whenComparator').setValue('');
+                 button.up('grid').down('#whenValue').setValue('');
+                 button.up('grid').down('#upperWhenValue').setValue('');
+                 button.up('grid').down('#hideWhen').hide();
+                 button.up('grid').down('#showWhen').show();
+                 }
+                 }
+                 },*/ {
+                    xtype: 'fieldset',
+                    title: 'Constrain by date',
+                    defaults: {
+                        labelWidth: 89,
+                        anchor: '100%',
+                        layout: {
+                            type: 'hbox',
+                            defaultMargins: {top: 0, right: 5, bottom: 0, left: 0}
+                        }
+                    },
+                    items: [{ // When
+                        xtype: 'combo',
+                        width: 200,
+                        itemId: 'whenComparator',
+                        queryMode: 'local',
+                        editable: false,
+                        value: '',
+                        triggerAction: 'all',
+                        forceSelection: true,
+                        fieldLabel: 'Select measure date that is',
+                        displayField: 'name',
+                        valueField: 'value',
+                        store: {
+                            fields: ['name', 'value'],
+                            data: [
+                                {name: '<=', value: 'le'},
+                                {name: '>=', value: 'ge'},
+                                {name: 'between', value: 'bt'}
+                            ]
+                        },
+
+                        listeners: {
+                            change: function(combo, value) {
+                                // use component query to  toggle the hidden state of upper value
+                                if (value === 'bt') {
+                                    combo.up('grid').down('#upperWhenValue').show();
+                                } else {
+                                    combo.up('grid').down('#upperWhenValue').hide();
+                                }
+                            }
+                        }
+                    },{
+                        xtype: 'fieldcontainer',
+                        combineErrors: true,
+                        msgTarget : 'side',
+                        defaults: {
+                            hideLabel: true
+                        },
+                        items: [ {
+                            xtype: 'datefield',
+                            width: 200,
+                            itemId: 'whenValue',
+                            fieldLabel: 'value of',
+                            hideTrigger:true
+                        },{
+                            xtype: 'datefield',
+                            width: 200,
+                            itemId: 'upperWhenValue',
+                            fieldLabel: 'and',
+                            hidden: true,
+                            hideTrigger:true
+                        }]
+                    }]
+                }]
             }]
         }]
-
     }
-
 });

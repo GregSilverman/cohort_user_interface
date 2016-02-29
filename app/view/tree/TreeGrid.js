@@ -27,7 +27,7 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
 
     reserveScrollbar: true,
 
-    title: 'Meds',
+    title: 'Medications',
     height: 370,
     useArrows: true,
     rootVisible: false,

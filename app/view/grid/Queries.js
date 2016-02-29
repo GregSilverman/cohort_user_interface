@@ -40,7 +40,7 @@ Ext.define('cardioCatalogQT.view.grid.Queries', {
         }
     }, {
         xtype: 'toolbar',
-        items: [{
+        items: [{ //TODO: disable when none selected
             text: 'Add to search',
             xtype: 'button',
             itemId: 'searchSelected',
