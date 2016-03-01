@@ -114,12 +114,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
             atom = cardioCatalogQT.service.UtilityService.make_atom('vital_status', 'vital_status', comparatorValue, vitalValue);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+
         }
 
         else {
             // error conditions here
         }
-
 
         // insert only if exists
         if (ageValue || ageComparator === 'prn') {
@@ -189,6 +189,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log('demographics:');
             console.log(Ext.ComponentQuery.query('#searchGrid')[0].getStore())
         }
+
+        cardioCatalogQT.service.UtilityService.get_attribute_id('vital_status');
 
     },
 
@@ -708,7 +710,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onMedSelectionChange: function(selections, sm) {
-
         var rx = [];
 
         if (cardioCatalogQT.config.mode === 'test') {
@@ -838,7 +839,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
         }
     },
-
 
     onCriterionOr: function (button) {
         var options = {

@@ -4,6 +4,5 @@ Ext.define('cardioCatalogQT.model.Attribute', {
     fields: [
         { name: 'id', type: 'string' },
         { name: 'attribute_value', type: 'string' }
-
     ]
 });

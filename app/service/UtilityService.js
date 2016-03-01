@@ -273,7 +273,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     // used for display with query results
     criteria: function(payload, options, n){
-
         var criteria = '',
             comparator,
             date_comparator,
@@ -337,7 +336,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     // get parent element for pulling correct bucket
     parent_hash: function(type) {
-
         var map = new Ext.util.HashMap();
 
         map.add('blood_pressure_systolic', 'blood_pressure');
@@ -372,82 +370,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    // used to shorten URL -> TODO: populate using an API endpoint
-    attribute_hash: function(type) {
-
-        //id	attribute_value
-        //1	PATIENT_ID
-        //2	PATIENT_SID
-        //3	BIRTH_DATETIME
-        var map = new Ext.util.HashMap();
-
-        map.add('SEX', 4);
-        map.add('ETHNICITY', 5);
-        map.add('RACE', 6);
-        map.add('VITAL_STATUS', 7);
-        map.add('DEMOGRAPHICS', 8);
-        map.add('AGE', 9);
-        map.add('HEIGHT', 10);
-        //11	HEIGHT_UNIT
-        map.add('WEIGHT', 12);
-        //13	WEIGHT_UNIT
-        map.add('BODY_TEMPERATURE', 14);
-        //15	BODY_TEMP_UNIT
-        map.add('PULSE', 16);
-        map.add('BLOOD_PRESSURE_DIASTOLIC', 17);
-        map.add('BLOOD_PRESSURE_SYSTOLIC', 18);
-        map.add('BMI', 19);
-        map.add('PULSE_OXYMETRY', 20);
-        map.add('RESPIRATORY_RATE', 21);
-        //22	COLLECTION_DATETIME
-        map.add('BASIC_VITALS', 23);
-        map.add('BLOOD_PRESSURE', 24);
-        map.add('DX_CODE', 25);
-        //26	DX_NAME
-        //27	DIAGNOSIS_DATETIME
-        map.add('DIAGNOSES', 28);
-        map.add('PROC_CODE', 29);
-        //30	PROC_NAME
-        //31	PROC_DATETIME
-        map.add('PROCEDURES', 32);
-        map.add('TEST_CODE', 33);
-        //34	TEST_NAME
-        //35	RESULT_VALUE
-        map.add('RESULT_VALUE_NUM', 36);
-        //37	RESULT_UNIT
-        //38	RESULT_DATETIME
-        map.add('LABS', 39);
-        //40	DRUG_CODE_ORIG
-        //41	DRUG_CODE_SYSTEM_ORIG
-        map.add('DRUG_CODE', 42);
-        //43	DRUG_CODE_SYSTEM
-        //44	DRUG_NAME
-        //45	BRAND_NAME
-        //46	GENERIC_NAME
-        //47	BRAND_GENERIC_NAME
-        //48	START_DATETIME
-        //49	END_DATETIME
-        //50	ACTIVE_ORDER
-        //51	INPATIENT_OR_OUTPATIENT
-        //52	PATIENT_REPORTED_YN
-        map.add('MEDICATIONS', 53);
-        map.add('THERAPEUTIC_CLASS_ORIG', 54);
-        map.add('PHARMACEUTICAL_CLASS_ORIG', 55);
-        map.add('PHARMACEUTICAL_SUBCLASS_ORIG', 56);
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('attribute');
-            console.log(type);
-            console.log(map.get(type));
-        }
-
-        return map.get(type);
-
-    },
-
     // get symbol for display
     comparator_hash: function(type) {
-
         var map = new Ext.util.HashMap();
 
         map.add('eq', '=');
@@ -470,7 +394,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     // use for grid display
     date_comparator_hash: function(type) {
-
         var map = new Ext.util.HashMap();
 
         map.add('le', 'before');
@@ -506,21 +429,26 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     },
 
-    clear_all: function() {
-        var Payload = Ext.getStore('Payload');
+    // use id for atomic payload construction
+    get_attribute_id: function(arg) {
+        var store = Ext.getStore('Attributes'),
+            value;
 
-        Payload.getProxy().clear();
-        Payload.data.clear();
-        Payload.sync();
+        arg = arg.toUpperCase();
+
+        value = store.findRecord('attribute_value', arg);
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('Cleared!');
+            console.log('Attribute');
+            console.log(test);
         }
+
+        return value.id
+
     },
 
     // customized search, as per http://stackoverflow.com/questions/28974034/multiselect-search-whole-string
     multi_select_search: function(text,me) {
-
         var filter = me.searchFilter,
             filters = me.getSearchStore().getFilters();
 
@@ -749,7 +677,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     },
 
     url: function(button, atom, from, payload){
-
         var url = cardioCatalogQT.config.protocol,
             grid = button.up('grid'),
             source;
@@ -780,7 +707,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     },
 
     submit_query: function(url, source, atom, payload){
-
         var json = [],
             obj,
             records = [],
@@ -846,7 +772,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     // update grid store content
                     Ext.StoreMgr.get('Payload').load();
                     Ext.ComponentQuery.query('#searchGrid')[0].getStore().load();
-
 
                     // stop loadMask
                     Ext.getBody().unmask();
