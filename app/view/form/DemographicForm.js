@@ -28,7 +28,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
             itemId: 'demographics',
             items: [{
                 width: 600,
-                text: 'Click here to search on the selected criteria',
+                text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
                 handler: 'onSubmitDemographics'

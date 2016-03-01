@@ -28,7 +28,7 @@ Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
             itemId: 'procedures',
             items: [{
                 width: 600,
-                text: 'Click here to search on the selected criteria',
+                text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
                 handler: 'onSubmitProcedures'
@@ -73,6 +73,7 @@ Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
                     height:25
                 },{
                     xtype: 'fieldset',
+                    border: false,
                     defaults: {
                         labelWidth: 89,
                         anchor: '100%',

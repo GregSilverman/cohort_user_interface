@@ -28,7 +28,7 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
             itemId: 'diagnoses',
             items: [{
                 width: 600,
-                text: 'Click here to search on the selected criteria',
+                text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
                 handler: 'onSubmitDiagnoses'
@@ -74,9 +74,10 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                 },{
                     xtype: 'tbspacer',
                     height:25
-                }, {
+                },{
                     xtype: 'fieldset',
                     collapsible: false,
+                    border: false,
                     defaults: {
                         labelWidth: 89,
                         anchor: '100%',
@@ -98,7 +99,7 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                                 button.up('grid').down('#showWhen').hide();
                             }
                         }
-                    }, {
+                    },{
                         xtype: 'button',
                         text: 'Hide date range',
                         itemId: 'hideWhen',
@@ -115,73 +116,72 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                                 button.up('grid').down('#showWhen').show();
                             }
                         }
-                    },
-                        {
-                            xtype: 'fieldset',
-                            title: 'Constrain by date',
-                            hidden: true,
-                            itemId: 'whenId',
-                            defaults: {
-                                labelWidth: 89,
-                                anchor: '100%',
-                                layout: {
-                                    type: 'hbox',
-                                    defaultMargins: {top: 0, right: 5, bottom: 0, left: 0}
-                                }
+                    },{
+                        xtype: 'fieldset',
+                        title: 'Constrain by date',
+                        hidden: true,
+                        itemId: 'whenId',
+                        defaults: {
+                            labelWidth: 89,
+                            anchor: '100%',
+                            layout: {
+                                type: 'hbox',
+                                defaultMargins: {top: 0, right: 5, bottom: 0, left: 0}
+                            }
+                        },
+                        items: [{ // When
+                            xtype: 'combo',
+                            width: 200,
+                            itemId: 'whenComparator',
+                            queryMode: 'local',
+                            editable: false,
+                            value: '',
+                            triggerAction: 'all',
+                            forceSelection: true,
+                            fieldLabel: 'Select lab date that is',
+                            displayField: 'name',
+                            valueField: 'value',
+                            store: {
+                                fields: ['name', 'value'],
+                                data: [
+                                    {name: '<=', value: 'le'},
+                                    {name: '>=', value: 'ge'},
+                                    {name: 'between', value: 'bt'}
+                                ]
                             },
-                            items: [{ // When
-                                xtype: 'combo',
-                                width: 200,
-                                itemId: 'whenComparator',
-                                queryMode: 'local',
-                                editable: false,
-                                value: '',
-                                triggerAction: 'all',
-                                forceSelection: true,
-                                fieldLabel: 'Select lab date that is',
-                                displayField: 'name',
-                                valueField: 'value',
-                                store: {
-                                    fields: ['name', 'value'],
-                                    data: [
-                                        {name: '<=', value: 'le'},
-                                        {name: '>=', value: 'ge'},
-                                        {name: 'between', value: 'bt'}
-                                    ]
-                                },
-
-                                listeners: {
-                                    change: function(combo, value) {
-                                        // use component query to  toggle the hidden state of upper value
-                                        if (value === 'bt') {
-                                            combo.up('grid').down('#upperWhenValue').show();
-                                        } else {
-                                            combo.up('grid').down('#upperWhenValue').hide();
-                                        }
+                            listeners: {
+                                change: function(combo, value) {
+                                    // use component query to  toggle the hidden state of upper value
+                                    if (value === 'bt') {
+                                        combo.up('grid').down('#upperWhenValue').show();
+                                    } else {
+                                        combo.up('grid').down('#upperWhenValue').hide();
                                     }
                                 }
+                            }
+                        },{
+                            xtype: 'fieldcontainer',
+                            combineErrors: true,
+                            msgTarget : 'side',
+                            defaults: {
+                                hideLabel: true
+                            },
+                            items: [{
+                                xtype: 'datefield',
+                                width: 200,
+                                itemId: 'whenValue',
+                                fieldLabel: 'value of',
+                                hideTrigger:true
                             },{
-                                xtype: 'fieldcontainer',
-                                combineErrors: true,
-                                msgTarget : 'side',
-                                defaults: {
-                                    hideLabel: true
-                                },
-                                items: [ {
-                                    xtype: 'datefield',
-                                    width: 200,
-                                    itemId: 'whenValue',
-                                    fieldLabel: 'value of',
-                                    hideTrigger:true
-                                },{
-                                    xtype: 'datefield',
-                                    width: 200,
-                                    itemId: 'upperWhenValue',
-                                    fieldLabel: 'and',
-                                    hidden: true,
-                                    hideTrigger:true
-                                }]
-                            }]}]
+                                xtype: 'datefield',
+                                width: 200,
+                                itemId: 'upperWhenValue',
+                                fieldLabel: 'and',
+                                hidden: true,
+                                hideTrigger:true
+                            }]
+                        }]
+                    }]
                 }]
             }]
         }]

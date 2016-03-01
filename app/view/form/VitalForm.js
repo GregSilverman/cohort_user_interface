@@ -27,7 +27,7 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
             itemId: 'labs',
             items: [ {
                 width: 600,
-                text: 'Click here to search on the selected criteria',
+                text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
                 handler: 'onSubmitVitals'
@@ -117,7 +117,7 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                                 {name: 'all', value: 'prn'},
                                 {name: '=', value: 'eq'},
                                 {name: '<', value: 'lt'},
-                                {name: '<=', value: 'lste'},
+                                {name: '<=', value: 'lete'},
                                 {name: '>', value: 'gt'},
                                 {name: '>=', value: 'grte'},
                                 {name: 'between', value: 'bt'}
@@ -160,6 +160,7 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                     }]
                 }, {
                     xtype: 'fieldset',
+                    border: false,
                     defaults: {
                         labelWidth: 89,
                         anchor: '100%',
