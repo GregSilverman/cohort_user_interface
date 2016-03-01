@@ -47,8 +47,10 @@ Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
                 },
                 items: [ {
                     width: 300,
+                    height: 400,
                     anchor: '25%',
                     xtype: 'multiselector',
+                    scrollable: true,
                     title: 'Selected Px',
                     itemId: 'procedure',
                     fieldName: 'description',

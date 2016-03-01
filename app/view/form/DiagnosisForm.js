@@ -47,8 +47,10 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                 },
                 items: [{ //Dx
                     width: 300,
+                    height: 400,
                     anchor: '25%',
                     xtype: 'multiselector',
+                    scrollable: true,
                     title: 'Selected Dx',
                     itemId: 'diagnosis',
                     fieldName: 'description',
