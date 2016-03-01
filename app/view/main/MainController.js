@@ -190,8 +190,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(Ext.ComponentQuery.query('#searchGrid')[0].getStore())
         }
 
-        cardioCatalogQT.service.UtilityService.get_attribute_id('vital_status');
-
     },
 
     onSubmitVitals: function(button) {
