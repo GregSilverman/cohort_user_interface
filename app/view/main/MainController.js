@@ -70,16 +70,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue))
 
                 var payload = {
-                    type: 'Demographics',
+                    type: 'demographics',
                     key: 'sex',
                     comparator: 'eq',
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
                     value: sexValue,
                     criteria: criterion,
-                    atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', comparatorValue, sexValue)
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'sex', comparatorValue, sexValue)
                 };
 
-                atom = cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', comparatorValue, sexValue);
+                atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'sex', comparatorValue, sexValue);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
             else {
@@ -103,16 +103,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 vitalValue;
 
             var payload = {
-                type: 'Demographics',
+                type: 'demographics',
                 key: 'vital_status',
                 comparator: 'eq',
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
                 value: vitalValue,
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('vital_status', 'vital_status', comparatorValue, vitalValue)
+                atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue)
             };
 
-            atom = cardioCatalogQT.service.UtilityService.make_atom('vital_status', 'vital_status', comparatorValue, vitalValue);
+            atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
         }
@@ -163,16 +163,16 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 // TODO: implement atomic_unit builder at time of model instance creation
 
                 var payload  = {
-                    type: 'Demographics',
+                    type: 'demographics',
                     key: 'age',
                     comparator: ageComparator,
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator),
                     value: test_age,
                     criteria: criterion,
-                    atom: cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age)
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'age', ageComparator, test_age)
                 };
 
-                atom = cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age);
+                atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'age', ageComparator, test_age);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
             else{
@@ -289,7 +289,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // TODO: implement atomic_unit builder at time of model instance creation
                 var payload = {
-                    type: measureCode,
+                    type: 'basic_vitals',
                     key: measureCode,
                     comparator: measureComparator,
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(measureComparator),
@@ -298,10 +298,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                     dateValue: test_date,
                     criteria: criterion,
-                    atom: cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date)
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('basic_vitals', measureCode, measureComparator, test_measure, whenComparator, test_date)
                 };
 
-                atom = cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date);
+                atom = cardioCatalogQT.service.UtilityService.make_atom('basic_vitals', measureCode, measureComparator, test_measure, whenComparator, test_date);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
 
@@ -403,7 +403,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
                 if (labValue || labComparator === 'prn') {
                     var payload = {
-                        type: 'lab',
+                        type: 'test_code',
                         key: labCode,
                         value: test_lab,
                         comparator: labComparator,
@@ -413,10 +413,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         dateComparatorSymbol: date_comparator,
                         dateValue: test_date,
                         criteria: criterion,
-                        atom: cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date)
+                        atom: cardioCatalogQT.service.UtilityService.make_atom('test_code', labCode, labComparator, test_lab, whenComparator, test_date)
                     };
 
-                    atom = cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date);
+                    atom = cardioCatalogQT.service.UtilityService.make_atom('test_code', labCode, labComparator, test_lab, whenComparator, test_date);
                     cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
                 }
                 else {
@@ -483,7 +483,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
             // TODO: ensure record does not already exist
             var payload = {
-                type: 'dx',
+                type: 'dx_code',
                 key: 'dx_code',
                 comparator: 'eq',
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
@@ -493,7 +493,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: date_comparator,
                 dateValue: test_date,
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq', item.data.code, whenComparator, test_date)
+                atom: cardioCatalogQT.service.UtilityService.make_atom('dx_code', 'dx_code', 'eq', item.data.code, whenComparator, test_date)
             };
 
             if (cardioCatalogQT.config.mode === 'test') {
@@ -502,7 +502,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(dx);
             }
 
-            atom = cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date);
+            atom = cardioCatalogQT.service.UtilityService.make_atom('dx_code', 'dx_code', 'eq' , item.data.code, whenComparator, test_date);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
         }); // each()
@@ -557,8 +557,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             // TODO: ensure record does not already exist
 
             var payload = {
-                type: 'px',
-                key: 'px_code',
+                type: 'proc_code',
+                key: 'proc_code',
                 comparator: 'eq',
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                 value: item.data.code,
@@ -567,7 +567,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: date_comparator,
                 dateValue: test_date,
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq', item.data.code, whenComparator, test_date)
+                atom: cardioCatalogQT.service.UtilityService.make_atom('proc_code', 'proc_code', 'eq', item.data.code, whenComparator, test_date)
             };
 
 
@@ -577,7 +577,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(px);
             }
 
-            atom = cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date);
+            atom = cardioCatalogQT.service.UtilityService.make_atom('proc_code', 'proc_code', 'eq' , item.data.code, whenComparator, test_date);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
         }); // each()
@@ -626,10 +626,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 value: drug_value,
                 description: items.data.name.toUpperCase(),
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('rx', drug_key, 'eq', drug_value)
+                atom: cardioCatalogQT.service.UtilityService.make_atom('medications', drug_key, 'eq', drug_value)
             };
 
-            atom = cardioCatalogQT.service.UtilityService.make_atom('rx', drug_key, 'eq', drug_value);
+            atom = cardioCatalogQT.service.UtilityService.make_atom('medications', drug_key, 'eq', drug_value);
             cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved', payload);
 
             if (cardioCatalogQT.config.mode === 'test') {

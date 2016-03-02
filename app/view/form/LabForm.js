@@ -102,7 +102,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                                 {name: 'all', value: 'prn'},
                                 {name: '=', value: 'eq'},
                                 {name: '<', value: 'lt'},
-                                {name: '<=', value: 'lste'},
+                                {name: '<=', value: 'lete'},
                                 {name: '>', value: 'gt'},
                                 {name: '>=', value: 'grte'},
                                 {name: 'between', value: 'bt'}

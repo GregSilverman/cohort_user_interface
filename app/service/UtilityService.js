@@ -38,98 +38,45 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             atomic_unit, // = '' each specific item to be queried
             seperator = ':',
             delimiter = ';',
-            parent = cardioCatalogQT.service.UtilityService.parent_hash(type);
+            parent = cardioCatalogQT.service.UtilityService.get_attribute_id(type);
 
-        if (type === 'rx'){
-            parent = key;
-        }
-
-        // section "a" of query
+        // type:key;eq;
         atomic_unit = type +
             seperator +
             parent +
+            delimiter +
+            'eq' +
             delimiter;
 
-        if (key === 'blood_pressure_systolic' ||
-            key === 'blood_pressure_diastolic' ||
-            key === 'bmi' ||
-            key === 'respiratory_rate' ||
-            key === 'pulse' ||
-            key === 'body_temperature' ||
-            key === 'height' ||
-            key === 'weight' ||
-            key === 'pulse_oxymetry' ||
-            type === 'lab' ||
-            type === 'sex' ||
-            type === 'age' ||
-            type === 'vital_status') {
-            atomic_unit += 'eq';
+        // type1:key1;eq;value1
+        if (type === 'basic_vitals' ||
+            type === 'demographics') {
+            atomic_unit += type;
         }
-        else {
-            atomic_unit += comparator;
-        }
-
-        atomic_unit += delimiter;
-
-        // section "b"
-        if (key === 'blood_pressure_systolic' ||
-            key === 'blood_pressure_diastolic') {
-            atomic_unit += 'blood_pressure';
-        }
-        // other vital measures
-        else if (key === 'bmi' ||
-                 key === 'respiratory_rate' ||
-                 key === 'pulse' ||
-                 key === 'body_temperature' ||
-                 key === 'height' ||
-                 key === 'weight' ||
-                 key === 'pulse_oxymetry') {
-            atomic_unit += 'basic_vitals';
-        }
-        else if (key === 'sex' ||
-                 key === 'vital_status' ||
-                 key === 'age'){
-            atomic_unit += 'demographics';
-        }
-        else if (type === 'lab') {
+        else if (type === 'test_code') {
             atomic_unit += key;
         }
         else {
             atomic_unit += value;
         }
 
+        // type:key1;eq;value1;type:
         atomic_unit += delimiter +
             type +
             seperator;
 
-        if (key === 'blood_pressure_systolic' ||
-            key === 'blood_pressure_diastolic' ||
-            key === 'sex' ||
-            key === 'bmi' ||
-            key === 'respiratory_rate' ||
-            key === 'pulse' ||
-            key === 'body_temperature' ||
-            key === 'height' ||
-            key === 'weight' ||
-            key === 'pulse_oxymetry' ||
-            key === 'vital_status' ||
-            key === 'age') {
-            atomic_unit += key;
-        }
-        else if (type === 'lab') {
-            atomic_unit += 'result_value_num';
-        }
-        else {
-            atomic_unit += parent;
+        if (type  === 'test_code'){
+            key = 'result_value_num';
         }
 
-        // section "c"
-        atomic_unit += delimiter +
+        // type:key1;eq;value1;type:key2;comparator;value2
+        atomic_unit += cardioCatalogQT.service.UtilityService.get_attribute_id(key) +
+            delimiter +
             comparator +
             delimiter +
             value;
 
-        // add date here
+        // add date if exists -> type:key1;eq;value1;type:key2;comparator;value2,DATE,dateComparator,dateValue
         if (dateValue){
             atomic_unit += ',DATE,' +
                 cardioCatalogQT.service.UtilityService.date_hash(dateComparator) + ',' +
@@ -171,31 +118,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         }
 
         // set target store to appropriate source
-        target = Ext.create('cardioCatalogQT.store.' + payload.storeId);
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('count: ' + payload.getCount())
-            console.log('Test payload:');
-            console.log(payload);
-            console.log('n: ' + n);
-            console.log('storeId: ');
-            console.log(payload.storeId);
-            console.log('target:');
-            console.log(target);
-        }
+        //target = Ext.create('cardioCatalogQT.store.' + payload.storeId);
 
         payload.each(function(rec) {
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('payload record');
-                console.log(rec.data);
-            }
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('criteria record:' + rec.data.criteria);
-                console.log('atom record:' + rec.data.atom);
-                console.log('j: ' + j);
-            }
 
             molecule += rec.data.atom;
             new_criteria += rec.data.criteria;
@@ -334,42 +259,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         return criteria;
     },
 
-    // get parent element for pulling correct bucket
-    parent_hash: function(type) {
-        var map = new Ext.util.HashMap();
-
-        map.add('blood_pressure_systolic', 'blood_pressure');
-        map.add('blood_pressure_diastolic', 'blood_pressure');
-        map.add('bmi', 'basic_vitals');
-        map.add('respiratory_rate', 'basic_vitals');
-        map.add('pulse', 'basic_vitals');
-        map.add('body_temperature', 'basic_vitals');
-        map.add('height', 'basic_vitals');
-        map.add('weight', 'basic_vitals');
-        map.add('pulse_oxymetry', 'basic_vitals');
-        map.add('vital_status', 'demographics');
-        map.add('sex', 'demographics');
-        map.add('age', 'demographics');
-        map.add('dx', 'dx_code');
-        map.add('lab', 'test_code');
-        map.add('px', 'proc_code');
-        /*map.add('rx_code', 'drug_code');
-        map.add('rx_therapeutic_class', 'THERAPEUTIC_CLASS_ORIG');
-        map.add('rx_pharmaceutical_class', 'PHARMACEUTICAL_CLASS_ORIG');
-        map.add('rx_pharmaceutical_subclass', 'PHARMACEUTICAL_SUBCLASS_ORIG');*/
-
-        //map.add('rx', 'drug_code');
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('parent');
-            console.log(type);
-            console.log(map.get(type));
-        }
-
-        return map.get(type);
-
-    },
-
     // get symbol for display
     comparator_hash: function(type) {
         var map = new Ext.util.HashMap();
@@ -440,7 +329,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('Attribute');
-            console.log(test);
+            console.log(value);
         }
 
         return value.id
