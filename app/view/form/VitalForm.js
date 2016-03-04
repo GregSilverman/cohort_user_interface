@@ -24,7 +24,8 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
 
         // inline buttons
         dockedItems: [{
-            itemId: 'labs',
+            itemId: 'vitals',
+            bodyStyle: 'margin: 10px; padding: 5px 3px;',
             items: [ {
                 width: 600,
                 text: 'Add to search',
@@ -116,10 +117,10 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                             data: [
                                 {name: 'all', value: 'prn'},
                                 {name: '=', value: 'eq'},
-                                {name: '<', value: 'lt'},
-                                {name: '<=', value: 'lete'},
-                                {name: '>', value: 'gt'},
-                                {name: '>=', value: 'grte'},
+                                {name: '< (less than)', value: 'lt'},
+                                {name: '<= (less than or equal)', value: 'lete'},
+                                {name: '> (greater than)', value: 'gt'},
+                                {name: '>= (greater than or equal)', value: 'grte'},
                                 {name: 'between', value: 'bt'}
                             ]
                         },
@@ -227,8 +228,8 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                             store: {
                                 fields: ['name', 'value'],
                                 data: [
-                                    {name: '<=', value: 'le'},
-                                    {name: '>=', value: 'ge'},
+                                    {name: '<= (less than or equal)', value: 'le'},
+                                    {name: '>= (greater than or equal)', value: 'ge'},
                                     {name: 'between', value: 'bt'}
                                 ]
                             },

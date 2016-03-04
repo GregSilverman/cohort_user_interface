@@ -26,6 +26,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
         // inline buttons
         dockedItems: [{
             itemId: 'demographics',
+            bodyStyle: 'margin: 10px; padding: 5px 3px;',
             items: [{
                 width: 600,
                 text: 'Add to search',
@@ -269,10 +270,10 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                                 data: [
                                     {name: 'all', value: 'prn'},
                                     {name: '=', value: 'eq'},
-                                    {name: '<', value: 'lt'},
-                                    {name: '<=', value: 'lete'},
-                                    {name: '>', value: 'gt'},
-                                    {name: '>=', value: 'grte'},
+                                    {name: '< (less than)', value: 'lt'},
+                                    {name: '<= (less than) or equal)', value: 'lete'},
+                                    {name: '> (greater than)', value: 'gt'},
+                                    {name: '>= (greater than or equal)', value: 'grte'},
                                     {name: 'between', value: 'bt'}
                                 ]
                             },

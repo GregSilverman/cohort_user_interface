@@ -13,9 +13,9 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
         {text: "ID", width: 50, sortable: true, dataIndex: 'id'},
         {text: "Criteria", flex: 1, sortable: true, dataIndex: 'criteria'},
         {text: "Key", flex: 1, sortable: true, dataIndex: 'key'},
-        {text: "Type", width: 120, sortable: true, dataIndex: 'type'},
         {text: "DateOperator", flex: 1, sortable: true, dataIndex: 'dateComparatorSymbol'},
         {text: "When", flex: 1, sortable: true, dataIndex: 'dateValue'},
+        {text: "PercentPolutation", flex: 1, sortable: true, dataIndex: 'percent'},
         {text: "Count", flex: 1, sortable: true, dataIndex: 'n'}
     ],
     columnLines: true,

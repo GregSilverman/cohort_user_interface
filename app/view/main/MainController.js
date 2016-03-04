@@ -103,7 +103,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 vitalValue;
 
             var payload = {
-                type: 'demographics',
+                type: 'dg',
                 key: 'vital_status',
                 comparator: 'eq',
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
@@ -555,7 +555,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             // TODO: ensure record does not already exist
-
             var payload = {
                 type: 'proc_code',
                 key: 'proc_code',
@@ -804,7 +803,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
     },
 
-    // TODO: generalize this across all grids
     onCriterionRemove: function (button) {
         var grid = button.up('grid'),
             selection = grid.getView().getSelectionModel().getSelection(),
@@ -865,16 +863,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     onFilterSave: function (button) {
 
         cardioCatalogQT.service.UtilityService.query_move(button);
-    },
-
-    // clear filter and reload store into grid
-    onFilterClear: function (button) {
-        var grid = button.up('grid'),
-            source = grid.store,
-            store = Ext.getStore(source);
-
-        store.clearFilter();
-        grid.getStore().load();
     },
 
     // grab query for display of all data

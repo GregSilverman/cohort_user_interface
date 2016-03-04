@@ -26,6 +26,7 @@ Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
         // inline buttons
         dockedItems: [{
             itemId: 'procedures',
+            bodyStyle: 'margin: 10px; padding: 5px 3px;',
             items: [{
                 width: 600,
                 text: 'Add to search',
@@ -141,8 +142,8 @@ Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
                                 store: {
                                     fields: ['name', 'value'],
                                     data: [
-                                        {name: '<=', value: 'le'},
-                                        {name: '>=', value: 'ge'},
+                                        {name: '<= (less than or equal)', value: 'le'},
+                                        {name: '>= (greater than or equal)', value: 'ge'},
                                         {name: 'between', value: 'bt'}
                                     ]
                                 },

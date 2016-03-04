@@ -42,8 +42,14 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
         // type:key;eq;
         atomic_unit = type +
-            seperator +
-            parent +
+            seperator;
+
+        console.log('key:' + key)
+        if (type === 'medications'){
+            parent = cardioCatalogQT.service.UtilityService.get_attribute_id(key);
+        }
+
+        atomic_unit += parent +
             delimiter +
             'eq' +
             delimiter;
@@ -89,6 +95,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         }
 
         return atomic_unit;
+
     },
 
     // Molecules are atoms concatenated by boolean AND or OR, or preceeded by NOT
@@ -109,16 +116,12 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         }
         else if (options.delimiter === '|') {
             bool_delimiter = options.delimiter;
-            bool_operator = 'OR'
+            bool_operator = 'OR';
         }
         else if (options.delimiter === '~') {
             bool_delimiter = options.delimiter;
-            bool_operator = 'NOT'
-            console.log('!!!!')
+            bool_operator = 'NOT';
         }
-
-        // set target store to appropriate source
-        //target = Ext.create('cardioCatalogQT.store.' + payload.storeId);
 
         payload.each(function(rec) {
 
@@ -257,6 +260,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         });
 
         return criteria;
+
     },
 
     // get symbol for display
@@ -301,7 +305,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
     // use for atomic payload construction
     date_hash: function(type) {
-
         var map = new Ext.util.HashMap();
 
         map.add('le', 'lss');
@@ -416,13 +419,13 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('nada')
             }
         }
-
     },
 
     query_move: function(button){
         var grid = button.up('grid'),
             selection = grid.getSelectionModel().getSelection(),
             source, // source store to filter
+            store,
             filtered = [],
             url = cardioCatalogQT.config.protocol,
             test =  Ext.getStore('Queries'),
@@ -556,13 +559,10 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 }
             }
 
-            var //source = grid.store,
-                store = Ext.getStore(source);
-
+            store = Ext.getStore(source);
             store.clearFilter();
             grid.getStore().load();
         });
-
     },
 
     url: function(button, atom, from, payload){
@@ -636,6 +636,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                 // count returned from http response
                 n = json.items;
+                total = json.total;
+                percentage = n/total;
+
 
                 if (json !== null && typeof (json) !== 'undefined') {
 
@@ -654,6 +657,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                         description: payload.description,
                         criteria: payload.criteria,
                         atom: payload.atom,
+                        percent: percentage,
                         n: n
                     });
                     source.sync();
@@ -665,7 +669,45 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     // stop loadMask
                     Ext.getBody().unmask();
                 }
+            }
+        });
+    },
 
+
+    get_total: function(){
+        var url_test = 'http://127.0.0.1:5000/total',
+            n,
+            total = Ext.create('cardioCatalogQT.store.PatientTotal');
+
+        Ext.Ajax.request({
+            cors: true,
+            useDefaultXhrHeader: false,
+            url: url_test,
+            headers: {
+                'Accept': 'application/json'
+            },
+            disableCaching: false,
+
+            success: function(response) {
+                json = Ext.decode(response.responseText);
+
+                // count returned from http response
+                n = json.n;
+
+                if (json !== null && typeof (json) !== 'undefined') {
+
+                    console.log('N:' + n)
+
+                    total.add  = ({
+                        n: n
+                    });
+
+                    total.sync();
+
+                    Ext.StoreMgr.get('PatientTotal').load();
+                    console.log(total)
+
+                }
             }
         });
     }
