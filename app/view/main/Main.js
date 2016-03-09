@@ -65,6 +65,9 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 src: 'resources/images/R3D3.png',
                 height: 50,
                 width: 280
+            },{
+                xtype: 'label',
+                text: 'N: 28253'
             }]
         },
         {

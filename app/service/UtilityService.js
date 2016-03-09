@@ -637,7 +637,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 // count returned from http response
                 n = json.items;
                 total = json.total;
-                percentage = n/total;
+                percentage = Ext.util.Format.number(n/total,'0,000.000');
 
 
                 if (json !== null && typeof (json) !== 'undefined') {
