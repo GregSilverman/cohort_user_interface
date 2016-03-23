@@ -179,7 +179,8 @@ Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
                                     hidden: true,
                                     hideTrigger:true
                                 }]
-                            }]}]
+                            }]
+                        }]
                 }]
             }]
         }]
