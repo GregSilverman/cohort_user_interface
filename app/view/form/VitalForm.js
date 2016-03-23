@@ -105,6 +105,7 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                         itemId: 'measureComparator',
                         queryMode: 'local',
                         editable: false,
+                        width: 300,
                         value: '',
                         triggerAction: 'all',
                         forceSelection: true,
@@ -215,7 +216,7 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                         },
                         items: [{ // When
                             xtype: 'combo',
-                            width: 200,
+                            width: 300,
                             itemId: 'whenComparator',
                             queryMode: 'local',
                             editable: false,

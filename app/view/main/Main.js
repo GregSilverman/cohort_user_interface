@@ -55,7 +55,7 @@ Ext.define('cardioCatalogQT.view.main.Main', {
                 disabled: true
             }]
         },
-        {
+        { // TODO: Eliminate line between controls and grid
             xtype: 'toolbar',
             region: 'north',
             vertical: true,
@@ -63,11 +63,11 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             items: [{
                 xtype: 'image',
                 src: 'resources/images/R3D3.png',
-                height: 50,
+                height: 70,
                 width: 280
-            },{
+            },{ //TODO: Add to top of form
                 xtype: 'label',
-                text: 'N: 28253'
+                text: 'There are currently 28253 cardiology patients available for research.'
             }]
         },
         {

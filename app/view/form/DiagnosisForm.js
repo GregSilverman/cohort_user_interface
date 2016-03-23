@@ -132,7 +132,7 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                         },
                         items: [{ // When
                             xtype: 'combo',
-                            width: 200,
+                            width: 300,
                             itemId: 'whenComparator',
                             queryMode: 'local',
                             editable: false,

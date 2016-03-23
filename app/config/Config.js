@@ -7,15 +7,15 @@ Ext.define("cardioCatalogQT.config.Config", {
     constant: {
 
         // ... whatever constant you need to put here
-        protocol: 'https://',
-        //host: '127.0.0.1:5000',
-        host: 'vein.ahc.umn.edu',
-        apiMenu: '/api/menu/',
-        apiLabs: '/api/labs/',
-        apiBasicVitals: '/api/basic_vitals/',
-        apiResultsGet: '/api/remote_results_get',
-        apiQueryGet: '/api/remote_query_get',
-        apiAttributeGet: '/api/attribute'
+        protocol: 'http://',
+        host: '127.0.0.1:5000',
+        //host: 'vein.ahc.umn.edu',
+        apiMenu: '/menu/',
+        apiLabs: '/labs/',
+        apiBasicVitals: '/basic_vitals/',
+        apiResultsGet: '/remote_results_get',
+        apiQueryGet: '/remote_query_get',
+        apiAttributeGet: '/attribute'
 
     },
 

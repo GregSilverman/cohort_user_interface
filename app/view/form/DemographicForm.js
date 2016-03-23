@@ -257,6 +257,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                         items: [{ // Age
                             xtype: 'combo',
                             itemId: 'ageComparator',
+                            width: 300,
                             queryMode: 'local',
                             editable: false,
                             value: '',

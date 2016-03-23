@@ -88,6 +88,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                         xtype: 'combo',
                         flex: 1,
                         itemId: 'labComparator',
+                        width: 300,
                         queryMode: 'local',
                         editable: false,
                         value: '',
@@ -199,7 +200,7 @@ Ext.define('cardioCatalogQT.view.form.LabForm', {
                         },
                         items: [{ // When
                             xtype: 'combo',
-                            width: 200,
+                            width: 300,
                             itemId: 'whenComparator',
                             queryMode: 'local',
                             editable: false,
