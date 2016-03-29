@@ -376,7 +376,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                             fieldLabel: 'Select race',
                             displayField: 'description',
                             fieldName: 'description',
-                            valueField: 'code',
+                            valueField: 'description',
                             store: 'Races'
                         },{ // Ethnicity
                             xtype: 'combo',
@@ -389,7 +389,7 @@ Ext.define('cardioCatalogQT.view.form.DemographicForm', {
                             fieldLabel: 'Select ethnicity',
                             displayField: 'description',
                             fieldName: 'description',
-                            valueField: 'code',
+                            valueField: 'description',
                             store: 'Ethnicities'
                         }]
                     }]

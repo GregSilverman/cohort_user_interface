@@ -27,7 +27,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             upperAgeValue = form.down('#upperAgeValue').value,
             criterion,
             vitalValue = form.down('#vitalStatus').value,
-            comparatorValue = 'eq';
+            comparatorValue = 'eq',
+            raceValue = form.down('#raceValue').value,
+            ethnicValue = form.down('#ethnicValue').value,
+            race_value,
+            ethnic_value;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object demographics');
@@ -39,18 +43,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
         // insert sex only if exists
         if (sexValue) {
-
-            if ((ageComparator === 'bt' &&
-                ageValue &&
-                upperAgeValue) ||
-
-                (ageComparator !== 'bt' &&
-                ageValue &&
-                !upperAgeValue) ||
-
-                (ageComparator !== 'bt' &&
-                !ageValue &&
-                !upperAgeValue)) {
 
                 // set value if ALL values desired for return
                 if (sexValue === 'prn') {
@@ -81,11 +73,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'sex', comparatorValue, sexValue);
                 cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
-            }
-            else {
-
-                // error conditionals here
-            }
         }
         // insert vitalStatus only if exists
         if (vitalValue){
@@ -180,6 +167,79 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
         }
+
+        // insert race only if exists
+        if (raceValue) {
+
+            // set value if ALL values desired for return
+            if (sexValue === 'prn') {
+                comparatorValue = raceValue;
+                raceValue = 'all'
+            }
+            // TODO: implement citerion builder independent of all data in stores
+            criterion = 'RACE' +
+            ' ' +
+            cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue) +
+            ' ' +
+            raceValue;
+
+            race_value = raceValue.replace(new RegExp(' ', 'gi'),'_');
+
+            // TODO: implement atomic_unit builder at time of model instance creation
+
+            console.log('print: value')
+            console.log(cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue))
+
+            var payload = {
+                type: 'demographics',
+                key: 'race',
+                comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
+                value: race_value,
+                criteria: criterion,
+                atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'race', comparatorValue, race_value)
+            };
+
+            atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'race', comparatorValue, race_value);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+        }
+
+        // insert ethnicity only if exists
+        if (ethnicValue) {
+
+            // set value if ALL values desired for return
+            if (ethnicValue === 'prn') {
+                comparatorValue = ethnicityValue;
+                raceValue = 'all'
+            }
+            // TODO: implement citerion builder independent of all data in stores
+            criterion = 'ETHNICITY' +
+            ' ' +
+            cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue) +
+            ' ' +
+            ethnicValue;
+
+            ethnic_value = ethnicValue.replace(new RegExp(' ', 'gi'),'_');
+
+            // TODO: implement atomic_unit builder at time of model instance creation
+
+            console.log('print: value')
+            console.log(cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue))
+
+            var payload = {
+                type: 'demographics',
+                key: 'ethnicity',
+                comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
+                value: ethnic_value,
+                criteria: criterion,
+                atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'ethnicity', comparatorValue, ethnic_value)
+            };
+
+            atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'ethnicity', comparatorValue, ethnic_value);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+        }
+
 
         if (cardioCatalogQT.config.mode === 'test') {
             demo.push(sexValue);
