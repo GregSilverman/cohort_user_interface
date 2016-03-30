@@ -2,40 +2,54 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
+Ext.define('cardioCatalogQT.view.form.Vital', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.diagnosisGrid',
-    itemId: 'diagnosisGrid',
+    alias: 'widget.vitalGrid',
+    itemId: 'vitalGrid',
     store: 'Payload',
 
-    requires: [
-        'cardioCatalogQT.view.main.MainController'
-    ],
-
     config: {
-        variableHeights: false,
-        title: 'Diagnoses',
+        title: 'Vitals',
         xtype: 'form',
         width: 500,
         bodyPadding: 10,
         defaults: {
-            anchor: '100%',
+            //anchor: '100%',
             labelWidth: 100
         },
 
         // inline buttons
-        dockedItems: [ {
-            itemId: 'diagnoses',
+        dockedItems: [{
+            itemId: 'vitals',
             bodyStyle: 'margin: 10px; padding: 5px 3px;',
-            items: [{
+            items: [ {
                 width: 600,
                 text: 'Add to search',
                 xtype: 'button',
                 itemId: 'searchClick',
-                handler: 'onSubmitDiagnoses'
+                handler: 'onSubmitVitals'
             },{
                 xtype: 'tbspacer',
                 height:5
+            },{ // Vitals
+                xtype: 'combo',
+                flex: 1,
+                width: 400,
+                itemId: 'measureCode',
+                queryMode: 'local',
+                editable: false,
+                value: 'select',
+                triggerAction: 'all',
+                forceSelection: true,
+                loading: true,
+                fieldLabel: 'Select vital measure type',
+                displayField: 'measure',
+                valueField: 'field_name',
+                store: 'BasicVitals',
+                listeners: {
+                    change: 'onToggleVital',
+                    scope: 'controller'
+                }
             },{
                 xtype: 'fieldcontainer',
                 margin: '0 5 0 0',
@@ -46,38 +60,69 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                     flex: 1,
                     hideLabel: true
                 },
-                items: [{ //Dx
-                    width: 300,
-                    height: 400,
-                    anchor: '25%',
-                    xtype: 'multiselector',
-                    scrollable: true,
-                    title: 'Selected Dx',
-                    itemId: 'diagnosis',
-                    fieldName: 'description',
-                    valueField: 'code',
-                    viewConfig: {
-                        deferEmptyText: false,
-                        emptyText: 'No Dx selected'
-                    },
-                    // TODO: fix ability to remove selected items when box is unchecked
-                    search: {
-                        field: 'code_description',
-                        store: 'Diagnoses',
-
-                        search: function (text) {
-                            cardioCatalogQT.service.UtilityService.multi_select_search(text, this);
-                        },
-                        onSelect : function() {
-                            Ext.Msg.alert('Change', 'MultiSelect has changed');
-                        }
-                    }
-                },{
-                    xtype: 'tbspacer',
-                    height:25
-                },{
+                items: [{
                     xtype: 'fieldset',
-                    collapsible: false,
+                    title: 'Constrain measure value',
+                    defaults: {
+                        labelWidth: 89,
+                        anchor: '100%',
+                        layout: {
+                            type: 'hbox',
+                            defaultMargins: {top: 0, right: 5, bottom: 0, left: 0}
+                        }
+                    },
+                    items: [{
+                        xtype: 'combo',
+                        flex: 1,
+                        itemId: 'measureComparator',
+                        queryMode: 'local',
+                        editable: false,
+                        width: 300,
+                        value: '',
+                        triggerAction: 'all',
+                        forceSelection: true,
+                        fieldLabel: 'that is',
+                        displayField: 'name',
+                        valueField: 'value',
+                        //hidden: true,
+                        store: {
+                            fields: ['name', 'value'],
+                            data: [
+                                {name: 'all', value: 'prn'},
+                                {name: '=', value: 'eq'},
+                                {name: '< (less than)', value: 'lt'},
+                                {name: '<= (less than or equal)', value: 'lete'},
+                                {name: '> (greater than)', value: 'gt'},
+                                {name: '>= (greater than or equal)', value: 'grte'},
+                                {name: 'between', value: 'bt'}
+                            ]
+                        },
+                        listeners: {
+                            change: 'onUpperVitalToggle',
+                            scope: 'controller'
+                        }
+                    },{
+                        xtype: 'fieldcontainer',
+                        combineErrors: true,
+                        msgTarget : 'side',
+                        defaults: {
+                            flex: 1,
+                            hideLabel: true
+                        },
+                        items: [{
+                            xtype: 'textfield',
+                            itemId: 'measureValue',
+                            value: ''
+                        },
+                            {
+                                xtype: 'numberfield',
+                                itemId: 'upperMeasureValue',
+                                fieldLabel: 'and',
+                                hidden: true
+                            }]
+                    }]
+                }, {
+                    xtype: 'fieldset',
                     border: false,
                     defaults: {
                         labelWidth: 89,
@@ -93,31 +138,19 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                         itemId: 'showWhen',
                         hidden: false,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#whenId').show();
-                                button.up('grid').down('#whenValue').show();
-                                button.up('grid').down('#hideWhen').show();
-                                button.up('grid').down('#showWhen').hide();
-                            }
+                            click: 'onUnhideDate',
+                            scope: 'controller'
                         }
-                    },{
+                    }, {
                         xtype: 'button',
                         text: 'Hide date range',
                         itemId: 'hideWhen',
                         hidden: true,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#whenId').hide();
-                                button.up('grid').down('#whenValue').hide();
-                                button.up('grid').down('#upperWhenValue').hide();
-                                button.up('grid').down('#whenComparator').setValue('');
-                                button.up('grid').down('#whenValue').setValue('');
-                                button.up('grid').down('#upperWhenValue').setValue('');
-                                button.up('grid').down('#hideWhen').hide();
-                                button.up('grid').down('#showWhen').show();
-                            }
+                            click: 'onHideDate',
+                            scope: 'controller'
                         }
-                    },{
+                    }, {
                         xtype: 'fieldset',
                         title: 'Constrain by date',
                         hidden: true,
@@ -139,7 +172,7 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                             value: '',
                             triggerAction: 'all',
                             forceSelection: true,
-                            fieldLabel: 'Select lab date that is',
+                            fieldLabel: 'Select measure date that is',
                             displayField: 'name',
                             valueField: 'value',
                             store: {
@@ -150,20 +183,15 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                                     {name: 'between', value: 'bt'}
                                 ]
                             },
+
                             listeners: {
-                                change: function(combo, value) {
-                                    // use component query to  toggle the hidden state of upper value
-                                    if (value === 'bt') {
-                                        combo.up('grid').down('#upperWhenValue').show();
-                                    } else {
-                                        combo.up('grid').down('#upperWhenValue').hide();
-                                    }
-                                }
+                                change: 'onUpperDate',
+                                scope: 'controller'
                             }
-                        },{
+                        }, {
                             xtype: 'fieldcontainer',
                             combineErrors: true,
-                            msgTarget : 'side',
+                            msgTarget: 'side',
                             defaults: {
                                 hideLabel: true
                             },
@@ -172,14 +200,14 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                                 width: 200,
                                 itemId: 'whenValue',
                                 fieldLabel: 'value of',
-                                hideTrigger:true
-                            },{
+                                hideTrigger: true
+                            }, {
                                 xtype: 'datefield',
                                 width: 200,
                                 itemId: 'upperWhenValue',
                                 fieldLabel: 'and',
                                 hidden: true,
-                                hideTrigger:true
+                                hideTrigger: true
                             }]
                         }]
                     }]

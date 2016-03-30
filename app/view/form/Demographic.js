@@ -2,7 +2,7 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.form.DemographicForm', {
+Ext.define('cardioCatalogQT.view.form.Demographic', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.demographicGrid',
     itemId: 'demographicGrid',

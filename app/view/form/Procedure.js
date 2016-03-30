@@ -2,7 +2,7 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
+Ext.define('cardioCatalogQT.view.form.Procedure', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.procedureGrid',
     itemId: 'procedureGrid',
@@ -89,12 +89,8 @@ Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
                         itemId: 'showWhen',
                         hidden: false,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#whenId').show();
-                                button.up('grid').down('#whenValue').show();
-                                button.up('grid').down('#hideWhen').show();
-                                button.up('grid').down('#showWhen').hide();
-                            }
+                            click: 'onUnhideDate',
+                            scope: 'controller'
                         }
                     }, {
                         xtype: 'button',
@@ -102,16 +98,8 @@ Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
                         itemId: 'hideWhen',
                         hidden: true,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#whenId').hide();
-                                button.up('grid').down('#whenValue').hide();
-                                button.up('grid').down('#upperWhenValue').hide();
-                                button.up('grid').down('#whenComparator').setValue('');
-                                button.up('grid').down('#whenValue').setValue('');
-                                button.up('grid').down('#upperWhenValue').setValue('');
-                                button.up('grid').down('#hideWhen').hide();
-                                button.up('grid').down('#showWhen').show();
-                            }
+                            click: 'onHideDate',
+                            scope: 'controller'
                         }
                     },
                         {
@@ -149,14 +137,8 @@ Ext.define('cardioCatalogQT.view.form.ProcedureForm', {
                                 },
 
                                 listeners: {
-                                    change: function(combo, value) {
-                                        // use component query to  toggle the hidden state of upper value
-                                        if (value === 'bt') {
-                                            combo.up('grid').down('#upperWhenValue').show();
-                                        } else {
-                                            combo.up('grid').down('#upperWhenValue').hide();
-                                        }
-                                    }
+                                    change: 'onUpperDate',
+                                    scope: 'controller'
                                 }
                             },{
                                 xtype: 'fieldcontainer',
