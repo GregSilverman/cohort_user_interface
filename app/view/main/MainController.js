@@ -218,7 +218,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             upperAgeValue = form.down('#upperAgeValue').value,
             criterion,
             vitalValue = form.down('#vitalStatus').value,
-            comparatorValue = 'eq';
+            comparatorValue = 'eq',
+            payload;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object demographics');
@@ -257,10 +258,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
-                console.log('print: value')
-                console.log(cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue))
-
-                var payload = {
+                payload = {
                     type: 'demographics',
                     key: 'sex',
                     comparator: 'eq',
@@ -293,7 +291,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 ' ' +
                 vitalValue;
 
-            var payload = {
+            payload = {
                 type: 'dg',
                 key: 'vital_status',
                 comparator: 'eq',
@@ -353,7 +351,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 // TODO: implement atomic_unit builder at time of model instance creation
 
-                var payload  = {
+                payload  = {
                     type: 'demographics',
                     key: 'age',
                     comparator: ageComparator,
@@ -524,7 +522,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             date_comparator;
 
         whenValue = Ext.Date.format(whenValue, 'Y-m-d');
-        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d'),
+        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
 
@@ -826,7 +824,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(drug_key);
                 console.log('YESH');
                 console.log(items);
-                console.log(items.data.type + items.data.name + items.data.drug_code)
+                console.log(items.data.type + items.data.name + items.data.drug_code);
                 rx.push(items.data.type,items.data.name,items.data.drug_code);
                 console.log('rx');
                 console.log(rx);
@@ -898,7 +896,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onMedSelectionChange: function(selections, sm) {
-        var rx = [];
+        var rx = [],
+            test = selections.selected.items;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('meds:');
@@ -906,14 +905,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(selections.selected.items);
         }
 
-        test = selections.selected.items
-
         Ext.each(test, function (items) {
 
             if (cardioCatalogQT.config.mode === 'test') {
-                console.log('YESH')
-                console.log(items)
-                console.log(items.data.type + items.data.name)
                 rx.push(items.data.type,items.data.name);
                 console.log('rx');
                 console.log(rx);
