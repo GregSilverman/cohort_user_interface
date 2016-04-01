@@ -63,11 +63,7 @@ Ext.define('cardioCatalogQT.view.form.Procedure', {
                     // TODO: fix ability to remove selected items when box is unchecked
                     search: {
                         field: 'code_description',
-                        store: 'Procedures',
-
-                        search: function (text) {
-                            cardioCatalogQT.service.UtilityService.multi_select_search(text,this);
-                        }
+                        store: 'Procedures'
                     }
                 },{
                     xtype: 'tbspacer',

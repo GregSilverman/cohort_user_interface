@@ -20,7 +20,98 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     //TODO: deal with referencing components via 'this'
     // deal with 'search' override
 
-   onUpperVitalToggle: function (combo, value) {
+    unhideSex: function (button) {
+        button.up('grid').down('#sexId').show();
+        button.up('grid').down('#hideSex').show();
+        button.up('grid').down('#showSex').hide();
+    },
+
+    hideSex: function (button) {
+        button.up('grid').down('#sexId').hide();
+        button.up('grid').down('#sexValue').setValue('');
+        button.up('grid').down('#hideSex').hide();
+        button.up('grid').down('#showSex').show();
+    },
+
+    searchComboChange: function (combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value) {
+            combo.up('grid').down('#searchClick').enable();
+        } else if (!value) {
+            combo.up('grid').down('#searchClick').disable();
+        }
+    },
+
+    searchTextChange: function (fld, newValue, oldValue, opts) {
+        // only enable if a value is being submitted
+        if (newValue) {
+            fld.up('grid').down('#searchClick').enable();
+        }
+        else if (!newValue) {
+            fld.up('grid').down('#searchClick').disable();
+        }
+    },
+
+    unhideRaceEthnicity: function (button) {
+        button.up('grid').down('#raceId').show();
+        button.up('grid').down('#hideRace').show();
+        button.up('grid').down('#showRace').hide();
+    },
+
+    hideRaceEthnicity: function (button) {
+        button.up('grid').down('#raceId').hide();
+        button.up('grid').down('#raceValue').setValue('');
+        button.up('grid').down('#ethnicValue').setValue('');
+        button.up('grid').down('#hideRace').hide();
+        button.up('grid').down('#showRace').show();
+    },
+
+
+    unhideAge: function (button) {
+        button.up('grid').down('#ageId').show();
+        button.up('grid').down('#hideAge').show();
+        button.up('grid').down('#showAge').hide();
+    },
+
+    hideAge: function (button) {
+        button.up('grid').down('#ageId').hide();
+        button.up('grid').down('#ageComparator').setValue('');
+        button.up('grid').down('#ageValue').setValue('');
+        button.up('grid').down('#upperAgeValue').setValue('');
+        button.up('grid').down('#hideAge').hide();
+        button.up('grid').down('#showAge').show();
+    },
+
+    upperAgeValue: function (combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperAgeValue').show();
+        } else {
+            combo.up('grid').down('#upperAgeValue').hide();
+        }
+        if (value === 'prn') {
+            combo.up('grid').down('#ageValue').hide();
+        }
+        if (value !== 'prn' && value !== 'bt' && value !== null) {
+            combo.up('grid').down('#ageValue').show();
+        }
+    },
+
+    unhideVital: function (button) {
+        button.up('grid').down('#vitalId').show();
+        button.up('grid').down('#hideVital').show();
+        button.up('grid').down('#showVital').hide();
+    },
+
+    hideVital: function (button) {
+        button.up('grid').down('#vitalId').hide();
+        button.up('grid').down('#vitalStatus').setValue('');
+        button.up('grid').down('#hideVital').hide();
+        button.up('grid').down('#showVital').show();
+    },
+
+
+    onUpperVitalToggle: function (combo, value) {
         // use component query to  toggle the hidden state of upper value
         if (value === 'bt') {
             combo.up('grid').down('#upperMeasureValue').show();
@@ -35,6 +126,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onToggleVital: function (combo, value) {
+        var record,
+            units;
+
         // use component query to  toggle the hidden state of upper value
         if (value !== 'select') {
             combo.up('grid').down('#measureComparator').show();
@@ -47,13 +141,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             combo.up('grid').down('#upperMeasureValue').setValue('');
         }
         // set label with units
+        // TODO: use bind pattern, ala https://fiddle.sencha.com/#fiddle/169m
         if (value) {
-            record = this.getSelectedRecord();
-            console.log(record.raw.units);
+            record = combo.getSelectedRecord();
             units = record.raw.units;
-            console.log(combo.up('grid').down('#measureValue'))
             if (record.raw.units) {
-                combo.up('grid').down('#measureValue').setFieldLabel('min value in ' + Ext.util.Format.lowercase(units));
+                combo.up('grid').down('#measureValue').setFieldLabel('min value in '
+                    + Ext.util.Format.lowercase(units));
             }
             else {
                 combo.up('grid').down('#measureValue').setFieldLabel('min value:');
@@ -62,17 +156,19 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onToggleLab: function(combo, value) {
+        var record,
+            units;
+
         if (value) {
-            record = this.getSelectedRecord();
-            console.log(record.raw.units);
+            record = combo.getSelectedRecord();
             units = record.raw.units;
-            console.log(combo.up('grid').down('#labValue'))
-            combo.up('grid').down('#labValue').setFieldLabel('value (' + units + ')');
+            combo.up('grid').down('#labValue').setFieldLabel('value ('
+                + units + ')');
         }
     },
 
     onToggleUpperLab: function (combo, value) {
-        // use component query to  toggle the hidden state of upper value
+        // use component query to toggle the hidden state of upper value
         if (value === 'bt') {
             combo.up('grid').down('#upperLabValue').show();
         } else {
@@ -111,11 +207,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             combo.up('grid').down('#upperWhenValue').hide();
         }
     },
-
-    onDxSearch: function (text) {
-        cardioCatalogQT.service.UtilityService.multi_select_search(text, this);
-    },
-
 
     onSubmitDemographics: function (button) {
         var atom,

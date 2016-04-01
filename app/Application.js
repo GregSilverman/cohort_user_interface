@@ -36,7 +36,8 @@ Ext.define('cardioCatalogQT.Application', {
         'Ext.ux.form.MultiSelect',
         'Ext.ux.form.ItemSelector',
         'cardioCatalogQT.*',
-        'Ext.overrides.selection.CheckboxModel'
+        'Ext.overrides.selection.CheckboxModel',
+        'Ext.overrides.view.MultiSelectorSearch'
     ],
 
     stores: [

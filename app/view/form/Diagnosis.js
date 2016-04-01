@@ -63,11 +63,7 @@ Ext.define('cardioCatalogQT.view.form.Diagnosis', {
                     // TODO: fix ability to remove selected items when box is unchecked
                     search: {
                         field: 'code_description',
-                        store: 'Diagnoses',
-
-                        search: function (text) {
-                            cardioCatalogQT.service.UtilityService.multi_select_search(text, this);
-                        }
+                        store: 'Diagnoses'
                     }
                 },{
                     xtype: 'tbspacer',

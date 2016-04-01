@@ -9,7 +9,8 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
     store: 'Payload',
 
     requires: [
-        'cardioCatalogQT.view.main.MainController'
+        'cardioCatalogQT.view.main.MainController',
+        'Ext.button.Button'
     ],
 
     config: {
@@ -62,11 +63,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                         itemId: 'showSex',
                         hidden: false,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#sexId').show();
-                                button.up('grid').down('#hideSex').show();
-                                button.up('grid').down('#showSex').hide();
-                            }
+                            click: 'unhideSex'
                         }
                     },{
                         xtype: 'button',
@@ -74,12 +71,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                         itemId: 'hideSex',
                         hidden: true,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#sexId').hide();
-                                button.up('grid').down('#sexValue').setValue('');
-                                button.up('grid').down('#hideSex').hide();
-                                button.up('grid').down('#showSex').show();
-                            }
+                            click: 'hideSex'
                         }
                     },{
                         xtype: 'fieldset',
@@ -114,14 +106,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                                 ]
                             },
                             listeners: {
-                                change: function (combo, value) {
-                                    // use component query to  toggle the hidden state of upper value
-                                    if (value) {
-                                        combo.up('grid').down('#searchClick').enable();
-                                    } else if (!value) {
-                                        combo.up('grid').down('#searchClick').disable();
-                                    }
-                                }
+                                change: 'searchComboChange'
                             }
                         }]
                     }]
@@ -141,11 +126,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                         itemId: 'showVital',
                         hidden: false,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#vitalId').show();
-                                button.up('grid').down('#hideVital').show();
-                                button.up('grid').down('#showVital').hide();
-                            }
+                            click: 'unhideVital'
                         }
                     },{
                         xtype: 'button',
@@ -153,12 +134,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                         itemId: 'hideVital',
                         hidden: true,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#vitalId').hide();
-                                button.up('grid').down('#vitalStatus').setValue('');
-                                button.up('grid').down('#hideVital').hide();
-                                button.up('grid').down('#showVital').show();
-                            }
+                            click: 'hideVital'
                         }
                     },{
                         xtype: 'fieldset',
@@ -193,14 +169,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                                 ]
                             },
                             listeners: {
-                                change: function (combo, value) {
-                                    // use component query to  toggle the hidden state of upper value
-                                    if (value) {
-                                        combo.up('grid').down('#searchClick').enable();
-                                    } else if (!value) {
-                                        combo.up('grid').down('#searchClick').disable();
-                                    }
-                                }
+                                change: 'searchComboChange'
                             }
                         }]
                     }]
@@ -220,11 +189,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                         itemId: 'showAge',
                         hidden: false,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#ageId').show();
-                                button.up('grid').down('#hideAge').show();
-                                button.up('grid').down('#showAge').hide();
-                            }
+                            click: 'unhideAge'
                         }
                     },{
                         xtype: 'button',
@@ -232,14 +197,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                         itemId: 'hideAge',
                         hidden: true,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#ageId').hide();
-                                button.up('grid').down('#ageComparator').setValue('');
-                                button.up('grid').down('#ageValue').setValue('');
-                                button.up('grid').down('#upperAgeValue').setValue('');
-                                button.up('grid').down('#hideAge').hide();
-                                button.up('grid').down('#showAge').show();
-                            }
+                            click: 'hideAge'
                         }
                     },{
                         xtype: 'fieldset',
@@ -279,35 +237,14 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                                 ]
                             },
                             listeners: {
-                                change: function (combo, value) {
-                                    // use component query to  toggle the hidden state of upper value
-                                    if (value === 'bt') {
-                                        combo.up('grid').down('#upperAgeValue').show();
-                                    } else {
-                                        combo.up('grid').down('#upperAgeValue').hide();
-                                    }
-                                    if (value === 'prn') {
-                                        combo.up('grid').down('#ageValue').hide();
-                                    }
-                                    if (value !== 'prn' && value !== 'bt' && value !== null) {
-                                        combo.up('grid').down('#ageValue').show();
-                                    }
-                                }
+                                change: 'upperAgeValue'
                             }
                         },{
                             xtype: 'numberfield',
                             itemId: 'ageValue',
                             fieldLabel: 'value of',
                             listeners: {
-                                change: function (fld, newValue, oldValue, opts) {
-                                    // only enable if a value is being submitted
-                                    if (newValue) {
-                                        fld.up('grid').down('#searchClick').enable();
-                                    }
-                                    else if (!newValue) {
-                                        fld.up('grid').down('#searchClick').disable();
-                                    }
-                                }
+                                change: 'searchTextChange'
                             }
                         }, {
                             xtype: 'numberfield',
@@ -332,11 +269,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                         itemId: 'showRace',
                         hidden: false,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#raceId').show();
-                                button.up('grid').down('#hideRace').show();
-                                button.up('grid').down('#showRace').hide();
-                            }
+                            click: 'unhideRaceEthnicity'
                         }
                     },{
                         xtype: 'button',
@@ -344,13 +277,7 @@ Ext.define('cardioCatalogQT.view.form.Demographic', {
                         itemId: 'hideRace',
                         hidden: true,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#raceId').hide();
-                                button.up('grid').down('#raceValue').setValue('');
-                                button.up('grid').down('#ethnicValue').setValue('');
-                                button.up('grid').down('#hideRace').hide();
-                                button.up('grid').down('#showRace').show();
-                            }
+                            click: 'hideRaceEthnicity'
                         }
                     },{
                         xtype: 'fieldset',
