@@ -17,8 +17,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         'Ext.window.MessageBox'
     ],
 
-    //TODO: deal with referencing components via 'this'
-    // deal with 'search' override
+    onSubmitAdvancedRequest: function(button){
+        var url = 'https://redcap.ahc.umn.edu/surveys/?s=nfHAssJw96';
+        window.open(url);
+    },
 
     unhideSex: function (button) {
         button.up('grid').down('#sexId').show();
@@ -65,7 +67,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         button.up('grid').down('#hideRace').hide();
         button.up('grid').down('#showRace').show();
     },
-
 
     unhideAge: function (button) {
         button.up('grid').down('#ageId').show();
@@ -249,14 +250,12 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     comparatorValue = sexValue;
                     sexValue = 'all'
                 }
-                // TODO: implement citerion builder independent of all data in stores
+
                 criterion = 'SEX' +
                     ' ' +
                     cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue) +
                     ' ' +
                     sexValue;
-
-                // TODO: implement atomic_unit builder at time of model instance creation
 
                 payload = {
                     type: 'demographics',
@@ -342,14 +341,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 (ageComparator !== 'bt') &&
                 (ageValue || ageComparator === 'prn'))) {
 
-                // TODO: implement citerion builder independent of all data in stores
                 criterion = 'Age' +
                     ' ' +
                     cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator) +
                     ' ' +
                     test_age;
-
-                // TODO: implement atomic_unit builder at time of model instance creation
 
                 payload  = {
                     type: 'demographics',
@@ -476,7 +472,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         + test_date;
                 }
 
-                // TODO: implement atomic_unit builder at time of model instance creation
                 var payload = {
                     type: 'basic_vitals',
                     key: measureCode,
@@ -578,7 +573,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 labComparator !== 'bt' &&
                 (labValue || labComparator === 'prn')))) {
 
-                // TODO: implement citerion builder independent of all data in stores
                 criterion =  labCode +
                     ' ' +
                     cardioCatalogQT.service.UtilityService.comparator_hash(labComparator) +
@@ -663,7 +657,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(item)
             }
 
-            // TODO: implement citerion builder independent of all data in stores
             criterion =  item.data.description;
 
             if (test_date){
@@ -735,7 +728,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log(item)
             }
-            // TODO: implement citerion builder independent of all data in stores
+
             criterion =  item.data.description;
 
             if (test_date){
