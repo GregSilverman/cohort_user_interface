@@ -51,11 +51,8 @@ Ext.define('cardioCatalogQT.view.grid.Queries', {
             xtype: 'button',
             itemId: 'initiateRequest',
             disabled: true,
-
-            handler: function(button){
-                var url = 'https://redcap.ahc.umn.edu/surveys/?s=nfHAssJw96';
-                window.open(url);
-            }}]
+            handler: 'onSubmitAdvancedRequest'
+        }]
     }],
     // TODO: add delete button
 

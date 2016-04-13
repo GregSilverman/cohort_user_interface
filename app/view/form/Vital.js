@@ -2,15 +2,11 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.form.VitalForm', {
+Ext.define('cardioCatalogQT.view.form.Vital', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.vitalGrid',
     itemId: 'vitalGrid',
     store: 'Payload',
-
-    requires: [
-        'cardioCatalogQT.view.main.MainController'
-    ],
 
     config: {
         title: 'Vitals',
@@ -51,32 +47,8 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                 valueField: 'field_name',
                 store: 'BasicVitals',
                 listeners: {
-                    change: function (combo, value) {
-                        // use component query to  toggle the hidden state of upper value
-                        if (value !== 'select') {
-                            combo.up('grid').down('#measureComparator').show();
-                        } else {
-                            combo.up('grid').down('#measureComparator').hide();
-                            combo.up('grid').down('#measureValue').hide();
-                            combo.up('grid').down('#upperMeasureValue').hide();
-                            combo.up('grid').down('#measureComparator').setValue('');
-                            combo.up('grid').down('#measureValue').setValue('');
-                            combo.up('grid').down('#upperMeasureValue').setValue('');
-                        }
-                        // set label with units
-                        if (value) {
-                            record = this.getSelectedRecord();
-                            console.log(record.raw.units);
-                            units = record.raw.units;
-                            console.log(combo.up('grid').down('#measureValue'))
-                            if (record.raw.units) {
-                                combo.up('grid').down('#measureValue').setFieldLabel('min value in ' + Ext.util.Format.lowercase(units));
-                            }
-                            else {
-                                combo.up('grid').down('#measureValue').setFieldLabel('min value:');
-                            }
-                        }
-                    }
+                    change: 'onToggleVital',
+                    scope: 'controller'
                 }
             },{
                 xtype: 'fieldcontainer',
@@ -126,19 +98,8 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                             ]
                         },
                         listeners: {
-                            change: function (combo, value) {
-                                // use component query to  toggle the hidden state of upper value
-                                if (value === 'bt') {
-                                    combo.up('grid').down('#upperMeasureValue').show();
-                                } else {
-                                    combo.up('grid').down('#upperMeasureValue').hide();
-                                }
-                                if (value === 'prn') {
-                                    combo.up('grid').down('#measureValue').hide();
-                                } else {
-                                    combo.up('grid').down('#measureValue').show();
-                                }
-                            }
+                            change: 'onUpperVitalToggle',
+                            scope: 'controller'
                         }
                     },{
                         xtype: 'fieldcontainer',
@@ -177,12 +138,8 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                         itemId: 'showWhen',
                         hidden: false,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#whenId').show();
-                                button.up('grid').down('#whenValue').show();
-                                button.up('grid').down('#hideWhen').show();
-                                button.up('grid').down('#showWhen').hide();
-                            }
+                            click: 'onUnhideDate',
+                            scope: 'controller'
                         }
                     }, {
                         xtype: 'button',
@@ -190,16 +147,8 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                         itemId: 'hideWhen',
                         hidden: true,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#whenId').hide();
-                                button.up('grid').down('#whenValue').hide();
-                                button.up('grid').down('#upperWhenValue').hide();
-                                button.up('grid').down('#whenComparator').setValue('');
-                                button.up('grid').down('#whenValue').setValue('');
-                                button.up('grid').down('#upperWhenValue').setValue('');
-                                button.up('grid').down('#hideWhen').hide();
-                                button.up('grid').down('#showWhen').show();
-                            }
+                            click: 'onHideDate',
+                            scope: 'controller'
                         }
                     }, {
                         xtype: 'fieldset',
@@ -236,14 +185,8 @@ Ext.define('cardioCatalogQT.view.form.VitalForm', {
                             },
 
                             listeners: {
-                                change: function (combo, value) {
-                                    // use component query to  toggle the hidden state of upper value
-                                    if (value === 'bt') {
-                                        combo.up('grid').down('#upperWhenValue').show();
-                                    } else {
-                                        combo.up('grid').down('#upperWhenValue').hide();
-                                    }
-                                }
+                                change: 'onUpperDate',
+                                scope: 'controller'
                             }
                         }, {
                             xtype: 'fieldcontainer',

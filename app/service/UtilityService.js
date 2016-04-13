@@ -44,7 +44,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
         atomic_unit = type +
             seperator;
 
-        console.log('key:' + key)
         if (type === 'medications'){
             parent = cardioCatalogQT.service.UtilityService.get_attribute_id(key);
         }
@@ -177,7 +176,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 console.log('bool_op: ' + bool_operator);
             }
 
-            var payload = {
+            payload = {
                 key: key,
                 type: bool_operator,
                 description: key,
@@ -477,11 +476,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
 
                         var recordIndex = test.findBy(
                             function (record, id) {
-                                if (record.get('molecule') === item.data.atom &&
-                                    record.get('criteria') === item.data.criteria) {
-                                    return true;  // a record with this data exists
-                                }
-                                return false;  // there is no record in the store with this data
+                                return !!(record.get('molecule') === item.data.atom &&
+                                record.get('criteria') === item.data.criteria);
                             }
                         );
 
@@ -531,11 +527,11 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                     if (cardioCatalogQT.config.mode === 'test') {
                         console.log('filtered');
                         console.log(filtered);
-                        console.log('QUERY')
-                        console.log(query)
+                        console.log('QUERY');
+                        console.log(query);
 
                         console.log('updated store')
-                        console.log(test)
+                        console.log(test);
                     }
 
                     source.clearFilter(true); // Clears old filters
@@ -600,7 +596,9 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             obj,
             records = [],
             store = Ext.getStore('TestResults'),
-            n;
+            n,
+            total,
+            percentage;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('call to make url: ' + url);
@@ -677,7 +675,8 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
     get_total: function(){
         var url_test = 'http://127.0.0.1:5000/total',
             n,
-            total = Ext.create('cardioCatalogQT.store.PatientTotal');
+            total = Ext.create('cardioCatalogQT.store.PatientTotal'),
+            json;
 
         Ext.Ajax.request({
             cors: true,
@@ -695,8 +694,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 n = json.n;
 
                 if (json !== null && typeof (json) !== 'undefined') {
-
-                    console.log('N:' + n)
 
                     total.add  = ({
                         n: n

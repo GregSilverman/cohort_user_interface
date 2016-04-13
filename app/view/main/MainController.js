@@ -17,6 +17,198 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         'Ext.window.MessageBox'
     ],
 
+    onSubmitAdvancedRequest: function(button){
+        var url = 'https://redcap.ahc.umn.edu/surveys/?s=nfHAssJw96';
+        window.open(url);
+    },
+
+    unhideSex: function (button) {
+        button.up('grid').down('#sexId').show();
+        button.up('grid').down('#hideSex').show();
+        button.up('grid').down('#showSex').hide();
+    },
+
+    hideSex: function (button) {
+        button.up('grid').down('#sexId').hide();
+        button.up('grid').down('#sexValue').setValue('');
+        button.up('grid').down('#hideSex').hide();
+        button.up('grid').down('#showSex').show();
+    },
+
+    searchComboChange: function (combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value) {
+            combo.up('grid').down('#searchClick').enable();
+        } else if (!value) {
+            combo.up('grid').down('#searchClick').disable();
+        }
+    },
+
+    searchTextChange: function (fld, newValue, oldValue, opts) {
+        // only enable if a value is being submitted
+        if (newValue) {
+            fld.up('grid').down('#searchClick').enable();
+        }
+        else if (!newValue) {
+            fld.up('grid').down('#searchClick').disable();
+        }
+    },
+
+    unhideRaceEthnicity: function (button) {
+        button.up('grid').down('#raceId').show();
+        button.up('grid').down('#hideRace').show();
+        button.up('grid').down('#showRace').hide();
+    },
+
+    hideRaceEthnicity: function (button) {
+        button.up('grid').down('#raceId').hide();
+        button.up('grid').down('#raceValue').setValue('');
+        button.up('grid').down('#ethnicValue').setValue('');
+        button.up('grid').down('#hideRace').hide();
+        button.up('grid').down('#showRace').show();
+    },
+
+    unhideAge: function (button) {
+        button.up('grid').down('#ageId').show();
+        button.up('grid').down('#hideAge').show();
+        button.up('grid').down('#showAge').hide();
+    },
+
+    hideAge: function (button) {
+        button.up('grid').down('#ageId').hide();
+        button.up('grid').down('#ageComparator').setValue('');
+        button.up('grid').down('#ageValue').setValue('');
+        button.up('grid').down('#upperAgeValue').setValue('');
+        button.up('grid').down('#hideAge').hide();
+        button.up('grid').down('#showAge').show();
+    },
+
+    upperAgeValue: function (combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperAgeValue').show();
+        } else {
+            combo.up('grid').down('#upperAgeValue').hide();
+        }
+        if (value === 'prn') {
+            combo.up('grid').down('#ageValue').hide();
+        }
+        if (value !== 'prn' && value !== 'bt' && value !== null) {
+            combo.up('grid').down('#ageValue').show();
+        }
+    },
+
+    unhideVital: function (button) {
+        button.up('grid').down('#vitalId').show();
+        button.up('grid').down('#hideVital').show();
+        button.up('grid').down('#showVital').hide();
+    },
+
+    hideVital: function (button) {
+        button.up('grid').down('#vitalId').hide();
+        button.up('grid').down('#vitalStatus').setValue('');
+        button.up('grid').down('#hideVital').hide();
+        button.up('grid').down('#showVital').show();
+    },
+
+
+    onUpperVitalToggle: function (combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperMeasureValue').show();
+        } else {
+            combo.up('grid').down('#upperMeasureValue').hide();
+        }
+        if (value === 'prn') {
+            combo.up('grid').down('#measureValue').hide();
+        } else {
+            combo.up('grid').down('#measureValue').show();
+        }
+    },
+
+    onToggleVital: function (combo, value) {
+        var record,
+            units;
+
+        // use component query to  toggle the hidden state of upper value
+        if (value !== 'select') {
+            combo.up('grid').down('#measureComparator').show();
+        } else {
+            combo.up('grid').down('#measureComparator').hide();
+            combo.up('grid').down('#measureValue').hide();
+            combo.up('grid').down('#upperMeasureValue').hide();
+            combo.up('grid').down('#measureComparator').setValue('');
+            combo.up('grid').down('#measureValue').setValue('');
+            combo.up('grid').down('#upperMeasureValue').setValue('');
+        }
+        // set label with units
+        // TODO: use bind pattern, ala https://fiddle.sencha.com/#fiddle/169m
+        if (value) {
+            record = combo.getSelectedRecord();
+            units = record.raw.units;
+            if (record.raw.units) {
+                combo.up('grid').down('#measureValue').setFieldLabel('min value in '
+                    + Ext.util.Format.lowercase(units));
+            }
+            else {
+                combo.up('grid').down('#measureValue').setFieldLabel('min value:');
+            }
+        }
+    },
+
+    onToggleLab: function(combo, value) {
+        var record,
+            units;
+
+        if (value) {
+            record = combo.getSelectedRecord();
+            units = record.raw.units;
+            combo.up('grid').down('#labValue').setFieldLabel('value ('
+                + units + ')');
+        }
+    },
+
+    onToggleUpperLab: function (combo, value) {
+        // use component query to toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperLabValue').show();
+        } else {
+            combo.up('grid').down('#upperLabValue').hide();
+        }
+        if (value === 'prn') {
+            combo.up('grid').down('#labValue').hide();
+        } else {
+            combo.up('grid').down('#labValue').show();
+        }
+    },
+
+    onUnhideDate: function (button) {
+        button.up('grid').down('#whenId').show();
+        button.up('grid').down('#whenValue').show();
+        button.up('grid').down('#hideWhen').show();
+        button.up('grid').down('#showWhen').hide();
+    },
+
+    onHideDate:  function (button) {
+        button.up('grid').down('#whenId').hide();
+        button.up('grid').down('#whenValue').hide();
+        button.up('grid').down('#upperWhenValue').hide();
+        button.up('grid').down('#whenComparator').setValue('');
+        button.up('grid').down('#whenValue').setValue('');
+        button.up('grid').down('#upperWhenValue').setValue('');
+        button.up('grid').down('#hideWhen').hide();
+        button.up('grid').down('#showWhen').show();
+    },
+
+    onUpperDate: function(combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperWhenValue').show();
+        } else {
+            combo.up('grid').down('#upperWhenValue').hide();
+        }
+    },
+
     onSubmitDemographics: function (button) {
         var atom,
             demo = [],
@@ -49,19 +241,14 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     comparatorValue = sexValue;
                     sexValue = 'all'
                 }
-                // TODO: implement citerion builder independent of all data in stores
+
                 criterion = 'SEX' +
                     ' ' +
                     cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue) +
                     ' ' +
                     sexValue;
 
-                // TODO: implement atomic_unit builder at time of model instance creation
-
-                console.log('print: value')
-                console.log(cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue))
-
-                var payload = {
+                payload = {
                     type: 'demographics',
                     key: 'sex',
                     comparator: 'eq',
@@ -89,7 +276,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 ' ' +
                 vitalValue;
 
-            var payload = {
+            payload = {
                 type: 'dg',
                 key: 'vital_status',
                 comparator: 'eq',
@@ -140,16 +327,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 (ageComparator !== 'bt') &&
                 (ageValue || ageComparator === 'prn'))) {
 
-                // TODO: implement citerion builder independent of all data in stores
                 criterion = 'Age' +
                     ' ' +
                     cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator) +
                     ' ' +
                     test_age;
 
-                // TODO: implement atomic_unit builder at time of model instance creation
-
-                var payload  = {
+                payload  = {
                     type: 'demographics',
                     key: 'age',
                     comparator: ageComparator,
@@ -347,7 +531,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         + test_date;
                 }
 
-                // TODO: implement atomic_unit builder at time of model instance creation
                 var payload = {
                     type: 'basic_vitals',
                     key: measureCode,
@@ -393,7 +576,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             date_comparator;
 
         whenValue = Ext.Date.format(whenValue, 'Y-m-d');
-        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d'),
+        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
 
@@ -449,7 +632,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 labComparator !== 'bt' &&
                 (labValue || labComparator === 'prn')))) {
 
-                // TODO: implement citerion builder independent of all data in stores
                 criterion =  labCode +
                     ' ' +
                     cardioCatalogQT.service.UtilityService.comparator_hash(labComparator) +
@@ -534,7 +716,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(item)
             }
 
-            // TODO: implement citerion builder independent of all data in stores
             criterion =  item.data.description;
 
             if (test_date){
@@ -606,7 +787,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log(item)
             }
-            // TODO: implement citerion builder independent of all data in stores
+
             criterion =  item.data.description;
 
             if (test_date){
@@ -695,7 +876,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(drug_key);
                 console.log('YESH');
                 console.log(items);
-                console.log(items.data.type + items.data.name + items.data.drug_code)
+                console.log(items.data.type + items.data.name + items.data.drug_code);
                 rx.push(items.data.type,items.data.name,items.data.drug_code);
                 console.log('rx');
                 console.log(rx);
@@ -767,7 +948,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
     },
 
     onMedSelectionChange: function(selections, sm) {
-        var rx = [];
+        var rx = [],
+            test = selections.selected.items;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('meds:');
@@ -775,14 +957,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(selections.selected.items);
         }
 
-        test = selections.selected.items
-
         Ext.each(test, function (items) {
 
             if (cardioCatalogQT.config.mode === 'test') {
-                console.log('YESH')
-                console.log(items)
-                console.log(items.data.type + items.data.name)
                 rx.push(items.data.type,items.data.name);
                 console.log('rx');
                 console.log(rx);

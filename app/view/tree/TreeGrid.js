@@ -168,32 +168,7 @@ Ext.define('cardioCatalogQT.view.tree.TreeGrid', {
                 flex: 2,
                 sortable: true,
                 dataIndex: 'name'
-            },//{
-              //  text: 'Type',
-              //  flex: 1,
-              //  dataIndex: 'type',
-              //  sortable: true
-            //},
-            {
-                dataIndex: 'drug_code',
-                width: 55,
-                hidden: false
-            }/*,{
-                text: 'Add to search',
-                width: 55,
-                menuDisabled: true,
-                xtype: 'actioncolumn',
-                tooltip: 'Add',
-                align: 'center',
-                icon: 'resources/images/edit_task.png',
-                handler: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
-                    Ext.Msg.alert('Editing' + (record.get('done') ? ' completed task' : '') , record.get('name'));
-                },
-                // Only leaf level tasks may be edited
-                isDisabled: function(view, rowIdx, colIdx, item, record) {
-                    return !record.data.leaf;
-                }
-            }*/]
+            }]
         });
         this.callParent();
     }

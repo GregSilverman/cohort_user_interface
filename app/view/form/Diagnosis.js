@@ -2,7 +2,7 @@
  * Widget with template to render to Main view
  */
 
-Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
+Ext.define('cardioCatalogQT.view.form.Diagnosis', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.diagnosisGrid',
     itemId: 'diagnosisGrid',
@@ -47,12 +47,12 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                     hideLabel: true
                 },
                 items: [{ //Dx
-                    width: 300,
-                    height: 400,
-                    anchor: '25%',
-                    xtype: 'multiselector',
+                    "width": 300,
+                    "height": 400,
+                    "anchor": '25%',
+                    "xtype": 'multiselector',
                     scrollable: true,
-                    title: 'Selected Dx',
+                    "title": 'Selected Dx',
                     itemId: 'diagnosis',
                     fieldName: 'description',
                     valueField: 'code',
@@ -63,14 +63,7 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                     // TODO: fix ability to remove selected items when box is unchecked
                     search: {
                         field: 'code_description',
-                        store: 'Diagnoses',
-
-                        search: function (text) {
-                            cardioCatalogQT.service.UtilityService.multi_select_search(text, this);
-                        },
-                        onSelect : function() {
-                            Ext.Msg.alert('Change', 'MultiSelect has changed');
-                        }
+                        store: 'Diagnoses'
                     }
                 },{
                     xtype: 'tbspacer',
@@ -88,34 +81,23 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                         }
                     },
                     items: [{
-                        xtype: 'button',
-                        text: 'Constrain search by date range',
-                        itemId: 'showWhen',
-                        hidden: false,
+                        "xtype": 'button',
+                        "text": 'Constrain search by date range',
+                        "itemId": 'showWhen',
+                        "hidden": false,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#whenId').show();
-                                button.up('grid').down('#whenValue').show();
-                                button.up('grid').down('#hideWhen').show();
-                                button.up('grid').down('#showWhen').hide();
-                            }
+                            click: 'onPxUnhideDate',
+                            scope: 'controller'
                         }
+
                     },{
                         xtype: 'button',
                         text: 'Hide date range',
                         itemId: 'hideWhen',
                         hidden: true,
                         listeners: {
-                            click: function (button) {
-                                button.up('grid').down('#whenId').hide();
-                                button.up('grid').down('#whenValue').hide();
-                                button.up('grid').down('#upperWhenValue').hide();
-                                button.up('grid').down('#whenComparator').setValue('');
-                                button.up('grid').down('#whenValue').setValue('');
-                                button.up('grid').down('#upperWhenValue').setValue('');
-                                button.up('grid').down('#hideWhen').hide();
-                                button.up('grid').down('#showWhen').show();
-                            }
+                            click: 'onHideDate',
+                            scope: 'controller'
                         }
                     },{
                         xtype: 'fieldset',
@@ -151,14 +133,8 @@ Ext.define('cardioCatalogQT.view.form.DiagnosisForm', {
                                 ]
                             },
                             listeners: {
-                                change: function(combo, value) {
-                                    // use component query to  toggle the hidden state of upper value
-                                    if (value === 'bt') {
-                                        combo.up('grid').down('#upperWhenValue').show();
-                                    } else {
-                                        combo.up('grid').down('#upperWhenValue').hide();
-                                    }
-                                }
+                                change: 'onUpperDate',
+                                scope: 'controller'
                             }
                         },{
                             xtype: 'fieldcontainer',
