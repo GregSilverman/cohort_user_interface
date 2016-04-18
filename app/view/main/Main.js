@@ -42,6 +42,8 @@ Ext.define('cardioCatalogQT.view.main.Main', {
             },{
                 xtype: 'labGrid'
             },{
+                xtype: 'labTestGrid'
+            },{
                 xtype: 'diagnosisGrid'
             },{
                 xtype: 'procedureGrid'

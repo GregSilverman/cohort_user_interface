@@ -156,6 +156,61 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
     },
 
+    onHideLabQuant: function (button) {
+        button.up('grid').down('#labQuantId').hide();
+        button.up('grid').down('#labQuantComparator').setValue('');
+        button.up('grid').down('#labQuantValue').setValue('');
+        button.up('grid').down('#upperLabQuantValue').setValue('');
+        button.up('grid').down('#hideLabQuant').hide();
+        button.up('grid').down('#showLabQuant').show();
+    },
+
+    onShowLabQuant: function (button) {
+        button.up('grid').down('#labQuantId').show();
+        button.up('grid').down('#hideLabQuant').show();
+        button.up('grid').down('#showLabQuant').hide();
+    },
+
+    onHideLabQual: function (button) {
+        button.up('grid').down('#labQualId').hide();
+        button.up('grid').down('#labQualCode').setValue('');
+        button.up('grid').down('#labQual').setValue('');
+        button.up('grid').down('#hideLabQual').hide();
+        button.up('grid').down('#showLabQual').show();
+    },
+
+    onShowLabQual: function (button) {
+        button.up('grid').down('#labQualId').show();
+        button.up('grid').down('#hideLabQual').show();
+        button.up('grid').down('#showLabQual').hide();
+    },
+
+    onToggleLabQuant: function(combo, value) {
+        var record,
+            units;
+
+        if (value) {
+            record = combo.getSelectedRecord();
+            units = record.raw.units;
+            combo.up('grid').down('#labQuantValue').setFieldLabel('value ('
+                + units + ')');
+        }
+    },
+
+    onToggleUpperLabQuant: function (combo, value) {
+        // use component query to toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperLabQuantValue').show();
+        } else {
+            combo.up('grid').down('#upperLabQuantValue').hide();
+        }
+        if (value === 'prn') {
+            combo.up('grid').down('#labQuantValue').hide();
+        } else {
+            combo.up('grid').down('#labQuantValue').show();
+        }
+    },
+
     onToggleLab: function(combo, value) {
         var record,
             units;
