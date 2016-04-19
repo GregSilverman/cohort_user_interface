@@ -89,7 +89,7 @@ Ext.define('cardioCatalogQT.view.grid.Search', {
         }]
     }],
 
-    height: 400,
+    height: 350,
     frame: true,
     iconCls: 'icon-grid',
     alias: 'widget.searchGrid',
