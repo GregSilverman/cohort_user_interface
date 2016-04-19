@@ -635,8 +635,7 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
                 // count returned from http response
                 n = json.items;
                 total = json.total;
-                percentage = Ext.util.Format.number(n/total,'0,000.000');
-
+                percentage = Ext.util.Format.number(n/total,'0,000.00000');
 
                 if (json !== null && typeof (json) !== 'undefined') {
 
@@ -670,7 +669,6 @@ Ext.define('cardioCatalogQT.service.UtilityService', {
             }
         });
     },
-
 
     get_total: function(){
         var url_test = 'http://127.0.0.1:5000/total',
