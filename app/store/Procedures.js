@@ -5,12 +5,16 @@ Ext.define('cardioCatalogQT.store.Procedures', {
         model: 'cardioCatalogQT.model.Procedure',
         storeId: 'Procedures',
         autoLoad: true,
+
         proxy: {
             type: 'rest',
-            url: 'http://cc.cardio.umn.edu/api/menu/procedures',
+            url: cardioCatalogQT.config.protocol +
+                 cardioCatalogQT.config.host +
+                 cardioCatalogQT.config.apiMenu +
+                 'procedures',
             reader: {
                 type: 'json',
-                rootProperty: 'menu'
+                rootProperty: 'menu_test'
             }
         }
     }

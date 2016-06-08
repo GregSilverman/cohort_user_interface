@@ -4,11 +4,19 @@
  * details.
  */
 
+// TODO:
+//  -> submit multiples from multiselect/tree
+//  -> do not allow empty submit
+//  -> lab units
+//  -> vital units
+//  -> 'cache' attribute
+
 // See https://github.com/yogeshpandey009/Ext.ux.Exporter/
 Ext.Loader.setConfig({
     enabled: true,
     paths: {
-        'Ext.ux.exporter': 'exporter'
+        'Ext.ux.exporter': 'exporter',
+        'Overrides': 'overrides'
     }
 });
 
@@ -17,24 +25,9 @@ Ext.define('cardioCatalogQT.Application', {
     
     name: 'cardioCatalogQT',
 
-    stores: [
-        'Diagnoses',
-        'DemographicsPayload',
-        'Labs',
-        'Medications',
-        'Procedures',
-        'Payload',
-        'Queries',
-        'Results',
-        'Atoms',
-        'VitalsPayload',
-        'LabsPayload',
-        'DiagnosesPayload',
-        'MedicationsPayload',
-        'ProceduresPayload'
-    ],
     requires: [
         'Ext.app.*',
+        'cardioCatalogQT.config.Config',
         'Ext.ux.exporter.Exporter',
         'Ext.state.CookieProvider',
         'Ext.window.MessageBox',
@@ -42,7 +35,23 @@ Ext.define('cardioCatalogQT.Application', {
         'Ext.form.Panel',
         'Ext.ux.form.MultiSelect',
         'Ext.ux.form.ItemSelector',
-        'cardioCatalogQT.*'
+        'cardioCatalogQT.*',
+        'Ext.overrides.selection.CheckboxModel',
+        'Ext.overrides.view.MultiSelectorSearch'
+    ],
+
+    stores: [
+        'Attributes',
+        'BasicVitals',
+        'Diagnoses',
+        'Labs',
+        'Procedures',
+        'Payload',
+        'Queries',
+        'Results',
+        'TestResults',
+        'Races',
+        'Ethnicities'
     ],
 
     init: function() {
@@ -57,6 +66,7 @@ Ext.define('cardioCatalogQT.Application', {
         cardioCatalogQT.config = {
 
             mode: 'test', // switch to control use of staging or production server
+            //protocol: 'https://',
             protocol: 'http://',
             host: 'cc.cardio.umn.edu',
             //host: '127.0.0.1:5000',
@@ -65,13 +75,18 @@ Ext.define('cardioCatalogQT.Application', {
             apiFactor: '/api/factor',
             //apiGetQ: '/get_query/',
             apiGetQ: '/api/get_query/',
+            //host: 'cc.cardio.umn.edu',
+            //host: 'vein.ahc.umn.edu',
+            host: '127.0.0.1:5000',
+            apiGetQ: '/submit_query/',
+            apiWriteQ: '/remote_query_put',
+            apiReadQ: '/remote_query_get',
             remove: 'none'
         };
 
         // TODO - Launch the application
 
         Ext.onReady(function () {
-
 
 
         });

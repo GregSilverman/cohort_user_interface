@@ -3,19 +3,19 @@ Ext.define('cardioCatalogQT.store.Queries', {
     alias: 'store.Queries',
 
     config:{
-        idProperty: 'id',
-        fields: [
-            {name: 'url', type: 'string'},
-            {name: 'user', type: 'string'},
-            {name: 'criteria', type: 'string'}
-        ],
+        model: 'cardioCatalogQT.model.Query',
+            storeId: 'Queries',
+            autoLoad: true,
 
-        storeId: 'Queries',
-        autoLoad: true,
-
-        proxy: {
-            type: 'localstorage',
-            id: 'queries'
+            proxy: {
+            type: 'rest',
+                url: cardioCatalogQT.config.protocol +
+                     cardioCatalogQT.config.host +
+                     cardioCatalogQT.config.apiQueryGet,
+                reader: {
+                type: 'json',
+                    rootProperty: 'cc_query'
+            }
         }
     }
 });

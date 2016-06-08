@@ -5,14 +5,16 @@ Ext.define('cardioCatalogQT.store.Diagnoses', {
         model: 'cardioCatalogQT.model.Diagnosis',
         storeId: 'Diagnoses',
         autoLoad: true,
-        sorters: 'string_value',
 
         proxy: {
             type: 'rest',
-            url: 'http://cc.cardio.umn.edu/api/menu/diagnoses',
+            url: cardioCatalogQT.config.protocol +
+                 cardioCatalogQT.config.host +
+                 cardioCatalogQT.config.apiMenu +
+                 'diagnoses',
             reader: {
                 type: 'json',
-                rootProperty: 'menu'
+                rootProperty: 'menu_test'
             }
         }
     }

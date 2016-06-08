@@ -5,10 +5,10 @@ Ext.define('cardioCatalogQT.store.Results', {
     config:{
         idProperty: 'id',
         fields: [
-            {name: 'attribue', type: 'string'},
+            {name: 'attribute', type: 'string'},
             {name: 'sid', type: 'string'},
-            {name: 'value', type: 'string'},
-            {name: 'n', type: 'string'}
+            {name: 'string', type: 'string'},
+            {name: 'number', type: 'string'}
         ],
 
         storeId: 'Results',
@@ -17,7 +17,7 @@ Ext.define('cardioCatalogQT.store.Results', {
 
         proxy: {
             type: 'localstorage',
-            id: 'results'
+            id: 'items'
         }
     }
 });

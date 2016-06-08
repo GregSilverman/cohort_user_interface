@@ -8,10 +8,12 @@ Ext.define('cardioCatalogQT.store.Labs', {
 
         proxy: {
             type: 'rest',
-            url: 'http://cc.cardio.umn.edu/api/menu/labs',
+            url: cardioCatalogQT.config.protocol +
+                 cardioCatalogQT.config.host +
+                 cardioCatalogQT.config.apiLabs,
             reader: {
                 type: 'json',
-                rootProperty: 'menu'
+                rootProperty: 'lab_units'
             }
         }
     }

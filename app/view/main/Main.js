@@ -6,7 +6,7 @@
  */
 
 Ext.define('cardioCatalogQT.view.main.Main', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.Container',
     xtype: 'main-view',
     controller: 'main-view',
     requires: [
@@ -21,68 +21,59 @@ Ext.define('cardioCatalogQT.view.main.Main', {
     width: '100%',
     height: 400,
 
-    layout: 'vbox',
+    layout: 'border',
     defaults: {
         bodyPadding: 5
     },
     items: [{
-            title:'Main',
-            region: 'south',
-            xtype: 'form',
-            itemId: 'Ajax',
-            flex: 1,
-            styleHtmlContent: true,
+            region: 'center',
+            xtype: 'tabpanel',
             items:[{
+                title:'Main'
+                //xtype: 'image',
+                //mode : 'image',
+                //src: 'resources/images/R3D3.png',
+                //height: 50,
+                //width: 280
+            },{
+                xtype: 'demographicGrid'
+            },{
+                xtype: 'vitalGrid'
+            },{
+                xtype: 'labGrid'
+            }/*,{
+                xtype: 'labTestGrid'
+            }*/,{
+                xtype: 'diagnosisGrid'
+            },{
+                xtype: 'procedureGrid'
+            },{
+                xtype: 'medTree'
+            },{
+                xtype: 'queryGrid'
+            },{
+                xtype: 'resultsGrid',
+                disabled: true
+            }]
+        },
+        { // TODO: Eliminate line between controls and grid
+            xtype: 'toolbar',
+            region: 'north',
+            vertical: true,
+
+            items: [{
                 xtype: 'image',
                 src: 'resources/images/R3D3.png',
-                height: 50,
+                height: 70,
                 width: 280
-            },{
-                title: 'Ad Hoc Sandbox for Cohort Discovery'
-            }] ,
-            lbar:[{
-                text: 'Initiate advance request',
-                xtype: 'button',
-
-                handler: function(button){
-                    var url = 'https://redcap.ahc.umn.edu/surveys/?s=nfHAssJw96';
-                    //cardioCatalogQT.service.UtilityService.http_auth(button);
-                    window.open(url);
-                }
+            },{ //TODO: Add to top of form
+                xtype: 'label',
+                text: 'There are currently 28253 cardiology patients available for research.'
             }]
         },
         {
-            xtype: 'resultsGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'searchGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'demographicGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'vitalGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'labGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'diagnosisGrid'
-            //disabled: true
-
-        },
-        {
-            xtype: 'medicationGrid'
-            //disabled: true
-        },
-        {
-            xtype: 'procedureGrid'
-            //disabled: true
+            xtype:'searchGrid',
+            region:'south'
         }
     ]
 });

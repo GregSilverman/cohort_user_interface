@@ -3,7 +3,7 @@ Ext.define('cardioCatalogQT.view.grid.Results', {
 
     alias: 'widget.resultsGrid',
     itemId: 'resultsGrid',
-    title: 'ExportData',
+    title: 'Results',
 
     requires: [
         'cardioCatalogQT.view.main.MainController',
@@ -18,15 +18,30 @@ Ext.define('cardioCatalogQT.view.grid.Results', {
         height: 10
     },{
         xtype: 'gridpanel',
-        store: 'Results',
+        store: 'TestResults',
         itemId:'gridTest',
         autoScroll:true,
         autoHeight: true,
         maxHeight: 500,
-        columns: [{
-            text: 'sid',
-            dataIndex: 'sid'
-        }]
+        columns: [
+            {
+                text: 'sid',
+                dataIndex: 'sid'
+            },
+            {
+                text: 'attribute',
+                dataIndex: 'attribute'
+            },
+            {
+                text: 'string',
+                dataIndex: 'value_s'
+            },
+            {
+                text: 'number',
+                dataIndex: 'value_d'
+            }
+
+        ]
 
     }]
 

@@ -5,6 +5,10 @@
  *
  * TODO - Replace this content of this view to suite the needs of your application.
  */
+
+
+// TODO: clear controls after submitting query
+
 Ext.define('cardioCatalogQT.view.main.MainController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.main-view',
@@ -13,128 +17,268 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         'Ext.window.MessageBox'
     ],
 
-    onExecuteClick: function (button) {
-        var options = {
-            delimiter: null
-        },
-            payload = Ext.getStore('Payload'),
-            url,
-            form = button.up('form');
-
-        // construct URL and submit criteria to Query store
-        cardioCatalogQT.service.UtilityService.url(payload, button);
-
-        form.up().down('#searchGrid').getStore().load();
+    onSubmitAdvancedRequest: function(button){
+        var url = 'https://redcap.ahc.umn.edu/surveys/?s=nfHAssJw96';
+        window.open(url);
     },
 
-    onAddSearchGridClick: function (button) {
-        var grid = button.up('grid'),
-            selection = grid.getSelectionModel().getSelection(),
-            target = Ext.create('cardioCatalogQT.store.Payload'), // target store
-            source, // source store
-            filtered = []; // array of filtered source id elements
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('DEMO grid: ');
-            console.log(grid);
-            console.log(grid.store);
-            console.log(grid.store.storeId); // use for control of inserting boolean combined statements
-        }
-
-        // bind grid store as source
-        source = grid.store;
-
-        // filter selected items from grid
-        if (selection) {
-
-            // array of elements on which to filter
-            Ext.Array.each(selection, function (item) {
-                filtered.push(item.data.id);
-            });
-
-            source.clearFilter(true); // Clears old filters
-            source.filter([ // filter on selected array elements
-                {
-                    filterFn: function(rec) {
-                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
-                    }
-                }
-            ]);
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('filtered store id:');
-                console.log(filtered);
-            }
-        }
-        else {
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('nada')
-            }
-        }
-
-        // add filtered source -> target
-        source.each(function(rec) {
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('record:');
-                console.log(rec);
-            }
-
-            // move selected criteria to main payload: TODO create single class to handle payload
-            target.add({
-                type: rec.data.type,
-                key: rec.data.key,
-                comparator: rec.data.comparator,
-                comparatorSymbol: rec.data.comparatorSymbol,
-                value: rec.data.value,
-                description: rec.data.criteria,
-                n: rec.data.n,
-                dateComparator: rec.data.dateComparator,
-                dateComparatorSymbol: rec.data.dateComparatorSymbol,
-                dateValue: rec.data.dateValue,
-                atom: rec.data.atom,
-                criteria: rec.data.criteria
-            });
-
-            target.sync();
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('target rec');
-                console.log(rec);
-            }
-
-        });
-
-        // refresh grid
-        grid.up().down('#searchGrid').getStore().load();
+    unhideSex: function (button) {
+        button.up('grid').down('#sexId').show();
+        button.up('grid').down('#hideSex').show();
+        button.up('grid').down('#showSex').hide();
     },
 
-    onSearchClick: function (button) {
-        //var url;
-
-        // create and submit url
-        cardioCatalogQT.service.UtilityService.url(button);
-
+    hideSex: function (button) {
+        button.up('grid').down('#sexId').hide();
+        button.up('grid').down('#sexValue').setValue('');
+        button.up('grid').down('#hideSex').hide();
+        button.up('grid').down('#showSex').show();
     },
 
-    onShowClick: function (button) {
-        var panel = button.up('form').up().down('#results'),
-            store = Ext.getStore('Payload');
-        // render template
-        cardioCatalogQT.service.UtilityService.criteria_template(panel, store);
+    searchComboChange: function (combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value) {
+            combo.up('grid').down('#searchClick').enable();
+        } else if (!value) {
+            combo.up('grid').down('#searchClick').disable();
+        }
+    },
 
+    searchTextChange: function (fld, newValue, oldValue, opts) {
+        // only enable if a value is being submitted
+        if (newValue) {
+            fld.up('grid').down('#searchClick').enable();
+        }
+        else if (!newValue) {
+            fld.up('grid').down('#searchClick').disable();
+        }
+    },
+
+    unhideRaceEthnicity: function (button) {
+        button.up('grid').down('#raceId').show();
+        button.up('grid').down('#hideRace').show();
+        button.up('grid').down('#showRace').hide();
+    },
+
+    hideRaceEthnicity: function (button) {
+        button.up('grid').down('#raceId').hide();
+        button.up('grid').down('#raceValue').setValue('');
+        button.up('grid').down('#ethnicValue').setValue('');
+        button.up('grid').down('#hideRace').hide();
+        button.up('grid').down('#showRace').show();
+    },
+
+    unhideAge: function (button) {
+        button.up('grid').down('#ageId').show();
+        button.up('grid').down('#hideAge').show();
+        button.up('grid').down('#showAge').hide();
+    },
+
+    hideAge: function (button) {
+        button.up('grid').down('#ageId').hide();
+        button.up('grid').down('#ageComparator').setValue('');
+        button.up('grid').down('#ageValue').setValue('');
+        button.up('grid').down('#upperAgeValue').setValue('');
+        button.up('grid').down('#hideAge').hide();
+        button.up('grid').down('#showAge').show();
+    },
+
+    upperAgeValue: function (combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperAgeValue').show();
+        } else {
+            combo.up('grid').down('#upperAgeValue').hide();
+        }
+        if (value === 'prn') {
+            combo.up('grid').down('#ageValue').hide();
+        }
+        if (value !== 'prn' && value !== 'bt' && value !== null) {
+            combo.up('grid').down('#ageValue').show();
+        }
+    },
+
+    unhideVital: function (button) {
+        button.up('grid').down('#vitalId').show();
+        button.up('grid').down('#hideVital').show();
+        button.up('grid').down('#showVital').hide();
+    },
+
+    hideVital: function (button) {
+        button.up('grid').down('#vitalId').hide();
+        button.up('grid').down('#vitalStatus').setValue('');
+        button.up('grid').down('#hideVital').hide();
+        button.up('grid').down('#showVital').show();
+    },
+
+
+    onUpperVitalToggle: function (combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperMeasureValue').show();
+        } else {
+            combo.up('grid').down('#upperMeasureValue').hide();
+        }
+        if (value === 'prn') {
+            combo.up('grid').down('#measureValue').hide();
+        } else {
+            combo.up('grid').down('#measureValue').show();
+        }
+    },
+
+    onToggleVital: function (combo, value) {
+        var record,
+            units;
+
+        // use component query to  toggle the hidden state of upper value
+        if (value !== 'select') {
+            combo.up('grid').down('#measureComparator').show();
+        } else {
+            combo.up('grid').down('#measureComparator').hide();
+            combo.up('grid').down('#measureValue').hide();
+            combo.up('grid').down('#upperMeasureValue').hide();
+            combo.up('grid').down('#measureComparator').setValue('');
+            combo.up('grid').down('#measureValue').setValue('');
+            combo.up('grid').down('#upperMeasureValue').setValue('');
+        }
+        // set label with units
+        // TODO: use bind pattern, ala https://fiddle.sencha.com/#fiddle/169m
+        if (value) {
+            record = combo.getSelectedRecord();
+            units = record.raw.units;
+            if (record.raw.units) {
+                combo.up('grid').down('#measureValue').setFieldLabel('min value in '
+                    + Ext.util.Format.lowercase(units));
+            }
+            else {
+                combo.up('grid').down('#measureValue').setFieldLabel('min value:');
+            }
+        }
+    },
+
+    onHideLabQuant: function (button) {
+        button.up('grid').down('#labQuantId').hide();
+        button.up('grid').down('#labQuantComparator').setValue('');
+        button.up('grid').down('#labQuantValue').setValue('');
+        button.up('grid').down('#upperLabQuantValue').setValue('');
+        button.up('grid').down('#hideLabQuant').hide();
+        button.up('grid').down('#showLabQuant').show();
+    },
+
+    onShowLabQuant: function (button) {
+        button.up('grid').down('#labQuantId').show();
+        button.up('grid').down('#hideLabQuant').show();
+        button.up('grid').down('#showLabQuant').hide();
+    },
+
+    onHideLabQual: function (button) {
+        button.up('grid').down('#labQualId').hide();
+        button.up('grid').down('#labQualCode').setValue('');
+        button.up('grid').down('#labQual').setValue('');
+        button.up('grid').down('#hideLabQual').hide();
+        button.up('grid').down('#showLabQual').show();
+    },
+
+    onShowLabQual: function (button) {
+        button.up('grid').down('#labQualId').show();
+        button.up('grid').down('#hideLabQual').show();
+        button.up('grid').down('#showLabQual').hide();
+    },
+
+    onToggleLabQuant: function(combo, value) {
+        var record,
+            units;
+
+        if (value) {
+            record = combo.getSelectedRecord();
+            units = record.raw.units;
+            combo.up('grid').down('#labQuantValue').setFieldLabel('value ('
+                + units + ')');
+        }
+    },
+
+    onToggleUpperLabQuant: function (combo, value) {
+        // use component query to toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperLabQuantValue').show();
+        } else {
+            combo.up('grid').down('#upperLabQuantValue').hide();
+        }
+        if (value === 'prn') {
+            combo.up('grid').down('#labQuantValue').hide();
+        } else {
+            combo.up('grid').down('#labQuantValue').show();
+        }
+    },
+
+    onToggleLab: function(combo, value) {
+        var record,
+            units;
+
+        if (value) {
+            record = combo.getSelectedRecord();
+            units = record.raw.units;
+            combo.up('grid').down('#labValue').setFieldLabel('value ('
+                + units + ')');
+        }
+    },
+
+    onToggleUpperLab: function (combo, value) {
+        // use component query to toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperLabValue').show();
+        } else {
+            combo.up('grid').down('#upperLabValue').hide();
+        }
+        if (value === 'prn') {
+            combo.up('grid').down('#labValue').hide();
+        } else {
+            combo.up('grid').down('#labValue').show();
+        }
+    },
+
+    onUnhideDate: function (button) {
+        button.up('grid').down('#whenId').show();
+        button.up('grid').down('#whenValue').show();
+        button.up('grid').down('#hideWhen').show();
+        button.up('grid').down('#showWhen').hide();
+    },
+
+    onHideDate:  function (button) {
+        button.up('grid').down('#whenId').hide();
+        button.up('grid').down('#whenValue').hide();
+        button.up('grid').down('#upperWhenValue').hide();
+        button.up('grid').down('#whenComparator').setValue('');
+        button.up('grid').down('#whenValue').setValue('');
+        button.up('grid').down('#upperWhenValue').setValue('');
+        button.up('grid').down('#hideWhen').hide();
+        button.up('grid').down('#showWhen').show();
+    },
+
+    onUpperDate: function(combo, value) {
+        // use component query to  toggle the hidden state of upper value
+        if (value === 'bt') {
+            combo.up('grid').down('#upperWhenValue').show();
+        } else {
+            combo.up('grid').down('#upperWhenValue').hide();
+        }
     },
 
     onSubmitDemographics: function (button) {
-        var payload = Ext.getStore('DemographicsPayload'),
-            atom,
+        var atom,
             demo = [],
             form = button.up('grid'),
             sexValue = form.down('#sexValue').value,
             ageComparator = form.down('#ageComparator').value,
             ageValue = form.down('#ageValue').value,
             upperAgeValue = form.down('#upperAgeValue').value,
-            criterion;
+            criterion,
+            vitalValue = form.down('#vitalStatus').value,
+            comparatorValue = 'eq',
+            raceValue = form.down('#raceValue').value,
+            ethnicValue = form.down('#ethnicValue').value,
+            race_value,
+            ethnic_value;
 
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show object demographics');
@@ -147,52 +291,67 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         // insert sex only if exists
         if (sexValue) {
 
-            if ((ageComparator === 'bt' &&
-                ageValue &&
-                upperAgeValue) ||
+                // set value if ALL values desired for return
+                if (sexValue === 'prn') {
+                    comparatorValue = sexValue;
+                    sexValue = 'all'
+                }
 
-                (ageComparator !== 'bt' &&
-                ageValue &&
-                !upperAgeValue) ||
-
-                (ageComparator !== 'bt' &&
-                !ageValue &&
-                !upperAgeValue)) {
-
-                // TODO: implement citerion builder independent of all data in stores
                 criterion = 'SEX' +
                     ' ' +
-                    cardioCatalogQT.service.UtilityService.comparator_hash('eq') +
+                    cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue) +
                     ' ' +
                     sexValue;
 
-                // TODO: implement atomic_unit builder at time of model instance creation
-
-                payload.add({
-                    type: 'Demographics',
+                payload = {
+                    type: 'demographics',
                     key: 'sex',
                     comparator: 'eq',
-                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
+                    comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
                     value: sexValue,
                     criteria: criterion,
-                    atom: cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue)
-                });
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'sex', comparatorValue, sexValue)
+                };
 
-                payload.sync();
+                atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'sex', comparatorValue, sexValue);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+        }
+        // insert vitalStatus only if exists
+        if (vitalValue){
 
-                console.log('atom:' + cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue));
-
-                atom = cardioCatalogQT.service.UtilityService.make_atom('sex', 'sex', 'eq', sexValue);
-                cardioCatalogQT.service.UtilityService.url(button, atom);
+            // set value if ALL values desired for return
+            if (vitalValue === 'prn') {
+                comparatorValue = vitalValue;
+                vitalValue = 'all'
             }
-            else {
 
-                // error conditionals here
-            }
+            criterion = 'vital_status' +
+                ' ' +
+                cardioCatalogQT.service.UtilityService.comparator_hash('eq') +
+                ' ' +
+                vitalValue;
+
+            payload = {
+                type: 'dg',
+                key: 'vital_status',
+                comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
+                value: vitalValue,
+                criteria: criterion,
+                atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue)
+            };
+
+            atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'vital_status', comparatorValue, vitalValue);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+
+        }
+
+        else {
+            // error conditions here
         }
 
         // insert only if exists
-        if (ageValue) {
+        if (ageValue || ageComparator === 'prn') {
 
             var test_age = ageValue;
 
@@ -210,45 +369,116 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log('test age: ' + test_age);
             }
 
+            // set value if ALL values desired for return
+            if (ageComparator === 'prn') {
+                test_age = 'all'
+            }
+
             if ((ageComparator === 'bt' &&
                 ageValue &&
                 upperAgeValue) ||
 
                 (!upperAgeValue &&
-                ageComparator !== 'bt' &&
-                ageValue)) {
+                (ageComparator !== 'bt') &&
+                (ageValue || ageComparator === 'prn'))) {
 
-                // TODO: implement citerion builder independent of all data in stores
                 criterion = 'Age' +
                     ' ' +
                     cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator) +
                     ' ' +
                     test_age;
 
-                // TODO: implement atomic_unit builder at time of model instance creation
-
-                payload.add({
-                    type: 'Demographics',
+                payload  = {
+                    type: 'demographics',
                     key: 'age',
                     comparator: ageComparator,
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(ageComparator),
                     value: test_age,
                     criteria: criterion,
-                    atom: cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age)
-                });
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'age', ageComparator, test_age)
+                };
 
-                payload.sync();
-
-                atom = cardioCatalogQT.service.UtilityService.make_atom('age', 'age', ageComparator, test_age);
-                cardioCatalogQT.service.UtilityService.url(button, atom);
+                atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'age', ageComparator, test_age);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
             else{
                 // error conditions here
             }
 
-
-
         }
+
+        // insert race only if exists
+        if (raceValue) {
+
+            // set value if ALL values desired for return
+            if (sexValue === 'prn') {
+                comparatorValue = raceValue;
+                raceValue = 'all'
+            }
+            // TODO: implement citerion builder independent of all data in stores
+            criterion = 'RACE' +
+            ' ' +
+            cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue) +
+            ' ' +
+            raceValue;
+
+            race_value = raceValue.replace(new RegExp(' ', 'gi'),'_');
+
+            // TODO: implement atomic_unit builder at time of model instance creation
+
+            console.log('print: value')
+            console.log(cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue))
+
+            var payload = {
+                type: 'demographics',
+                key: 'race',
+                comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
+                value: race_value,
+                criteria: criterion,
+                atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'race', comparatorValue, race_value)
+            };
+
+            atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'race', comparatorValue, race_value);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+        }
+
+        // insert ethnicity only if exists
+        if (ethnicValue) {
+
+            // set value if ALL values desired for return
+            if (ethnicValue === 'prn') {
+                comparatorValue = ethnicityValue;
+                raceValue = 'all'
+            }
+            // TODO: implement citerion builder independent of all data in stores
+            criterion = 'ETHNICITY' +
+            ' ' +
+            cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue) +
+            ' ' +
+            ethnicValue;
+
+            ethnic_value = ethnicValue.replace(new RegExp(' ', 'gi'),'_');
+
+            // TODO: implement atomic_unit builder at time of model instance creation
+
+            console.log('print: value')
+            console.log(cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue))
+
+            var payload = {
+                type: 'demographics',
+                key: 'ethnicity',
+                comparator: 'eq',
+                comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(comparatorValue),
+                value: ethnic_value,
+                criteria: criterion,
+                atom: cardioCatalogQT.service.UtilityService.make_atom('demographics', 'ethnicity', comparatorValue, ethnic_value)
+            };
+
+            atom = cardioCatalogQT.service.UtilityService.make_atom('demographics', 'ethnicity', comparatorValue, ethnic_value);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
+        }
+
 
         if (cardioCatalogQT.config.mode === 'test') {
             demo.push(sexValue);
@@ -256,225 +486,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             demo.push(ageValue);
             demo.push(upperAgeValue);
             console.log('demographics:');
-            console.log(demo);
+            console.log(Ext.ComponentQuery.query('#searchGrid')[0].getStore())
         }
-
-        // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
-        form.up().down('#demographicGrid').getStore().load();
-
-        // clear form
-        //form.reset();
 
     },
 
     onSubmitVitals: function(button) {
-        var payload = Ext.getStore('VitalsPayload'),
-            atom,
-            vitals = [],
-            form = button.up('grid'),
-            systolicComparator = form.down('#systolicComparator').value,
-            systolicValue = form.down('#systolicValue').value,
-            upperSystolicValue = form.down('#upperSystolicValue').value,
-            diastolicComparator = form.down('#diastolicComparator').value,
-            diastolicValue = form.down('#diastolicValue').value,
-            upperDiastolicValue = form.down('#upperDiastolicValue').value,
-            whenComparator = form.down('#whenComparator').value,
-            whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value,
-            criterion,
-            date_comparator;
-
-        whenValue = Ext.Date.format(whenValue, 'Y-m-d');
-        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
-
-        date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('query comparator ');
-            console.log(systolicComparator);
-            console.log('date comparator ');
-            console.log(date_comparator);
-
-        }
-
-
-        if (cardioCatalogQT.config.mode === 'test') {
-            console.log('show object vitals');
-            console.log(systolicComparator);
-            console.log(systolicValue);
-            console.log(diastolicComparator);
-            console.log(diastolicValue);
-            console.log(whenComparator);
-            console.log(whenValue);
-            console.log(upperWhenValue);
-        }
-
-        if (systolicValue || diastolicValue) {
-
-            var test_systolic = systolicValue,
-                test_diastolic = diastolicValue,
-                test_date = whenValue;
-
-
-            if (whenComparator === 'bt') {
-
-                if (!upperWhenValue) {
-                    alert('Please enter max date to continue')
-                }
-                else {
-                    test_date += ',' + upperWhenValue;
-                }
-            }
-
-
-            if (systolicComparator === 'bt') {
-
-                if (!upperSystolicValue) {
-                    alert('Please enter max systolic to continue')
-                }
-                else {
-                    test_systolic += ',' + upperSystolicValue ;
-                }
-            }
-
-            if (diastolicComparator === 'bt') {
-
-                if (!upperDiastolicValue) {
-                    alert('Please enter max diastolic to continue')
-                }
-                else {
-                    test_diastolic += ',' + upperDiastolicValue;
-                }
-            }
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('test systolic : ' + test_systolic);
-                console.log('test diastolic: ' + test_diastolic);
-                console.log('test date: ' + test_date);
-                console.log('systolic' + systolicValue);
-                console.log('systolicComp' + systolicComparator);
-                console.log('systolicUpper' + upperSystolicValue);
-                console.log('diastolic' + systolicValue);
-                console.log('diastolicComp' + systolicComparator);
-                console.log('diastolicUpper' + upperSystolicValue);
-                console.log('when ' + whenValue);
-                console.log('whenComp' + whenComparator);
-                console.log('whenUpper' + upperWhenValue);
-
-            }
-
-            // insert only if exists
-            if (((systolicComparator === 'bt' &&
-                systolicValue &&
-                upperSystolicValue) ||
-
-                (!upperSystolicValue &&
-                systolicComparator !== 'bt' &&
-                systolicValue) ||
-
-                (!systolicValue)) &&
-
-                ((diastolicComparator === 'bt' &&
-                diastolicValue &&
-                upperDiastolicValue) ||
-
-                (!upperDiastolicValue &&
-                diastolicComparator !== 'bt' &&
-                diastolicValue) ||
-
-                (!diastolicValue))) {
-
-                if (systolicValue) {
-
-                    // TODO: implement citerion builder independent of all data in stores
-                    criterion = 'BLOOD_PRESSURE_SYSTOLIC' +
-                        ' ' +
-                        cardioCatalogQT.service.UtilityService.comparator_hash(systolicComparator) +
-                        ' ' +
-                        test_systolic;
-
-
-                    if (test_date){
-                        criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
-                            + test_date;
-                    }
-
-                    // TODO: implement atomic_unit builder at time of model instance creation
-                    payload.add({
-                        type: 'blood_pressure_systolic',
-                        key: 'blood_pressure_systolic',
-                        comparator: systolicComparator,
-                        comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(systolicComparator),
-                        value: test_systolic,
-                        dateComparator: whenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                        dateValue: test_date,
-                        criteria: criterion,
-                        atom: cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', systolicComparator, test_systolic, whenComparator, test_date)
-                    });
-
-                    payload.sync();
-
-                    atom = cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', systolicComparator, test_systolic, whenComparator, test_date);
-                    cardioCatalogQT.service.UtilityService.url(button, atom);
-                }
-
-                if (diastolicValue) {
-
-                    criterion = 'BLOOD_PRESSURE_DIASTOLIC' +
-                        ' ' +
-                        cardioCatalogQT.service.UtilityService.comparator_hash(diastolicComparator) +
-                        ' ' +
-                        test_diastolic;
-
-                    if (test_date){
-                        criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
-                            + test_date;
-                    }
-
-                    payload.add({
-                        type: 'blood_pressure_diastolic',
-                        key: 'blood_pressure_diastolic',
-                        comparator: diastolicComparator,
-                        comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(diastolicComparator),
-                        value: test_diastolic,
-                        dateComparator: whenComparator,
-                        dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                        dateValue: test_date,
-                        criteria: criterion,
-                        atom: cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', diastolicComparator, test_diastolic, whenComparator, test_date)
-                    });
-                    payload.sync();
-
-                    atom = cardioCatalogQT.service.UtilityService.make_atom('blood_pressure_systolic', 'blood_pressure_systolic', diastolicComparator, test_diastolic, whenComparator, test_date);
-                    cardioCatalogQT.service.UtilityService.url(button, atom);
-                }
-            }
-            else {
-                // error conditions here
-            }
-
-            if (cardioCatalogQT.config.mode === 'test') {
-                vitals.push(systolicComparator);
-                vitals.push(systolicValue);
-                vitals.push(diastolicComparator);
-                vitals.push(diastolicValue);
-                console.log('vitals');
-                console.log(vitals);
-            }
-        }
-        // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
-        form.up().down('#vitalGrid').getStore().load();
-
-        // clear form
-        //form.reset();
-    },
-
-    onSubmitVitalsTest: function(button) {
-        var payload = Ext.getStore('VitalsPayload'),
-            atom,
+        var atom,
             vitals = [],
             form = button.up('grid'),
             measureCode = form.down('#measureCode').value,
@@ -504,7 +522,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             console.log(upperWhenValue);
         }
 
-        if (measureValue) {
+
+        if (measureValue || measureComparator === 'prn') {
 
             var test_measure = measureValue,
                 test_date = whenValue;
@@ -529,6 +548,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 }
             }
 
+            // set value if ALL values desired for return
+            if (measureComparator === 'prn') {
+                test_measure = 'all'
+            }
+
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log('test measure : ' + test_measure);
                 console.log('test date: ' + test_date);
@@ -547,7 +571,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
 
                 (!upperMeasureValue &&
                 measureComparator !== 'bt' &&
-                measureValue) ||
+                (measureValue || measureComparator === 'prn')) ||
 
                 (!measureValue)) {
 
@@ -557,15 +581,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     ' ' +
                     test_measure;
 
-
                 if (test_date){
                     criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
                         + test_date;
                 }
 
-                // TODO: implement atomic_unit builder at time of model instance creation
-                payload.add({
-                    type: measureCode,
+                var payload = {
+                    type: 'basic_vitals',
                     key: measureCode,
                     comparator: measureComparator,
                     comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash(measureComparator),
@@ -574,18 +596,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
                     dateValue: test_date,
                     criteria: criterion,
-                    atom: cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date)
-                });
+                    atom: cardioCatalogQT.service.UtilityService.make_atom('basic_vitals', measureCode, measureComparator, test_measure, whenComparator, test_date)
+                };
 
-                payload.sync();
-
-                atom = cardioCatalogQT.service.UtilityService.make_atom(measureCode, measureCode, measureComparator, test_measure, whenComparator, test_date);
-                cardioCatalogQT.service.UtilityService.url(button, atom);
+                atom = cardioCatalogQT.service.UtilityService.make_atom('basic_vitals', measureCode, measureComparator, test_measure, whenComparator, test_date);
+                cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
             }
 
-            else {
-                // error conditions here
-            }
 
             if (cardioCatalogQT.config.mode === 'test') {
                 vitals.push(measureComparator);
@@ -593,18 +610,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log('vitals');
                 console.log(vitals);
             }
-        }
-     // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
-        form.up().down('#vitalGrid').getStore().load();
 
-        // clear form
-        //form.reset();
+        }
+
     },
 
     onSubmitLabs: function (button) {
-        var payload = Ext.getStore('LabsPayload'),
-            atom,
+        var atom,
             lab = [],
             form = button.up('grid'),
             labComparator = form.down('#labComparator').value,
@@ -619,7 +631,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             date_comparator;
 
         whenValue = Ext.Date.format(whenValue, 'Y-m-d');
-        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d'),
+        upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
 
         date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
 
@@ -633,8 +645,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         }
 
         // insert only if exists
-        if (labValue) {
-
+        if (labValue || labComparator === 'prn') {
 
             var test_lab = labValue,
                 test_date = whenValue;
@@ -663,15 +674,19 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log('test lab : ' + test_lab);
             }
 
+            // set value if ALL values desired for return
+            if (labComparator === 'prn') {
+                test_lab = 'all'
+            }
+
             if (((labComparator === 'bt' &&
                 labValue &&
                 upperLabValue) ||
 
                 (!upperLabValue &&
                 labComparator !== 'bt' &&
-                labValue))) {
+                (labValue || labComparator === 'prn')))) {
 
-                // TODO: implement citerion builder independent of all data in stores
                 criterion =  labCode +
                     ' ' +
                     cardioCatalogQT.service.UtilityService.comparator_hash(labComparator) +
@@ -683,9 +698,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                     criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
                         + test_date;
                 }
-                if (labValue) {
-                    payload.add({
-                        type: 'lab',
+                if (labValue || labComparator === 'prn') {
+                    var payload = {
+                        type: 'test_code',
                         key: labCode,
                         value: test_lab,
                         comparator: labComparator,
@@ -695,12 +710,11 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                         dateComparatorSymbol: date_comparator,
                         dateValue: test_date,
                         criteria: criterion,
-                        atom: cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date)
-                    });
-                    payload.sync();
+                        atom: cardioCatalogQT.service.UtilityService.make_atom('test_code', labCode, labComparator, test_lab, whenComparator, test_date)
+                    };
 
-                    atom = cardioCatalogQT.service.UtilityService.make_atom('lab', labCode, labComparator, test_lab, whenComparator, test_date);
-                    cardioCatalogQT.service.UtilityService.url(button, atom);
+                    atom = cardioCatalogQT.service.UtilityService.make_atom('test_code', labCode, labComparator, test_lab, whenComparator, test_date);
+                    cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
                 }
                 else {
                     // error conditions here
@@ -717,19 +731,10 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
         }
-        // reload store on grid
-        //form.up().down('#searchGrid').getStore().load();
-
-        // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
-        form.up().down('#labGrid').getStore().load();
-        // clear form
-        //form.reset();
     },
 
     onSubmitDiagnoses: function(button) {
-        var payload = Ext.getStore('DiagnosesPayload'),
-            atom,
+        var atom,
             dx = [],
             form = button.up('grid'),
             diagnoses = form.down('#diagnosis').store.data.items,
@@ -766,7 +771,6 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 console.log(item)
             }
 
-            // TODO: implement citerion builder independent of all data in stores
             criterion =  item.data.description;
 
             if (test_date){
@@ -774,8 +778,8 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 + test_date;
             }
             // TODO: ensure record does not already exist
-            payload.add({
-                type: 'dx',
+            var payload = {
+                type: 'dx_code',
                 key: 'dx_code',
                 comparator: 'eq',
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
@@ -785,35 +789,23 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: date_comparator,
                 dateValue: test_date,
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date)
-            });
-
-            payload.sync();
+                atom: cardioCatalogQT.service.UtilityService.make_atom('dx_code', 'dx_code', 'eq', item.data.code, whenComparator, test_date)
+            };
 
             if (cardioCatalogQT.config.mode === 'test') {
                 dx.push(item.data.code,item.data.description);
                 console.log('dx');
                 console.log(dx);
-                console.log(payload);
             }
 
-            atom = cardioCatalogQT.service.UtilityService.make_atom('dx', 'dx_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom);
+            atom = cardioCatalogQT.service.UtilityService.make_atom('dx_code', 'dx_code', 'eq' , item.data.code, whenComparator, test_date);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
         }); // each()
-        // reload store on grid
-        //form.up().down('#searchGrid').getStore().load();
-
-        // reload store on grid
-        form.up().down('#searchGrid').getStore().load();
-        form.up().down('#diagnosisGrid').getStore().load();
-        // clear form
-        //form.reset();
     },
 
     onSubmitProcedures: function(button) {
-        var payload = Ext.getStore('ProceduresPayload'),
-            atom,
+        var atom,
             px = [],
             form = button.up('grid'),
             procedures = form.down('#procedure').store.data.items,
@@ -827,7 +819,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
             date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
 
-        // begin test Rx
+        // begin test Px
         if (cardioCatalogQT.config.mode === 'test') {
             console.log('show submitted Dx:');
             console.log(procedures);
@@ -850,7 +842,7 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             if (cardioCatalogQT.config.mode === 'test') {
                 console.log(item)
             }
-            // TODO: implement citerion builder independent of all data in stores
+
             criterion =  item.data.description;
 
             if (test_date){
@@ -859,9 +851,9 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             }
 
             // TODO: ensure record does not already exist
-            payload.add({
-                type: 'px',
-                key: 'px_code',
+            var payload = {
+                type: 'proc_code',
+                key: 'proc_code',
                 comparator: 'eq',
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
                 value: item.data.code,
@@ -870,146 +862,239 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
                 dateComparatorSymbol: date_comparator,
                 dateValue: test_date,
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date)
-            });
+                atom: cardioCatalogQT.service.UtilityService.make_atom('proc_code', 'proc_code', 'eq', item.data.code, whenComparator, test_date)
+            };
 
-            payload.sync();
 
             if (cardioCatalogQT.config.mode === 'test') {
                 px.push(item.data.code,item.data.description);
                 console.log('px');
                 console.log(px);
-                console.log(payload);
             }
 
-            atom = cardioCatalogQT.service.UtilityService.make_atom('px', 'px_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom);
+            atom = cardioCatalogQT.service.UtilityService.make_atom('proc_code', 'proc_code', 'eq' , item.data.code, whenComparator, test_date);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'NULL', payload);
 
         }); // each()
-        // reload store on grid
-        //form.up().down('#searchGrid').getStore().load();
-
-        form.up().down('#procedureGrid').getStore().load();
-        form.up().down('#diagnosisGrid').getStore().load();
-        // clear form
-        //form.reset();
     },
 
     onSubmitMedications: function(button) {
-        var payload = Ext.getStore('MedicationsPayload'),
-            atom,
-            rx = [],
-            form = button.up('grid'),
-            medications = form.down('#medication').store.data.items,
-            whenComparator = form.down('#whenComparator').value,
-            whenValue = form.down('#whenValue').value,
-            upperWhenValue = form.down('#upperWhenValue').value,
+        var rx = [],
+            form = button.up('form'),
+            selections = form.getSelectionModel().getSelection(),
             criterion,
-            date_comparator;
-
-            whenValue = Ext.Date.format(whenValue, 'Y-m-d');
-            upperWhenValue = Ext.Date.format(upperWhenValue, 'Y-m-d');
-            date_comparator = cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator);
+            drug_key,
+            drug_value,
+            atom;
 
         if (cardioCatalogQT.config.mode === 'test') {
-            console.log('show submitted Rx:');
-            console.log(medications);
+            console.log('selection:');
+            console.log(form);
+            console.log(selections);
         }
 
-        Ext.Array.each(medications, function (item) {
+        Ext.each(selections, function (items) {
 
-            var test_date = whenValue;
+            drug_key = items.data.type;
 
-            if (whenComparator === 'bt') {
+            criterion = items.data.type + ' ' + items.data.name;
 
-                if (!upperWhenValue) {
-                    alert('Please enter max date to continue')
-                }
-                else {
-                    test_date += ',' + upperWhenValue;
-                }
+            if (!items.data.drug_code) {
+
+                drug_key = items.data.type;
+                drug_value = items.data.name;
+                drug_value = drug_value.replace(new RegExp(' ', 'gi'),'_').
+                    replace(new RegExp(Ext.String.escapeRegex('('), 'gi'),'{').
+                    replace(new RegExp(Ext.String.escapeRegex(')'), 'gi'),'}').
+                    replace(new RegExp(Ext.String.escapeRegex('&'), 'gi'),'and'); // RegEx to deal with special characters
+            }
+            else{
+                drug_key = 'drug_code_orig';
+                drug_value = items.data.drug_code;
             }
 
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log(item)
-            }
-
-            // TODO: implement citerion builder independent of all data in stores
-            criterion =  item.data.description;
-
-            if (test_date){
-                criterion += ' ' + 'in date range: ' + date_comparator + ' ' + ' '
-                + test_date;
-            }
-            // TODO: ensure record does not already exist
-            payload.add({
+            var payload = {
                 type: 'rx',
-                key: 'rx_code',
+                key: drug_key,
                 comparator: 'eq',
                 comparatorSymbol: cardioCatalogQT.service.UtilityService.comparator_hash('eq'),
-                value: item.data.code,
-                description: item.data.description.toUpperCase(),
-                dateComparator: whenComparator,
-                dateComparatorSymbol: cardioCatalogQT.service.UtilityService.date_comparator_hash(whenComparator),
-                dateValue: test_date,
+                value: drug_value,
+                description: items.data.name.toUpperCase(),
                 criteria: criterion,
-                atom: cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date)
-            });
+                atom: cardioCatalogQT.service.UtilityService.make_atom('medications', drug_key, 'eq', drug_value)
+            };
 
-            payload.sync();
+            atom = cardioCatalogQT.service.UtilityService.make_atom('medications', drug_key, 'eq', drug_value);
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved', payload);
 
             if (cardioCatalogQT.config.mode === 'test') {
-                rx.push(item.data.code,item.data.description);
+                console.log(drug_key);
+                console.log('YESH');
+                console.log(items);
+                console.log(items.data.type + items.data.name + items.data.drug_code);
+                rx.push(items.data.type,items.data.name,items.data.drug_code);
                 console.log('rx');
                 console.log(rx);
-                console.log(payload);
+                console.log(atom);
             }
 
-            atom = cardioCatalogQT.service.UtilityService.make_atom('rx', 'rx_code', 'eq' , item.data.code, whenComparator, test_date);
-            cardioCatalogQT.service.UtilityService.url(button, atom);
+        }); // each()
+    },
+
+    // TODO: last run date and count
+    onSubmitSaved: function(button) {
+        var grid = button.up('grid'),
+            selection = grid.getSelectionModel().getSelection(),
+            atom,
+            filtered = [],
+            source = grid.store,
+            store = Ext.getStore(source);
+
+        if (selection) {
+
+            // array of elements on which to filter
+            Ext.Array.each(selection, function (item) {
+                filtered.push(item.data.id);
+            });
+
+            source.clearFilter(true); // Clears old filters
+            source.filter([ // filter on selected array elements
+                {
+                    filterFn: function (rec) {
+                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
+                    }
+                }
+            ]);
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered store id:');
+                console.log(filtered);
+            }
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
+
+        source.each(function (rec) {
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log(rec)
+            }
+
+            var payload = {
+                type: 'saved',
+                key: rec.data.query_name,
+                description: rec.data.criteria,
+                criteria: rec.data.criteria,
+                atom: rec.data.molecule
+            };
+
+            atom = rec.data.molecule;
+
+            cardioCatalogQT.service.UtilityService.url(button, atom, 'submitSaved', payload);
 
         }); // each()
-        // reload store on grid
-        //form.up().down('#searchGrid').getStore().load();
 
-        form.up().down('#medicationGrid').getStore().load();
-        form.up().down('#diagnosisGrid').getStore().load();
-        // clear form
-        //form.reset();
-    },
-
-    onSelectionChange: function(sm, selections) {
-        var store = sm.store.storeId;
-
-        console.log('sm:');
-        console.log(sm);
-        console.log(sm.store.storeId);
-
-        if (store === 'Payload') {
-            this.getReferences().removeButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'DemographicsPayload') {
-            this.getReferences().removeDemographicButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'VitalsPayload') {
-            this.getReferences().removeVitalButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'LabsPayload') {
-            this.getReferences().removeLabButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'DiagnosesPayload') {
-            this.getReferences().removeDiagnosisButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'ProceduresPayload') {
-            this.getReferences().removeProcedureButton.setDisabled(selections.length === 0);
-        }
-        else if (store === 'MedicationsPayload') {
-            this.getReferences().removeMedicationButton.setDisabled(selections.length === 0);
-        }
+        store.clearFilter();
+        grid.getStore().load();
 
     },
 
-    // TODO: generalize this across all grids
+    onMedSelectionChange: function(selections, sm) {
+        var rx = [],
+            test = selections.selected.items;
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('meds:');
+            console.log(selections);
+            console.log(selections.selected.items);
+        }
+
+        Ext.each(test, function (items) {
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                rx.push(items.data.type,items.data.name);
+                console.log('rx');
+                console.log(rx);
+            }
+
+        }); // each()
+
+    },
+
+    // custom control of toggling disabled status of form buttons
+    // control which buttons being toggled by looking at store to which selected object is bound
+    onSelectionChange: function(selections, sm) {
+
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('sm:');
+            console.log(selections);
+            console.log(selections.selected.items);
+            console.log(Ext.ComponentQuery.query('#searchSelected'));
+
+        }
+
+        // control for disabling button on SavedQueries;
+        if (selections.store.id.indexOf('queries') > -1) {
+            if (Ext.ComponentQuery.query('#searchSelected')[0].disabled === true) {
+
+                Ext.ComponentQuery.query('#searchSelected')[0].enable();
+            }
+            if (selections.selected.length === 0) {
+
+                Ext.ComponentQuery.query('#searchSelected')[0].disable();
+            }
+        }
+
+        // control for disabling buttons on category tab grids
+        else {
+
+            // Activate controls
+            if (Ext.ComponentQuery.query('#removeButton')[0].disabled === true &&
+                selections.selected.length > 0) {
+
+                Ext.ComponentQuery.query('#removeButton')[0].enable();
+
+            }
+            if (Ext.ComponentQuery.query('#andButton')[0].disabled === true &&
+                Ext.ComponentQuery.query('#orButton')[0].disabled === true &&
+                selections.selected.length > 1) {
+
+                Ext.ComponentQuery.query('#andButton')[0].enable();
+                Ext.ComponentQuery.query('#orButton')[0].enable();
+            }
+            if (Ext.ComponentQuery.query('#notButton')[0].disabled === true &&
+                Ext.ComponentQuery.query('#saveQuery')[0].disabled === true &&
+                //Ext.ComponentQuery.query('#showResults')[0].disabled === true &&
+                selections.selected.length === 1) {
+
+                Ext.ComponentQuery.query('#notButton')[0].enable();
+                Ext.ComponentQuery.query('#saveQuery')[0].enable();
+                //Ext.ComponentQuery.query('#showResults')[0].enable();
+            }
+
+            // Deactivate controls
+            if (selections.selected.length > 1 || selections.selected.length === 0) {
+
+                Ext.ComponentQuery.query('#notButton')[0].disable();
+                Ext.ComponentQuery.query('#saveQuery')[0].disable();
+                //Ext.ComponentQuery.query('#showResults')[0].disable();
+            }
+            if (selections.selected.length < 2) {
+
+                Ext.ComponentQuery.query('#andButton')[0].disable();
+                Ext.ComponentQuery.query('#orButton')[0].disable();
+            }
+            if (selections.selected.length === 0) {
+
+                Ext.ComponentQuery.query('#removeButton')[0].disable();
+            }
+
+        }
+    },
+
     onCriterionRemove: function (button) {
         var grid = button.up('grid'),
             selection = grid.getView().getSelectionModel().getSelection(),
@@ -1032,13 +1117,13 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
             store.remove(selection);
             store.sync();
             if (cardioCatalogQT.config.mode === 'test') {
-                console.log('removed')
-                console.log(store)
+                console.log('removed');
+                console.log(store);
             }
         }
         else {
-            if (cardioCatalogQT.config.mode === 'test') {
-                console.log('nada')
+            if (cardioCatalogQT.config.mode === 'payload') {
+                console.log('nada');
             }
         }
     },
@@ -1067,28 +1152,65 @@ Ext.define('cardioCatalogQT.view.main.MainController', {
         cardioCatalogQT.service.UtilityService.assemble_boolean(button, options);
     },
 
-    // TODO: generalize this across all grids
-    // clear filter and reload store into grid
-    onFilterClear: function (button) {
+    onFilterSave: function (button) {
+
+        cardioCatalogQT.service.UtilityService.query_move(button);
+    },
+
+    // grab query for display of all data
+    onShowResults: function (button) {
         var grid = button.up('grid'),
-        // bind grid store as source
             source = grid.store,
-            store = Ext.getStore(source);
+            store = Ext.getStore(source),
+            selection = grid.getView().getSelectionModel().getSelection(),
+            url = cardioCatalogQT.config.protocol,
+            atom,
+            filtered = [],
+            payload = store;
+
+        if (selection) {
+
+            // array of elements on which to filter
+            Ext.Array.each(selection, function (item) {
+                filtered.push(item.data.id);
+            });
+
+            source.clearFilter(true); // Clears old filters
+            source.filter([ // filter on selected array elements
+                {
+                    filterFn: function (rec) {
+                        return Ext.Array.indexOf(filtered, rec.get('id')) != -1;
+                    }
+                }
+            ]);
+
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('filtered store id:');
+                console.log(filtered);
+            }
+        }
+        else {
+            if (cardioCatalogQT.config.mode === 'test') {
+                console.log('nada')
+            }
+        }
+
+        atom = store.data.items[0].data.atom;
+        if (cardioCatalogQT.config.mode === 'test') {
+            console.log('ATOM HERE:');
+            console.log(atom);
+            console.log(grid.up());
+        }
+
+        url += cardioCatalogQT.config.host;
+        url += cardioCatalogQT.config.apiGetQ;
+
+        Ext.ComponentQuery.query('#resultsGrid')[0].enable();
+
+        cardioCatalogQT.service.UtilityService.submit_query(url, source, atom, payload);
 
         store.clearFilter();
         grid.getStore().load();
-    },
-
-    onShowTab : function() {
-        var mainView   = this.getMainView();
-        var resultView = this.getExportTab();
-
-
-        // enable the export view
-        resultView.enable();
-
-
-        mainView.setActiveItem(exportView);
     }
 
 });
